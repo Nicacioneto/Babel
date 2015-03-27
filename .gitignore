@@ -35,6 +35,7 @@
 *.fls
 *.out
 *.toc
+*.pdf
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
