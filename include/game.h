@@ -5,18 +5,18 @@
 
 class Game {
 public:
-	Game();
-	~Game();
-	
-	void run();
+    Game();
+    ~Game();
+    
+    void run();
 
 private:
-	void process_timestep();
-	void process_input();
-	void run_ai();
-	void collision_step();
-	bool update_objects();
-	void render();
+    void process_timestep();
+    void process_input();
+    void run_ai();
+    void collision_step();
+    bool update_objects();
+    void render();
 };
 
 #endif
