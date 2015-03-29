@@ -1,6 +1,6 @@
 #include "../include/game.h"
 #include <iostream>
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -8,27 +8,44 @@
 
 using namespace std;
 
-Game::Game() {}
+Game::Game() {
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
+        exit(-1);
+    }
 
-Game::~Game() {}
+    SDL_Window* window = SDL_CreateWindow("Void Crawlers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+
+    if (window == NULL) {
+        cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
+        exit(-1);
+    }
+
+    SDL_Surface *screen = SDL_GetWindowSurface(window);
+
+    if (!screen) {
+        cout << "Surface can not be created! SDL_: " << SDL_GetError() << endl;
+        exit(-1);
+    }
+}
+
+Game::~Game() {
+    SDL_FreeSurface( screen );
+    screen = NULL;
+
+    //Destroy window
+    SDL_DestroyWindow( window );
+    window = NULL;
+
+    //Quit SDL subsystems
+    SDL_Quit();
+}
 
 void Game::run() {
     cout << "Game loop" << endl;
 
     bool done = false;
-
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        cout << "Error: " << SDL_GetError() << endl;
-        exit(-1);
-    }
-
-    SDL_Surface *screen = SDL_SetVideoMode(WIDTH, HEIGHT, BPP, SDL_SWSURFACE | SDL_ANYFORMAT);
-
-    if (!screen) {
-        cout << "Error: " << SDL_GetError() << endl;
-        exit(-1);
-    }
-
+    
     while (not done) {
         process_timestep();
         process_input();
@@ -48,7 +65,19 @@ void Game::run_ai() {}
 void Game::collision_step() {}
 
 bool Game::update_objects() {
-    return false;
+
+    SDL_Event event;
+    bool quit = false;
+
+    while( SDL_PollEvent( &event ) != 0 )
+    {
+        if( event.type == SDL_QUIT )
+        {
+            quit = true;
+        }
+    }
+
+    return quit;
 }
 
 void Game::render() {}
