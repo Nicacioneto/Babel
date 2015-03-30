@@ -4,7 +4,7 @@
 *.o
 *.obj
 *.d
-/voidcrawlers
+/game/voidcrawlers
 
 # Precompiled Headers
 *.gch
