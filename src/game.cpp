@@ -1,83 +1,134 @@
-#include "../include/game.h"
-#include <iostream>
-#include <SDL2/SDL.h>
+#include "include/game.h"
 
-#define WIDTH 800
-#define HEIGHT 600
-#define BPP 0
+Game* Game::instacia = 0;
 
-using namespace std;
+Game::Game(string title, int width, int height){
 
-Game::Game() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
-        exit(-1);
+    this->width = width;
+    this->height = height;
+
+    saida = false;
+
+    if(instacia == NULL)
+        instacia = this;
+
+    int erro = SDL_Init(SDL_INIT_VIDEO);
+    if (erro != 0){
+
+        cout << endl << "CRASH VIDEO" << endl;
+        cout << SDL_GetError() << endl;
+
     }
 
-    SDL_Window* window = SDL_CreateWindow("Void Crawlers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    if(IMG_Init(IMG_INIT_JPG|IMG_INIT_PNG|IMG_INIT_TIF)== 0){
 
-    if (window == NULL) {
-        cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
-        exit(-1);
+        cout << endl << "CRASH IMAGEM" << endl;
+        cout << SDL_GetError() << endl;
+
     }
 
-    SDL_Surface *screen = SDL_GetWindowSurface(window);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
 
-    if (!screen) {
-        cout << "Surface can not be created! SDL_: " << SDL_GetError() << endl;
-        exit(-1);
+    if(render == NULL){
+
+        cout << endl << "CRASH WINDOW" << endl;
+        cout << SDL_GetError() << endl;
     }
-}
 
-Game::~Game() {
-    SDL_FreeSurface( screen );
-    screen = NULL;
+    render = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    //Destroy window
-    SDL_DestroyWindow( window );
-    window = NULL;
+    if(render == NULL){
 
-    //Quit SDL subsystems
-    SDL_Quit();
-}
-
-void Game::run() {
-    cout << "Game loop" << endl;
-
-    bool done = false;
-    
-    while (not done) {
-        process_timestep();
-        process_input();
-        run_ai();
-        collision_step();
-        done = update_objects();
-        render();
+        cout << endl << "CRASH RENDER" << endl;
+        cout << SDL_GetError() << endl;
     }
 }
 
-void Game::process_timestep() {}
+Game::~Game(){
 
-void Game::process_input() {}
+    IMG_Quit();
+    SDL_DestroyRenderer(render);
+    SDL_DestroyWindow(window);
 
-void Game::run_ai() {}
+}
 
-void Game::collision_step() {}
+Game& Game::Get_instancia(){
 
-bool Game::update_objects() {
+    return *instacia;
+}
 
-    SDL_Event event;
-    bool quit = false;
+void Game::Pilha_push(State *state){
 
-    while( SDL_PollEvent( &event ) != 0 )
-    {
-        if( event.type == SDL_QUIT )
-        {
-            quit = true;
+    pilha = state;
+
+}
+
+//Game& Game::Get_estado(){
+
+//    pilha =
+//}
+
+void Game::Run(){
+
+    pilha = NULL;
+    estado_pilha.emplace(pilha);
+
+    while(!estado_pilha.empty() && estado_pilha.top()->Requested_quit()){
+
+    Delta_time();
+  //  Input_manager::Get_instacia.update();
+
+    if(pilha != NULL){
+
+        estado_pilha.emplace(pilha);
+        pilha = NULL;
+
+        }
+    while(!estado_pilha.empty() && !(estado_pilha.top()->Requested_delete())){
+
+        estado_pilha.pop();
+
+        if(pilha != NULL){
+
+            estado_pilha.emplace(pilha);
+            pilha = NULL;
+
+            }
+        }
+
+    if(!estado_pilha.empty()){
+
+        estado_pilha.top()->Update(delta_time);
+        estado_pilha.top()->Rendering();
+        SDL_RenderPresent(render);
+        SDL_Delay(33);
+
         }
     }
-
-    return quit;
 }
 
-void Game::render() {}
+void Game::Delta_time(){
+
+    int tempo = SDL_GetTicks();
+    frame = tempo;
+    delta_time = (float)((tempo-frame)/1000);
+
+}
+
+int Game::get_Window_Height(){
+
+    int h,w;
+    SDL_GetWindowSize(window, &w, &h);
+
+    return h;
+
+}
+
+int Game::get_Window_Width(){
+
+    int h,w;
+    SDL_GetWindowSize(window, &w, &h);
+
+    return w;
+
+}
