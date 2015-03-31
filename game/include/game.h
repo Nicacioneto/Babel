@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <iostream>
 #include <SDL2/SDL.h>
 
 #define WIDTH 800
@@ -16,8 +15,8 @@ public:
     void run();
 
 private:
-	SDL_Window *m_window = NULL;
-	SDL_Surface *m_screen = NULL;
+	SDL_Window *window = NULL;
+	SDL_Surface *screen = NULL;
 
     void process_timestep();
     void process_input();
