@@ -4,6 +4,7 @@ SRC_DIR = src
 INC_DIR = include
 OBJ_DIR = obj
 LIB_DIR = lib
+BIN_DIR = bin
 
 CC = g++
 AR = ar
@@ -14,8 +15,8 @@ INCLUDES = -Iinclude
 
 TARGET = $(LIB_DIR)/$(NAME)
 
-TEST = voidcrawlers
-TST_MAIN = $(SRC_DIR)/main.cpp
+GAME = $(BIN_DIR)/voidcrawlers
+GAME_MAIN = $(SRC_DIR)/main.cpp
 
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
 OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}} 
@@ -23,9 +24,9 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 .PHONY: clean depend
 
 all: 
-	@mkdir -p $(OBJ_DIR) $(LIB_DIR)
+	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@make $(TARGET)
-	@make $(TEST)
+	@make $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@ -lSDL2
@@ -33,8 +34,8 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 $(TARGET): $(OBJ)
 	$(AR) $(ARFLAGS) $@ $(OBJ)
 
-$(TEST): $(TST_MAIN) $(TARGET)
-	$(CC) $(CFLAGS) $(INCLUDES) $(TST_MAIN) $(TARGET) -o $@ -lSDL2
+$(GAME): $(GAME_MAIN) $(TARGET)
+	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ -lSDL2
 
 clean:
 	@find . -name *.o -exec rm {} \;
