@@ -2,10 +2,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-#define WIDTH 800
-#define HEIGHT 600
-#define BPP 0
-
 using namespace std;
 
 Game::Game() {
@@ -14,28 +10,29 @@ Game::Game() {
         exit(-1);
     }
 
-    SDL_Window* window = SDL_CreateWindow("Void Crawlers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
+    m_window = SDL_CreateWindow("Void Crawlers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+        WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
 
-    if (window == NULL) {
+    if (m_window == NULL) {
         cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
         exit(-1);
     }
 
-    SDL_Surface *screen = SDL_GetWindowSurface(window);
+    m_screen = SDL_GetWindowSurface(m_window);
 
-    if (!screen) {
+    if (!m_screen) {
         cout << "Surface can not be created! SDL_: " << SDL_GetError() << endl;
         exit(-1);
     }
 }
 
 Game::~Game() {
-    SDL_FreeSurface( screen );
-    screen = NULL;
+    SDL_FreeSurface( m_screen );
+    m_screen = NULL;
 
-    //Destroy window
-    SDL_DestroyWindow( window );
-    window = NULL;
+    //Destroy m_window
+    SDL_DestroyWindow( m_window );
+    m_window = NULL;
 
     //Quit SDL subsystems
     SDL_Quit();
@@ -65,19 +62,15 @@ void Game::run_ai() {}
 void Game::collision_step() {}
 
 bool Game::update_objects() {
-
     SDL_Event event;
-    bool quit = false;
 
     while( SDL_PollEvent( &event ) != 0 )
     {
         if( event.type == SDL_QUIT )
-        {
-            quit = true;
-        }
+            return true;
     }
 
-    return quit;
+    return false;
 }
 
 void Game::render() {}
