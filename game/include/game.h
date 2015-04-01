@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SDL2/SDL.h>
+#include <string>
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -9,14 +10,14 @@
 
 class Game {
 public:
-    Game();
+    Game(std::string);
     ~Game();
     
     void run();
 
 private:
-	SDL_Window *window = NULL;
-	SDL_Surface *screen = NULL;
+	SDL_Window *window = nullptr;
+	SDL_Surface *screen = nullptr;
 
     void process_timestep();
     void process_input();

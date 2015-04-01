@@ -4,37 +4,36 @@
 
 using namespace std;
 
-Game::Game() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+Game::Game(string game_name) {
+    int initialize = SDL_Init(SDL_INIT_VIDEO); 
+    if (initialize != 0) {
         cout << "SDL could not initialize! SDL_Error: " << SDL_GetError() << endl;
         exit(-1);
     }
 
-    window = SDL_CreateWindow("Void Crawlers", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
+    this->window = SDL_CreateWindow(game_name.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 
         WIDTH, HEIGHT, SDL_WINDOW_SHOWN);
 
-    if (window == NULL) {
+    if (this->window == nullptr) {
         cout << "Window could not be created! SDL_Error: " << SDL_GetError() << endl;
         exit(-1);
     }
 
-    screen = SDL_GetWindowSurface(window);
+    this->screen = SDL_GetWindowSurface(this->window);
 
-    if (!screen) {
-        cout << "Surface can not be created! SDL_Error: " << SDL_GetError() << endl;
+    if (!this->screen) {
+        cout << "Surface could not be created! SDL_Error: " << SDL_GetError() << endl;
         exit(-1);
     }
 }
 
 Game::~Game() {
-    SDL_FreeSurface(screen);
-    screen = NULL;
+    SDL_FreeSurface(this->screen);
+    this->screen = nullptr;
 
-    //Destroy window
-    SDL_DestroyWindow(window);
-    window = NULL;
+    SDL_DestroyWindow(this->window);
+    this->window = nullptr;
 
-    //Quit SDL subsystems
     SDL_Quit();
 }
 
@@ -62,7 +61,7 @@ void Game::collision_step() {}
 bool Game::update_objects() {
     SDL_Event event;
 
-    while (SDL_PollEvent( &event ) != 0) {
+    while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
             return true;
         }

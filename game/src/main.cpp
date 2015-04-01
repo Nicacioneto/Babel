@@ -1,7 +1,7 @@
 #include "game.h"
 
 int main() {
-    Game game;
+    Game game("Void Crawlers");
     game.run();
 
     return 0;
