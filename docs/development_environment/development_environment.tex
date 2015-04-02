@@ -1,0 +1,100 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Thin Sectioned Essay
+% LaTeX Template
+% Version 1.0 (3/8/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original Author:
+% Nicolas Diaz (nsdiaz@uc.cl) with extensive modifications by:
+% Vel (vel@latextemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper, 11pt]{article} % Font size (can be 10pt, 11pt or 12pt) and paper size (remove a4paper for US letter paper)
+
+\usepackage[utf8]{inputenc} % Set utf8 code
+\usepackage[protrusion=true,expansion=true]{microtype} % Better typography
+\usepackage{graphicx} % Required for including pictures
+\usepackage{wrapfig} % Allows in-line images
+
+\usepackage{mathpazo} % Use the Palatino font
+\usepackage[T1]{fontenc} % Required for accented characters
+\linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
+
+\makeatletter
+\renewcommand\@biblabel[1]{\textbf{#1.}} % Change the square brackets for each bibliography item from '[1]' to '1.'
+\renewcommand{\@listI}{\itemsep=0pt} % Reduce the space between items in the itemize and enumerate environments and the bibliography
+
+\renewcommand{\maketitle}{ % Customize the title - do not edit title and author name here, see the TITLE block below
+\begin{center} % Right align
+{\LARGE\@title} % Increase the font size of the title
+
+\vspace{20pt} % Some vertical space between the title and author name
+
+\end{center}
+}
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\title{\textbf{Ambiente de desenvolvimento}} % Title
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle % Print the title section
+
+%----------------------------------------------------------------------------------------
+%	DOC BODY
+%----------------------------------------------------------------------------------------
+
+\section*{Escolha das ferramentas}
+
+A seguir são apresentados as ferramentas que serão utilizadas no ambiente de desenvolvimento do jogo.
+
+\begin{enumerate}
+\item \textbf{Linguagem de programação}
+
+C++.
+\item \textbf{Compilador}
+
+g++: compilador \textit{GNU} para linguagem C++.
+\item \textbf{Linguagem de script}
+
+A definir.
+\item \textbf{Editor de texto}
+
+Sublime Text 3.
+\item \textbf{Depurador}
+
+gdb: depurador do linux (\textit{GNU Debugger}) em modo de texto.
+\item \textbf{Ferramenta de controle de versão}
+
+GitHub.
+\item \textbf{API gráfica}
+
+SDL2 (\textit{Simple Directmedia Layer}): é uma biblioteca multiplataforma para desenvolvimento de jogos.
+\item \textbf{API de áudio}
+
+A definir.
+\item \textbf{APIs para manipulação de arquivos}
+
+SDL_image.
+\item \textbf{Sistema operacional}
+
+Ubuntu 14.04.
+
+\end{enumerate}
+
+\end{document}
