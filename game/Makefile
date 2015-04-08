@@ -11,7 +11,8 @@ AR = ar
 
 ARFLAGS = rcs
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD
-INCLUDES = -Iinclude
+INCLUDES = -Iinclude `sdl2-config --cflags`
+LIBS = `sdl2-config --libs` lib/ijengine.a
 
 TARGET = $(LIB_DIR)/$(NAME)
 
@@ -29,18 +30,17 @@ all:
 	@make $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@ -lSDL2
+	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(TARGET): $(OBJ)
 	$(AR) $(ARFLAGS) $@ $(OBJ)
 
 $(GAME): $(GAME_MAIN) $(TARGET)
-	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ -lSDL2
+	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ $(LIBS)
 
 clean:
 	@find . -name *.o -exec rm {} \;
 	@find . -name *.d -exec rm {} \;
-	@find . -name *.a -exec rm {} \;
-	@rm -rf *~ *.o voidcrawlers out.txt obj
+	@rm -rf *~ *.o bin out.txt obj lib/voidcrawlers.a
 
 -include $(OBJ:.o=.d)

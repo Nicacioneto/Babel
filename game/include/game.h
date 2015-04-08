@@ -1,30 +1,36 @@
+/*
+ * Classe que representa um jogo.
+ *
+ * Autor: Edson Alves
+ * Data: 26/03/2015
+ * Licença: LGPL. Sem copyright.
+ */
 #ifndef GAME_H
 #define GAME_H
 
-#include <SDL2/SDL.h>
 #include <string>
+#include "exception.h"
 
-#define WIDTH 800
-#define HEIGHT 600
-#define BPP 0
+using std::string;
 
-class Game {
+class Game
+{
 public:
-    Game(std::string);
+    Game();
     ~Game();
-    
+
+    void init(const string& title, int w = 800, int h = 600) throw (Exception);
     void run();
 
-private:
-	SDL_Window *window = nullptr;
-	SDL_Surface *screen = nullptr;
+protected:
+    bool m_done;
 
-    void process_timestep();
-    void process_input();
-    void run_ai();
-    void collision_step();
-    bool update_objects();
-    void render();
+    void update_timestep();
+    virtual void process_input();
+    void runIA();
+    void runPhysics();
+    void update();
+    void draw();
 };
 
 #endif

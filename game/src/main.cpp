@@ -1,8 +1,8 @@
 #include "game.h"
 
 int main() {
-    Game game("Void Crawlers");
-    game.run();
-
+    Game game();
+    //remains to implement major class
+    
     return 0;
 }
