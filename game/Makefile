@@ -17,7 +17,7 @@ LIBS = `sdl2-config --libs` lib/ijengine.a
 TARGET = $(LIB_DIR)/$(NAME)
 
 GAME = $(BIN_DIR)/voidcrawlers
-GAME_MAIN = $(SRC_DIR)/main.cpp
+GAME_MAIN = $(SRC_DIR)/*.cpp
 
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
 OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}} 
