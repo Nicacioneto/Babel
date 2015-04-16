@@ -14,6 +14,7 @@ private:
     int m_w, m_h;
     Environment *env;
     void process_input();
+    void draw();
 };
 
 #endif

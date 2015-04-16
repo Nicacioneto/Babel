@@ -1,4 +1,7 @@
 #include "voidcrawlers.h"
+#include <ctime>
+#include "point.h"
+#include "circle.h"
 
 using namespace std;
 
@@ -6,6 +9,8 @@ VoidCrawlers::VoidCrawlers() throw (Exception)
 	: m_fullscreen(false), m_w(800), m_h(600)
 {
     env = Environment::get_instance();
+    env->canvas->clear();
+    srand(time(NULL));
 }
 
 void 
@@ -15,8 +20,7 @@ VoidCrawlers::process_input()
 
     while (SDL_PollEvent(&event))
     {
-        env->video->clear();
-
+        SDL_Delay(10);
         if (event.type == SDL_QUIT)
         {
             m_done = true;
@@ -45,4 +49,22 @@ VoidCrawlers::process_input()
             }
         }
     }
+}
+
+void
+VoidCrawlers::draw()
+{
+    env->canvas->update();
+
+    Point point;
+    Circle circle;
+    Color color;
+
+    circle.set(Point(m_w/2, m_h-1), m_w/2);
+    color.set(159, 153, 172);
+    env->canvas->fill(circle, color);
+
+    point.set(rand() % m_w, rand() % m_h);
+    color.set(254, 254, 254);
+    env->canvas->draw(point, color);
 }
