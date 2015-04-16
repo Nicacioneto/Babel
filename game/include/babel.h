@@ -12,7 +12,7 @@ public:
     
 private:
 	bool m_fullscreen;
-    int m_w, m_h;
+    int m_width, m_height;
     Environment *env;
     void process_input();
     void draw();

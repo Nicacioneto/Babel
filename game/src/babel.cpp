@@ -8,9 +8,11 @@
 using namespace std;
 
 Babel::Babel() throw (Exception)
-	: m_fullscreen(false), m_w(800), m_h(600)
+	: m_fullscreen(false)
 {
     env = Environment::get_instance();
+    m_width = env->video->resolution().first;
+    m_height = env->video->resolution().second;
     env->canvas->clear();
     srand(time(NULL));
 }
@@ -37,15 +39,15 @@ Babel::process_input()
                     break;
 
                 case SDLK_UP:
-                    m_w += 100;
-                    m_h += 100;
-                    env->video->set_resolution(m_w, m_h);
+                    m_width += 100;
+                    m_height += 100;
+                    env->video->set_resolution(m_width, m_height);
                     break;
 
                 case SDLK_DOWN:
-                    m_w -= 100;
-                    m_h -= 100;
-                    env->video->set_resolution(m_w, m_h);
+                    m_width -= 100;
+                    m_height -= 100;
+                    env->video->set_resolution(m_width, m_height);
                     break;
             }
         }
@@ -63,6 +65,6 @@ Babel::load_menu() throw (Exception)
 {
     Rect rect;
     rect.set(0, 0);
-    rect.set_dimensions(m_w, m_h);
+    rect.set_dimensions(m_width, m_height);
     env->canvas->load_image("res/images/menu.png", rect);
 }
