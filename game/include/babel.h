@@ -1,13 +1,13 @@
-#ifndef VOIDCRAWLERS_H
-#define VOIDCRAWLERS_H
+#ifndef BABEL_H
+#define BABEL_H
 
 #include "game.h"
 #include "environment.h"
 
-class VoidCrawlers : public Game
+class Babel : public Game
 {
 public:
-	VoidCrawlers() throw (Exception);
+	Babel() throw (Exception);
     
 private:
 	bool m_fullscreen;

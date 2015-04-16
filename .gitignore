@@ -45,6 +45,7 @@
 *-blx.bib
 *.brf
 *.run.xml
+*.bak
 
 ## Intermediate documents:
 *.dvi

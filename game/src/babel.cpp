@@ -1,11 +1,11 @@
-#include "voidcrawlers.h"
+#include "babel.h"
 #include <ctime>
 #include "point.h"
 #include "circle.h"
 
 using namespace std;
 
-VoidCrawlers::VoidCrawlers() throw (Exception)
+Babel::Babel() throw (Exception)
 	: m_fullscreen(false), m_w(800), m_h(600)
 {
     env = Environment::get_instance();
@@ -14,7 +14,7 @@ VoidCrawlers::VoidCrawlers() throw (Exception)
 }
 
 void 
-VoidCrawlers::process_input()
+Babel::process_input()
 {
     SDL_Event event;
 
@@ -52,7 +52,7 @@ VoidCrawlers::process_input()
 }
 
 void
-VoidCrawlers::draw()
+Babel::draw()
 {
     env->canvas->update();
 

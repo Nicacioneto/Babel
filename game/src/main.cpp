@@ -1,14 +1,14 @@
 #include <iostream>
-#include "voidcrawlers.h"
+#include "babel.h"
 
 using namespace std;
 
 int main() {
     try
     {
-        VoidCrawlers voidcrawlers;
-        voidcrawlers.init("VoidCrawlers Game", 800, 600);
-        voidcrawlers.run();
+        Babel babel;
+        babel.init("Babel Game", 800, 600);
+        babel.run();
     } catch (Exception ex)
     {
         cerr << ex.message() << endl;

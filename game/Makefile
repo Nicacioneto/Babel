@@ -1,4 +1,4 @@
-NAME = voidcrawlers.a
+NAME = babel.a
 
 SRC_DIR = src
 INC_DIR = include
@@ -16,7 +16,7 @@ LIBS = `sdl2-config --libs` lib/ijengine.a
 
 TARGET = $(LIB_DIR)/$(NAME)
 
-GAME = $(BIN_DIR)/voidcrawlers
+GAME = $(BIN_DIR)/babel
 GAME_MAIN = $(SRC_DIR)/*.cpp
 
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
@@ -41,6 +41,6 @@ $(GAME): $(GAME_MAIN) $(TARGET)
 clean:
 	@find . -name *.o -exec rm {} \;
 	@find . -name *.d -exec rm {} \;
-	@rm -rf *~ *.o bin out.txt obj lib/voidcrawlers.a
+	@rm -rf *~ *.o bin out.txt obj lib/babel.a
 
 -include $(OBJ:.o=.d)
