@@ -8,6 +8,7 @@ int main() {
     {
         Babel babel;
         babel.init("Babel Game", 800, 600);
+        babel.draw_home();
         babel.run();
     } catch (Exception ex)
     {

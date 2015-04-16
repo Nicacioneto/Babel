@@ -18,15 +18,14 @@ Babel::process_input()
 {
     SDL_Event event;
 
+    SDL_Delay(1);
     while (SDL_PollEvent(&event))
     {
-        SDL_Delay(10);
         if (event.type == SDL_QUIT)
         {
             m_done = true;
         }
-
-        if (event.type == SDL_KEYDOWN)
+        else if (event.type == SDL_KEYDOWN)
         {
             switch (event.key.keysym.sym)
             {
@@ -48,6 +47,8 @@ Babel::process_input()
                     break;
             }
         }
+        env->canvas->clear();
+        draw_home();
     }
 }
 
@@ -55,16 +56,24 @@ void
 Babel::draw()
 {
     env->canvas->update();
+}
 
+void 
+Babel::draw_home()
+{
     Point point;
     Circle circle;
     Color color;
 
+    for(int i = 0; i < 300; i++){
+        point.set(rand() % m_w, rand() % m_h);
+        color.set(254, 254, 254);
+        env->canvas->draw(point, color);
+    }
+    
     circle.set(Point(m_w/2, m_h-1), m_w/2);
     color.set(159, 153, 172);
     env->canvas->fill(circle, color);
 
-    point.set(rand() % m_w, rand() % m_h);
-    color.set(254, 254, 254);
-    env->canvas->draw(point, color);
+    // env->canvas->update();
 }
