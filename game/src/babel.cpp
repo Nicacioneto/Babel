@@ -1,7 +1,9 @@
-#include "babel.h"
 #include <ctime>
-#include "point.h"
+#include "babel.h"
 #include "circle.h"
+#include "image.h"
+#include "point.h"
+#include "rect.h"
 
 using namespace std;
 
@@ -18,7 +20,7 @@ Babel::process_input()
 {
     SDL_Event event;
 
-    SDL_Delay(1);
+    SDL_Delay(5);
     while (SDL_PollEvent(&event))
     {
         if (event.type == SDL_QUIT)
@@ -47,8 +49,6 @@ Babel::process_input()
                     break;
             }
         }
-        env->canvas->clear();
-        draw_home();
     }
 }
 
@@ -58,21 +58,11 @@ Babel::draw()
     env->canvas->update();
 }
 
-void 
-Babel::draw_home()
+void
+Babel::load_menu() throw (Exception)
 {
-    Point point;
-    Circle circle;
-    Color color;
-
-    for(int i = 0; i < 300; i++){
-        point.set(rand() % m_w, rand() % m_h);
-        color.set(254, 254, 254);
-        env->canvas->draw(point, color);
-    }
-    
-    circle.set(Point(m_w/2, m_h-1), m_w/2);
-    color.set(159, 153, 172);
-    env->canvas->fill(circle, color);
-
+    Rect rect;
+    rect.set(0, 0);
+    rect.set_dimensions(m_w, m_h);
+    env->canvas->load_image("res/images/menu.png", rect);
 }

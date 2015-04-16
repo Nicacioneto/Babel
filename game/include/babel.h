@@ -8,7 +8,7 @@ class Babel : public Game
 {
 public:
 	Babel() throw (Exception);
-    void draw_home();
+    void load_menu() throw (Exception);
     
 private:
 	bool m_fullscreen;
