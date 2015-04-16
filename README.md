@@ -9,3 +9,4 @@ Equipe Tiamat
 
 [![Stories in Ready](https://badge.waffle.io/ije-tiamat/babel.png?label=ready&title=Ready)](http://waffle.io/ije-tiamat/babel)
 [![Stories in Progress](https://badge.waffle.io/ije-tiamat/babel.png?label=in%20progress&title=In%20Progress)](http://waffle.io/ije-tiamat/babel) 
+[![Stories in Check](https://badge.waffle.io/ije-tiamat/babel.png?label=check&title=Check)](http://waffle.io/ije-tiamat/babel)

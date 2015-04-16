@@ -75,5 +75,4 @@ Babel::draw_home()
     color.set(159, 153, 172);
     env->canvas->fill(circle, color);
 
-    // env->canvas->update();
 }
