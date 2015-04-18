@@ -15,7 +15,7 @@ public:
 
 	int w() const;
     int h() const;
-	void load_texture(SDL_Renderer *renderer, string path = "") throw (Exception);
+	void load_texture(SDL_Renderer *renderer, const string path = "") throw (Exception);
 	SDL_Texture * texture() const;
 
 private:

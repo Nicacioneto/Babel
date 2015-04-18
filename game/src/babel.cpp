@@ -4,12 +4,13 @@
 #include "image.h"
 #include "point.h"
 #include "rect.h"
+#include "state_menu.h"
 #include <iostream>
 
 using namespace std;
 
 Babel::Babel() throw (Exception)
-	: m_fullscreen(false)
+	: m_fullscreen(false), m_state(new StateMenu())
 {
     env = Environment::get_instance();
 }
@@ -56,10 +57,5 @@ Babel::draw()
 void
 Babel::load_menu() throw (Exception)
 {
-    Rect rect;
-    rect.set(0, 0);
-    rect.set_dimensions(env->video->resolution().first, env->video->resolution().second);
-    env->canvas->load_image("res/images/menu.png", rect);
-
-
+    m_state->load();
 }

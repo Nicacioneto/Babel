@@ -3,6 +3,7 @@
 
 #include "game.h"
 #include "environment.h"
+#include "state.h"
 
 class Babel : public Game
 {
@@ -14,6 +15,7 @@ private:
 	bool m_fullscreen;
     int m_width, m_height;
     Environment *env;
+    State* m_state;
     void process_input();
     void draw();
 };
