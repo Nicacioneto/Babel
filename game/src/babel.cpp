@@ -1,4 +1,3 @@
-#include <ctime>
 #include "babel.h"
 #include "circle.h"
 #include "image.h"
@@ -11,10 +10,6 @@ Babel::Babel() throw (Exception)
 	: m_fullscreen(false)
 {
     env = Environment::get_instance();
-    m_width = env->video->resolution().first;
-    m_height = env->video->resolution().second;
-    env->canvas->clear();
-    srand(time(NULL));
 }
 
 void 
@@ -37,18 +32,6 @@ Babel::process_input()
                     m_fullscreen = not m_fullscreen;
                     env->video->set_fullscreen(m_fullscreen);
                     break;
-
-                case SDLK_UP:
-                    m_width += 100;
-                    m_height += 100;
-                    env->video->set_resolution(m_width, m_height);
-                    break;
-
-                case SDLK_DOWN:
-                    m_width -= 100;
-                    m_height -= 100;
-                    env->video->set_resolution(m_width, m_height);
-                    break;
             }
         }
     }
@@ -57,6 +40,8 @@ Babel::process_input()
 void
 Babel::draw()
 {
+    env->canvas->clear();
+    load_menu();
     env->canvas->update();
 }
 
@@ -65,6 +50,6 @@ Babel::load_menu() throw (Exception)
 {
     Rect rect;
     rect.set(0, 0);
-    rect.set_dimensions(m_width, m_height);
+    rect.set_dimensions(env->video->resolution().first, env->video->resolution().second);
     env->canvas->load_image("res/images/menu.png", rect);
 }
