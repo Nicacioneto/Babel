@@ -1,8 +1,10 @@
 #include "babel.h"
+#include "button.h"
 #include "circle.h"
 #include "image.h"
 #include "point.h"
 #include "rect.h"
+#include <iostream>
 
 using namespace std;
 
@@ -34,6 +36,12 @@ Babel::process_input()
                     break;
             }
         }
+        else if (event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            //Waited implementation
+        }
     }
 }
 
@@ -52,4 +60,6 @@ Babel::load_menu() throw (Exception)
     rect.set(0, 0);
     rect.set_dimensions(env->video->resolution().first, env->video->resolution().second);
     env->canvas->load_image("res/images/menu.png", rect);
+
+
 }
