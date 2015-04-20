@@ -12,7 +12,7 @@ AR = ar
 ARFLAGS = rcs
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
 INCLUDES = -Iinclude `sdl2-config --cflags`
-LIBS = `sdl2-config --libs` lib/ijengine.a
+LIBS = `sdl2-config --libs` lib/ijengine.a -lSDL2_image
 
 TARGET = $(LIB_DIR)/$(NAME)
 
