@@ -1,16 +1,18 @@
 #include "babel.h"
-#include <ctime>
-#include "point.h"
+#include "button.h"
 #include "circle.h"
+#include "image.h"
+#include "point.h"
+#include "rect.h"
+#include "state_menu.h"
+#include <iostream>
 
 using namespace std;
 
 Babel::Babel() throw (Exception)
-	: m_fullscreen(false), m_w(800), m_h(600)
+	: m_fullscreen(false), m_state(new StateMenu())
 {
     env = Environment::get_instance();
-    env->canvas->clear();
-    srand(time(NULL));
 }
 
 void 
@@ -18,7 +20,7 @@ Babel::process_input()
 {
     SDL_Event event;
 
-    SDL_Delay(1);
+    SDL_Delay(5);
     while (SDL_PollEvent(&event))
     {
         if (event.type == SDL_QUIT)
@@ -33,46 +35,27 @@ Babel::process_input()
                     m_fullscreen = not m_fullscreen;
                     env->video->set_fullscreen(m_fullscreen);
                     break;
-
-                case SDLK_UP:
-                    m_w += 100;
-                    m_h += 100;
-                    env->video->set_resolution(m_w, m_h);
-                    break;
-
-                case SDLK_DOWN:
-                    m_w -= 100;
-                    m_h -= 100;
-                    env->video->set_resolution(m_w, m_h);
-                    break;
             }
         }
-        env->canvas->clear();
-        draw_home();
+        else if (event.type == SDL_MOUSEBUTTONDOWN)
+        {
+            int x, y;
+            SDL_GetMouseState(&x, &y);
+            //Waited implementation
+        }
     }
 }
 
 void
 Babel::draw()
 {
+    env->canvas->clear();
+    load_menu();
     env->canvas->update();
 }
 
-void 
-Babel::draw_home()
+void
+Babel::load_menu() throw (Exception)
 {
-    Point point;
-    Circle circle;
-    Color color;
-
-    for(int i = 0; i < 300; i++){
-        point.set(rand() % m_w, rand() % m_h);
-        color.set(254, 254, 254);
-        env->canvas->draw(point, color);
-    }
-    
-    circle.set(Point(m_w/2, m_h-1), m_w/2);
-    color.set(159, 153, 172);
-    env->canvas->fill(circle, color);
-
+    m_state->load();
 }

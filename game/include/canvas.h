@@ -12,6 +12,7 @@
 
 #include "exception.h"
 #include "color.h"
+#include "image.h"
 
 using std::string;
 
@@ -50,9 +51,13 @@ public:
     void fill(const Circle& circle) const;
     void fill(const Circle& circle, const Color& color);
 
+    void load_image(const string path, const Rect rect) const throw (Exception);
+    Image *image();
+
 private:
     SDL_Renderer *m_renderer;
     Color m_color;
+    Image *m_image;
 
     void draw_circle_points(int cx, int cy, int x, int y) const;
     void fill_circle_points(int cx, int cy, int x, int y) const;
