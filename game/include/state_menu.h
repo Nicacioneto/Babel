@@ -9,14 +9,14 @@
 class StateMenu : public State
 {
 public:
-	StateMenu();
-	virtual void load() throw (Exception) override;
-	virtual void unload() override;
-	virtual void update() throw (Exception) override;
-	virtual void render() throw (Exception) override;
-	
+    StateMenu();
+    virtual void load() throw (Exception) override;
+    virtual void unload() override;
+    virtual void update() throw (Exception) override;
+    virtual void render() throw (Exception) override;
+    
 private:
-	Environment *env;
+    Environment *env;
 };
 
 #endif

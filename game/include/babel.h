@@ -6,8 +6,8 @@
 class Babel : public Game
 {
 public:
-	Babel();
-	
+    Babel();
+    
     void init(const string& title, int w = 800, int h = 600) throw (Exception);
     void run();
 

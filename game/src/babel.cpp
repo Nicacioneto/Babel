@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Babel::Babel() 
+Babel::Babel()
     : Game("game_logo")
 {
 }

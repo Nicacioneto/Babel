@@ -4,30 +4,30 @@
 
 StateMenu::StateMenu()
 {
-	env = Environment::get_instance();
+    env = Environment::get_instance();
 }
 
-void 
+void
 StateMenu::load() throw (Exception)
 {
-	Rect rect;
+    Rect rect;
     rect.set(0, 0);
     rect.set_dimensions(env->video->resolution().first, env->video->resolution().second);
     // env->canvas->load_image("res/images/menu.png", rect);
 }
 
-void 
+void
 StateMenu::unload()
 {
-	// SDL_DestroyTexture(env->canvas->image()->texture());
+    // SDL_DestroyTexture(env->canvas->image()->texture());
 }
-void 
+void
 StateMenu::update() throw (Exception)
 {
 
 }
-void 
+void
 StateMenu::render() throw (Exception)
 {
-	env->canvas->update();
+    env->canvas->update();
 }
