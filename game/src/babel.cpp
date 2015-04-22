@@ -1,31 +1,13 @@
 #include "babel.h"
 #include "environment.h"
 #include "frontend.h"
+#include "menu.h"
 
 using namespace std;
 
 Babel::Babel() 
     : Game("game_logo")
 {
-}
-
-Level *
-Babel::load_frontend(const string& id)
-{
-    if (id == "game_logo")
-    {
-        return new FrontEnd("classification", "res/images/hexagon.png");
-    }
-    else if (id == "classification")
-    {
-        return new FrontEnd("sdl_logo", "res/images/star.png");
-    }
-    else if (id == "sdl_logo")
-    {
-        return new FrontEnd("", "res/images/spiral.png");
-    }
-
-    return nullptr;
 }
 
 void
@@ -53,11 +35,40 @@ Babel::run()
         update_screen();
         delay(1);
 
-        if (m_level->is_done())
+        if (m_level->next() == "menu" and m_level->is_done())
+        {
+            m_level = load_menu();
+        }
+        else if (m_level->is_done())
         {
             string next = m_level->next();
             delete m_level;
             m_level = load_frontend(next);
         }
     }
+}
+
+Level *
+Babel::load_frontend(const string& id)
+{
+    if (id == "game_logo")
+    {
+        return new FrontEnd("classification", "res/images/hexagon.png");
+    }
+    else if (id == "classification")
+    {
+        return new FrontEnd("sdl_logo", "res/images/star.png");
+    }
+    else if (id == "sdl_logo")
+    {
+        return new FrontEnd("menu", "res/images/spiral.png");
+    }
+
+    return nullptr;
+}
+
+Level *
+Babel::load_menu()
+{
+    return new Menu("", "res/images/menu.png");
 }
