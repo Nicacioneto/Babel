@@ -9,8 +9,10 @@
 
 using namespace std;
 
-Babel::Babel() throw (Exception)
-	: m_fullscreen(false), m_state(new StateMenu())
+Babel::Babel() 
+    : Game("a")
+    // m_fullscreen(false)
+    // m_state(new StateMenu())
 {
     env = Environment::get_instance();
 }

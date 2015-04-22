@@ -8,14 +8,15 @@
 class Babel : public Game
 {
 public:
-	Babel() throw (Exception);
+	Babel();
     void load_menu() throw (Exception);
     
 private:
+    string m_id;
 	bool m_fullscreen;
     int m_width, m_height;
-    Environment *env;
     State* m_state;
+    Environment *env;
     void process_input();
     void draw();
 };
