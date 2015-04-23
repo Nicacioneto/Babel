@@ -6,7 +6,7 @@
 using namespace std;
 
 Babel::Babel()
-    : Game("game_logo")
+    : Game("classification")
 {
 }
 
@@ -51,17 +51,17 @@ Babel::run()
 Level *
 Babel::load_frontend(const string& id)
 {
-    if (id == "game_logo")
+    if (id == "classification")
     {
-        return new FrontEnd("classification", "res/images/hexagon.png");
+        return new FrontEnd("game_logo", "res/images/classification.png");
     }
-    else if (id == "classification")
+    else if (id == "game_logo")
     {
-        return new FrontEnd("sdl_logo", "res/images/star.png");
+        return new FrontEnd("sdl_logo", "res/images/game_logo.png");
     }
     else if (id == "sdl_logo")
     {
-        return new FrontEnd("menu", "res/images/spiral.png");
+        return new FrontEnd("menu", "res/images/sdl_logo.png");
     }
 
     return nullptr;

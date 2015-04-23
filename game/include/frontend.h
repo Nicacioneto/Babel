@@ -16,7 +16,7 @@ class FrontEnd : public Level
 {
 public:
     FrontEnd(const string& next, const string& image,
-        unsigned long duration = 800);
+        unsigned long duration = 3000);
 
 private:
     Image *m_image;
