@@ -18,6 +18,9 @@ Babel::init(const string& title, int w, int h) throw (Exception)
     env->video->set_resolution(w, h);
     env->video->set_window_name(title);
 
+    env->events_manager->register_system_event_listener(this);
+    env->events_manager->register_keyboard_event_listener(this);
+
     m_level = load_frontend(m_id);
 }
 
@@ -27,7 +30,8 @@ Babel::run()
     while (m_level and not m_done)
     {
         unsigned long now = update_timestep();
-        process_input();
+        
+        env->events_manager->dispatch_pending_events();
 
         m_level->update(now);
         m_level->draw();
