@@ -6,7 +6,7 @@
 using namespace std;
 
 Babel::Babel()
-    : Game("classification")
+    : Game("game_logo")
 {
 }
 
@@ -53,7 +53,7 @@ Babel::load_frontend(const string& id)
 {
     if (id == "classification")
     {
-        return new FrontEnd("game_logo", "res/images/classification.png");
+        return new FrontEnd("menu", "res/images/classification.png");
     }
     else if (id == "game_logo")
     {
@@ -61,7 +61,7 @@ Babel::load_frontend(const string& id)
     }
     else if (id == "sdl_logo")
     {
-        return new FrontEnd("menu", "res/images/sdl_logo.png");
+        return new FrontEnd("classification", "res/images/sdl_logo.png");
     }
 
     return nullptr;
