@@ -20,7 +20,7 @@ Babel::init(const string& title, int w, int h) throw (Exception)
     env->events_manager->register_keyboard_event_listener(this);
     env->events_manager->register_mouse_button_event_listener(this);
 
-    m_level = load_frontend(m_id);
+    m_level = load_level();
 }
 
 void
@@ -38,18 +38,25 @@ Babel::run()
         update_screen();
         delay(1);
 
-        if (m_level->next() == "menu" and m_level->is_done())
+        if (m_level->is_done())
         {
-            m_id = "menu";
-            m_level = load_menu();
-        }
-        else if (m_level->is_done())
-        {
-            string next = m_level->next();
+            m_id = m_level->next();
             delete m_level;
-            m_level = load_frontend(next);
-            m_id = next;
+            m_level = load_level();
         }
+    }
+}
+
+Level *
+Babel::load_level()
+{
+    if(m_id == "menu")
+    {
+        return load_menu();
+    }
+    else
+    {
+        return load_frontend(m_id);
     }
 }
 
