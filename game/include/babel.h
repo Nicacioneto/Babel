@@ -2,8 +2,11 @@
 #define BABEL_H
 
 #include "game.h"
+#include "mousebuttoneventlistener.h"
+#include "mousebuttonevent.h"
 
-class Babel : public Game
+
+class Babel : public Game, public MouseButtonEventListener  
 {
 public:
     Babel();
@@ -14,6 +17,7 @@ public:
 private:
     Level * load_frontend(const string& id);
     Level * load_menu();
+    bool onMouseButtonEvent(const MouseButtonEvent& event);
 };
 
 #endif

@@ -3,8 +3,6 @@
 #include "frontend.h"
 #include "menu.h"
 
-using namespace std;
-
 Babel::Babel()
     : Game("classification")
 {
@@ -20,6 +18,7 @@ Babel::init(const string& title, int w, int h) throw (Exception)
 
     env->events_manager->register_system_event_listener(this);
     env->events_manager->register_keyboard_event_listener(this);
+    env->events_manager->register_mouse_button_event_listener(this);
 
     m_level = load_frontend(m_id);
 }
@@ -41,6 +40,7 @@ Babel::run()
 
         if (m_level->next() == "menu" and m_level->is_done())
         {
+            m_id = "menu";
             m_level = load_menu();
         }
         else if (m_level->is_done())
@@ -48,6 +48,7 @@ Babel::run()
             string next = m_level->next();
             delete m_level;
             m_level = load_frontend(next);
+            m_id = next;
         }
     }
 }
@@ -75,4 +76,20 @@ Level *
 Babel::load_menu()
 {
     return new Menu("", "res/images/menu.png");
+}
+
+bool 
+Babel::onMouseButtonEvent(const MouseButtonEvent& event)
+{
+    if(event.action() == MouseButtonEvent::UP and
+        event.button() == MouseButtonEvent::LEFT)
+    {
+        if(m_id == "menu")
+        {
+            Menu * menu = dynamic_cast<Menu *>(m_level);
+            menu->execute_action(event.x(), event.y());
+            return true;
+        }
+    }
+    return false;
 }
