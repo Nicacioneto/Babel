@@ -3,7 +3,6 @@
 #include "image.h"
 #include "menu.h"
 #include "resourcesmanager.h"
-#include <iostream>
 
 Menu::Menu(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
@@ -32,20 +31,14 @@ Menu::execute_action(const int x, const int y)
 
     if(start_button.is_clicked(x, y))
     {
-        std::cout << "star" << std::endl;
-        return true;
     }
     else if(settings_button.is_clicked(x, y))
     {
-        std::cout << "settings" << std::endl;
-        return true;
     } 
     else if(exit_button.is_clicked(x, y))
     {
-        std::cout << "exit" << std::endl;
         return true;
     }
-    else
-        std::cout << "nada" << std::endl;
+    
     return false;
 }

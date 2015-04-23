@@ -94,7 +94,9 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
         if(m_id == "menu")
         {
             Menu * menu = dynamic_cast<Menu *>(m_level);
-            menu->execute_action(event.x(), event.y());
+            
+            m_done = menu->execute_action(event.x(), event.y());
+
             return true;
         }
     }
