@@ -4,20 +4,20 @@
 #include "menu.h"
 #include "resourcesmanager.h"
 
+Environment *env = nullptr;
+
 Menu::Menu(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
-    Environment *env = Environment::get_instance();
+    env = Environment::get_instance();
     shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
         image);
     m_image = dynamic_cast<Image *>(r.get());
-
 }
 
 void
 Menu::draw_self()
 {
-    Environment *env = Environment::get_instance();
     env->canvas->clear();
     env->canvas->draw(m_image, 0, 0);
 }
@@ -31,14 +31,18 @@ Menu::execute_action(const int x, const int y)
 
     if(start_button.is_clicked(x, y))
     {
+        //TO DO
     }
     else if(settings_button.is_clicked(x, y))
     {
+        shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
+        "res/images/settings.png");
+        m_image = dynamic_cast<Image *>(r.get());
     } 
     else if(exit_button.is_clicked(x, y))
     {
         return true;
     }
-    
+
     return false;
 }
