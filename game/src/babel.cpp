@@ -65,11 +65,11 @@ Babel::load_frontend(const string& id)
 {
     if (id == "classification")
     {
-        return new FrontEnd("game_logo", "res/images/classification.png");
+        return new FrontEnd("tiamat_logo", "res/images/classification.png");
     }
-    else if (id == "game_logo")
+    else if (id == "tiamat_logo")
     {
-        return new FrontEnd("sdl_logo", "res/images/game_logo.png");
+        return new FrontEnd("sdl_logo", "res/images/tiamat_logo.png");
     }
     else if (id == "sdl_logo")
     {
