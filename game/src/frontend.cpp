@@ -34,7 +34,7 @@ FrontEnd::draw_self()
 void
 FrontEnd::update_self(unsigned long elapsed)
 {
-    Uint8 alpha = m_image->alpha;
+    Uint8 alpha = m_image->alpha();
 
     if (not m_start)
     {
@@ -51,10 +51,10 @@ FrontEnd::update_self(unsigned long elapsed)
     }
     else
     {
-        m_image->alpha = SDL_ALPHA_OPAQUE;
+        m_image->set_alpha(SDL_ALPHA_OPAQUE);
     }
 
-    m_image->alpha = alpha;
+    m_image->set_alpha(alpha);
     SDL_SetTextureAlphaMod(m_image->texture(), alpha);
 
     if (elapsed - m_start > m_duration)
