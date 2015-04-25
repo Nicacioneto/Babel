@@ -9,8 +9,6 @@
 #define Y_SETTINGS 313
 #define X_EXIT 119
 #define Y_EXIT 475
-#define X_BACK 49
-#define Y_BACK 480
 #define W_BUTTON 428
 #define H_BUTTON 103
 

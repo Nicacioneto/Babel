@@ -2,6 +2,7 @@
 #include "environment.h"
 #include "frontend.h"
 #include "menu.h"
+#include "settings.h"
 
 Babel::Babel()
     : Game("classification")
@@ -54,6 +55,10 @@ Babel::load_level()
     {
         return load_menu();
     }
+    else if (m_id == "settings")
+    {
+        return load_settings();
+    }
     else
     {
         return load_frontend(m_id);
@@ -85,6 +90,12 @@ Babel::load_menu()
     return new Menu("", "res/images/menu.png");
 }
 
+Level *
+Babel::load_settings()
+{
+    return new Settings("", "res/images/settings.png");
+}
+
 bool
 Babel::onMouseButtonEvent(const MouseButtonEvent& event)
 {
@@ -93,8 +104,15 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
     {
         if (m_id == "menu")
         {
-            Menu * menu = dynamic_cast<Menu *>(m_level);
+            Menu *menu = dynamic_cast<Menu *>(m_level);
             m_done = menu->execute_action(event.x(), event.y());
+            return true;
+        }
+
+        if(m_id == "settings")
+        {
+            Settings *settings = dynamic_cast<Settings *>(m_level);
+            settings->execute_action(event.x(), event.y());
             return true;
         }
     }
