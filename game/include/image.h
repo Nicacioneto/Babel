@@ -29,6 +29,8 @@ public:
 
     SDL_Texture * texture() const;
 
+    Uint8 alpha;
+
 private:
     Image(SDL_Texture *texture, const string& id, int w, int h);
 

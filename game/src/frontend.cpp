@@ -34,10 +34,28 @@ FrontEnd::draw_self()
 void
 FrontEnd::update_self(unsigned long elapsed)
 {
+    Uint8 alpha = m_image->alpha;
+
     if (not m_start)
     {
         m_start = elapsed;
     }
+
+    if (elapsed - m_start > 0 and elapsed - m_start < 400)
+    {
+        alpha < SDL_ALPHA_OPAQUE ? alpha++ : alpha = SDL_ALPHA_OPAQUE;
+    }
+    else if (elapsed - m_start > (m_duration - 400) and elapsed - m_start < m_duration)
+    {
+        alpha > SDL_ALPHA_TRANSPARENT ? alpha-- : alpha = SDL_ALPHA_TRANSPARENT;
+    }
+    else
+    {
+        m_image->alpha = SDL_ALPHA_OPAQUE;
+    }
+
+    m_image->alpha = alpha;
+    SDL_SetTextureAlphaMod(m_image->texture(), alpha);
 
     if (elapsed - m_start > m_duration)
     {
