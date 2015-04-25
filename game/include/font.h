@@ -17,7 +17,7 @@ public:
     void load_font(string path, unsigned int font_size) throw (Exception);
     void close_font();
     
-    SDL_Texture* message()const;
+    SDL_Texture* message() const;
     void make_message(SDL_Renderer * renderer, string message, Color color) throw (Exception);
 
 protected:

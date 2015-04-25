@@ -6,7 +6,7 @@
 #include "mousebuttonevent.h"
 
 
-class Babel : public Game, public MouseButtonEventListener  
+class Babel : public Game, public MouseButtonEventListener
 {
 public:
     Babel();

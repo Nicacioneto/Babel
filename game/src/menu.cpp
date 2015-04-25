@@ -29,17 +29,17 @@ Menu::execute_action(const int x, const int y)
     Button settings_button(X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON);
     Button exit_button(X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON);
 
-    if(start_button.is_clicked(x, y))
+    if (start_button.is_clicked(x, y))
     {
         //TO DO
     }
-    else if(settings_button.is_clicked(x, y))
+    else if (settings_button.is_clicked(x, y))
     {
         shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
         "res/images/settings.png");
         m_image = dynamic_cast<Image *>(r.get());
-    } 
-    else if(exit_button.is_clicked(x, y))
+    }
+    else if (exit_button.is_clicked(x, y))
     {
         return true;
     }

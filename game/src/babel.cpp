@@ -50,7 +50,7 @@ Babel::run()
 Level *
 Babel::load_level()
 {
-    if(m_id == "menu")
+    if (m_id == "menu")
     {
         return load_menu();
     }
@@ -85,18 +85,16 @@ Babel::load_menu()
     return new Menu("", "res/images/menu.png");
 }
 
-bool 
+bool
 Babel::onMouseButtonEvent(const MouseButtonEvent& event)
 {
-    if(event.action() == MouseButtonEvent::UP and
+    if (event.action() == MouseButtonEvent::UP and
         event.button() == MouseButtonEvent::LEFT)
     {
-        if(m_id == "menu")
+        if (m_id == "menu")
         {
             Menu * menu = dynamic_cast<Menu *>(m_level);
-            
             m_done = menu->execute_action(event.x(), event.y());
-
             return true;
         }
     }
