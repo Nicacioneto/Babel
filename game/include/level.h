@@ -26,7 +26,7 @@ public:
 protected:
     string m_next;
     bool m_done;
-    Environment * m_env;
+    Environment * env;
 };
 
 #endif

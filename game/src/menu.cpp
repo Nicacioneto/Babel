@@ -7,8 +7,8 @@
 Menu::Menu(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
-    m_env = Environment::get_instance();
-    shared_ptr<Resource> r = m_env->resources_manager->get(Resource::IMAGE,
+    env = Environment::get_instance();
+    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
         image);
     m_image = dynamic_cast<Image *>(r.get());
 }
@@ -16,8 +16,8 @@ Menu::Menu(const string& next, const string& image)
 void
 Menu::draw_self()
 {
-    m_env->canvas->clear();
-    m_env->canvas->draw(m_image, 0, 0);
+    env->canvas->clear();
+    env->canvas->draw(m_image, 0, 0);
 }
 
 bool

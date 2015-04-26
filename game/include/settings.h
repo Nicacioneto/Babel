@@ -13,6 +13,9 @@
 #define Y_DOWN_RESOLUTION 187
 #define W_RESOLUTION_BUTTON 21
 #define H_RESOLUTION_BUTTON 13
+#define MAX_RESOLUTION 1310
+#define MIN_RESOLUTION 625
+#define SCALE 1.28
 
 class Image;
 
