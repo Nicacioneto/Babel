@@ -27,8 +27,19 @@ public:
 
 private:
     Image *m_image;
+	int m_x_back = 49;
+	int m_y_back = 480;
+	int m_w_back_button = 428;
+	int m_h_back_button = 103;
+	int m_x_up_resolution = 449;
+	int m_y_up_resolution = 169;
+	int m_x_down_resolution = 449;
+	int m_y_down_resolution = 187;
+	int m_w_resolution_button = 21;
+	int m_h_resolution_button = 13;
 
     void draw_self();
+    void update_coodirnates_buttons();
 
 };
 
