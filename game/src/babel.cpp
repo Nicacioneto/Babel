@@ -5,7 +5,7 @@
 #include "settings.h"
 
 Babel::Babel()
-    : Game("classification")
+    : Game("tiamat_logo")
 {
 }
 
@@ -68,17 +68,17 @@ Babel::load_level()
 Level *
 Babel::load_frontend(const string& id)
 {
-    if (id == "classification")
-    {
-        return new FrontEnd("tiamat_logo", "res/images/classification.png");
-    }
-    else if (id == "tiamat_logo")
+    if (id == "tiamat_logo")
     {
         return new FrontEnd("sdl_logo", "res/images/tiamat_logo.png");
     }
     else if (id == "sdl_logo")
     {
-        return new FrontEnd("menu", "res/images/sdl_logo.png");
+        return new FrontEnd("classification", "res/images/sdl_logo.png");
+    }
+    else if (id == "classification")
+    {
+        return new FrontEnd("menu", "res/images/classification.png");
     }
 
     return nullptr;
