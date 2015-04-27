@@ -15,8 +15,7 @@ FrontEnd::FrontEnd(const string& next, const string& image,
     : Level("", next), m_image(nullptr), m_start(0), m_duration(duration)
 {
     Environment *env = Environment::get_instance();
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
-        image);
+    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 
     m_x = (env->canvas->w() - m_image->w())/2;

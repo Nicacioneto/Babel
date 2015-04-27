@@ -9,8 +9,7 @@ Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
     env = Environment::get_instance();
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
-        image);
+    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 }
 
@@ -18,11 +17,11 @@ void
 Settings::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image, 0, 0);
+    env->canvas->draw(m_image);
 }
 
-void 
-Settings::update_coodirnates_buttons()
+void
+Settings::update_coordinates_buttons()
 {
     double scale = env->canvas->scale();
     m_x_back = scale * X_BACK;
@@ -40,11 +39,13 @@ Settings::update_coodirnates_buttons()
 bool
 Settings::execute_action(const int x, const int y)
 {
-    update_coodirnates_buttons();
+    update_coordinates_buttons();
     
     Button back_button(m_x_back, m_y_back, m_w_back_button, m_h_back_button);
-    Button up_resolution_button(m_x_up_resolution, m_y_up_resolution, m_w_resolution_button, m_h_resolution_button);
-    Button down_resolution_button(m_x_down_resolution, m_y_down_resolution, m_w_resolution_button, m_h_resolution_button);
+    Button up_resolution_button(m_x_up_resolution, m_y_up_resolution,
+        m_w_resolution_button, m_h_resolution_button);
+    Button down_resolution_button(m_x_down_resolution, m_y_down_resolution,
+        m_w_resolution_button, m_h_resolution_button);
 
     if (back_button.is_clicked(x, y))
     {
@@ -57,10 +58,10 @@ Settings::execute_action(const int x, const int y)
         w = env->video->resolution().first;
         h = env->video->resolution().second;
         
-        if(w < MAX_RESOLUTION)
+        if (w < MAX_RESOLUTION)
         {
             w *= SCALE;
-            h *= SCALE;   
+            h *= SCALE;
             env->video->set_resolution(w, h);
             env->canvas->set_scale(SCALE);
         }
@@ -72,7 +73,7 @@ Settings::execute_action(const int x, const int y)
         w = env->video->resolution().first;
         h = env->video->resolution().second;
         
-        if(w > MIN_RESOLUTION)
+        if (w > MIN_RESOLUTION)
         {
             w /= SCALE;
             h /= SCALE;

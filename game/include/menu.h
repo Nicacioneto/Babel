@@ -23,18 +23,17 @@ public:
 private:
     Image *m_image;
 
-	int m_x_start = 119;
-	int m_y_start = 154;
-	int m_x_settings = 119;
-	int m_y_settings = 313;
-	int m_x_exit = 119;
-	int m_y_exit = 475;
-	int m_w_button = 428;
-	int m_h_button = 103;
+    int m_x_start = X_START;
+    int m_y_start = Y_START;
+    int m_x_settings = X_SETTINGS;
+    int m_y_settings = X_SETTINGS;
+    int m_x_exit = X_EXIT;
+    int m_y_exit = Y_EXIT;
+    int m_w_button = W_BUTTON;
+    int m_h_button = H_BUTTON;
 
     void draw_self();
-    void update_coodirnates_buttons();
-
+    void update_coordinates_buttons();
 };
 
 #endif

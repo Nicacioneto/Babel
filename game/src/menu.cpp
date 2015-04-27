@@ -8,8 +8,7 @@ Menu::Menu(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
     env = Environment::get_instance();
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE,
-        image);
+    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 }
 
@@ -17,11 +16,11 @@ void
 Menu::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image, 0, 0);
+    env->canvas->draw(m_image);
 }
 
-void 
-Menu::update_coodirnates_buttons()
+void
+Menu::update_coordinates_buttons()
 {
     double scale = env->canvas->scale();
 
@@ -38,7 +37,7 @@ Menu::update_coodirnates_buttons()
 bool
 Menu::execute_action(const int x, const int y)
 {
-    update_coodirnates_buttons();
+    update_coordinates_buttons();
 
     Button start_button(m_x_start, m_y_start, m_w_button, m_h_button);
     Button settings_button(m_x_settings, m_y_settings, m_w_button, m_h_button);
@@ -46,7 +45,7 @@ Menu::execute_action(const int x, const int y)
 
     if (start_button.is_clicked(x, y))
     {
-        //TO DO
+        // TO DO
     }
     else if (settings_button.is_clicked(x, y))
     {

@@ -109,7 +109,7 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
             return true;
         }
 
-        if(m_id == "settings")
+        if (m_id == "settings")
         {
             Settings *settings = dynamic_cast<Settings *>(m_level);
             settings->execute_action(event.x(), event.y());
