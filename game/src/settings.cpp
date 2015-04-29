@@ -1,9 +1,8 @@
 #include "button.h"
 #include "environment.h"
 #include "image.h"
-#include "settings.h"
 #include "resourcesmanager.h"
-
+#include "settings.h"
 
 Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
@@ -11,6 +10,8 @@ Settings::Settings(const string& next, const string& image)
     env = Environment::get_instance();
     shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
+
+    change_resolution();
 }
 
 void
@@ -18,6 +19,9 @@ Settings::draw_self()
 {
     env->canvas->clear();
     env->canvas->draw(m_image);
+
+    double scale = env->canvas->scale();
+    env->canvas->draw(m_resolution, scale*215, scale*170);
 }
 
 void
@@ -82,5 +86,17 @@ Settings::execute_action(const int x, const int y)
         }
     }
 
+    change_resolution();
+
     return false;
+}
+
+void 
+Settings::change_resolution()
+{
+    int w = env->video->resolution().first;
+    string image = "res/images/size_" + std::to_string(w) + ".png";
+
+    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
+    m_resolution = dynamic_cast<Image *>(r.get());
 }

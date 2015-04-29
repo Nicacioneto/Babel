@@ -87,13 +87,13 @@ Babel::load_frontend(const string& id)
 Level *
 Babel::load_menu()
 {
-    return new Menu("", "res/images/menu.png");
+    return new Menu();
 }
 
 Level *
 Babel::load_settings()
 {
-    return new Settings("", "res/images/settings.png");
+    return new Settings();
 }
 
 bool

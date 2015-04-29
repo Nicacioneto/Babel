@@ -14,19 +14,20 @@
 #define W_RESOLUTION_BUTTON 21
 #define H_RESOLUTION_BUTTON 13
 #define MAX_RESOLUTION 1310
-#define MIN_RESOLUTION 625
-#define SCALE 1.28
+#define MIN_RESOLUTION 800
+#define SCALE 1.28 // Scale to keep display standart
 
 class Image;
 
 class Settings : public Level
 {
 public:
-    Settings(const string& next, const string& image);
+    Settings(const string& next = "", const string& image = "res/images/settings.png");
     bool execute_action(const int x, const int y);
 
 private:
     Image *m_image;
+    Image *m_resolution;
     int m_x_back = X_BACK;
     int m_y_back = Y_BACK;
     int m_w_back_button = W_BACK_BUTTON;
@@ -40,6 +41,7 @@ private:
 
     void draw_self();
     void update_coordinates_buttons();
+    void change_resolution();
 };
 
 #endif
