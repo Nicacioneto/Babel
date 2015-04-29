@@ -31,6 +31,8 @@
 \usepackage{mathpazo} % Use the Palatino font
 \usepackage[T1]{fontenc} % Required for accented characters
 \usepackage{wallpaper}
+\usepackage[font={color=white,bf},figurename=Fig.,labelfont={it}]{caption}
+\usepackage{lipsum, xcolor, etoolbox}
 
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
@@ -46,8 +48,13 @@
 
 \end{center}
 }
+\patchcmd{\ps@plain}{\thepage}{\textcolor{white}{\thepage}}{}{}
 
+\makeatother
 \begin{document}
+\ThisTileWallPaper{\paperwidth}{\paperheight}{res/wallpaper_header.jpg}
+\color{white}
+\pagestyle{plain}
 
 \begin{titlepage}
  \vfill
@@ -73,8 +80,8 @@
 %	DOC BODY
 %----------------------------------------------------------------------------------------
 
-\LRCornerWallPaper{0.5}{res/soldier.png}
-
+\TileWallPaper{\paperwidth}{\paperheight}{res/wallpaper_body.jpg}
+\color{white}
 \section*{Apresentação}
 
 Babel é um jogo \textit{Sci-Fi} do tipo \textit{Dungeon Crawler's} RPG com mecânicas de manejamento de recursos.
@@ -165,56 +172,23 @@ Com relação a exploração horizontal, na superfície do mundo, o jogador irá
 \begin{itemize}
 \item \textbf{Cubase}: Ferramenta avançada utilizada para criar músicas, com ela é possível compor, gravar, editar e mixar áudio e arquivos MIDI. Essa ferramenta suporta surround 5.1
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/cubase-Logo.png}
-\caption{Logo do Cubase}
-\label{Cubase}
-\end{figure}
-
 \item \textbf{Audacity}: Ferramenta livre que possibilita a importação, exportação, edição e gravação de diversos formatos de áudio.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/audacity.jpg}
-\caption{Logo do Audacity}
-\label{Audacity}
-\end{figure}
 
 \item \textbf{Adobe Illustrator}: Ferramenta para ilustração gráfica e criação vetorial.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/adobe_illustrator.png}
-\caption{Logo do Adobe Illustrator}
-\label{Adobe Illustrator}
-\end{figure}
-
 \item \textbf{Adobe Photoshop}: Ferramenta profissional de edição de imagens, com ela é possível fazer recortes de elementos, aplicar filtros e máscaras, etc.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/Photoshop.png}
-\caption{Logo do Adobe Photoshop}
-\label{Adobe Photoshop}
-\end{figure}
 
 \item \textbf{SDL2}: É uma biblioteca livre multiplataforma para desenvolvimento de jogos e aplicações multimídia.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/Sdl-logo.png}
-\caption{Logo do SDL2}
-\label{SDL2}
-\end{figure}
-
 \item \textbf{Sublime text}: Editor de texto desenvolvido em C++.
 
+\newpage
+
 \begin{figure}[!htp]
 \centering
-\includegraphics[scale=0.3]{res/Sublime_Text_Logo.png}
-\caption{Logo do Sublime text}
-\label{Sublime text}
+\includegraphics[scale=0.6]{res/logos.jpg}
+\caption{Logos}
+\label{Logos}
 \end{figure}
 
 \end{itemize}
