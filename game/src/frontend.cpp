@@ -14,7 +14,9 @@ FrontEnd::FrontEnd(const string& next, const string& image,
     unsigned long duration)
     : Level("", next), m_image(nullptr), m_start(0), m_duration(duration)
 {
-    Environment *env = Environment::get_instance();
+    env = Environment::get_instance();
+    env->events_manager->register_keyboard_event_listener(this);
+
     shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 
@@ -25,7 +27,7 @@ FrontEnd::FrontEnd(const string& next, const string& image,
 void
 FrontEnd::draw_self()
 {
-    Environment *env = Environment::get_instance();
+    env = Environment::get_instance();
     env->canvas->clear();
     env->canvas->draw(m_image, m_x, m_y);
 }
@@ -60,4 +62,20 @@ FrontEnd::update_self(unsigned long elapsed)
     {
         m_done = true;
     }
+}
+
+bool
+FrontEnd::onKeyboardEvent(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED and event.key() == KeyboardEvent::SPACE)
+    {
+        m_done = true;
+        m_next = "menu";
+
+        env->events_manager->unregister_keyboard_event_listener(this);
+
+        return true;
+    }
+
+    return false;
 }

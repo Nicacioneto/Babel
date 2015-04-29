@@ -1,6 +1,6 @@
 #include "button.h"
-#include "rect.h"
 #include "image.h"
+#include "rect.h"
 #include "resourcesmanager.h"
 #include "settings.h"
 

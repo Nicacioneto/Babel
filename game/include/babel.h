@@ -5,7 +5,6 @@
 #include "mousebuttoneventlistener.h"
 #include "mousebuttonevent.h"
 
-
 class Babel : public Game, public MouseButtonEventListener
 {
 public:
@@ -19,6 +18,7 @@ private:
     Level * load_menu();
     Level * load_settings();
     Level * load_level();
+
     bool onMouseButtonEvent(const MouseButtonEvent& event);
 };
 
