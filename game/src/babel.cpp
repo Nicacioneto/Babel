@@ -59,10 +59,8 @@ Babel::load_level()
     {
         return load_settings();
     }
-    else
-    {
-        return load_frontend(m_id);
-    }
+    
+    return load_frontend(m_id);
 }
 
 Level *
@@ -116,5 +114,6 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
             return true;
         }
     }
+
     return false;
 }
