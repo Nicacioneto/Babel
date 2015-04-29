@@ -30,6 +30,14 @@
 
 \usepackage{mathpazo} % Use the Palatino font
 \usepackage[T1]{fontenc} % Required for accented characters
+
+\usepackage{wallpaper}
+\usepackage[font={color=white,bf},figurename=Fig.,labelfont={it}]{caption}
+\usepackage{lipsum, xcolor, etoolbox, footmisc, bigfoot}
+
+\usepackage{tabu}
+
+
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
 \makeatletter
@@ -45,8 +53,16 @@
 \end{center}
 }
 
+\patchcmd{\ps@plain}{\thepage}{\textcolor{white}{\thepage}}{}{}
+\makeatother
+
 \begin{document}
 
+\ThisTileWallPaper{\paperwidth}{\paperheight}{res/wallpaper_header.jpg}
+\color{white}
+\pagestyle{plain}
+\def\footnotelayout{\color{white}}
+\renewcommand\thefootnote{\textcolor{white}{\arabic{footnote}}}
 \begin{titlepage}
  \vfill
   \begin{center}
@@ -78,19 +94,25 @@
 %   DOC BODY
 %----------------------------------------------------------------------------------------
 
+\TileWallPaper{\paperwidth}{\paperheight}{res/wallpaper_body.jpg}
+\color{white}
+
 \section{Tabela de Revisão}
 
 
 \begin{table}[h]
-\begin{tabular}{|l|l|p{60mm}|l|}
 
-\hline
+  \taburulecolor{white}
+  \color{white}
+\begin{tabu}{|l|l|p{60mm}|l|}
+
+\hline 
 \textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                & \textbf{Autor}    \\ \hline
 0.1                 & 14/04/2015        & Versão inicial                                    & Álex Mesquita     \\ \hline
 0.2                 & 15/04/2015        & Requisitos Tecnológicos                           & Álex Mesquita     \\ \hline
 0.3                 & 15/04/2015        & Revisão ortográfica                               &                   \\ \hline
 0.4                 & 25/04/2015        & Front End                                         & Álex Mesquita     \\ \hline
-\end{tabular}
+\end{tabu}
 \end{table}
 
 \newpage
@@ -167,123 +189,35 @@
 
 \item \textbf{Cubase}: Ferramenta avançada utilizada para tratamento de músicas e efeitos sonoros. Com ela é possível compor, gravar, editar e mixar áudio e arquivos MIDI. Essa ferramenta suporta surround 5.1.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/cubase-Logo.png}
-\caption{Logo do Cubase}
-\label{Cubase}
-\end{figure}
-
-\newpage
 \item \textbf{Audacity}: Ferramenta livre que possibilita a importação, exportação, edição e gravação de diversos formatos de áudio.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/audacity.jpg}
-\caption{Logo do Audacity}
-\label{Audacity}
-\end{figure}
 
 \item \textbf{Adobe Illustrator}: Ferramenta para ilustração gráfica e criação vetorial.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/adobe_illustrator.png}
-\caption{Logo do Adobe Illustrator}
-\label{Adobe Illustrator}
-\end{figure}
-
 \item \textbf{Adobe Photoshop}: Ferramenta profissional de edição de imagens, com ela é possível fazer recortes de elementos, aplicar filtros, máscaras, etc.
-
-\newpage
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/Photoshop.png}
-\caption{Logo do Adobe Photoshop}
-\label{Adobe Photoshop}
-\end{figure}
 
 \item \textbf{SDL2}: É uma biblioteca livre multiplataforma para desenvolvimento de jogos e aplicações multimídia.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/Sdl-logo.png}
-\caption{Logo da SDL2}
-\label{SDL2}
-\end{figure}
-
 \item \textbf{Sublime Text}: Editor de texto desenvolvido em C++.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/Sublime_Text_Logo.png}
-\caption{Logo do Sublime Text}
-\label{Sublime text}
-\end{figure}
-
-\newpage
 
 \item \textbf{C++}: É uma linguagem de programação que predomina na indústria de jogos, por possuir alto desempenho.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.2]{res/cpp.png}
-\caption{C++}
-\label{C++}
-\end{figure}
-
 \item \textbf{G++}: É o compilador \textit{GNU} para sistemas Unix e Linux para linguagem C++. O compilador permite transformar o código-fonte em arquivos binários executáveis.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.4]{res/GCC.png}
-\caption{G++}
-\label{Logo do G++}
-\end{figure}
 
 \item \textbf{Lua}: É uma linguagem de script rápida e leve projetada para estender aplicações. Atualmente é a linguagem de script mais usada no contexto de jogos.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.2]{res/lua.png}
-\caption{Logo do Lua}
-\label{Logo do Lua}
-\end{figure}
-
 \item \textbf{GDB}: É o depurador do Linux (\textit{GNU Debugger}) em modo de texto, o depurador é um programa utilizado para encontrar os defeitos de um outro programa.
 
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.3]{res/GDB.png}
-\caption{Logo do GDB}
-\label{Logo do GDB}
-\end{figure}
-
 \item \textbf{Git}: É um sistema de controle de versão distribuído, o Git é o sistema de controle de versão mais utilizada atualmente para códigos-fonte.
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.1]{res/git.png}
-\caption{Logo do git}
-\label{Logo do git}
-\end{figure}
 
 \item \textbf{Ubuntu}: Sistema operacional gratuito baseado em Linux.
-
-\begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.2]{res/ubuntu.png}
-\caption{Logo do Ubuntu}
-\label{Logo do Ubuntu}
-\end{figure}
 
 \item \textbf{Windows 8}: Sistema operacional comercializado pela Microsoft.
 
 \begin{figure}[!htp]
 \centering
-\includegraphics[scale=0.05]{res/windows.png}
-\caption{Logo do Windows}
-\label{Logo do Windows}
+\includegraphics[scale=0.3]{res/logos.png}
+\caption{Logos}
+\label{Logos}
 \end{figure}
 
 \end{itemize}
