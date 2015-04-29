@@ -17,7 +17,7 @@ class Image;
 class Menu : public Level
 {
 public:
-    Menu(const string& next, const string& image);
+    Menu(const string& next = "", const string& image = "res/images/menu.png");
     bool execute_action(const int x, const int y);
 
 private:

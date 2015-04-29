@@ -59,10 +59,8 @@ Babel::load_level()
     {
         return load_settings();
     }
-    else
-    {
-        return load_frontend(m_id);
-    }
+    
+    return load_frontend(m_id);
 }
 
 Level *
@@ -87,13 +85,13 @@ Babel::load_frontend(const string& id)
 Level *
 Babel::load_menu()
 {
-    return new Menu("", "res/images/menu.png");
+    return new Menu();
 }
 
 Level *
 Babel::load_settings()
 {
-    return new Settings("", "res/images/settings.png");
+    return new Settings();
 }
 
 bool
@@ -116,5 +114,6 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
             return true;
         }
     }
+
     return false;
 }
