@@ -97,7 +97,7 @@ Babel::load_settings()
 bool
 Babel::onMouseButtonEvent(const MouseButtonEvent& event)
 {
-    if (event.action() == MouseButtonEvent::UP and
+    if (event.state() == MouseButtonEvent::RELEASED and
         event.button() == MouseButtonEvent::LEFT)
     {
         if (m_id == "menu")
