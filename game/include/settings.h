@@ -28,6 +28,7 @@ public:
 private:
     Image *m_image;
     Image *m_resolution;
+    int m_resolution_position = 150;
     int m_x_back = X_BACK;
     int m_y_back = Y_BACK;
     int m_w_back_button = W_BACK_BUTTON;
@@ -41,7 +42,6 @@ private:
 
     void draw_self();
     void update_coordinates_buttons();
-    void change_resolution();
 };
 
 #endif

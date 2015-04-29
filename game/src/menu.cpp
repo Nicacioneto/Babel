@@ -1,5 +1,4 @@
 #include "button.h"
-#include "environment.h"
 #include "image.h"
 #include "menu.h"
 #include "resourcesmanager.h"

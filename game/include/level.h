@@ -9,7 +9,7 @@
 #define LEVEL_H
 
 #include "object.h"
- #include "environment.h"
+#include "environment.h"
 
 #include <string>
 

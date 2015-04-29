@@ -1,5 +1,5 @@
 #include "button.h"
-#include "environment.h"
+#include "rect.h"
 #include "image.h"
 #include "resourcesmanager.h"
 #include "settings.h"
@@ -11,7 +11,9 @@ Settings::Settings(const string& next, const string& image)
     shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 
-    change_resolution();
+    r = env->resources_manager->get(Resource::IMAGE, 
+        "res/images/resolutions.png");
+    m_resolution = dynamic_cast<Image *>(r.get());
 }
 
 void
@@ -21,7 +23,8 @@ Settings::draw_self()
     env->canvas->draw(m_image);
 
     double scale = env->canvas->scale();
-    env->canvas->draw(m_resolution, scale*215, scale*170);
+    Rect rect(m_resolution_position, 0, 150, m_resolution->h());
+    env->canvas->draw(m_resolution, rect, scale*215, scale*170);
 }
 
 void
@@ -64,6 +67,7 @@ Settings::execute_action(const int x, const int y)
         
         if (w < MAX_RESOLUTION)
         {
+            m_resolution_position += 150;
             w *= SCALE;
             h *= SCALE;
             env->video->set_resolution(w, h);
@@ -79,6 +83,7 @@ Settings::execute_action(const int x, const int y)
         
         if (w > MIN_RESOLUTION)
         {
+            m_resolution_position -= 150;
             w /= SCALE;
             h /= SCALE;
             env->video->set_resolution(w, h);
@@ -86,17 +91,5 @@ Settings::execute_action(const int x, const int y)
         }
     }
 
-    change_resolution();
-
     return false;
-}
-
-void 
-Settings::change_resolution()
-{
-    int w = env->video->resolution().first;
-    string image = "res/images/size_" + std::to_string(w) + ".png";
-
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
-    m_resolution = dynamic_cast<Image *>(r.get());
 }
