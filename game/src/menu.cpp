@@ -27,6 +27,8 @@ Menu::update_coordinates_buttons()
     m_y_start = scale * Y_START;
     m_x_settings = scale * X_SETTINGS;
     m_y_settings = scale * Y_SETTINGS;
+    m_x_credits = scale * X_CREDITS;
+    m_y_credits = scale * Y_CREDITS;
     m_x_exit = scale * X_EXIT;
     m_y_exit = scale * Y_EXIT;
     m_w_button = scale * W_BUTTON;

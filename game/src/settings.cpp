@@ -11,7 +11,7 @@ Settings::Settings(const string& next, const string& image)
     shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
     m_image = dynamic_cast<Image *>(r.get());
 
-    r = env->resources_manager->get(Resource::IMAGE, 
+    r = env->resources_manager->get(Resource::IMAGE,
         "res/images/resolutions.png");
     m_resolution = dynamic_cast<Image *>(r.get());
 }
