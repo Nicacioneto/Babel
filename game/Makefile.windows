@@ -6,13 +6,14 @@ OBJ_DIR = obj
 LIB_DIR = lib
 BIN_DIR = bin
 
-CC = g++
+CC = x86_64-w64-mingw32-g++
 AR = ar
+SDL_MINGW_ROOT = /usr/x86_64-w64-mingw32
 
 ARFLAGS = rcs
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
-INCLUDES = -Iinclude `sdl2-config --cflags`
-LIBS = lib/ijengine.a `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
+INCLUDES = -Iinclude `$(SDL_MINGW_ROOT)/bin/sdl2-config --cflags`
+LIBS = lib/ijengine_windows.a `$(SDL_MINGW_ROOT)/bin/sdl2-config --libs` -lSDL2 -lSDL2_image -lSDL2_ttf -lmingw32
 
 TARGET = $(LIB_DIR)/$(NAME)
 
@@ -24,24 +25,22 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 
 .PHONY: clean depend
 
-all: 
-	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
-	@make $(TARGET)
-	@make $(GAME)
+all: $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
-$(TARGET): $(OBJ)
-	$(AR) $(ARFLAGS) $@ $(OBJ)
-
-$(GAME): $(GAME_MAIN) $(TARGET)
-	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ $(LIBS)
+$(GAME): $(OBJ)
+	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(OBJ) -o $@.exe $(LIBS)
 
 clean:
+	@echo Cleaning...
 	@find . -name *.o -exec rm {} \;
 	@find . -name *.d -exec rm {} \;
+	@find . -name *.dll -exec rm {} \;
 	@rm -rf *~ *.o bin out.txt obj lib/babel.a
+	@rm -f *.dll
+	@rm -f LICENSES.txt
 
 dist-clean: clean
 	@find . -name *.a -exec rm {} \;
