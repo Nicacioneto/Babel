@@ -24,26 +24,32 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 
 .PHONY: clean depend
 
-all: 
+all:
 	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@make $(TARGET)
 	@make $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
+	@echo Building $^ ...
+	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(TARGET): $(OBJ)
-	$(AR) $(ARFLAGS) $@ $(OBJ)
+	@echo Creating objects...
+	@$(AR) $(ARFLAGS) $@ $(OBJ)
 
 $(GAME): $(GAME_MAIN) $(TARGET)
-	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ $(LIBS)
+	@echo Builting executable...
+	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(TARGET) -o $@ $(LIBS)
+	@echo --- Done
 
 clean:
+	@echo Cleaning...
 	@find . -name *.o -exec rm {} \;
 	@find . -name *.d -exec rm {} \;
 	@rm -rf *~ *.o bin out.txt obj lib/babel.a
 
 dist-clean: clean
+	@echo Cleaning engine...
 	@find . -name *.a -exec rm {} \;
 
 -include $(OBJ:.o=.d)

@@ -28,10 +28,14 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 all: $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
+	@echo Building $^ ...
+	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
+	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(OBJ)
-	$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(OBJ) -o $@.exe $(LIBS)
+	@echo Builting executable...
+	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) $(OBJ) -o $@.exe $(LIBS)
+	@echo --- Done
 
 clean:
 	@echo Cleaning...
