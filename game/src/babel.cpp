@@ -1,4 +1,5 @@
 #include "babel.h"
+#include "credits.h"
 #include "environment.h"
 #include "frontend.h"
 #include "menu.h"
@@ -59,6 +60,10 @@ Babel::load_level()
     {
         return load_settings();
     }
+    else if (m_id == "credits")
+    {
+        return load_credits();
+    }
     
     return load_frontend(m_id);
 }
@@ -94,6 +99,12 @@ Babel::load_settings()
     return new Settings();
 }
 
+Level *
+Babel::load_credits()
+{
+    return new Credits();
+}
+
 bool
 Babel::onMouseButtonEvent(const MouseButtonEvent& event)
 {
@@ -106,11 +117,16 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
             m_done = menu->execute_action(event.x(), event.y());
             return true;
         }
-
-        if (m_id == "settings")
+        else if (m_id == "settings")
         {
             Settings *settings = dynamic_cast<Settings *>(m_level);
             settings->execute_action(event.x(), event.y());
+            return true;
+        }
+        else if (m_id == "credits")
+        {
+            Credits *credits = dynamic_cast<Credits *>(m_level);
+            credits->execute_action(event.x(), event.y());
             return true;
         }
     }

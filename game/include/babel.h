@@ -17,6 +17,7 @@ private:
     Level * load_frontend(const string& id);
     Level * load_menu();
     Level * load_settings();
+    Level * load_credits();
     Level * load_level();
 
     bool onMouseButtonEvent(const MouseButtonEvent& event);

@@ -42,15 +42,22 @@ Menu::execute_action(const int x, const int y)
 
     Button start_button(m_x_start, m_y_start, m_w_button, m_h_button);
     Button settings_button(m_x_settings, m_y_settings, m_w_button, m_h_button);
+    Button credits_button(m_x_credits, m_y_credits, m_w_button, m_h_button);
     Button exit_button(m_x_exit, m_y_exit, m_w_button, m_h_button);
 
     if (start_button.is_clicked(x, y))
     {
+        m_done = true;
         // TO DO
     }
     else if (settings_button.is_clicked(x, y))
     {
         m_next = "settings";
+        m_done = true;
+    }
+    else if (credits_button.is_clicked(x, y))
+    {
+        m_next = "credits";
         m_done = true;
     }
     else if (exit_button.is_clicked(x, y))
