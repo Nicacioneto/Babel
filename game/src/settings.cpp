@@ -20,6 +20,20 @@ Settings::draw_self()
 {
     env->canvas->clear();
     env->canvas->draw(m_image);
+    int w = env->video->resolution().first;
+
+    if (w <= 900)
+    {
+        m_resolution_position = 0;
+    }
+    else if (w <= 1200)
+    {
+        m_resolution_position = 150;
+    }
+    else if (w > 1200)
+    {
+        m_resolution_position = 300;
+    }
 
     double scale = env->canvas->scale();
     Rect rect(m_resolution_position, 0, 150, m_resolution->h());
