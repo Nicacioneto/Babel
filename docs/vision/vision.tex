@@ -34,6 +34,11 @@
 \usepackage[font={color=white,bf},figurename=Fig.,labelfont={it}]{caption}
 \usepackage{lipsum, xcolor, etoolbox}
 
+\hypersetup{
+    colorlinks=false,
+    pdfborder={0 0 0},
+}
+
 \linespread{1.05} % Change line spacing here, Palatino benefits from a slight increase by default
 
 \makeatletter
@@ -147,14 +152,16 @@ Babel é um jogo \textit{Sci-Fi} do tipo \textit{Dungeon Crawler's} RPG com mec�
 
 \section*{Público Alvo}
 
-\paragraph{}O público alvo será para os maiores de 12 anos. O jogo conterá atos violentos, presença de sangue, exposição de cadáveres, etc.
+\paragraph{}O público alvo será para os maiores de 12 anos. O jogo conterá combates simples sem presença de sangue.
 
 \section*{Plataformas Alvo}
-\begin{itemize}
-\item \textbf{Linux:} O Linux será uma plataforma alvo, pois será neste ambiente onde o jogo deverá ser desenvolvido e por esse sistema operacional possuir um número relativamente baixo de jogos comparado ao Windows aumentando assim as chances de atingirem os seus usuários. 
 
-\item \textbf{Windows:} O Windows será uma plataforma alvo pelo simples fato de este sistema operacional possuir um enorme número de usuários jogadores.
-\end{itemize}
+\begin{figure}[!htp]
+\begin{center}
+\includegraphics[scale=0.19]{res/linux.png} \quad
+\includegraphics[scale=0.07]{res/windows.png} \quad
+\end{center}
+\end{figure}
 
 \section*{Esquema de controle e interface com o usuário}
 Com relação a exploração vertical, dentro da torre, esta será em primeira pessoa, sendo que serão utilizadas as teclas destacadas na figura a seguir:\\
@@ -167,31 +174,22 @@ Com relação a exploração vertical, dentro da torre, esta será em primeira p
 \\Onde a tecla ''w'' irá movimentar o jogador para frente, a tecla ''s'' irá movimentar o jogador para trás, a tecla ''a'' irá rotacionar o jogador $90\,^{\circ}$ para a esquerda e a tecla ''d'' irá rotacionar o jogador $90\,^{\circ}$ para a direita.
 
 Com relação a exploração horizontal, na superfície do mundo, o jogador irá usar o \textit{mouse} para navegar na superfície, utilizando o botão direito para selecionar algum objeto e o botão esquerdo para movimentar algum objeto, atacar inimigos e coletar recursos. 
-\section*{Descrição dos recursos tecnológicos notáveis}
-
-\begin{itemize}
-\item \textbf{Cubase}: Ferramenta avançada utilizada para criar músicas, com ela é possível compor, gravar, editar e mixar áudio e arquivos MIDI. Essa ferramenta suporta surround 5.1
-
-\item \textbf{Audacity}: Ferramenta livre que possibilita a importação, exportação, edição e gravação de diversos formatos de áudio.
-
-\item \textbf{Adobe Illustrator}: Ferramenta para ilustração gráfica e criação vetorial.
-
-\item \textbf{Adobe Photoshop}: Ferramenta profissional de edição de imagens, com ela é possível fazer recortes de elementos, aplicar filtros e máscaras, etc.
-
-\item \textbf{SDL2}: É uma biblioteca livre multiplataforma para desenvolvimento de jogos e aplicações multimídia.
-
-\item \textbf{Sublime text}: Editor de texto desenvolvido em C++.
-
-\newpage
+\section*{Recursos tecnológicos notáveis}
 
 \begin{figure}[!htp]
-\centering
-\includegraphics[scale=0.6]{res/logos.jpg}
-\caption{Logos}
-\label{Logos}
+\begin{center}
+  \includegraphics[scale=0.3]{res/cubase-Logo.png} \quad
+  \includegraphics[scale=0.04]{res/audacity.png} \quad
+  \includegraphics[scale=0.3]{res/adobe_illustrator.png} \quad
+  \includegraphics[scale=0.25]{res/Sdl-logo.png} \quad
+  \includegraphics[scale=0.3]{res/Sublime_Text_Logo.png} \quad
+  \includegraphics[scale=0.2]{res/cpp.png} \quad
+  \includegraphics[scale=0.13]{res/git.png} \quad
+  \includegraphics[scale=0.15]{res/lua.png} \quad
+  \includegraphics[scale=0.4]{res/GDB.png} \quad
+\caption{Recursos Tecnológicos} \label{gdimotes}
+\end{center}
 \end{figure}
-
-\end{itemize}
 
 \section*{Informações de contato}
 A equipe \textbf{Tiamat} pode ser contatada pelo seguinte endereço de e-mail: \href{mailto:tiamatbabel@gmail.com}{tiamatbabel@gmail.com}.
