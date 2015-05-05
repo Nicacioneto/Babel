@@ -1,0 +1,9 @@
+B.o.B.
+Game	Marathon 2: Durandal
+Section	Enemies
+Filesize	100.94 KB
+Submitter	CrazyIvan
+Format	PNG (image/png)
+Size	752x684 pixels
+Hits	843
+link	http://www.spriters-resource.com/pc_computer/marathon2/sheet/30668/

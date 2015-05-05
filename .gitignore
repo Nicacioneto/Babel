@@ -57,3 +57,6 @@
 
 # Binaries dir
 bin/
+
+# Temp files
+*~
