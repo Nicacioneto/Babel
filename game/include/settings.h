@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include "level.h"
+#include <vector>
 
 #define X_BACK 49
 #define Y_BACK 480
@@ -39,6 +40,8 @@ private:
     int m_y_down_resolution = Y_DOWN_RESOLUTION;
     int m_w_resolution_button = W_RESOLUTION_BUTTON;
     int m_h_resolution_button = H_RESOLUTION_BUTTON;
+
+    std::vector<int> m_resolutions_size = {800, 1024};
 
     void draw_self();
     void update_coordinates_buttons();

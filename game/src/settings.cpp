@@ -3,6 +3,7 @@
 #include "rect.h"
 #include "resourcesmanager.h"
 #include "settings.h"
+#include <algorithm>
 
 Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
@@ -72,36 +73,33 @@ Settings::execute_action(const int x, const int y)
         m_next = "menu";
         m_done = true;
     }
-    else if (up_resolution_button.is_clicked(x, y))
+    else if (up_resolution_button.is_clicked(x, y) or down_resolution_button.is_clicked(x, y))
     {
-        int w, h;
-        w = env->video->resolution().first;
-        h = env->video->resolution().second;
-        
-        if (w < MAX_RESOLUTION)
+        int w = env->canvas->w();
+        int h;
+        int position = std::find(m_resolutions_size.begin(), m_resolutions_size.end(), w) - 
+            m_resolutions_size.begin();
+
+        if (up_resolution_button.is_clicked(x, y))
         {
-            m_resolution_position += 150;
-            w *= SCALE;
-            h *= SCALE;
-            env->video->set_resolution(w, h);
-            env->canvas->set_scale(SCALE);
+            if (position + 1 < (int)m_resolutions_size.size())
+            {
+                position++;
+                env->canvas->set_scale(SCALE);
+            }
+        }
+        else
+        {
+            if (position - 1 >= 0)
+            {
+                position--;
+                env->canvas->set_scale(1/SCALE);
+            }
         }
 
-    }
-    else if (down_resolution_button.is_clicked(x, y))
-    {
-        int w, h;
-        w = env->video->resolution().first;
-        h = env->video->resolution().second;
-        
-        if (w > MIN_RESOLUTION)
-        {
-            m_resolution_position -= 150;
-            w /= SCALE;
-            h /= SCALE;
-            env->video->set_resolution(w, h);
-            env->canvas->set_scale(1/SCALE);
-        }
+        w = m_resolutions_size[position];
+        h = w * 3 / 4;
+        env->video->set_resolution(w, h);
     }
 
     return false;
