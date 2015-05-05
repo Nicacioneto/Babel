@@ -1,4 +1,5 @@
 #include "babel.h"
+#include "credits.h"
 #include "environment.h"
 #include "frontend.h"
 #include "menu.h"
@@ -12,7 +13,7 @@ Babel::Babel()
 void
 Babel::init(const string& title, int w, int h) throw (Exception)
 {
-    Environment *env = Environment::get_instance();
+    env = Environment::get_instance();
 
     env->video->set_resolution(w, h);
     env->video->set_window_name(title);
@@ -59,10 +60,12 @@ Babel::load_level()
     {
         return load_settings();
     }
-    else
+    else if (m_id == "credits")
     {
-        return load_frontend(m_id);
+        return load_credits();
     }
+    
+    return load_frontend(m_id);
 }
 
 Level *
@@ -87,19 +90,25 @@ Babel::load_frontend(const string& id)
 Level *
 Babel::load_menu()
 {
-    return new Menu("", "res/images/menu.png");
+    return new Menu();
 }
 
 Level *
 Babel::load_settings()
 {
-    return new Settings("", "res/images/settings.png");
+    return new Settings();
+}
+
+Level *
+Babel::load_credits()
+{
+    return new Credits();
 }
 
 bool
 Babel::onMouseButtonEvent(const MouseButtonEvent& event)
 {
-    if (event.action() == MouseButtonEvent::UP and
+    if (event.state() == MouseButtonEvent::RELEASED and
         event.button() == MouseButtonEvent::LEFT)
     {
         if (m_id == "menu")
@@ -108,13 +117,19 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
             m_done = menu->execute_action(event.x(), event.y());
             return true;
         }
-
-        if(m_id == "settings")
+        else if (m_id == "settings")
         {
             Settings *settings = dynamic_cast<Settings *>(m_level);
             settings->execute_action(event.x(), event.y());
             return true;
         }
+        else if (m_id == "credits")
+        {
+            Credits *credits = dynamic_cast<Credits *>(m_level);
+            credits->execute_action(event.x(), event.y());
+            return true;
+        }
     }
+
     return false;
 }

@@ -9,10 +9,12 @@
 #define FRONT_END_H
 
 #include "level.h"
+#include "keyboardevent.h"
+#include "keyboardeventlistener.h"
 
 class Image;
 
-class FrontEnd : public Level
+class FrontEnd : public Level, public KeyboardEventListener
 {
 public:
     FrontEnd(const string& next, const string& image,
@@ -26,6 +28,7 @@ private:
 
     void update_self(unsigned long elapsed);
     void draw_self();
+    bool onKeyboardEvent(const KeyboardEvent& event);
 };
 
 #endif

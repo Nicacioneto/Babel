@@ -12,13 +12,13 @@ using std::string;
 class Font_Manager
 {
 public:
-    static Font_Manager * Instance();
+    static Font_Manager *Instance();
     static void init() throw (Exception);
     void load_font(string path, unsigned int font_size) throw (Exception);
     void close_font();
-    
-    SDL_Texture* message() const;
-    void make_message(SDL_Renderer * renderer, string message, Color color) throw (Exception);
+
+    SDL_Texture* message()const;
+    void make_message(SDL_Renderer *renderer, string message, Color color) throw (Exception);
 
 protected:
     Font_Manager();
