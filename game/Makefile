@@ -16,11 +16,14 @@ GAME_MAIN = $(SRC_DIR)/*.cpp
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
 OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}} 
 
+TEST = $(BIN_DIR)/test
+
 .PHONY: clean depend
 
 all:
 	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@make $(GAME)
+	@make $(TEST)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $^ ...
@@ -30,6 +33,9 @@ $(GAME): $(GAME_MAIN) $(OBJ)
 	@echo Building executable...
 	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) -o $@ $(LIBS)
 	@echo --- Done
+
+$(TEST): $(SRC_DIR)/test.cpp
+	@$(CC) $(CFLAGS) $< -o $@ -lSDL
 
 clean:
 	@echo Cleaning...
