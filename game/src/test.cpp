@@ -13,6 +13,9 @@ void map_left(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
 void map_right(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
     double ratio);
 
+void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
+    double ratio);
+
 int main()
 {
     SDL_Init(SDL_INIT_VIDEO);
@@ -32,10 +35,13 @@ int main()
     map_center(screen, door, center);
 
     SDL_Rect left { 250, 150, 250, 300 };
-    map_left(screen, door, left, 0.5);
+    map_left(screen, door, left, 0.6);
 
     SDL_Rect right { 550, 150, 250, 300 };
-    map_right(screen, hall, right, 0.5);
+    map_right(screen, door, right, 0.6);
+
+    SDL_Rect up { 0, 0, 800, 150 };
+    map_up(screen, hall, up, 1.7);
 
 /*    SDL_Rect center { 300, 200, 200, 200 }; 
     map_center(screen, door, center);
@@ -210,5 +216,32 @@ void map_right(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
         
         top_y -= ratio;
         bot_y += ratio;
+    }
+}
+
+void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
+    double ratio)
+{
+    double left_x = dest.x;
+    double right_x = dest.x + dest.w - 1;
+
+    for (int j = dest.y; j <= dest.y + dest.h; ++j)
+    {
+        for (int i = left_x; i < right_x; ++i)
+        {
+            // double x = (double) (i - dest.x)/(dest.w);
+            // double y = (double) (j - top_y)/(bot_y - top_y);
+            double x = (double) (i - left_x)/(right_x - left_x);
+            double y = (double) (j - dest.y)/(dest.h);
+
+            int posx = x*img->w;
+            int posy = y*img->h;
+
+            Uint32 color = getpixel(img, posx, posy);
+            putpixel(screen, i, j, color);
+        }
+        
+        left_x += ratio;
+        right_x -= ratio;
     }
 }
