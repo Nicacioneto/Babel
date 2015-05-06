@@ -11,6 +11,7 @@
 #include "level.h"
 #include "keyboardevent.h"
 #include "keyboardeventlistener.h"
+#include <memory>
 
 class Image;
 
@@ -21,7 +22,7 @@ public:
         unsigned long duration = 3000);
 
 private:
-    Image *m_image;
+    shared_ptr<Image> m_image;
     unsigned long m_start;
     unsigned long m_duration;
     int m_x, m_y;

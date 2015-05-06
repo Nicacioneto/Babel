@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include "level.h"
+#include <memory>
 
 #define X_START 119
 #define Y_START 54
@@ -23,7 +24,7 @@ public:
     bool execute_action(const int x, const int y);
 
 private:
-    Image *m_image;
+    shared_ptr<Image> m_image;
 
     int m_x_start = X_START;
     int m_y_start = Y_START;

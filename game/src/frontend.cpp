@@ -17,8 +17,7 @@ FrontEnd::FrontEnd(const string& next, const string& image,
     env = Environment::get_instance();
     env->events_manager->register_keyboard_event_listener(this);
 
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
-    m_image = dynamic_cast<Image *>(r.get());
+    m_image = env->resources_manager->get_image(image);
 
     m_x = (env->canvas->w() - m_image->w())/2;
     m_y = (env->canvas->h() - m_image->h())/2;
@@ -27,9 +26,8 @@ FrontEnd::FrontEnd(const string& next, const string& image,
 void
 FrontEnd::draw_self()
 {
-    env = Environment::get_instance();
     env->canvas->clear();
-    env->canvas->draw(m_image, m_x, m_y);
+    env->canvas->draw(m_image.get(), m_x, m_y);
 }
 
 void

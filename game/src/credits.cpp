@@ -7,15 +7,14 @@ Credits::Credits(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
     env = Environment::get_instance();
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
-    m_image = dynamic_cast<Image *>(r.get());
+    m_image = env->resources_manager->get_image(image);
 }
 
 void
 Credits::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image);
+    env->canvas->draw(m_image.get());
 }
 
 

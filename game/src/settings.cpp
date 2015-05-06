@@ -9,42 +9,37 @@ Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
     env = Environment::get_instance();
-    shared_ptr<Resource> r = env->resources_manager->get(Resource::IMAGE, image);
-    m_image = dynamic_cast<Image *>(r.get());
 
-    r = env->resources_manager->get(Resource::IMAGE, "res/images/resolutions.png");
-    m_resolution = dynamic_cast<Image *>(r.get());
+    m_image = env->resources_manager->get_image(image);
+    m_resolution = env->resources_manager->get_image("res/images/resolutions.png");
 }
 
 void
 Settings::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image);
-    int w = env->video->resolution().first;
+    env->canvas->draw(m_image.get());
+    int w = env->canvas->w();
 
-    if (w <= 900)
+    if (w == 800)
     {
         m_resolution_position = 0;
     }
-    else if (w <= 1200)
+    else if (w == 1024)
     {
         m_resolution_position = 150;
-    }
-    else if (w > 1200)
-    {
-        m_resolution_position = 300;
     }
 
     double scale = env->canvas->scale();
     Rect rect(m_resolution_position, 0, 150, m_resolution->h());
-    env->canvas->draw(m_resolution, rect, scale*215, scale*170);
+    env->canvas->draw(m_resolution.get(), rect, scale*215, scale*170);
 }
 
 void
 Settings::update_coordinates_buttons()
 {
     double scale = env->canvas->scale();
+
     m_x_back = scale * X_BACK;
     m_y_back = scale * Y_BACK;
     m_w_back_button = scale * W_BACK_BUTTON;

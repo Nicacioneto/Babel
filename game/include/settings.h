@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include "level.h"
+#include <memory>
 #include <vector>
 
 #define X_BACK 49
@@ -27,8 +28,8 @@ public:
     bool execute_action(const int x, const int y);
 
 private:
-    Image *m_image;
-    Image *m_resolution;
+    shared_ptr<Image> m_image;
+    shared_ptr<Image> m_resolution;
     int m_resolution_position = 0;
     int m_x_back = X_BACK;
     int m_y_back = Y_BACK;

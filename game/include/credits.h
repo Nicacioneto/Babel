@@ -2,6 +2,7 @@
 #define CREDITS_H
 
 #include "level.h"
+#include <memory>
 
 #define X_BACK_CREDITS 273
 #define Y_BACK_CREDITS 612
@@ -18,7 +19,7 @@ public:
     bool execute_action(const int x, const int y);
 
 private:
-    Image *m_image;
+    shared_ptr<Image> m_image;
 
     int m_x_back = X_BACK_CREDITS;
     int m_y_back = Y_BACK_CREDITS;
