@@ -33,18 +33,26 @@ int main()
     SDL_Surface *hall = SDL_DisplayFormat(img);
     SDL_FreeSurface(img);
 
-    /* 2 paredes */
-    // SDL_Rect center { 250, 150, 300, 300 }; 
-    // map_center(screen, door, center);
+    img = SDL_LoadBMP("res/images/ceiling.bmp");
+    SDL_Surface *ceiling = SDL_DisplayFormat(img);
+    SDL_FreeSurface(img);
 
-    // SDL_Rect left { 250, 150, 250, 300 };
-    // map_left(screen, door, left, 0.6);
+    SDL_Rect up { 0, 65, 800, 55 };
+    map_up(screen, ceiling, up, 2.0);
 
-    // SDL_Rect right { 550, 150, 250, 300 };
-    // map_right(screen, door, right, 0.6);
+    up.x = 110;
+    up.y = 120;
+    up.w = 580;
+    up.h = 55;
 
-    // SDL_Rect up { 0, 0, 800, 150 };
-    // map_up(screen, hall, up, 1.7);
+    map_up(screen, ceiling, up, 2.0);
+
+    up.x = 220;
+    up.y = 175;
+    up.w = 360;
+    up.h = 55;
+
+    map_up(screen, ceiling, up, 2.0);
 
     SDL_Rect center { 330, 230, 140, 140 }; 
     map_center(screen, door, center);
@@ -123,6 +131,22 @@ int main()
             {
                 if (event.key.keysym.sym == SDLK_UP)
                 {
+
+                    up.x = 220 - VELOCITY*passo;
+                    up.y = 175 - VELOCITY*passo*0.5;
+                    up.w = 360 + VELOCITY*passo*2;
+                    map_up(screen, ceiling, up, 2);
+
+                    up.x = 110 - VELOCITY*passo;
+                    up.y = 120 - VELOCITY*passo*0.5;
+                    up.w = 580 + VELOCITY*passo*2;
+                    map_up(screen, ceiling, up, 2);
+                    
+                    up.x = 0 - VELOCITY*passo;
+                    up.y = 65 - VELOCITY*passo*0.5;
+                    up.w = 800 + VELOCITY*passo*2;
+                    map_up(screen, ceiling, up, 2);
+
                     left.x = 330 - VELOCITY*passo;
                     left.y = 230 - VELOCITY*passo*0.5;
                     left.w = 110;
@@ -312,7 +336,7 @@ void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
     double left_x = dest.x;
     double right_x = dest.x + dest.w - 1;
 
-    for (int j = dest.y; j <= dest.y + dest.h; ++j)
+    for (int j = dest.y + dest.h; j > dest.y && j > 65; --j)
     {
         for (int i = left_x; i < right_x; ++i)
         {
@@ -328,7 +352,7 @@ void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
             putpixel(screen, i, j, color);
         }
         
-        left_x += ratio;
-        right_x -= ratio;
+        left_x -= ratio;
+        right_x += ratio;
     }
 }
