@@ -29,16 +29,14 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 $(GAME): $(GAME_MAIN) $(OBJ)
 	@echo Builting executable...
 	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) -o $@ $(LIBS)
-	@echo Done!
+	@echo --- Done
 
 clean:
 	@echo Cleaning...
 	@rm -rf obj/ bin/ *~
-	@echo Done!
 
 dist-clean: clean
-	@echo Cleaning engine...
+	@echo Removing engine...
 	@rm -rf lib/
-	@echo Done!
 
 -include $(OBJ:.o=.d)
