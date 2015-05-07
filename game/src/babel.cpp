@@ -8,21 +8,13 @@
 Babel::Babel()
     : Game("tiamat_logo")
 {
+    env = Environment::get_instance();
+    env->events_manager->register_mouse_button_event_listener(this);
 }
 
-void
-Babel::init(const string& title, int w, int h) throw (Exception)
+Babel::~Babel()
 {
-    env = Environment::get_instance();
-
-    env->video->set_resolution(w, h);
-    env->video->set_window_name(title);
-
-    env->events_manager->register_system_event_listener(this);
-    env->events_manager->register_keyboard_event_listener(this);
-    env->events_manager->register_mouse_button_event_listener(this);
-
-    m_level = load_level();
+    env->events_manager->unregister_mouse_button_event_listener(this);
 }
 
 void
@@ -31,7 +23,6 @@ Babel::run()
     while (m_level and not m_done)
     {
         unsigned long now = update_timestep();
-        
         env->events_manager->dispatch_pending_events();
 
         m_level->update(now);
@@ -44,28 +35,28 @@ Babel::run()
         {
             m_id = m_level->next();
             delete m_level;
-            m_level = load_level();
+            m_level = load_level(m_id);
         }
     }
 }
 
 Level *
-Babel::load_level()
+Babel::load_level(const string& id)
 {
-    if (m_id == "menu")
+    if (id == "menu")
     {
         return load_menu();
     }
-    else if (m_id == "settings")
+    else if (id == "settings")
     {
         return load_settings();
     }
-    else if (m_id == "credits")
+    else if (id == "credits")
     {
         return load_credits();
     }
     
-    return load_frontend(m_id);
+    return load_frontend(id);
 }
 
 Level *

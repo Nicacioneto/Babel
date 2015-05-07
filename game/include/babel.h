@@ -9,17 +9,16 @@ class Babel : public Game, public MouseButtonEventListener
 {
 public:
     Babel();
+    ~Babel();
     
-    void init(const string& title, int w = 800, int h = 600) throw (Exception);
     void run();
 
 private:
+    Level * load_level(const string& id);
     Level * load_frontend(const string& id);
     Level * load_menu();
     Level * load_settings();
     Level * load_credits();
-    Level * load_level();
-
     bool onMouseButtonEvent(const MouseButtonEvent& event);
 };
 
