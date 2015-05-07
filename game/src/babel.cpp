@@ -17,33 +17,16 @@ Babel::~Babel()
     env->events_manager->unregister_mouse_button_event_listener(this);
 }
 
-void
-Babel::run()
-{
-    while (m_level and not m_done)
-    {
-        unsigned long now = update_timestep();
-        env->events_manager->dispatch_pending_events();
-
-        m_level->update(now);
-        m_level->draw();
-
-        update_screen();
-        delay(1);
-
-        if (m_level->is_done())
-        {
-            m_id = m_level->next();
-            delete m_level;
-            m_level = load_level(m_id);
-        }
-    }
-}
-
 Level *
 Babel::load_level(const string& id)
 {
-    if (id == "menu")
+    m_id = id;
+
+    if (id == "")
+    {
+        return nullptr;
+    }
+    else if (id == "menu")
     {
         return load_menu();
     }
@@ -105,7 +88,7 @@ Babel::onMouseButtonEvent(const MouseButtonEvent& event)
         if (m_id == "menu")
         {
             Menu *menu = dynamic_cast<Menu *>(m_level);
-            m_done = menu->execute_action(event.x(), event.y());
+            menu->execute_action(event.x(), event.y());
             return true;
         }
         else if (m_id == "settings")

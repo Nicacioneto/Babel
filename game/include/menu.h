@@ -21,7 +21,7 @@ class Menu : public Level
 {
 public:
     Menu(const string& next = "", const string& image = "res/images/menu.png");
-    bool execute_action(const int x, const int y);
+    void execute_action(const int x, const int y);
 
 private:
     shared_ptr<Image> m_image;

@@ -34,7 +34,7 @@ Menu::update_coordinates_buttons()
     m_h_button = scale * H_BUTTON;
 }
 
-bool
+void
 Menu::execute_action(const int x, const int y)
 {
     update_coordinates_buttons();
@@ -61,8 +61,6 @@ Menu::execute_action(const int x, const int y)
     }
     else if (exit_button.is_clicked(x, y))
     {
-        return true;
+        m_done = true;
     }
-
-    return false;
 }

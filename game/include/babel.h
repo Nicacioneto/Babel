@@ -10,8 +10,6 @@ class Babel : public Game, public MouseButtonEventListener
 public:
     Babel();
     ~Babel();
-    
-    void run();
 
 private:
     Level * load_level(const string& id);
