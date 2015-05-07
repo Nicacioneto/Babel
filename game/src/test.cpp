@@ -141,6 +141,24 @@ int main()
                     left.h = 360 + VELOCITY*passo;
                     map_left(screen, hall, left, 0.5);
 
+                    right.x = 470 + VELOCITY*passo;
+                    right.y = 230 - VELOCITY*passo*0.5;
+                    right.w = 110;
+                    right.h = 140 + VELOCITY*passo;
+                    map_right(screen, hall, right, 0.5);
+
+                    right.x = 580 + VELOCITY*passo;
+                    right.y = 175 - VELOCITY*passo*0.5;
+                    right.w = 110;
+                    right.h = 250 + VELOCITY*passo;
+                    map_right(screen, hall, right, 0.5);
+
+                    right.x = 690 + VELOCITY*passo;
+                    right.y = 120 - VELOCITY*passo*0.5;
+                    right.w = 110;
+                    right.h = 360 + VELOCITY*passo;
+                    map_right(screen, hall, right, 0.5);
+
                     passo++;
                     SDL_Flip(screen);
                 }
@@ -269,7 +287,7 @@ void map_right(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
     double top_y = dest.y;
     double bot_y = dest.y + dest.h - 1;
 
-    for (int i = dest.x; i < dest.x + dest.w; ++i)
+    for (int i = dest.x; i < dest.x + dest.w && i < 800; ++i)
     {
         for (int j = top_y; j <= bot_y; ++j)
         {
