@@ -3,11 +3,22 @@
 #include "image.h"
 #include "resourcesmanager.h"
 
+#define X_BACK 273
+#define Y_BACK 612
+#define W_BACK 428
+#define H_BACK 103
+
 Credits::Credits(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
+
+    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK);
+
+    back_button->add_observer(this);
+
+    add_child(back_button);
 }
 
 void
@@ -17,29 +28,18 @@ Credits::draw_self()
     env->canvas->draw(m_image.get());
 }
 
-
-void
-Credits::update_coordinates_buttons()
-{
-    double scale = env->canvas->scale();
-    m_x_back = scale * X_BACK_CREDITS;
-    m_y_back = scale * Y_BACK_CREDITS;
-    m_w_back = scale * W_BACK_CREDITS;
-    m_h_back = scale * H_BACK_CREDITS;
-}
-
 bool
-Credits::execute_action(const int x, const int y)
+Credits::on_message(Object *sender, MessageID id, Parameters)
 {
-    update_coordinates_buttons();
-    
-    Button back_button(m_x_back, m_y_back, m_w_back, m_h_back);
+    Button *button = dynamic_cast<Button *>(sender);
 
-    if (back_button.is_clicked(x, y))
+    if (id != Button::clickedID or not button)
     {
-        m_next = "menu";
-        m_done = true;
+        return false;
     }
 
-    return false;
+    m_next = "menu";
+    m_done = true;
+
+    return true;
 }

@@ -5,6 +5,20 @@
 #include "settings.h"
 #include <algorithm>
 
+#define X_BACK 49
+#define Y_BACK 480
+#define W_BACK_BUTTON 428
+#define H_BACK_BUTTON 103
+#define X_UP_RESOLUTION 449
+#define Y_UP_RESOLUTION 169
+#define X_DOWN_RESOLUTION 449
+#define Y_DOWN_RESOLUTION 187
+#define W_RESOLUTION_BUTTON 21
+#define H_RESOLUTION_BUTTON 13
+#define MAX_RESOLUTION 1310
+#define MIN_RESOLUTION 800
+#define SCALE 1.28 // Scale to keep display standart
+
 Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr)
 {
@@ -14,6 +28,20 @@ Settings::Settings(const string& next, const string& image)
     m_resolution = env->resources_manager->get_image("res/images/resolutions.png");
 
     env->canvas->load_font("res/fonts/FLATS.ttf", 14);
+
+    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK_BUTTON, H_BACK_BUTTON);
+    Button *up_resolution_button = new Button(this, "up_resolution", X_UP_RESOLUTION, Y_UP_RESOLUTION,
+        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON);
+    Button *down_resolution_button = new Button(this, "down_resolution", X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION,
+        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON);
+
+    back_button->add_observer(this);
+    up_resolution_button->add_observer(this);
+    down_resolution_button->add_observer(this);
+
+    add_child(back_button);
+    add_child(up_resolution_button);
+    add_child(down_resolution_button);
 }
 
 void
@@ -43,49 +71,48 @@ Settings::draw_self()
     // env->canvas->draw(m_resolution.get(), rect, scale*215, scale*170);
 }
 
-void
-Settings::update_coordinates_buttons()
-{
-    double scale = env->canvas->scale();
+// void
+// Settings::update_coordinates_buttons()
+// {
+//     double scale = env->canvas->scale();
 
-    m_x_back = scale * X_BACK;
-    m_y_back = scale * Y_BACK;
-    m_w_back_button = scale * W_BACK_BUTTON;
-    m_h_back_button = scale * H_BACK_BUTTON;
-    m_x_up_resolution = scale * X_UP_RESOLUTION;
-    m_y_up_resolution = scale * Y_UP_RESOLUTION;
-    m_x_down_resolution = scale * X_DOWN_RESOLUTION;
-    m_y_down_resolution = scale * Y_DOWN_RESOLUTION;
-    m_w_resolution_button = scale * W_RESOLUTION_BUTTON;
-    m_h_resolution_button = scale * H_RESOLUTION_BUTTON;
-}
+//     m_x_back = scale * X_BACK;
+//     m_y_back = scale * Y_BACK;
+//     m_w_back_button = scale * W_BACK_BUTTON;
+//     m_h_back_button = scale * H_BACK_BUTTON;
+//     m_x_up_resolution = scale * X_UP_RESOLUTION;
+//     m_y_up_resolution = scale * Y_UP_RESOLUTION;
+//     m_x_down_resolution = scale * X_DOWN_RESOLUTION;
+//     m_y_down_resolution = scale * Y_DOWN_RESOLUTION;
+//     m_w_resolution_button = scale * W_RESOLUTION_BUTTON;
+//     m_h_resolution_button = scale * H_RESOLUTION_BUTTON;
+// }
 
 bool
-Settings::execute_action(const int x, const int y)
+Settings::on_message(Object *sender, MessageID id, Parameters)
 {
-    update_coordinates_buttons();
-    
-    Button back_button(m_x_back, m_y_back, m_w_back_button, m_h_back_button);
-    Button up_resolution_button(m_x_up_resolution, m_y_up_resolution,
-        m_w_resolution_button, m_h_resolution_button);
-    Button down_resolution_button(m_x_down_resolution, m_y_down_resolution,
-        m_w_resolution_button, m_h_resolution_button);
+    Button *button = dynamic_cast<Button *>(sender);
 
-    if (back_button.is_clicked(x, y))
+    if (id != Button::clickedID or not button)
+    {
+        return false;
+    }
+
+    if (button->id() == "back")
     {
         m_next = "menu";
         m_done = true;
     }
-    else if (up_resolution_button.is_clicked(x, y) or down_resolution_button.is_clicked(x, y))
+    else if (button->id() == "up_resolution" or button->id() == "down_resolution")
     {
         int w = env->canvas->w();
         int h;
         int position = std::find(m_resolutions_size.begin(), m_resolutions_size.end(), w) - 
             m_resolutions_size.begin();
 
-        if (up_resolution_button.is_clicked(x, y))
+        if (button->id() == "up_resolution")
         {
-            if (position + 1 < (int)m_resolutions_size.size())
+            if (position + 1 < (int) m_resolutions_size.size())
             {
                 position++;
                 env->canvas->set_scale(SCALE);
@@ -105,5 +132,5 @@ Settings::execute_action(const int x, const int y)
         env->video->set_resolution(w, h);
     }
 
-    return false;
+    return true;
 }
