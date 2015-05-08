@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#define VELOCITY 5
+#define VELOCITY 10
 
 Uint32 getpixel(SDL_Surface *surface, int x, int y);
 void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
@@ -117,7 +117,7 @@ int main()
 
     SDL_Event event;
 
-    int passo = 1;
+    int step = 1;
 
     while (true)
     {
@@ -132,58 +132,65 @@ int main()
                 if (event.key.keysym.sym == SDLK_UP)
                 {
 
-                    up.x = 220 - VELOCITY*passo;
-                    up.y = 175 - VELOCITY*passo*0.5;
-                    up.w = 360 + VELOCITY*passo*2;
+                    center.x = 330 - VELOCITY*step;
+                    center.y =  230  - VELOCITY*step*0.5;
+                    center.w =  140 + VELOCITY*step*2;
+                    center.h =  140 + VELOCITY*step;
+
+                    map_center(screen, door, center);
+
+                    up.x = 220 - VELOCITY*step;
+                    up.y = 175 - VELOCITY*step*0.5;
+                    up.w = 360 + VELOCITY*step*2;
                     map_up(screen, ceiling, up, 2);
 
-                    up.x = 110 - VELOCITY*passo;
-                    up.y = 120 - VELOCITY*passo*0.5;
-                    up.w = 580 + VELOCITY*passo*2;
+                    up.x = 110 - VELOCITY*step;
+                    up.y = 120 - VELOCITY*step*0.5;
+                    up.w = 580 + VELOCITY*step*2;
                     map_up(screen, ceiling, up, 2);
                     
-                    up.x = 0 - VELOCITY*passo;
-                    up.y = 65 - VELOCITY*passo*0.5;
-                    up.w = 800 + VELOCITY*passo*2;
+                    up.x = 0 - VELOCITY*step;
+                    up.y = 65 - VELOCITY*step*0.5;
+                    up.w = 800 + VELOCITY*step*2;
                     map_up(screen, ceiling, up, 2);
 
-                    left.x = 330 - VELOCITY*passo;
-                    left.y = 230 - VELOCITY*passo*0.5;
+                    left.x = 330 - VELOCITY*step;
+                    left.y = 230 - VELOCITY*step*0.5;
                     left.w = 110;
-                    left.h = 140 + VELOCITY*passo;
+                    left.h = 140 + VELOCITY*step;
                     map_left(screen, hall, left, 0.5);
 
-                    left.x = 220 - VELOCITY*passo;
-                    left.y = 175 - VELOCITY*passo*0.5;
+                    left.x = 220 - VELOCITY*step;
+                    left.y = 175 - VELOCITY*step*0.5;
                     left.w = 110;
-                    left.h = 250 + VELOCITY*passo;
+                    left.h = 250 + VELOCITY*step;
                     map_left(screen, hall, left, 0.5);
 
-                    left.x = 110 - VELOCITY*passo;
-                    left.y = 120 - VELOCITY*passo*0.5;
+                    left.x = 110 - VELOCITY*step;
+                    left.y = 120 - VELOCITY*step*0.5;
                     left.w = 110;
-                    left.h = 360 + VELOCITY*passo;
+                    left.h = 360 + VELOCITY*step;
                     map_left(screen, hall, left, 0.5);
 
-                    right.x = 470 + VELOCITY*passo;
-                    right.y = 230 - VELOCITY*passo*0.5;
+                    right.x = 470 + VELOCITY*step;
+                    right.y = 230 - VELOCITY*step*0.5;
                     right.w = 110;
-                    right.h = 140 + VELOCITY*passo;
+                    right.h = 140 + VELOCITY*step;
                     map_right(screen, hall, right, 0.5);
 
-                    right.x = 580 + VELOCITY*passo;
-                    right.y = 175 - VELOCITY*passo*0.5;
+                    right.x = 580 + VELOCITY*step;
+                    right.y = 175 - VELOCITY*step*0.5;
                     right.w = 110;
-                    right.h = 250 + VELOCITY*passo;
+                    right.h = 250 + VELOCITY*step;
                     map_right(screen, hall, right, 0.5);
 
-                    right.x = 690 + VELOCITY*passo;
-                    right.y = 120 - VELOCITY*passo*0.5;
+                    right.x = 690 + VELOCITY*step;
+                    right.y = 120 - VELOCITY*step*0.5;
                     right.w = 110;
-                    right.h = 360 + VELOCITY*passo;
+                    right.h = 360 + VELOCITY*step;
                     map_right(screen, hall, right, 0.5);
 
-                    passo++;
+                    step++;
                     SDL_Flip(screen);
                 }
             }
@@ -264,7 +271,7 @@ void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
 void
 map_center(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest)
 {
-    for (int i = dest.x; i < dest.x + dest.w; i++)
+    for (int i = dest.x; i < dest.x + dest.w && i >= 0; i++)
     {
         for (int j = dest.y; j < dest.y + dest.h; j++)
         {
