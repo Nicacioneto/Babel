@@ -1,6 +1,7 @@
 #ifndef CREDITS_H
 #define CREDITS_H
 
+#include "button.h"
 #include "level.h"
 #include <memory>
 
@@ -15,9 +16,10 @@ public:
 
 private:
     shared_ptr<Image> m_image;
+    Button *m_back;
 
     void draw_self();
-    void update_coordinates_buttons();
+    void update_self(unsigned long elapsed);
 };
 
 #endif

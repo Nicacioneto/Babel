@@ -3,7 +3,6 @@
 #include "resourcesmanager.h"
 #include "settings.h"
 #include <algorithm>
-#include <iostream>
 
 #define X_BACK 49
 #define Y_BACK 480
@@ -41,18 +40,6 @@ Settings::Settings(const string& next, const string& image)
 }
 
 void
-Settings::draw_self()
-{
-    env->canvas->clear();
-    env->canvas->draw(m_image.get());
-    int w = env->canvas->w();
-    int h = env->canvas->h();
-
-    string text = std::to_string(w) + "x" + std::to_string(h);
-    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color(0, 0, 255));
-}
-
-void
 Settings::update_self(unsigned long)
 {
     double scale = env->canvas->scale();
@@ -65,6 +52,18 @@ Settings::update_self(unsigned long)
 
     m_down_resolution->set_position(scale * X_DOWN_RESOLUTION, scale * Y_DOWN_RESOLUTION);
     m_down_resolution->set_dimensions(scale * W_RESOLUTION, scale * H_RESOLUTION);
+}
+
+void
+Settings::draw_self()
+{
+    env->canvas->clear();
+    env->canvas->draw(m_image.get());
+    int w = env->canvas->w();
+    int h = env->canvas->h();
+
+    string text = std::to_string(w) + "x" + std::to_string(h);
+    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color(0, 0, 255));
 }
 
 bool

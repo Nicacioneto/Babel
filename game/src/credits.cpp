@@ -1,4 +1,3 @@
-#include "button.h"
 #include "credits.h"
 #include "image.h"
 #include "resourcesmanager.h"
@@ -9,16 +8,25 @@
 #define H_BACK 103
 
 Credits::Credits(const string& next, const string& image)
-    : Level("", next), m_image(nullptr)
+    : Level("", next), m_image(nullptr), m_back(nullptr)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK);
+    m_back = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK, Color::TRANSPARENT);
 
-    back_button->add_observer(this);
+    m_back->add_observer(this);
 
-    add_child(back_button);
+    add_child(m_back);
+}
+
+void
+Credits::update_self(unsigned long)
+{
+    double scale = env->canvas->scale();
+
+    m_back->set_position(scale * X_BACK, scale * Y_BACK);
+    m_back->set_dimensions(scale * W_BACK, scale * H_BACK);
 }
 
 void
