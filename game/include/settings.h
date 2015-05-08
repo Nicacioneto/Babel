@@ -15,7 +15,6 @@ public:
 
 private:
     shared_ptr<Image> m_image;
-    shared_ptr<Image> m_resolution;
     int m_resolution_position = 0;
 
     std::vector<int> m_resolutions_size = {800, 1024};
