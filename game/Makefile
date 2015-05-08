@@ -27,7 +27,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(GAME_MAIN) $(OBJ)
-	@echo Builting executable...
+	@echo Building executable...
 	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) -o $@ $(LIBS)
 	@echo --- Done
 

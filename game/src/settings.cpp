@@ -12,6 +12,8 @@ Settings::Settings(const string& next, const string& image)
 
     m_image = env->resources_manager->get_image(image);
     m_resolution = env->resources_manager->get_image("res/images/resolutions.png");
+
+    env->canvas->load_font("res/fonts/FLATS.ttf", 14);
 }
 
 void
@@ -20,6 +22,7 @@ Settings::draw_self()
     env->canvas->clear();
     env->canvas->draw(m_image.get());
     int w = env->canvas->w();
+    int h = env->canvas->h();
 
     if (w == 800)
     {
@@ -30,9 +33,14 @@ Settings::draw_self()
         m_resolution_position = 150;
     }
 
-    double scale = env->canvas->scale();
-    Rect rect(m_resolution_position, 0, 150, m_resolution->h());
-    env->canvas->draw(m_resolution.get(), rect, scale*215, scale*170);
+    string text = std::to_string(w) + "x" + std::to_string(h);
+    Color color = {0, 0, 255, 255};
+    Rect rect(200, 163, 150, 40);
+    env->canvas->draw_message(text, rect, color);
+
+    // double scale = env->canvas->scale();
+    // Rect rect(m_resolution_position, 0, 150, m_resolution->h());
+    // env->canvas->draw(m_resolution.get(), rect, scale*215, scale*170);
 }
 
 void
