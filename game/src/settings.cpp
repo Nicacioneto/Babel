@@ -1,46 +1,43 @@
-#include "button.h"
 #include "image.h"
 #include "rect.h"
 #include "resourcesmanager.h"
 #include "settings.h"
 #include <algorithm>
+#include <iostream>
 
 #define X_BACK 49
 #define Y_BACK 480
-#define W_BACK_BUTTON 428
-#define H_BACK_BUTTON 103
+#define W_BACK 428
+#define H_BACK 103
 #define X_UP_RESOLUTION 449
 #define Y_UP_RESOLUTION 169
 #define X_DOWN_RESOLUTION 449
 #define Y_DOWN_RESOLUTION 187
-#define W_RESOLUTION_BUTTON 21
-#define H_RESOLUTION_BUTTON 13
+#define W_RESOLUTION 21
+#define H_RESOLUTION 13
 #define MAX_RESOLUTION 1310
 #define MIN_RESOLUTION 800
-#define SCALE 1.28 // Scale to keep display standart
 
 Settings::Settings(const string& next, const string& image)
-    : Level("", next), m_image(nullptr)
+    : Level("", next), m_image(nullptr), m_back(nullptr), m_up_resolution(nullptr), 
+        m_down_resolution(nullptr)
 {
     env = Environment::get_instance();
 
+    env->canvas->load_font("res/fonts/FLATS.ttf", 14);
     m_image = env->resources_manager->get_image(image);
 
-    env->canvas->load_font("res/fonts/FLATS.ttf", 14);
+    m_back = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK, Color::TRANSPARENT);
+    m_up_resolution = new Button(this, "up_resolution", X_UP_RESOLUTION, Y_UP_RESOLUTION, W_RESOLUTION, H_RESOLUTION, Color::TRANSPARENT);
+    m_down_resolution = new Button(this, "down_resolution", X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION, W_RESOLUTION, H_RESOLUTION, Color::TRANSPARENT);
 
-    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK_BUTTON, H_BACK_BUTTON, Color::TRANSPARENT);
-    Button *up_resolution_button = new Button(this, "up_resolution", X_UP_RESOLUTION, Y_UP_RESOLUTION,
-        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON, Color::TRANSPARENT);
-    Button *down_resolution_button = new Button(this, "down_resolution", X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION,
-        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON, Color::TRANSPARENT);
+    m_back->add_observer(this);
+    m_up_resolution->add_observer(this);
+    m_down_resolution->add_observer(this);
 
-    back_button->add_observer(this);
-    up_resolution_button->add_observer(this);
-    down_resolution_button->add_observer(this);
-
-    add_child(back_button);
-    add_child(up_resolution_button);
-    add_child(down_resolution_button);
+    add_child(m_back);
+    add_child(m_up_resolution);
+    add_child(m_down_resolution);
 }
 
 void
@@ -52,27 +49,23 @@ Settings::draw_self()
     int h = env->canvas->h();
 
     string text = std::to_string(w) + "x" + std::to_string(h);
-    Color color = {0, 0, 255, 255};
-    Rect rect(200, 163, 150, 40);
-    env->canvas->draw_message(text, rect, color);
+    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color(0, 0, 255));
 }
 
-// void
-// Settings::update_coordinates_buttons()
-// {
-//     double scale = env->canvas->scale();
+void
+Settings::update_self(unsigned long)
+{
+    double scale = env->canvas->scale();
 
-//     m_x_back = scale * X_BACK;
-//     m_y_back = scale * Y_BACK;
-//     m_w_back_button = scale * W_BACK_BUTTON;
-//     m_h_back_button = scale * H_BACK_BUTTON;
-//     m_x_up_resolution = scale * X_UP_RESOLUTION;
-//     m_y_up_resolution = scale * Y_UP_RESOLUTION;
-//     m_x_down_resolution = scale * X_DOWN_RESOLUTION;
-//     m_y_down_resolution = scale * Y_DOWN_RESOLUTION;
-//     m_w_resolution_button = scale * W_RESOLUTION_BUTTON;
-//     m_h_resolution_button = scale * H_RESOLUTION_BUTTON;
-// }
+    m_back->set_position(scale * X_BACK, scale * Y_BACK);
+    m_back->set_dimensions(scale * W_BACK, scale * H_BACK);
+
+    m_up_resolution->set_position(scale * X_UP_RESOLUTION, scale * Y_UP_RESOLUTION);
+    m_up_resolution->set_dimensions(scale * W_RESOLUTION, scale * H_RESOLUTION);
+
+    m_down_resolution->set_position(scale * X_DOWN_RESOLUTION, scale * Y_DOWN_RESOLUTION);
+    m_down_resolution->set_dimensions(scale * W_RESOLUTION, scale * H_RESOLUTION);
+}
 
 bool
 Settings::on_message(Object *sender, MessageID id, Parameters)
@@ -93,15 +86,14 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
     {
         int w = env->canvas->w();
         int h;
-        int position = std::find(m_resolutions_size.begin(), m_resolutions_size.end(), w) - 
-            m_resolutions_size.begin();
+        int position = std::find(m_resolutions.begin(), m_resolutions.end(), w) - 
+            m_resolutions.begin();
 
         if (button->id() == "up_resolution")
         {
-            if (position + 1 < (int) m_resolutions_size.size())
+            if (position + 1 < (int) m_resolutions.size())
             {
                 position++;
-                env->canvas->set_scale(SCALE);
             }
         }
         else
@@ -109,13 +101,15 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
             if (position - 1 >= 0)
             {
                 position--;
-                env->canvas->set_scale(1/SCALE);
             }
         }
 
-        w = m_resolutions_size[position];
+        w = m_resolutions[position];
         h = w * 3 / 4;
         env->video->set_resolution(w, h);
+
+        double scale = (double) env->canvas->w() / m_resolutions[m_resolutions.size() - 1];
+        env->canvas->set_scale(scale);
     }
 
     return true;

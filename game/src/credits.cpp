@@ -14,7 +14,7 @@ Credits::Credits(const string& next, const string& image)
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK, Color::TRANSPARENT);
+    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK);
 
     back_button->add_observer(this);
 
