@@ -20,10 +20,10 @@ Menu::Menu(const string& next, const string& image)
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    Button *start_button = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON);
-    Button *settings_button = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON);
-    Button *credits_button = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON);
-    Button *exit_button = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON);
+    Button *start_button = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    Button *settings_button = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    Button *credits_button = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    Button *exit_button = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
 
     start_button->add_observer(this);
     settings_button->add_observer(this);

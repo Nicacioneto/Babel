@@ -29,11 +29,11 @@ Settings::Settings(const string& next, const string& image)
 
     env->canvas->load_font("res/fonts/FLATS.ttf", 14);
 
-    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK_BUTTON, H_BACK_BUTTON);
+    Button *back_button = new Button(this, "back", X_BACK, Y_BACK, W_BACK_BUTTON, H_BACK_BUTTON, Color::TRANSPARENT);
     Button *up_resolution_button = new Button(this, "up_resolution", X_UP_RESOLUTION, Y_UP_RESOLUTION,
-        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON);
+        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON, Color::TRANSPARENT);
     Button *down_resolution_button = new Button(this, "down_resolution", X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION,
-        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON);
+        W_RESOLUTION_BUTTON, H_RESOLUTION_BUTTON, Color::TRANSPARENT);
 
     back_button->add_observer(this);
     up_resolution_button->add_observer(this);
