@@ -68,7 +68,7 @@ public:
     SDL_Renderer * renderer() const;
 
     void set_scale(const double scale);
-    double scale();
+    double scale() const;
 
 private:
     SDL_Renderer *m_renderer;

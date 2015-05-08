@@ -1,4 +1,3 @@
-#include "button.h"
 #include "image.h"
 #include "menu.h"
 #include "resourcesmanager.h"
@@ -15,25 +14,44 @@
 #define H_BUTTON 103
 
 Menu::Menu(const string& next, const string& image)
-    : Level("", next), m_image(nullptr)
+    : Level("", next), m_image(nullptr), m_start(nullptr), m_settings(nullptr),
+        m_credits(nullptr), m_exit(nullptr)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    Button *start_button = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON);
-    Button *settings_button = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON);
-    Button *credits_button = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON);
-    Button *exit_button = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON);
+    m_start = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    m_settings = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    m_credits = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    m_exit = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
 
-    start_button->add_observer(this);
-    settings_button->add_observer(this);
-    credits_button->add_observer(this);
-    exit_button->add_observer(this);
+    m_start->add_observer(this);
+    m_settings->add_observer(this);
+    m_credits->add_observer(this);
+    m_exit->add_observer(this);
 
-    add_child(start_button);
-    add_child(settings_button);
-    add_child(credits_button);
-    add_child(exit_button);
+    add_child(m_start);
+    add_child(m_settings);
+    add_child(m_credits);
+    add_child(m_exit);
+}
+
+void
+Menu::update_self(unsigned long)
+{
+    double scale = env->canvas->scale();
+
+    m_start->set_position(scale * X_START, scale * Y_START);
+    m_start->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
+
+    m_settings->set_position(scale * X_SETTINGS, scale * Y_SETTINGS);
+    m_settings->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
+
+    m_credits->set_position(scale * X_CREDITS, scale * Y_CREDITS);
+    m_credits->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
+
+    m_exit->set_position(scale * X_EXIT, scale * Y_EXIT);
+    m_exit->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
 }
 
 void
@@ -42,23 +60,6 @@ Menu::draw_self()
     env->canvas->clear();
     env->canvas->draw(m_image.get());
 }
-
-// void
-// Menu::update_coordinates_buttons()
-// {
-//     double scale = env->canvas->scale();
-
-//     m_x_start = scale * X_START;
-//     m_y_start = scale * Y_START;
-//     m_x_settings = scale * X_SETTINGS;
-//     m_y_settings = scale * Y_SETTINGS;
-//     m_x_credits = scale * X_CREDITS;
-//     m_y_credits = scale * Y_CREDITS;
-//     m_x_exit = scale * X_EXIT;
-//     m_y_exit = scale * Y_EXIT;
-//     m_w_button = scale * W_BUTTON;
-//     m_h_button = scale * H_BUTTON;
-// }
 
 bool
 Menu::on_message(Object *sender, MessageID id, Parameters)

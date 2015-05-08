@@ -1,6 +1,7 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include "button.h"
 #include "level.h"
 #include <memory>
 
@@ -15,9 +16,14 @@ public:
 
 private:
     shared_ptr<Image> m_image;
+    Button *m_start;
+    Button *m_settings;
+    Button *m_credits;
+    Button *m_exit;
 
     void draw_self();
     void update_coordinates_buttons();
+    void update_self(unsigned long elapsed);
 };
 
 #endif
