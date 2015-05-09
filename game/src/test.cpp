@@ -1,10 +1,21 @@
 #include <SDL/SDL.h>
-
 #include <stdlib.h>
+#include <vector>
 
 #define VELOCITY 10
+#define NONE 0
+#define HALL 1
+#define DOOR 2
+
+typedef struct _Position
+{
+    int front = 0;
+    int left = 0;
+    int right = 0;
+} Position;
 
 Uint32 getpixel(SDL_Surface *surface, int x, int y);
+
 void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 
 void map_center(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest);
@@ -18,75 +29,50 @@ void map_right(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
 void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
     double ratio);
 
+void draw(SDL_Surface *screen, std::vector<Position> map, int step);
+
+SDL_Surface *door;
+SDL_Surface *hall;
+SDL_Surface *ceiling;
+
 int main()
 {
+    std::vector<std::vector<Position>> map;
     SDL_Init(SDL_INIT_VIDEO);
     atexit(SDL_Quit);
 
     SDL_Surface *screen = SDL_SetVideoMode(800, 600, 32, 0);
 
     SDL_Surface *img = SDL_LoadBMP("res/images/door.bmp");
-    SDL_Surface *door = SDL_DisplayFormat(img);
+    door = SDL_DisplayFormat(img);
     SDL_FreeSurface(img);
     
     img = SDL_LoadBMP("res/images/hall.bmp");
-    SDL_Surface *hall = SDL_DisplayFormat(img);
+    hall = SDL_DisplayFormat(img);
     SDL_FreeSurface(img);
 
     img = SDL_LoadBMP("res/images/ceiling.bmp");
-    SDL_Surface *ceiling = SDL_DisplayFormat(img);
+    ceiling = SDL_DisplayFormat(img);
     SDL_FreeSurface(img);
 
-    SDL_Rect up { 0, 65, 800, 55 };
-    map_up(screen, ceiling, up, 2.0);
+    std::vector<Position> temp;
+    Position pos;
+    pos.front = DOOR;
+    pos.left = HALL;
+    pos.right = HALL;
+    temp.push_back(pos);
 
-    up.x = 110;
-    up.y = 120;
-    up.w = 580;
-    up.h = 55;
+    pos.front = NONE;
+    pos.left = DOOR;
+    pos.right = HALL;
+    temp.push_back(pos);
+    
+    pos.front = NONE;
+    pos.left = HALL;
+    pos.right = DOOR;
+    temp.push_back(pos);
+    map.push_back(temp);
 
-    map_up(screen, ceiling, up, 2.0);
-
-    up.x = 220;
-    up.y = 175;
-    up.w = 360;
-    up.h = 55;
-
-    map_up(screen, ceiling, up, 2.0);
-
-    SDL_Rect center { 330, 230, 140, 140 }; 
-    map_center(screen, door, center);
-
-    /* 3 paredes com o mesmo tamanho */
-    SDL_Rect left { 330, 230, 110, 140 };
-    map_left(screen, hall, left, 0.5);
-
-    left.x = 220;
-    left.y = 175;
-    left.w = 110;
-    left.h = 250;
-    map_left(screen, hall, left, 0.5);
-
-    left.x = 110;
-    left.y = 120;
-    left.w = 110;
-    left.h = 360;
-    map_left(screen, hall, left, 0.5);
-
-    SDL_Rect right { 470, 230, 110, 140 };
-    map_right(screen, hall, right, 0.5);
-
-    right.x = 580;
-    right.y = 175;
-    right.w = 110;
-    right.h = 250;
-    map_right(screen, hall, right, 0.5);
-
-    right.x = 690;
-    right.y = 120;
-    right.w = 110;
-    right.h = 360;
-    map_right(screen, hall, right, 0.5);
 
     /* 3 parades da esquerda com o tamanho diferente */
     // SDL_Rect left { 330, 230, 55, 140 };
@@ -112,13 +98,13 @@ int main()
     // right.h = 350;
     // map_right(screen, hall, right, 0.5); 
 
+    int step = 0;
+
+    draw(screen, map[0], step);
 
     SDL_Flip(screen);
 
     SDL_Event event;
-
-    int step = 1;
-
     while (true)
     {
         while (SDL_PollEvent(&event))
@@ -131,66 +117,8 @@ int main()
             {
                 if (event.key.keysym.sym == SDLK_UP)
                 {
-
-                    center.x = 330 - VELOCITY*step;
-                    center.y =  230  - VELOCITY*step*0.5;
-                    center.w =  140 + VELOCITY*step*2;
-                    center.h =  140 + VELOCITY*step;
-
-                    map_center(screen, door, center);
-
-                    up.x = 220 - VELOCITY*step;
-                    up.y = 175 - VELOCITY*step*0.5;
-                    up.w = 360 + VELOCITY*step*2;
-                    map_up(screen, ceiling, up, 2);
-
-                    up.x = 110 - VELOCITY*step;
-                    up.y = 120 - VELOCITY*step*0.5;
-                    up.w = 580 + VELOCITY*step*2;
-                    map_up(screen, ceiling, up, 2);
-                    
-                    up.x = 0 - VELOCITY*step;
-                    up.y = 65 - VELOCITY*step*0.5;
-                    up.w = 800 + VELOCITY*step*2;
-                    map_up(screen, ceiling, up, 2);
-
-                    left.x = 330 - VELOCITY*step;
-                    left.y = 230 - VELOCITY*step*0.5;
-                    left.w = 110;
-                    left.h = 140 + VELOCITY*step;
-                    map_left(screen, hall, left, 0.5);
-
-                    left.x = 220 - VELOCITY*step;
-                    left.y = 175 - VELOCITY*step*0.5;
-                    left.w = 110;
-                    left.h = 250 + VELOCITY*step;
-                    map_left(screen, hall, left, 0.5);
-
-                    left.x = 110 - VELOCITY*step;
-                    left.y = 120 - VELOCITY*step*0.5;
-                    left.w = 110;
-                    left.h = 360 + VELOCITY*step;
-                    map_left(screen, hall, left, 0.5);
-
-                    right.x = 470 + VELOCITY*step;
-                    right.y = 230 - VELOCITY*step*0.5;
-                    right.w = 110;
-                    right.h = 140 + VELOCITY*step;
-                    map_right(screen, hall, right, 0.5);
-
-                    right.x = 580 + VELOCITY*step;
-                    right.y = 175 - VELOCITY*step*0.5;
-                    right.w = 110;
-                    right.h = 250 + VELOCITY*step;
-                    map_right(screen, hall, right, 0.5);
-
-                    right.x = 690 + VELOCITY*step;
-                    right.y = 120 - VELOCITY*step*0.5;
-                    right.w = 110;
-                    right.h = 360 + VELOCITY*step;
-                    map_right(screen, hall, right, 0.5);
-
                     step++;
+                    draw(screen, map[0], step);
                     SDL_Flip(screen);
                 }
             }
@@ -362,4 +290,96 @@ void map_up(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest,
         left_x -= ratio;
         right_x += ratio;
     }
+}
+
+void draw(SDL_Surface *screen, std::vector<Position> map, int step)
+{
+    SDL_Rect center;
+    SDL_Rect up;
+    SDL_Rect left;
+    SDL_Rect right;
+
+    up.x = 220 - VELOCITY*step;
+    up.y = 175 - VELOCITY*step*0.5;
+    up.w = 360 + VELOCITY*step*2;
+    up.h = 55;
+    map_up(screen, ceiling, up, 2);
+
+    up.x = 110 - VELOCITY*step;
+    up.y = 120 - VELOCITY*step*0.5;
+    up.w = 580 + VELOCITY*step*2;
+    up.h = 55;
+    map_up(screen, ceiling, up, 2);
+    
+    up.x = 0 - VELOCITY*step;
+    up.y = 65 - VELOCITY*step*0.5;
+    up.w = 800 + VELOCITY*step*2;
+    map_up(screen, ceiling, up, 2);
+    up.h = 55;
+
+    if (map[0].front)
+    {
+        center.x = 330 - VELOCITY*step;
+        center.y =  230 - VELOCITY*step*0.5;
+        center.w =  140 + VELOCITY*step*2;
+        center.h =  140 + VELOCITY*step;
+        if (map[0].front == HALL)
+            map_center(screen, hall, center);
+        else if (map[0].front == DOOR)
+            map_center(screen, door, center);
+    }
+
+    left.x = 330 - VELOCITY*step;
+    left.y = 230 - VELOCITY*step*0.5;
+    left.w = 110;
+    left.h = 140 + VELOCITY*step;
+    if (map[0].left == HALL)
+        map_left(screen, hall, left, 0.5);
+    else if (map[0].left == DOOR)
+        map_left(screen, door, left, 0.5);
+
+    left.x = 220 - VELOCITY*step;
+    left.y = 175 - VELOCITY*step*0.5;
+    left.w = 110;
+    left.h = 250 + VELOCITY*step;
+    if (map[1].left == HALL)
+        map_left(screen, hall, left, 0.5);
+    else if (map[1].left == DOOR)
+        map_left(screen, door, left, 0.5);
+
+    left.x = 110 - VELOCITY*step;
+    left.y = 120 - VELOCITY*step*0.5;
+    left.w = 110;
+    left.h = 360 + VELOCITY*step;
+    if (map[2].left == HALL)
+        map_left(screen, hall, left, 0.5);
+    else if (map[2].left == DOOR)
+        map_left(screen, door, left, 0.5);
+
+    right.x = 470 + VELOCITY*step;
+    right.y = 230 - VELOCITY*step*0.5;
+    right.w = 110;
+    right.h = 140 + VELOCITY*step;
+    if (map[0].right == HALL)
+        map_right(screen, hall, right, 0.5);
+    if (map[0].right == DOOR)
+        map_right(screen, door, right, 0.5);
+
+    right.x = 580 + VELOCITY*step;
+    right.y = 175 - VELOCITY*step*0.5;
+    right.w = 110;
+    right.h = 250 + VELOCITY*step;
+    if (map[1].right == HALL)
+        map_right(screen, hall, right, 0.5);
+    if (map[1].right == DOOR)
+        map_right(screen, door, right, 0.5);
+
+    right.x = 690 + VELOCITY*step;
+    right.y = 120 - VELOCITY*step*0.5;
+    right.w = 110;
+    right.h = 360 + VELOCITY*step;
+    if (map[2].right == HALL)
+        map_right(screen, hall, right, 0.5);
+    if (map[2].right == DOOR)
+        map_right(screen, door, right, 0.5);
 }
