@@ -20,10 +20,14 @@ Menu::Menu(const string& next, const string& image)
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    m_start = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
-    m_settings = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
-    m_credits = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
-    m_exit = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON, Color::TRANSPARENT);
+    m_start = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON,
+        Color::TRANSPARENT);
+    m_settings = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON,
+        Color::TRANSPARENT);
+    m_credits = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON,
+        Color::TRANSPARENT);
+    m_exit = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON,
+        Color::TRANSPARENT);
 
     m_start->add_observer(this);
     m_settings->add_observer(this);
@@ -83,7 +87,7 @@ Menu::on_message(Object *sender, MessageID id, Parameters)
     {
         m_next = "credits";
     }
- 
+
     m_done = true;
     return true;
 }
