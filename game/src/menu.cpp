@@ -73,7 +73,7 @@ Menu::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "start")
     {
-        // TODO
+        m_next = "gameover";
     }
     else if (button->id() == "settings")
     {

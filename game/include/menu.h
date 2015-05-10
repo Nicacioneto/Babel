@@ -22,7 +22,6 @@ private:
     Button *m_exit;
 
     void draw_self();
-    void update_coordinates_buttons();
     void update_self(unsigned long elapsed);
 };
 
