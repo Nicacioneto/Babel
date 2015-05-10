@@ -1,4 +1,4 @@
-#include "image.h"
+#include "button.h"
 #include "menu.h"
 #include "resourcesmanager.h"
 
@@ -10,8 +10,9 @@
 #define Y_CREDITS 335
 #define X_EXIT 119
 #define Y_EXIT 475
-#define W_BUTTON 428
-#define H_BUTTON 103
+#define W_BUTTON 304
+#define H_BUTTON 93
+#define SPACING 140
 
 Menu::Menu(const string& next, const string& image)
     : Level("", next), m_image(nullptr), m_start(nullptr), m_settings(nullptr),
@@ -20,14 +21,14 @@ Menu::Menu(const string& next, const string& image)
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    m_start = new Button(this, "start", X_START, Y_START, W_BUTTON, H_BUTTON,
-        Color::TRANSPARENT);
-    m_settings = new Button(this, "settings", X_SETTINGS, Y_SETTINGS, W_BUTTON, H_BUTTON,
-        Color::TRANSPARENT);
-    m_credits = new Button(this, "credits", X_CREDITS, Y_CREDITS, W_BUTTON, H_BUTTON,
-        Color::TRANSPARENT);
-    m_exit = new Button(this, "exit", X_EXIT, Y_EXIT, W_BUTTON, H_BUTTON,
-        Color::TRANSPARENT);
+    m_start = new Button(this, "start", "res/images/buttons/start.png",
+        X_START, X_START, W_BUTTON, H_BUTTON);
+    m_settings = new Button(this, "settings", "res/images/buttons/option.png",
+        X_START, Y_START + SPACING, W_BUTTON, H_BUTTON);
+    m_credits = new Button(this, "credits", "res/images/buttons/option.png",
+        X_START, Y_START + 2*SPACING, W_BUTTON, H_BUTTON);
+    m_exit = new Button(this, "exit", "res/images/buttons/quit.png",
+        X_START, Y_START + 3*SPACING, W_BUTTON, H_BUTTON);
 
     m_start->add_observer(this);
     m_settings->add_observer(this);

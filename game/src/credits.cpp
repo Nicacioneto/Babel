@@ -13,7 +13,8 @@ Credits::Credits(const string& next, const string& image)
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
 
-    m_back = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK, Color::TRANSPARENT);
+    m_back = new Button(this, "back", "res/images/buttons/back.png",
+        X_BACK, Y_BACK, W_BACK, H_BACK);
     m_back->add_observer(this);
 
     add_child(m_back);

@@ -10,7 +10,7 @@ class Image;
 class Menu : public Level
 {
 public:
-    Menu(const string& next = "", const string& image = "res/images/menu.png");
+    Menu(const string& next = "", const string& image = "res/images/menu2.png");
     
     bool on_message(Object *sender, MessageID id, Parameters p);
 

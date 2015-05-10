@@ -26,11 +26,12 @@ Settings::Settings(const string& next, const string& image)
     env->canvas->load_font("res/fonts/FLATS.ttf", 14);
     m_image = env->resources_manager->get_image(image);
 
-    m_back = new Button(this, "back", X_BACK, Y_BACK, W_BACK, H_BACK, Color::TRANSPARENT);
-    m_up_resolution = new Button(this, "up_resolution", X_UP_RESOLUTION, Y_UP_RESOLUTION,
-        W_RESOLUTION, H_RESOLUTION, Color::TRANSPARENT);
-    m_down_resolution = new Button(this, "down_resolution", X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION,
-        W_RESOLUTION, H_RESOLUTION, Color::TRANSPARENT);
+    m_back = new Button(this, "back", "res/images/buttons/back.png",
+        X_BACK, Y_BACK, W_BACK, H_BACK);
+    m_up_resolution = new Button(this, "up_resolution", "",
+        X_UP_RESOLUTION, Y_UP_RESOLUTION, W_RESOLUTION, H_RESOLUTION);
+    m_down_resolution = new Button(this, "down_resolution", "",
+        X_DOWN_RESOLUTION, Y_DOWN_RESOLUTION, W_RESOLUTION, H_RESOLUTION);
 
     m_back->add_observer(this);
     m_up_resolution->add_observer(this);
