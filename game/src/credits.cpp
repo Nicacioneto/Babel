@@ -26,7 +26,6 @@ Credits::update_self(unsigned long)
     double scale = env->canvas->scale();
 
     m_back->set_position(scale * X_BACK, scale * Y_BACK);
-    m_back->set_dimensions(scale * W_BACK, scale * H_BACK);
 }
 
 void

@@ -48,7 +48,6 @@ Settings::update_self(unsigned long)
     double scale = env->canvas->scale();
 
     m_back->set_position(scale * X_BACK, scale * Y_BACK);
-    m_back->set_dimensions(scale * W_BACK, scale * H_BACK);
 
     m_up_resolution->set_position(scale * X_UP_RESOLUTION, scale * Y_UP_RESOLUTION);
     m_up_resolution->set_dimensions(scale * W_RESOLUTION, scale * H_RESOLUTION);
@@ -66,7 +65,7 @@ Settings::draw_self()
     int h = env->canvas->h();
 
     string text = std::to_string(w) + "x" + std::to_string(h);
-    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color(0, 0, 255));
+    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color::BLUE);
 }
 
 bool

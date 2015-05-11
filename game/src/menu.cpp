@@ -2,14 +2,8 @@
 #include "menu.h"
 #include "resourcesmanager.h"
 
-#define X_START 119
-#define Y_START 54
-#define X_SETTINGS 119
-#define Y_SETTINGS 190
-#define X_CREDITS 119
-#define Y_CREDITS 335
-#define X_EXIT 119
-#define Y_EXIT 475
+#define X_BUTTON 119
+#define Y_BUTTON 54
 #define W_BUTTON 304
 #define H_BUTTON 93
 #define SPACING 140
@@ -22,13 +16,13 @@ Menu::Menu(const string& next, const string& image)
     m_image = env->resources_manager->get_image(image);
 
     m_start = new Button(this, "start", "res/images/buttons/start.png",
-        X_START, X_START, W_BUTTON, H_BUTTON);
+        X_BUTTON, X_BUTTON, W_BUTTON, H_BUTTON);
     m_settings = new Button(this, "settings", "res/images/buttons/option.png",
-        X_START, Y_START + SPACING, W_BUTTON, H_BUTTON);
+        X_BUTTON, Y_BUTTON + SPACING, W_BUTTON, H_BUTTON);
     m_credits = new Button(this, "credits", "res/images/buttons/option.png",
-        X_START, Y_START + 2*SPACING, W_BUTTON, H_BUTTON);
+        X_BUTTON, Y_BUTTON + 2*SPACING, W_BUTTON, H_BUTTON);
     m_exit = new Button(this, "exit", "res/images/buttons/quit.png",
-        X_START, Y_START + 3*SPACING, W_BUTTON, H_BUTTON);
+        X_BUTTON, Y_BUTTON + 3*SPACING, W_BUTTON, H_BUTTON);
 
     m_start->add_observer(this);
     m_settings->add_observer(this);
@@ -46,17 +40,10 @@ Menu::update_self(unsigned long)
 {
     double scale = env->canvas->scale();
 
-    m_start->set_position(scale * X_START, scale * Y_START);
-    m_start->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
-
-    m_settings->set_position(scale * X_SETTINGS, scale * Y_SETTINGS);
-    m_settings->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
-
-    m_credits->set_position(scale * X_CREDITS, scale * Y_CREDITS);
-    m_credits->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
-
-    m_exit->set_position(scale * X_EXIT, scale * Y_EXIT);
-    m_exit->set_dimensions(scale * W_BUTTON, scale * H_BUTTON);
+    m_start->set_position(scale * X_BUTTON, scale * Y_BUTTON);
+    m_settings->set_position(scale * X_BUTTON, scale * (Y_BUTTON + SPACING));
+    m_credits->set_position(scale * X_BUTTON, scale * (Y_BUTTON + 2*SPACING));
+    m_exit->set_position(scale * X_BUTTON, scale * (Y_BUTTON + 3*SPACING));
 }
 
 void
