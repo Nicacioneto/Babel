@@ -70,8 +70,8 @@ Menu::draw_self()
     env->canvas->clear();
     env->canvas->draw(m_image.get());
 
-    int x_logo = (env->canvas->w() - m_logo->w())/2;
-    env->canvas->draw(m_logo.get(), x_logo, 25);
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * env->canvas->scale())/2,
+        25 * env->canvas->scale());
 
     double scale = env->canvas->scale();
 

@@ -10,12 +10,14 @@ class Image;
 class Credits : public Level
 {
 public:
-    Credits(const string& next = "", const string& image = "res/images/credits.png");
+    Credits(const string& next = "", const string& image = "res/images/menu/init_screen.png");
 
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
     shared_ptr<Image> m_image;
+    shared_ptr<Image> m_logo;
+    shared_ptr<Image> m_credits;
     Button *m_back;
 
     void draw_self();

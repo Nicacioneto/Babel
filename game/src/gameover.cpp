@@ -17,7 +17,6 @@ GameOver::GameOver(const string& next)
     env->events_manager->register_keyboard_event_listener(this);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/FLATS.ttf");
-    font->set_size(100);
     font->set_style(Font::ITALIC);
     env->canvas->set_font(font);
 }
@@ -30,7 +29,11 @@ GameOver::~GameOver()
 void
 GameOver::update_self(unsigned long)
 {
-    set_position(env->canvas->w()/8, env->canvas->h()/4);
+    double scale = env->canvas->scale();
+    set_position(env->canvas->w() / (8 * scale), env->canvas->h() / (4 * scale));
+
+    shared_ptr<Font> font = env->canvas->font();
+    font->set_size(100 * scale);
 }
 
 void
