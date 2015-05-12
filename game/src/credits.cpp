@@ -47,10 +47,8 @@ Credits::draw_self()
     env->canvas->clear();
 
     env->canvas->draw(m_image.get());
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 
-        25 * scale);
-    env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 
-        183 * scale);
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
+    env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 183 * scale);
 
     set_position(m_back->x() + 48 * scale, m_back->y() + 15 * scale);
     env->canvas->draw("Back", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
