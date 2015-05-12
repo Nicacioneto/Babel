@@ -24,6 +24,7 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 all: $(GAME)
 	@cp -r $(RES_DIR) $(BIN_DIR)
 	@unzip -j $(DLL_DIR)/windows.zip -d $(BIN_DIR)
+	@echo Done!
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $^
@@ -33,7 +34,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 $(GAME): $(OBJ)
 	@echo Building executable...
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJ) -o $@.exe $(LIBS)
-	@echo Done!
 
 clean:
 	@echo Cleaning...
