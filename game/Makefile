@@ -7,8 +7,8 @@ BIN_DIR = bin
 CC = g++
 
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
-INCLUDES = -Iinclude `sdl2-config --cflags`
-LIBS = lib/ijengine.a `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
+INCLUDES = -Iinclude -I/usr/share/ijengine/include `sdl2-config --cflags`
+LIBS = -L/usr/share/ijengine/lib -lijengine `sdl2-config --libs` -lSDL2_image -lSDL2_ttf
 
 GAME = $(BIN_DIR)/babel
 GAME_MAIN = $(SRC_DIR)/*.cpp

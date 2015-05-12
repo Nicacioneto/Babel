@@ -5,6 +5,7 @@
  * Date: 10/05/2015
  * License: LGPL. No copyright.
  */
+#include "font.h"
 #include "gameover.h"
 #include "rect.h"
 
@@ -14,7 +15,11 @@ GameOver::GameOver(const string& next)
     env = Environment::get_instance();
 
     env->events_manager->register_keyboard_event_listener(this);
-    env->canvas->load_font("res/fonts/FLATS.ttf", 100);
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/FLATS.ttf");
+    font->set_size(100);
+    font->set_style(Font::ITALIC);
+    env->canvas->set_font(font);
 }
 
 GameOver::~GameOver()
@@ -26,14 +31,13 @@ void
 GameOver::update_self(unsigned long)
 {
     set_position(env->canvas->w()/8, env->canvas->h()/4);
-    set_dimensions(3*env->canvas->w()/4, env->canvas->h()/2);
 }
 
 void
 GameOver::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw_message("GAME OVER", bounding_box());
+    env->canvas->draw("GAME OVER", bounding_box().x(), bounding_box().y(), Color::YELLOW);
 }
 
 bool

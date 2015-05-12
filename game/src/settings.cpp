@@ -1,3 +1,4 @@
+#include "font.h"
 #include "image.h"
 #include "rect.h"
 #include "resourcesmanager.h"
@@ -23,7 +24,6 @@ Settings::Settings(const string& next, const string& image)
 {
     env = Environment::get_instance();
 
-    env->canvas->load_font("res/fonts/FLATS.ttf", 14);
     m_image = env->resources_manager->get_image(image);
 
     m_back = new Button(this, "back", "res/images/buttons/back.png",
@@ -40,6 +40,9 @@ Settings::Settings(const string& next, const string& image)
     add_child(m_back);
     add_child(m_up_resolution);
     add_child(m_down_resolution);
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/FLATS.ttf");
+    env->canvas->set_font(font);
 }
 
 void
@@ -54,6 +57,10 @@ Settings::update_self(unsigned long)
 
     m_down_resolution->set_position(scale * X_DOWN_RESOLUTION, scale * Y_DOWN_RESOLUTION);
     m_down_resolution->set_dimensions(scale * W_RESOLUTION, scale * H_RESOLUTION);
+
+    shared_ptr<Font> font = env->canvas->font();
+    font->set_size(30 * scale);
+    set_position(210 * scale, 170 * scale);
 }
 
 void
@@ -61,11 +68,12 @@ Settings::draw_self()
 {
     env->canvas->clear();
     env->canvas->draw(m_image.get());
+
     int w = env->canvas->w();
     int h = env->canvas->h();
-
     string text = std::to_string(w) + "x" + std::to_string(h);
-    env->canvas->draw_message(text, Rect(200, 163, 150, 40), Color::BLUE);
+
+    env->canvas->draw(text, bounding_box().x(), bounding_box().y(), Color::BLUE);
 }
 
 bool

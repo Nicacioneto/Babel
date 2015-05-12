@@ -1,7 +1,9 @@
 #include "button.h"
+#include "font.h"
 #include "menu.h"
 #include "rect.h"
 #include "resourcesmanager.h"
+#include <iostream>
 
 #define X_BUTTON 107
 #define W_BUTTON 140
@@ -14,7 +16,6 @@ Menu::Menu(const string& next, const string& image)
 {
     env = Environment::get_instance();
 
-    env->canvas->load_font("res/fonts/exo-2/Exo2.0-Regular.otf", 50);
     m_image = env->resources_manager->get_image(image);
     m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
     
@@ -41,6 +42,9 @@ Menu::Menu(const string& next, const string& image)
     add_child(m_settings);
     add_child(m_credits);
     add_child(m_exit);
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
 }
 
 void
@@ -55,6 +59,9 @@ Menu::update_self(unsigned long)
     m_settings->set_position(scale * (X_BUTTON + SPACING * 2), y_button);
     m_credits->set_position(scale * (X_BUTTON + SPACING * 3), y_button);
     m_exit->set_position(scale * (X_BUTTON + SPACING * 4), y_button);
+
+    shared_ptr<Font> font = env->canvas->font();
+    font->set_size(22 * scale);
 }
 
 void
@@ -68,25 +75,20 @@ Menu::draw_self()
 
     double scale = env->canvas->scale();
 
-    int x = (m_start->x()+15)/scale, y = (m_start->y()+10)/scale;
-    int w = m_start->w()-25, h = m_start->h()-25;
-    env->canvas->draw_message("New Game", Rect(x, y, w, h), Color(170, 215, 190));
+    set_position(m_start->x() + 15 * scale, m_start->y() + 15 * scale);
+    env->canvas->draw("New Game", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = (m_loadgame->x()+15)/scale, y = (m_loadgame->y()+10)/scale;
-    w = m_loadgame->w()-25, h = m_loadgame->h()-25;
-    env->canvas->draw_message("Load Game", Rect(x, y, w, h), Color(170, 215, 190));
+    set_position(m_loadgame->x() + 15 * scale, m_loadgame->y() + 15 * scale);
+    env->canvas->draw("Load Game", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = (m_settings->x()+15)/scale, y = (m_settings->y()+10)/scale;
-    w = m_settings->w()-25, h = m_settings->h()-25;
-    env->canvas->draw_message("Options", Rect(x, y, w, h), Color(170, 215, 190));
+    set_position(m_settings->x() + 32 * scale, m_settings->y() + 15 * scale);
+    env->canvas->draw("Options", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = (m_credits->x()+15)/scale, y = (m_credits->y()+10)/scale;
-    w = m_credits->w()-25, h = m_credits->h()-25;
-    env->canvas->draw_message("Credits", Rect(x, y, w, h), Color(170, 215, 190));
+    set_position(m_credits->x() + 32 * scale, m_credits->y() + 15 * scale);
+    env->canvas->draw("Credits", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = (m_exit->x()+15)/scale, y = (m_exit->y()+10)/scale;
-    w = m_exit->w()-25, h = m_exit->h()-25;
-    env->canvas->draw_message("Exit", Rect(x, y, w, h), Color(170, 215, 190));
+    set_position(m_exit->x() + 50 * scale, m_exit->y() + 15 * scale);
+    env->canvas->draw("Exit", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
 bool
