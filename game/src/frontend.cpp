@@ -1,9 +1,9 @@
 /*
- * Implementação da class FrontEnd.
+ * FrontEnd class implementation.
  *
- * Autor: Edson Alves
- * Data: 20/04/2015
- * Licença: LGPL. Sem copyright.
+ * Author: Tiamat
+ * Date: 20/04/2015
+ * License: LGPL. No copyright.
  */
 #include "frontend.h"
 #include "environment.h"
@@ -33,32 +33,32 @@ FrontEnd::draw_self()
 void
 FrontEnd::update_self(unsigned long elapsed)
 {
-    Uint8 alpha = m_image->alpha();
-
     if (not m_start)
     {
         m_start = elapsed;
     }
 
-    if (elapsed - m_start > 0 and elapsed - m_start < 400)
+    unsigned long now = elapsed - m_start;
+    unsigned long in = m_duration / 6;
+    unsigned long out = m_duration - in;
+    unsigned char alpha = SDL_ALPHA_OPAQUE;
+
+    if (now < in)
     {
-        alpha < SDL_ALPHA_OPAQUE ? alpha++ : alpha = SDL_ALPHA_OPAQUE;
+        alpha *= 1.0*now/in;
     }
-    else if (elapsed - m_start > (m_duration - 400) and elapsed - m_start < m_duration)
+    else if (now > out)
     {
-        alpha > SDL_ALPHA_TRANSPARENT ? alpha-- : alpha = SDL_ALPHA_TRANSPARENT;
+        alpha *= 1 - 1.0*(now - out)/in;
+    }
+
+    if (now > m_duration)
+    {
+        m_done = true;
     }
     else
     {
-        m_image->set_alpha(SDL_ALPHA_OPAQUE);
-    }
-
-    m_image->set_alpha(alpha);
-    SDL_SetTextureAlphaMod(m_image->texture(), alpha);
-
-    if (elapsed - m_start > m_duration)
-    {
-        m_done = true;
+        SDL_SetTextureAlphaMod(m_image->texture(), alpha);
     }
 }
 
