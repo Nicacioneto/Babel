@@ -17,7 +17,7 @@ Menu::Menu(const string& next, const string& image)
     env = Environment::get_instance();
 
     m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/babel_logo.png");
+    m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
     
     const int y_button = env->canvas->h() - 149;
     m_start = new Button(this, "start", "res/images/menu/button.png", X_BUTTON,
