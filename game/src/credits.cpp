@@ -2,10 +2,10 @@
 #include "image.h"
 #include "resourcesmanager.h"
 
-#define X_BACK 273
+#define X_BACK 300
 #define Y_BACK 612
-#define W_BACK 428
-#define H_BACK 103
+#define W_BACK 304
+#define H_BACK 93
 
 Credits::Credits(const string& next, const string& image)
     : Level("", next), m_image(nullptr), m_back(nullptr)

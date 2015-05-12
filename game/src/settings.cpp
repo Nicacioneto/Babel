@@ -4,10 +4,10 @@
 #include "settings.h"
 #include <algorithm>
 
-#define X_BACK 49
+#define X_BACK 150
 #define Y_BACK 480
-#define W_BACK 428
-#define H_BACK 103
+#define W_BACK 304
+#define H_BACK 93
 #define X_UP_RESOLUTION 449
 #define Y_UP_RESOLUTION 169
 #define X_DOWN_RESOLUTION 449

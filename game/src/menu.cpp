@@ -17,11 +17,11 @@ Menu::Menu(const string& next, const string& image)
 
     m_start = new Button(this, "start", "res/images/buttons/start.png",
         X_BUTTON, X_BUTTON, W_BUTTON, H_BUTTON);
-    m_settings = new Button(this, "settings", "res/images/buttons/option.png",
+    m_settings = new Button(this, "settings", "res/images/buttons/settings.png",
         X_BUTTON, Y_BUTTON + SPACING, W_BUTTON, H_BUTTON);
-    m_credits = new Button(this, "credits", "res/images/buttons/option.png",
+    m_credits = new Button(this, "credits", "res/images/buttons/credits.png",
         X_BUTTON, Y_BUTTON + 2*SPACING, W_BUTTON, H_BUTTON);
-    m_exit = new Button(this, "exit", "res/images/buttons/quit.png",
+    m_exit = new Button(this, "exit", "res/images/buttons/exit.png",
         X_BUTTON, Y_BUTTON + 3*SPACING, W_BUTTON, H_BUTTON);
 
     m_start->add_observer(this);
