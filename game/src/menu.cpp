@@ -1,5 +1,6 @@
 #include "button.h"
 #include "menu.h"
+#include "rect.h"
 #include "resourcesmanager.h"
 
 #define X_BUTTON 107
@@ -8,12 +9,13 @@
 #define SPACING 165
 
 Menu::Menu(const string& next, const string& image)
-    : Level("", next), m_image(nullptr), m_logo(nullptr), m_start(nullptr), m_loadgame(nullptr), 
+    : Level("", next), m_image(nullptr), m_logo(nullptr), m_start(nullptr), m_loadgame(nullptr),
         m_settings(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
     env = Environment::get_instance();
-    m_image = env->resources_manager->get_image(image);
 
+    env->canvas->load_font("res/fonts/exo-2/Exo2.0-Medium.otf", 50);
+    m_image = env->resources_manager->get_image(image);
     m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
     
     int y_button = env->canvas->h() - 149;
@@ -61,8 +63,23 @@ Menu::draw_self()
     env->canvas->clear();
     env->canvas->draw(m_image.get());
 
-    int x = (env->canvas->w() - m_logo->w())/2;
-    env->canvas->draw(m_logo.get(), x, 25);
+    int x_logo = (env->canvas->w() - m_logo->w())/2;
+    env->canvas->draw(m_logo.get(), x_logo, 25);
+
+    int x = m_start->x()+15, y = m_start->y()+10, w = m_start->w()-25, h = m_start->h()-25;
+    env->canvas->draw_message("New Game", Rect(x, y, w, h), Color(170, 215, 190));
+
+    x = m_loadgame->x()+15, y = m_loadgame->y()+10, w = m_loadgame->w()-25, h = m_loadgame->h()-25;
+    env->canvas->draw_message("Load Game", Rect(x, y, w, h), Color(170, 215, 190));
+
+    x = m_settings->x()+15, y = m_settings->y()+10, w = m_settings->w()-25, h = m_settings->h()-25;
+    env->canvas->draw_message("Options", Rect(x, y, w, h), Color(170, 215, 190));
+
+    x = m_credits->x()+15, y = m_credits->y()+10, w = m_credits->w()-25, h = m_credits->h()-25;
+    env->canvas->draw_message("Credits", Rect(x, y, w, h), Color(170, 215, 190));
+
+    x = m_exit->x()+15, y = m_exit->y()+10, w = m_exit->w()-25, h = m_exit->h()-25;
+    env->canvas->draw_message("Exit", Rect(x, y, w, h), Color(170, 215, 190));
 }
 
 bool
