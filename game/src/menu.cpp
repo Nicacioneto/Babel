@@ -17,9 +17,9 @@ Menu::Menu(const string& next, const string& image)
     env = Environment::get_instance();
 
     m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
+    m_logo = env->resources_manager->get_image("res/images/babel_logo.png");
     
-    int y_button = env->canvas->h() - 149;
+    const int y_button = env->canvas->h() - 149;
     m_start = new Button(this, "start", "res/images/menu/button.png", X_BUTTON,
         y_button, W_BUTTON, H_BUTTON);
     m_loadgame = new Button(this, "loadgame", "res/images/menu/button.png", X_BUTTON + SPACING,
@@ -52,7 +52,7 @@ Menu::update_self(unsigned long)
 {
     double scale = env->canvas->scale();
 
-    int y_button = env->canvas->h() - 149.0 * scale;
+    const int y_button = env->canvas->h() - 149.0 * scale;
 
     m_start->set_position(scale * X_BUTTON, y_button);
     m_loadgame->set_position(scale * (X_BUTTON + SPACING), y_button);

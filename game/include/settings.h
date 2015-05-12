@@ -11,14 +11,18 @@ class Image;
 class Settings : public Level
 {
 public:
-    Settings(const string& next = "", const string& image = "res/images/settings.png");
+    Settings(const string& next = "menu", const string& image = "res/images/init_screen.png");
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
     shared_ptr<Image> m_image;
+    shared_ptr<Image> m_logo;
+    shared_ptr<Image> m_soundvideo;
+    shared_ptr<Image> m_volume;
+    shared_ptr<Image> m_arrow;
+    Button *m_up_volume, *m_down_volume;
+    Button *m_up_resolution, *m_down_resolution;
     Button *m_back;
-    Button *m_up_resolution;
-    Button *m_down_resolution;
 
     std::vector<int> m_resolutions = {800, 1024};
 
