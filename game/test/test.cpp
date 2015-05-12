@@ -1,11 +1,86 @@
 #include <SDL/SDL.h>
+
+#include "dungeon.h"
+
+int main()
+{
+    SDL_Init(SDL_INIT_VIDEO);
+    atexit(SDL_Quit);
+
+    SDL_Surface *screen = SDL_SetVideoMode(800, 600, 32, 0);
+    SDL_Event event;
+
+    Dungeon dungeon(3, 3, 0, 0);
+    dungeon.draw(screen);
+    SDL_Flip(screen);
+
+    while (true)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
+            {
+                return 0;
+            }
+            else if (event.type == SDL_KEYDOWN)
+            {
+                if (event.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    return 0;
+                }
+
+                if (event.key.keysym.sym == SDLK_UP)
+                {
+                    dungeon.move_forward();
+                    dungeon.draw(screen);
+                    SDL_Flip(screen);
+                }
+
+                if (event.key.keysym.sym == SDLK_DOWN)
+                {
+                    dungeon.move_backward();
+                    dungeon.draw(screen);
+                    SDL_Flip(screen);
+                }
+
+                if (event.key.keysym.sym == SDLK_RIGHT) {
+                    dungeon.turn_right();
+                    dungeon.draw(screen);
+                    SDL_Flip(screen);
+                }
+ 
+                if (event.key.keysym.sym == SDLK_LEFT) {
+                    dungeon.turn_left();
+                    dungeon.draw(screen);
+                    SDL_Flip(screen);
+                }
+            }
+        }
+
+        SDL_Delay(10);
+    }
+ 
+    return 0;
+}
+
+/*
 #include <stdlib.h>
+#include <iostream>
 #include <vector>
+#include <list>
+#include <cmath>
+
+using namespace std;
 
 #define VELOCITY 10
 #define NONE 0
 #define HALL 1
 #define DOOR 2
+
+void maptile(SDL_Surface *screen, SDL_Surface *img, int posx, int posy, int w, 
+    int h, int signal, double ratio, int imgx, int imgy, int imgw, int imgh);
+
+typedef enum { NORTH, EAST, SOUTH, WEST } Direction;
 
 typedef struct _Position
 {
@@ -14,9 +89,6 @@ typedef struct _Position
     int right = 0;
 } Position;
 
-Uint32 getpixel(SDL_Surface *surface, int x, int y);
-
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
 
 void map_center(SDL_Surface *screen, SDL_Surface *img, const SDL_Rect& dest);
 
@@ -35,13 +107,7 @@ SDL_Surface *door;
 SDL_Surface *hall;
 SDL_Surface *ceiling;
 
-int main()
-{
-    std::vector<std::vector<Position>> map;
-    SDL_Init(SDL_INIT_VIDEO);
-    atexit(SDL_Quit);
-
-    SDL_Surface *screen = SDL_SetVideoMode(800, 600, 32, 0);
+    std::vector< std::vector<Position> > map;
 
     SDL_Surface *img = SDL_LoadBMP("res/images/door.bmp");
     door = SDL_DisplayFormat(img);
@@ -74,7 +140,7 @@ int main()
     map.push_back(temp);
 
 
-    /* 3 parades da esquerda com o tamanho diferente */
+     3 parades da esquerda com o tamanho diferente 
     // SDL_Rect left { 330, 230, 55, 140 };
     // map_left(screen, hall, left, 0.5);
 
@@ -102,9 +168,10 @@ int main()
 
     draw(screen, map[0], step);
 
+    Dungeon dungeon(2, 2, 1, 0);;
+    dungeon.draw(screen);
     SDL_Flip(screen);
 
-    SDL_Event event;
     while (true)
     {
         while (SDL_PollEvent(&event))
@@ -113,12 +180,17 @@ int main()
             {
                 return 0;
             }
-            else if (event.type == SDL_KEYDOWN)
+           else if (event.type == SDL_KEYDOWN)
             {
                 if (event.key.keysym.sym == SDLK_UP)
                 {
-                    step++;
-                    draw(screen, map[0], step);
+                    dungeon.move_forward();
+                    dungeon.draw(screen);
+                    SDL_Flip(screen);
+                } else if (event.key.keysym.sym == SDLK_DOWN)
+                {
+                    dungeon.move_backward();
+                    dungeon.draw(screen);
                     SDL_Flip(screen);
                 }
             }
@@ -129,71 +201,8 @@ int main()
 
     SDL_FreeSurface(door);
     SDL_FreeSurface(hall);
+    
     return 0;
-}
-
-Uint32 getpixel(SDL_Surface *surface, int x, int y)
-{
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-
-    switch(bpp) {
-    case 1:
-        return *p;
-        break;
-
-    case 2:
-        return *(Uint16 *)p;
-        break;
-
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            return p[0] << 16 | p[1] << 8 | p[2];
-        else
-            return p[0] | p[1] << 8 | p[2] << 16;
-        break;
-
-    case 4:
-        return *(Uint32 *)p;
-        break;
-
-    default:
-        return 0;       /* shouldn't happen, but avoids warnings */
-    }
-} 
-
-void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
-{
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to set */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-
-    switch(bpp) {
-    case 1:
-        *p = pixel;
-        break;
-
-    case 2:
-        *(Uint16 *)p = pixel;
-        break;
-
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-            p[0] = (pixel >> 16) & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = pixel & 0xff;
-        } else {
-            p[0] = pixel & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = (pixel >> 16) & 0xff;
-        }
-        break;
-
-    case 4:
-        *(Uint32 *)p = pixel;
-        break;
-    }
 }
 
 void
@@ -383,3 +392,36 @@ void draw(SDL_Surface *screen, std::vector<Position> map, int step)
     if (map[2].right == DOOR)
         map_right(screen, door, right, 0.5);
 }
+
+void maptile(SDL_Surface *screen, SDL_Surface *img, int posx, int posy,
+    int w, int h, int signal, double ratio, int imgx, int imgy, int imgw, int imgh)
+{
+    double top_y = posy;
+    double bot_y = posy + h - 1;
+
+    int finalx = posx + signal*w;
+
+    for (int i = posx; i != finalx; i += signal)
+    {
+        for (int j = top_y; j <= bot_y; ++j)
+        {
+            double x = (double) abs(posx - i)/w;
+            double y = (double) (j - top_y)/(bot_y - top_y);
+
+            if (signal < 0)
+            {
+                x = 1.0 - x;
+            }
+
+            int px = x*imgw + imgx;
+            int py = y*imgh + imgy;
+
+            Uint32 color = getpixel(img, px, posy);
+            putpixel(screen, i, j, color);
+        }
+        
+        top_y -= ratio;
+        bot_y += ratio;
+    }
+}
+*/
