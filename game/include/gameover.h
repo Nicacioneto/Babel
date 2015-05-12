@@ -11,8 +11,12 @@ class Image;
 class GameOver : public Level, public KeyboardEventListener
 {
 public:
-    GameOver(const string& next = "menu", const string& image = "");
+    GameOver(const string& next = "menu");
+    ~GameOver();
     
+private:
+	void update_self(unsigned long elapsed);
+	void draw_self();
     bool onKeyboardEvent(const KeyboardEvent& event);
 };
 

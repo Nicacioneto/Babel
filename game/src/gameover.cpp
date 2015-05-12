@@ -8,32 +8,40 @@
 #include "gameover.h"
 #include "rect.h"
 
-GameOver::GameOver(const string& next, const string&)
+GameOver::GameOver(const string& next)
     : Level("", next)
 {
     env = Environment::get_instance();
+
     env->events_manager->register_keyboard_event_listener(this);
     env->canvas->load_font("res/fonts/FLATS.ttf", 100);
+}
 
-    int x = env->canvas->w()/8;
-    int y = env->canvas->h()/4;
-    int h = 3*env->canvas->w()/4;
-    int w = env->canvas->h()/2;
+GameOver::~GameOver()
+{
+    env->events_manager->unregister_keyboard_event_listener(this);
+}
 
-    Rect rect = Rect(x, y, h, w);
+void
+GameOver::update_self(unsigned long)
+{
+    set_position(env->canvas->w()/8, env->canvas->h()/4);
+    set_dimensions(3*env->canvas->w()/4, env->canvas->h()/2);
+}
+
+void
+GameOver::draw_self()
+{
     env->canvas->clear();
-    env->canvas->draw_message("GAME OVER", rect);
+    env->canvas->draw_message("GAME OVER", bounding_box());
 }
 
 bool
 GameOver::onKeyboardEvent(const KeyboardEvent& event)
 {
-    if (event.state() == KeyboardEvent::PRESSED and event.key() == KeyboardEvent::SPACE)
+    if (event.key() == KeyboardEvent::SPACE)
     {
-        env = Environment::get_instance();
-        env->events_manager->unregister_keyboard_event_listener(this);
         m_done = true;
-
         return true;
     }
 
