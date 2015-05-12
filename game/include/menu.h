@@ -10,13 +10,15 @@ class Image;
 class Menu : public Level
 {
 public:
-    Menu(const string& next = "", const string& image = "res/images/menu2.png");
+    Menu(const string& next = "", const string& image = "res/images/menu/menu.png");
     
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
     shared_ptr<Image> m_image;
+    shared_ptr<Image> m_logo;
     Button *m_start;
+    Button *m_loadgame;
     Button *m_settings;
     Button *m_credits;
     Button *m_exit;
