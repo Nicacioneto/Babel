@@ -14,7 +14,7 @@ Menu::Menu(const string& next, const string& image)
 {
     env = Environment::get_instance();
 
-    env->canvas->load_font("res/fonts/exo-2/Exo2.0-Medium.otf", 50);
+    env->canvas->load_font("res/fonts/exo-2/Exo2.0-Regular.otf", 50);
     m_image = env->resources_manager->get_image(image);
     m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
     
@@ -66,19 +66,26 @@ Menu::draw_self()
     int x_logo = (env->canvas->w() - m_logo->w())/2;
     env->canvas->draw(m_logo.get(), x_logo, 25);
 
-    int x = m_start->x()+15, y = m_start->y()+10, w = m_start->w()-25, h = m_start->h()-25;
+    double scale = env->canvas->scale();
+
+    int x = (m_start->x()+15)/scale, y = (m_start->y()+10)/scale;
+    int w = m_start->w()-25, h = m_start->h()-25;
     env->canvas->draw_message("New Game", Rect(x, y, w, h), Color(170, 215, 190));
 
-    x = m_loadgame->x()+15, y = m_loadgame->y()+10, w = m_loadgame->w()-25, h = m_loadgame->h()-25;
+    x = (m_loadgame->x()+15)/scale, y = (m_loadgame->y()+10)/scale;
+    w = m_loadgame->w()-25, h = m_loadgame->h()-25;
     env->canvas->draw_message("Load Game", Rect(x, y, w, h), Color(170, 215, 190));
 
-    x = m_settings->x()+15, y = m_settings->y()+10, w = m_settings->w()-25, h = m_settings->h()-25;
+    x = (m_settings->x()+15)/scale, y = (m_settings->y()+10)/scale;
+    w = m_settings->w()-25, h = m_settings->h()-25;
     env->canvas->draw_message("Options", Rect(x, y, w, h), Color(170, 215, 190));
 
-    x = m_credits->x()+15, y = m_credits->y()+10, w = m_credits->w()-25, h = m_credits->h()-25;
+    x = (m_credits->x()+15)/scale, y = (m_credits->y()+10)/scale;
+    w = m_credits->w()-25, h = m_credits->h()-25;
     env->canvas->draw_message("Credits", Rect(x, y, w, h), Color(170, 215, 190));
 
-    x = m_exit->x()+15, y = m_exit->y()+10, w = m_exit->w()-25, h = m_exit->h()-25;
+    x = (m_exit->x()+15)/scale, y = (m_exit->y()+10)/scale;
+    w = m_exit->w()-25, h = m_exit->h()-25;
     env->canvas->draw_message("Exit", Rect(x, y, w, h), Color(170, 215, 190));
 }
 

@@ -83,7 +83,8 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     {
         return false;
     }
-    else if (bounding_box().contains(event.x(), event.y()))
+
+    if (bounding_box().contains(event.x(), event.y()))
     {
         m_state = ON_HOVER;
         return true;
