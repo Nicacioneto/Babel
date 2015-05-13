@@ -18,6 +18,7 @@ private:
     Level * load_settings();
     Level * load_credits();
     Level * load_gameover();
+    Level * load_play();
 };
 
 #endif
