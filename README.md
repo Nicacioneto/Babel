@@ -15,6 +15,12 @@ Equipe Tiamat
 
 Uso
 ------------
+Para rodar o jogo é necessário realizar a instalação prévia da engine. Siga os passos:
+```
+$ git clone http://github.com/ije-tiamat/ije.git
+$ cd engine
+$ sudo make install
+```
 ```
 $ git clone https://github.com/ije-tiamat/babel.git
 $ cd game
@@ -22,10 +28,9 @@ $ make
 $ bin/babel
 ```
 
-
 Requisitos
 ------------
-Antes de instalar Babel, é necessário instalar os seguintes pacotes:
+Antes de rodar Babel, é necessário instalar os seguintes pacotes:
 - Simple DirectMedia Layer (SDL2) (2.0.3)
     * mantenedor: http://www.libsdl.org/download-2.0.php
     * debian/ubuntu: sudo apt-get install libsdl2-dev
