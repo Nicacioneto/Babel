@@ -23,6 +23,7 @@ private:
     Button *m_up_volume, *m_down_volume;
     Button *m_up_resolution, *m_down_resolution;
     Button *m_back;
+    int m_vol = 5;
 
     std::vector<int> m_resolutions = {800, 1024};
 

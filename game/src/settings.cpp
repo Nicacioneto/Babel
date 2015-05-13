@@ -58,7 +58,8 @@ Settings::update_self(unsigned long)
     m_back->set_position((env->canvas->w() - W_BUTTON * scale)/2, env->canvas->h() - 149.0 * scale);
     m_up_volume->set_position(296 * scale, (env->canvas->h() - 25 * scale)/2);
     m_down_volume->set_position(296 * scale, env->canvas->h()/2);
-    m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 25*scale)/2);
+    m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale,
+        (env->canvas->h() - 25*scale)/2);
     m_down_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2);
 }
 
@@ -73,15 +74,19 @@ Settings::draw_self()
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
     env->canvas->draw(m_soundvideo.get(), 189 * scale, 321 * scale);
     env->canvas->draw(m_arrow.get(), 296 * scale, (env->canvas->h() - 20 * scale)/2);
-    env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 20 * scale)/2);
+    env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale,
+        (env->canvas->h() - 20 * scale)/2);
 
-    for (int i = 0; i < 5*17; i+=17)
+    int i;
+    for (i = 0; i < (10 - m_vol)*17; i+=17)
     {
-        env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale, (env->canvas->h() - 15 * scale)/2);
+        env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale,
+            (env->canvas->h() - 15 * scale)/2);
     }
-    for (int i = 85; i < 85 + 5*17; i+=17)
+    for (int j = i; j < i + m_vol*17; j+=17)
     {
-        env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+i) * scale, (env->canvas->h() - 15 * scale)/2);
+        env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+j) * scale,
+            (env->canvas->h() - 15 * scale)/2);
     }
 
     font->set_size(24 * scale);
@@ -149,6 +154,20 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
 
         double scale = (double) env->canvas->w() / m_resolutions[m_resolutions.size() - 1];
         env->canvas->set_scale(scale);
+    }
+    else if (button->id() == "up_volume")
+    {
+        if (++m_vol > 10)
+        {
+            m_vol = 10;
+        }
+    }
+    else if (button->id() == "down_volume")
+    {
+        if (--m_vol < 0)
+        {
+            m_vol = 0;
+        }
     }
 
     return true;
