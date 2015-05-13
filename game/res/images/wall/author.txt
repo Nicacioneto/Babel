@@ -1,9 +1,0 @@
-Dungeon
-Game	Super Mario All-Stars: Super Mario Bros. 3
-Section	Backgrounds
-Filesize	33.71 KB
-Submitter	SuperArthurBros
-Format	PNG (image/png)
-Size	512x471 pixels
-Hits	1,139
-link	http://www.spriters-resource.com/snes/supermariobros3/sheet/65449/
