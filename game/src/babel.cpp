@@ -50,11 +50,11 @@ Babel::load_frontend(const string& id)
 {
     if (id == "tiamat_logo")
     {
-        return new FrontEnd("sdl_logo", "res/images/frontend/tiamat_logo.png");
+        return new FrontEnd("sdl_logo", "res/images/frontend/tiamat-logo.png");
     }
     else if (id == "sdl_logo")
     {
-        return new FrontEnd("classification", "res/images/frontend/sdl_logo.png");
+        return new FrontEnd("classification", "res/images/frontend/sdl-logo.png");
     }
     else if (id == "classification")
     {

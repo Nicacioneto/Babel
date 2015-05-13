@@ -15,7 +15,7 @@ Settings::Settings(const string& next, const string& image)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
+    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
     m_soundvideo = env->resources_manager->get_image("res/images/menu/sound-video.png");
     m_volume = env->resources_manager->get_image("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_image("res/images/menu/arrow.png");

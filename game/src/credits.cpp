@@ -14,7 +14,7 @@ Credits::Credits(const string& next, const string& image)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel_logo.png");
+    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
     m_credits = env->resources_manager->get_image("res/images/menu/credits.png");
 
     m_back = new Button(this, "back", "res/images/menu/button.png", (env->canvas->w() - W_BUTTON)/2,
