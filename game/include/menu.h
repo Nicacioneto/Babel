@@ -17,8 +17,7 @@ public:
 private:
     shared_ptr<Image> m_image;
     shared_ptr<Image> m_logo;
-    Button *m_start;
-    Button *m_loadgame;
+    Button *m_play;
     Button *m_settings;
     Button *m_credits;
     Button *m_exit;
