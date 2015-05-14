@@ -3,7 +3,6 @@
 #include "play.h"
 #include "rect.h"
 #include "resourcesmanager.h"
-#include <iostream>
 
 #define Y_BUTTON 266
 #define W_BUTTON 305

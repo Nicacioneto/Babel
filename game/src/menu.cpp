@@ -3,7 +3,6 @@
 #include "menu.h"
 #include "rect.h"
 #include "resourcesmanager.h"
-#include <iostream>
 
 #define X_BUTTON 188
 #define W_BUTTON 140
