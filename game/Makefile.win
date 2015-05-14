@@ -6,6 +6,7 @@ LIB_DIR = lib
 BIN_DIR = bin
 RES_DIR = res
 DLL_DIR = res/dll
+FILES_DIR = files
 
 CC = x86_64-w64-mingw32-g++
 SDL_MINGW_ROOT = /usr/x86_64-w64-mingw32
@@ -28,7 +29,7 @@ all: $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $^
-	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
+	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR) $(FILES_DIR)
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(OBJ)
@@ -40,7 +41,7 @@ clean:
 	@find . -name *.o -exec rm {} \;
 	@find . -name *.d -exec rm {} \;
 	@find . -name *.dll -exec rm {} \;
-	@rm -rf *~ *.o bin out.txt obj lib/babel.a
+	@rm -rf *~ *.o bin/ obj/ files/
 	@rm -f *.dll
 	@rm -f LICENSES.txt
 

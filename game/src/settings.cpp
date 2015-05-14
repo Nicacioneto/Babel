@@ -7,11 +7,12 @@
 
 #define W_BUTTON 140
 #define H_BUTTON 60
+#define X_VOLUME 296
 
 Settings::Settings(const string& next, const string& image)
     : Level("", next), m_image(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
-        m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr)
+        m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr), m_vol(5)
 {
     env = Environment::get_instance();
     m_image = env->resources_manager->get_image(image);
@@ -20,14 +21,17 @@ Settings::Settings(const string& next, const string& image)
     m_volume = env->resources_manager->get_image("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_image("res/images/menu/arrow.png");
 
+    string vol = m_file->readText("volume.txt");
+    m_vol = atoi(vol.c_str());
+
     m_back = new Button(this, "back", "res/images/menu/button.png",
         (env->canvas->w() - W_BUTTON)/2, env->canvas->h() - 149, W_BUTTON, H_BUTTON);
 
     m_up_volume = new Button(this, "up_volume", "",
-        296, (env->canvas->h() - 25)/2, 12, 12);
+        X_VOLUME, (env->canvas->h() - 25)/2, 12, 12);
 
     m_down_volume = new Button(this, "down_volume", "",
-        296, env->canvas->h()/2, 12, 12);
+        X_VOLUME, env->canvas->h()/2, 12, 12);
 
     m_up_resolution = new Button(this, "up_resolution", "",
         env->canvas->w()/2 + 140, (env->canvas->h() - 25)/2, 12, 12);
@@ -56,8 +60,8 @@ Settings::update_self(unsigned long)
 {
     double scale = env->canvas->scale();
     m_back->set_position((env->canvas->w() - W_BUTTON * scale)/2, env->canvas->h() - 149.0 * scale);
-    m_up_volume->set_position(296 * scale, (env->canvas->h() - 25 * scale)/2);
-    m_down_volume->set_position(296 * scale, env->canvas->h()/2);
+    m_up_volume->set_position(X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2);
+    m_down_volume->set_position(X_VOLUME * scale, env->canvas->h()/2);
     m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale,
         (env->canvas->h() - 25*scale)/2);
     m_down_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2);
@@ -73,7 +77,7 @@ Settings::draw_self()
     env->canvas->draw(m_image.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
     env->canvas->draw(m_soundvideo.get(), 189 * scale, 321 * scale);
-    env->canvas->draw(m_arrow.get(), 296 * scale, (env->canvas->h() - 20 * scale)/2);
+    env->canvas->draw(m_arrow.get(), X_VOLUME * scale, (env->canvas->h() - 20 * scale)/2);
     env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale,
         (env->canvas->h() - 20 * scale)/2);
 
@@ -169,6 +173,8 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
             m_vol = 0;
         }
     }
+
+    m_file->writeTextOnFile(std::to_string(m_vol), "volume.txt");
 
     return true;
 }

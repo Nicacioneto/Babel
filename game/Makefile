@@ -3,6 +3,7 @@ INC_DIR = include
 OBJ_DIR = obj
 LIB_DIR = lib
 BIN_DIR = bin
+FILES_DIR = files
 
 CC = g++
 
@@ -19,7 +20,7 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 .PHONY: clean depend
 
 all:
-	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
+	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR) $(FILES_DIR)
 	@make $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -33,7 +34,7 @@ $(GAME): $(GAME_MAIN) $(OBJ)
 
 clean:
 	@echo Cleaning...
-	@rm -rf obj/ bin/ *~
+	@rm -rf obj/ bin/ files/ *~
 
 dist-clean: clean
 	@echo Removing engine...

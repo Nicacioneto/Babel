@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include "button.h"
+#include "file.h"
 #include "level.h"
 #include <memory>
 #include <vector>
@@ -23,7 +24,8 @@ private:
     Button *m_up_volume, *m_down_volume;
     Button *m_up_resolution, *m_down_resolution;
     Button *m_back;
-    int m_vol = 5;
+    File *m_file;
+    int m_vol;
 
     std::vector<int> m_resolutions = {800, 1024};
 
