@@ -7,6 +7,11 @@
  */
 #include "file.h"
 
+using std::endl;
+using std::ifstream;
+using std::ios;
+using std::ofstream;
+
 string
 File::readText(string file)
 {

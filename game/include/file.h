@@ -7,6 +7,8 @@
  */
 #include <fstream>
 
+using std::string;
+
 class File
 {
 public:
