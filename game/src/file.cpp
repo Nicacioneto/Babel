@@ -8,12 +8,13 @@
 #include "file.h"
 
 string
-File::readText(string file) {
+File::readText(string file)
+{
     const string directory_files = "files/";
     file = directory_files + file;
     ifstream fin(file.c_str());
 
-    if (!fin.is_open())
+    if (fin.is_open() == false)
     {
         return "5";
     }
@@ -30,10 +31,13 @@ File::writeTextOnFile(const string& text, string file, bool append)
 {
     const string directory_files = "files/";
     file = directory_files + file;
-    if (append) {
+    if (append)
+    {
         ofstream fout(file.c_str(), ios::app);
         fout << text << endl;
-    } else {
+    }
+    else
+    {
         ofstream fout(file.c_str());
         fout << text << endl;
     }
