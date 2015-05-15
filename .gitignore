@@ -57,6 +57,7 @@
 
 # Binaries dir
 bin/
+prog
 
 # Temp files
 *~
