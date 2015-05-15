@@ -3,22 +3,23 @@
 
 #include "room.h"
 #include "direction.h"
+#include <core/level.h>
 
 #include <list>
 
 using std::list;
 
+class Texture;
+
 #define MAXW 10
 #define MAXH 10
 #define MAXT 10
 
-class Dungeon
+class Dungeon : public Level
 {
 public:
-    Dungeon(int w, int h, int x, int y, int steps = 0, Direction direction =
-        Direction());
-
-    void draw(SDL_Surface *screen);
+    Dungeon(int x = 0, int y = 0, int w = MAXW, int h = MAXH, int steps = 0,
+        Direction direction = Direction());
 
     void move_backward();
     void move_forward();
@@ -27,12 +28,15 @@ public:
     void turn_right();
 
 private:
-    int m_w, m_h, m_x, m_y, m_steps;
+    void draw_self();
+    void update_self(unsigned long elapsed);
+
+    int m_x, m_y, m_w, m_h, m_steps;
     Direction m_direction;
     Room m_rooms[MAXW][MAXH];
-    SDL_Surface* m_tiles[MAXT + 1];
+    shared_ptr<Texture> m_tiles[MAXT + 1];
 
-    list<SDL_Rect> planes(int w, int h);
+    list<Rect> planes(int w, int h);
 };
 
 #endif

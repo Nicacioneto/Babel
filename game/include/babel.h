@@ -18,6 +18,7 @@ private:
     Level * load_play();
     Level * load_gamemode();
     Level * load_gameover();
+    Level * load_dungeon();
 };
 
 #endif

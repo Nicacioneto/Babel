@@ -23,7 +23,7 @@ TEST = $(BIN_DIR)/test
 all:
 	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@make $(GAME)
-	@make $(TEST)
+	# @make $(TEST)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $^ ...

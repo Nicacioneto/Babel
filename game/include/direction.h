@@ -13,22 +13,21 @@ public:
     static constexpr int EAST = 1;
     static constexpr int SOUTH = 2;
     static constexpr int WEST = 3;
+    
+    Direction(int front = NORTH);
 
-    Direction(int front = NORTH) : m_front(front) {}
+    int front() const;
+    int back() const;
+    int next() const;
+    int prev() const;
 
-    int front() const { return m_front; }
-    int back() const { return (m_front + 2) % 4; }
-    int next() const { return (m_front + 1) % 4; }
-    int prev() const { return (m_front + 3) % 4; }
+    void turn_left();
+    void turn_right();
 
-    void turn_left() { m_front = (m_front + 3) % 4; }
-    void turn_right() { m_front = (m_front + 1) % 4; }
-
-    pair<int, int> vector() { return Direction::m_vectors[m_front]; }
+    pair<int, int> vector();
 
 private:
     int m_front;
-    static const pair<int, int> m_vectors[];
 };
 
 #endif

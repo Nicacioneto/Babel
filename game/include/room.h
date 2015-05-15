@@ -4,20 +4,10 @@
 class Room
 {
 public:
-    Room(int north = 0, int east = 0, int south = 0, int west = 0)
-        : m_tiles { north, east, south, west }
-    {
-    }
+    Room(int north = 0, int east = 0, int south = 0, int west = 0);
 
-    int tile(int direction) const
-    {
-        return m_tiles[direction];
-    }
-
-    void set_tile(int direction, int tile)
-    {
-        m_tiles[direction] = tile;
-    }
+    int tile(int direction) const;
+    void set_tile(int direction, int tile);
 
 private:
     int m_tiles[4];
