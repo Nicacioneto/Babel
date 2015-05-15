@@ -1,38 +1,43 @@
 #include "dungeon.h"
+#include "file.h"
 #include "mapping.h"
 #include <core/rect.h>
+#include <vector>
+
+using std::vector;
 
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
 {
-    m_rooms[0][0].set_tile(Direction::EAST, 1);
-    m_rooms[0][0].set_tile(Direction::SOUTH, 2);
-    m_rooms[0][0].set_tile(Direction::WEST, 1);
+    load_map();
+    // m_rooms[0][0].set_tile(Direction::EAST, 1);
+    // m_rooms[0][0].set_tile(Direction::SOUTH, 2);
+    // m_rooms[0][0].set_tile(Direction::WEST, 1);
 
-    m_rooms[1][0].set_tile(Direction::EAST, 1);
-    m_rooms[1][0].set_tile(Direction::WEST, 1);
+    // m_rooms[1][0].set_tile(Direction::EAST, 1);
+    // m_rooms[1][0].set_tile(Direction::WEST, 1);
 
-    m_rooms[2][0].set_tile(Direction::NORTH, 1);
-    m_rooms[2][0].set_tile(Direction::WEST, 1);
+    // m_rooms[2][0].set_tile(Direction::NORTH, 1);
+    // m_rooms[2][0].set_tile(Direction::WEST, 1);
 
-    m_rooms[2][1].set_tile(Direction::NORTH, 1);
-    m_rooms[2][1].set_tile(Direction::SOUTH, 1);
+    // m_rooms[2][1].set_tile(Direction::NORTH, 1);
+    // m_rooms[2][1].set_tile(Direction::SOUTH, 1);
 
-    m_rooms[2][2].set_tile(Direction::NORTH, 1);
-    m_rooms[2][2].set_tile(Direction::EAST, 1);
+    // m_rooms[2][2].set_tile(Direction::NORTH, 1);
+    // m_rooms[2][2].set_tile(Direction::EAST, 1);
 
-    m_rooms[1][2].set_tile(Direction::EAST, 1);
-    m_rooms[1][2].set_tile(Direction::SOUTH, 1);
+    // m_rooms[1][2].set_tile(Direction::EAST, 1);
+    // m_rooms[1][2].set_tile(Direction::SOUTH, 1);
 
-    m_rooms[1][1].set_tile(Direction::NORTH, 1);
-    m_rooms[1][1].set_tile(Direction::WEST, 1);
+    // m_rooms[1][1].set_tile(Direction::NORTH, 1);
+    // m_rooms[1][1].set_tile(Direction::WEST, 1);
 
-    m_rooms[0][1].set_tile(Direction::WEST, 1);
-    m_rooms[0][1].set_tile(Direction::SOUTH, 1);
+    // m_rooms[0][1].set_tile(Direction::WEST, 1);
+    // m_rooms[0][1].set_tile(Direction::SOUTH, 1);
 
-    m_rooms[0][2].set_tile(Direction::NORTH, 1);
-    m_rooms[0][2].set_tile(Direction::EAST, 2);
-    m_rooms[0][2].set_tile(Direction::SOUTH, 1);
+    // m_rooms[0][2].set_tile(Direction::NORTH, 1);
+    // m_rooms[0][2].set_tile(Direction::EAST, 2);
+    // m_rooms[0][2].set_tile(Direction::SOUTH, 1);
 
     env = Environment::get_instance();
     m_tiles[1] = env->resources_manager->get_texture("res/images/hall.bmp");
@@ -77,7 +82,7 @@ Dungeon::draw_self()
         if (east_tile)
         {
             mapping.draw(m_tiles[east_tile].get(), f, b);
-        } 
+        }
         
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
@@ -102,7 +107,7 @@ Dungeon::draw_self()
 // printf("back = (%d, %d), %dx%d\n", back.x(), back.y(), back.w(), back.h());
             mapping.draw(m_tiles[north_tile].get(), back);
             break;
-        } 
+        }
         else
         {
             pair<int, int> v = m_direction.vector();
@@ -116,7 +121,7 @@ Dungeon::draw_self()
                 idy = newy;
                 front = back;
 // printf("idx = %d, idy = %d\n", idx, idy);
-            } 
+            }
             else
             {
                 break;
@@ -156,7 +161,8 @@ Dungeon::planes(int sw, int sh)
     Rect plane { (double)x, (double)y, (double)w, (double)h };
     ps.push_front(plane);
 
-    do {
+    do
+    {
         x -= dx;
         y -= dy;
         w += 2*dx;
@@ -183,8 +189,8 @@ Dungeon::move_forward()
     {
         m_steps = next;
         
-    } 
-    else 
+    }
+    else
     {
         int tile = m_rooms[m_x][m_y].tile(m_direction.front());
 
@@ -206,8 +212,8 @@ Dungeon::move_backward()
     if (next > -1)
     {
         m_steps = next;
-    } 
-    else 
+    }
+    else
     {
         int tile = m_rooms[m_x][m_y].tile(m_direction.back());
 
@@ -233,4 +239,55 @@ Dungeon::turn_right()
 {
     m_direction.turn_right();
     m_steps = 2;
+}
+
+void
+Dungeon::load_map()
+{
+    string s = File().readText("map.txt");
+
+    vector<vector<int>> map;
+
+    vector<int> p;
+    for (unsigned int i = 0; i < s.size(); ++i)
+    {
+        char c = s[i];
+
+        if (c == ' ')
+        {
+            continue;
+        }
+
+        if (c == '\n')
+        {
+            map.push_back(p);
+            p.clear();
+            continue;
+        }
+
+        p.push_back(c - '0');
+    }
+
+    for (unsigned int u = 0, i = map.size()-1; u < map.size(); ++u, --i)
+    {
+        for (unsigned int v = 0, j = 0; v < map[i].size(); ++v)
+        {
+            switch (v % 4)
+            {
+                case 0:
+                    m_rooms[i][j].set_tile(Direction::NORTH, map[u][v]);
+                    break;
+                case 1:
+                    m_rooms[i][j].set_tile(Direction::EAST, map[u][v]);
+                    break;
+                case 2:
+                    m_rooms[i][j].set_tile(Direction::SOUTH, map[u][v]);
+                    break;
+                case 3:
+                    m_rooms[i][j].set_tile(Direction::WEST, map[u][v]);
+                    j++;
+                    break;
+            }
+        }
+    }
 }

@@ -25,8 +25,12 @@ File::readText(string file)
     }
 
     string line, text;
-    getline(fin, line);
-    text += line;
+    while (getline(fin, line))
+    {
+        text += line + '\n';
+    }
+
+    fin.close();
 
     return text;
 }
