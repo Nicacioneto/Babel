@@ -1,5 +1,6 @@
 #include "babel.h"
 #include "credits.h"
+#include "gamemode.h"
 #include "gameover.h"
 #include "menu.h"
 #include "play.h"
@@ -29,10 +30,6 @@ Babel::load_level(const string& id)
     {
         return load_menu();
     }
-    else if (id == "play")
-    {
-        return load_play();
-    }
     else if (id == "settings")
     {
         return load_settings();
@@ -40,6 +37,14 @@ Babel::load_level(const string& id)
     else if (id == "credits")
     {
         return load_credits();
+    }
+    else if (id == "play")
+    {
+        return load_play();
+    }
+    else if (id == "gamemode")
+    {
+        return load_gamemode();
     }
     else if (id == "gameover")
     {
@@ -87,13 +92,19 @@ Babel::load_credits()
 }
 
 Level *
-Babel::load_gameover()
-{
-    return new GameOver();
-}
-
-Level *
 Babel::load_play()
 {
     return new Play();
+}
+
+Level *
+Babel::load_gamemode()
+{
+    return new GameMode();
+}
+
+Level *
+Babel::load_gameover()
+{
+    return new GameOver();
 }
