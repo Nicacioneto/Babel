@@ -24,13 +24,19 @@ Play::Play(const string& next, const string& texture)
     const int x_button = (env->canvas->w() - 305) / 2;
     m_slot1 = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
         Y_BUTTON, W_BUTTON, H_BUTTON);
+    m_slot1->set_text("New Game", Color(170, 215, 190));
+
     m_slot2 = new Button(this, "slot2", "res/images/menu/stripe.png", x_button,
         Y_BUTTON + SPACING * 2, W_BUTTON, H_BUTTON);
+    m_slot2->set_text("New Game", Color(170, 215, 190));
+
     m_slot3 = new Button(this, "slot3", "res/images/menu/stripe.png", x_button,
         Y_BUTTON + SPACING * 3, W_BUTTON, H_BUTTON);
+    m_slot3->set_text("New Game", Color(170, 215, 190));
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
         (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
+    m_back->set_text("Back", Color(170, 215, 190));
 
     m_slot1->add_observer(this);
     m_slot2->add_observer(this);
@@ -54,10 +60,18 @@ Play::update_self(unsigned long)
     const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
 
     m_slot1->set_position(x_button, scale * (Y_BUTTON + SPACING));
+    m_slot1->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
+
     m_slot2->set_position(x_button, scale * (Y_BUTTON + SPACING * 2));
+    m_slot2->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
+
     m_slot3->set_position(x_button, scale * (Y_BUTTON + SPACING * 3));
+    m_slot3->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
+
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
         env->canvas->h() - 149.0 * scale);
+    m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
+
 
     shared_ptr<Font> font = env->canvas->font();
     font->set_size(22 * scale);
@@ -77,20 +91,6 @@ Play::draw_self()
     env->canvas->draw(m_slot_bar.get(), (env->canvas->w() - m_slot_bar->w() * scale)/2,
         (Y_BUTTON + 30) * scale);
 
-    set_position(m_slot1->x() + 32 * scale, m_slot1->y() + 5 * scale);
-    env->canvas->draw("New Game", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    set_position(m_slot2->x() + 32 * scale, m_slot2->y() + 5 * scale);
-    env->canvas->draw("New Game", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    set_position(m_slot3->x() + 32 * scale, m_slot3->y() + 5 * scale);
-    env->canvas->draw("New Game", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    set_position(m_back->x() + 50 * scale, m_back->y() + 15 * scale);
-    env->canvas->draw("Back", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    shared_ptr<Font> font = env->canvas->font();
-    font->set_size(24 * scale);
     set_position((env->canvas->w() - 115 * scale) / 2,  192 * scale);
     env->canvas->draw("PLAY GAME", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
