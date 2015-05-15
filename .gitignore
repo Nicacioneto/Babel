@@ -61,6 +61,4 @@ prog
 
 # Temp files
 *~
-
-# Data files
-files/
+game/res/files/volume.txt

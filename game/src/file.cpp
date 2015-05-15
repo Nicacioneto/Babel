@@ -15,7 +15,7 @@ using std::ofstream;
 string
 File::readText(string file)
 {
-    const string directory_files = "files/";
+    const string directory_files = "res/files/";
     file = directory_files + file;
     ifstream fin(file.c_str());
 
@@ -34,7 +34,7 @@ File::readText(string file)
 void
 File::writeTextOnFile(const string& text, string file, bool append)
 {
-    const string directory_files = "files/";
+    const string directory_files = "res/files/";
     file = directory_files + file;
     if (append)
     {
