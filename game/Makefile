@@ -23,10 +23,9 @@ TEST = $(BIN_DIR)/test
 all:
 	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@make $(GAME)
-	# @make $(TEST)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@echo Building $^ ...
+	@echo Building $^
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(GAME_MAIN) $(OBJ)
@@ -34,15 +33,8 @@ $(GAME): $(GAME_MAIN) $(OBJ)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) -o $@ $(LIBS)
 	@echo --- Done
 
-$(TEST): $(SRC_DIR)/test.cpp
-	@$(CC) $(CFLAGS) $< -o $@ -lSDL
-
 clean:
 	@echo Cleaning...
 	@rm -rf obj/ bin/ *~
-
-dist-clean: clean
-	@echo Removing engine...
-	@rm -rf lib/
 
 -include $(OBJ:.o=.d)

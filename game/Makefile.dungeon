@@ -1,5 +1,0 @@
-all:
-	g++ -o prog test/* -Iinclude -std=c++11 -lSDL
-
-win:
-	x86_64-w64-mingw32-g++ -o prog test/* -Iinclude -std=c++11 -lSDL
