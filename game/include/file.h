@@ -5,13 +5,14 @@
  * Date: 14/05/2015
  * License: LGPL. No copyright.
  */
+#ifndef FILE_H
+#define FILE_H
+
 #include <fstream>
 
 using std::string;
 
-class File
-{
-public:
-    string readText(string file);
-    void writeTextOnFile(const string& text, string file, bool append=0);
-};
+extern string read_file(string file);
+extern void write_file(const string& text, string file, bool append=0);
+
+#endif

@@ -244,7 +244,7 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    string s = File().readText("map.txt");
+    string s = read_file("map.txt");
 
     vector<vector<int>> map;
 

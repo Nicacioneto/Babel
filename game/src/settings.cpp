@@ -1,9 +1,9 @@
+#include "file.h"
 #include "settings.h"
+#include <algorithm>
 #include <core/font.h>
-#include <core/image.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
-#include <algorithm>
 
 #define W_BUTTON_BACK 140
 #define H_BUTTON_BACK 60
@@ -22,8 +22,11 @@ Settings::Settings(const string& next, const string& texture)
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
-    string vol = m_file->readText("volume.txt");
-    m_vol = atoi(vol.c_str());
+    string vol = read_file("volume.txt");
+    if (vol != "")
+    {
+        m_vol = atoi(vol.c_str());
+    }
 
     double scale = env->canvas->scale();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -189,7 +192,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
         }
     }
 
-    m_file->writeTextOnFile(std::to_string(m_vol), "volume.txt");
+    write_file(std::to_string(m_vol), "volume.txt");
 
     return true;
 }

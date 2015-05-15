@@ -12,8 +12,7 @@ using std::ifstream;
 using std::ios;
 using std::ofstream;
 
-string
-File::readText(string file)
+string read_file(string file)
 {
     const string directory_files = "res/files/";
     file = directory_files + file;
@@ -21,7 +20,7 @@ File::readText(string file)
 
     if (fin.is_open() == false)
     {
-        return "5";
+        return "";
     }
 
     string line, text;
@@ -35,8 +34,7 @@ File::readText(string file)
     return text;
 }
 
-void
-File::writeTextOnFile(const string& text, string file, bool append)
+void write_file(const string& text, string file, bool append)
 {
     const string directory_files = "res/files/";
     file = directory_files + file;
