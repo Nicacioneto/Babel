@@ -22,10 +22,14 @@ Settings::Settings(const string& next, const string& texture)
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
-    string vol = read_file("volume.txt");
-    if (vol != "")
+    try
     {
+        string vol = read_file("files/volume.txt");
         m_vol = atoi(vol.c_str());
+    }
+    catch (Exception)
+    {
+        write_file(std::to_string(m_vol), "files/volume.txt");
     }
 
     double scale = env->canvas->scale();
@@ -192,7 +196,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
         }
     }
 
-    write_file(std::to_string(m_vol), "volume.txt");
+    write_file(std::to_string(m_vol), "files/volume.txt");
 
     return true;
 }

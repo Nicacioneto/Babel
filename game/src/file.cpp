@@ -12,15 +12,16 @@ using std::ifstream;
 using std::ios;
 using std::ofstream;
 
-string read_file(string file)
+string read_file(string file) throw (Exception)
 {
     const string directory_files = "res/files/";
     file = directory_files + file;
+
     ifstream fin(file.c_str());
 
     if (fin.is_open() == false)
     {
-        return "";
+        throw Exception("File not found!");
     }
 
     string line, text;
@@ -38,6 +39,7 @@ void write_file(const string& text, string file, bool append)
 {
     const string directory_files = "res/files/";
     file = directory_files + file;
+
     if (append)
     {
         ofstream fout(file.c_str(), ios::app);

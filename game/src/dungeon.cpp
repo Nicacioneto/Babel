@@ -3,6 +3,7 @@
 #include "mapping.h"
 #include <core/rect.h>
 #include <vector>
+#include <iostream>
 
 using std::vector;
 
@@ -10,35 +11,7 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
 {
     load_map();
-    // m_rooms[0][0].set_tile(Direction::EAST, 1);
-    // m_rooms[0][0].set_tile(Direction::SOUTH, 2);
-    // m_rooms[0][0].set_tile(Direction::WEST, 1);
-
-    // m_rooms[1][0].set_tile(Direction::EAST, 1);
-    // m_rooms[1][0].set_tile(Direction::WEST, 1);
-
-    // m_rooms[2][0].set_tile(Direction::NORTH, 1);
-    // m_rooms[2][0].set_tile(Direction::WEST, 1);
-
-    // m_rooms[2][1].set_tile(Direction::NORTH, 1);
-    // m_rooms[2][1].set_tile(Direction::SOUTH, 1);
-
-    // m_rooms[2][2].set_tile(Direction::NORTH, 1);
-    // m_rooms[2][2].set_tile(Direction::EAST, 1);
-
-    // m_rooms[1][2].set_tile(Direction::EAST, 1);
-    // m_rooms[1][2].set_tile(Direction::SOUTH, 1);
-
-    // m_rooms[1][1].set_tile(Direction::NORTH, 1);
-    // m_rooms[1][1].set_tile(Direction::WEST, 1);
-
-    // m_rooms[0][1].set_tile(Direction::WEST, 1);
-    // m_rooms[0][1].set_tile(Direction::SOUTH, 1);
-
-    // m_rooms[0][2].set_tile(Direction::NORTH, 1);
-    // m_rooms[0][2].set_tile(Direction::EAST, 2);
-    // m_rooms[0][2].set_tile(Direction::SOUTH, 1);
-
+    
     env = Environment::get_instance();
     m_tiles[1] = env->resources_manager->get_texture("res/images/hall.bmp");
     m_tiles[2] = env->resources_manager->get_texture("res/images/door.bmp");
@@ -244,7 +217,16 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    string s = read_file("map.txt");
+    string s;
+    try
+    {
+        s = read_file("bin/map.txt");
+    }
+    catch (Exception ex)
+    {
+        std::cerr << ex.message() << std::endl;
+        return;
+    }
 
     vector<vector<int>> map;
 

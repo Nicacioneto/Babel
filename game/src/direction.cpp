@@ -1,12 +1,12 @@
 #include "direction.h"
 
 static const pair<int, int> m_vectors[]
-{ 
-    make_pair(1, 0), 
-    make_pair(0, 1), make_pair(-1, 0), make_pair(0, -1)
+{
+    make_pair(1, 0), make_pair(0, 1),
+    make_pair(-1, 0), make_pair(0, -1)
 };
 
-Direction::Direction(int front) 
+Direction::Direction(int front)
     : m_front(front)
 {
 }
