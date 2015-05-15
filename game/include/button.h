@@ -6,6 +6,7 @@
 #include <core/mousemotionevent.h>
 #include <core/mousemotioneventlistener.h>
 #include <core/object.h>
+#include <core/text.h>
 #include <core/texture.h>
 #include <memory>
 
@@ -24,10 +25,13 @@ public:
 
     bool onMouseButtonEvent(const MouseButtonEvent& event);
     bool onMouseMotionEvent(const MouseMotionEvent& event);
+    void set_text(const string& str, const Color& color);
+    Text* text();
 
     static ActionID clickedID;
 
 private:
+    Text *m_text;
     shared_ptr<Texture> m_texture;
     State m_state;
 

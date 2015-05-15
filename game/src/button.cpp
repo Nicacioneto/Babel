@@ -16,7 +16,7 @@ MessageID Button::clickedID = "clicked()";
 
 Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_texture(nullptr), m_state(HIDE)
+    : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr), m_state(HIDE)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_mouse_button_event_listener(this);
@@ -46,13 +46,19 @@ Button::draw_self()
     {
         if (m_state == IDLE)
         {
-            Rect clip = Rect(0, 0, w(), h());
+            Rect clip = Rect(0, 0, m_texture->w(), m_texture->h()/2);
             env->canvas->draw(m_texture.get(), clip, x(), y());
         }
         else if (m_state == ON_HOVER)
         {
-            Rect clip = Rect(0, h(), w(), h());
+            Rect clip = Rect(0, m_texture->h()/2, m_texture->w(), m_texture->h()/2);
             env->canvas->draw(m_texture.get(), clip, x(), y());
+        }
+
+        if (m_text)
+        {
+            m_text->align_to(this, Object::CENTER, Object::MIDDLE);
+            m_text->draw();
         }
     }
 }
@@ -91,4 +97,16 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     m_state = IDLE;
 
     return false;
+}
+
+void
+Button::set_text(const string& str, const Color& color)
+{
+    m_text = new Text(this, str, color);
+}
+
+Text*
+Button::text()
+{
+    return m_text;
 }
