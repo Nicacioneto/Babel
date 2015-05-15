@@ -3,9 +3,10 @@
 #include "mapping.h"
 #include <core/rect.h>
 #include <vector>
-#include <iostream>
+#include <sstream>
 
 using std::vector;
+using std::stringstream;
 
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
@@ -217,37 +218,27 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    string s;
-    try
-    {
-        s = read_file("bin/map.txt");
-    }
-    catch (Exception ex)
-    {
-        std::cerr << ex.message() << std::endl;
-        return;
-    }
-
+    string file = read_file("res/files/map.txt");
+    stringstream ss;
+    ss << file;
     vector<vector<int>> map;
-
     vector<int> p;
-    for (unsigned int i = 0; i < s.size(); ++i)
+
+    int north, east, south, west;
+    char garbage;
+
+    while(ss >> north >> east >> south >> west >> garbage)
     {
-        char c = s[i];
+        p.push_back(north);
+        p.push_back(east);
+        p.push_back(south);
+        p.push_back(west);
 
-        if (c == ' ')
-        {
-            continue;
-        }
-
-        if (c == '\n')
+        if (garbage == ';')
         {
             map.push_back(p);
             p.clear();
-            continue;
         }
-
-        p.push_back(c - '0');
     }
 
     for (unsigned int u = 0, i = map.size()-1; u < map.size(); ++u, --i)
