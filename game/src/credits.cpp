@@ -19,6 +19,7 @@ Credits::Credits(const string& next, const string& image)
 
     m_back = new Button(this, "back", "res/images/menu/button.png", (env->canvas->w() - W_BUTTON)/2,
         env->canvas->h() - 123, W_BUTTON, H_BUTTON);
+    m_back->set_text("Back", Color(170, 215, 190));
 
     m_back->add_observer(this);
 
@@ -34,6 +35,7 @@ Credits::update_self(unsigned long)
     double scale = env->canvas->scale();
 
     m_back->set_position((env->canvas->w() - W_BUTTON * scale)/2, env->canvas->h() - 123.0 * scale);
+    m_back->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
 
     shared_ptr<Font> font = env->canvas->font();
     font->set_size(22 * scale);
@@ -51,7 +53,6 @@ Credits::draw_self()
     env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 183 * scale);
 
     set_position(m_back->x() + 48 * scale, m_back->y() + 15 * scale);
-    env->canvas->draw("Back", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
 bool
