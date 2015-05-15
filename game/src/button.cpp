@@ -5,28 +5,26 @@
  * Date: 10/05/2015
  * License: LGPL. No copyright.
  */
-#include "color.h"
-#include "rect.h"
 #include "button.h"
-#include "environment.h"
-#include "mousebuttonevent.h"
-#include "mousemotionevent.h"
+#include <core/color.h>
+#include <core/environment.h>
+#include <core/rect.h>
 
 #include <cstdio>
 
 MessageID Button::clickedID = "clicked()";
 
-Button::Button(Object *parent, ObjectID id, const string& image,
+Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_image(nullptr), m_state(HIDE)
+    : Object(parent, id, x, y, w, h), m_texture(nullptr), m_state(HIDE)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_mouse_button_event_listener(this);
     env->events_manager->register_mouse_motion_event_listener(this);
 
-    if (image != "")
+    if (texture != "")
     {
-        m_image = env->resources_manager->get_image(image);
+        m_texture = env->resources_manager->get_texture(texture);
         m_state = IDLE;
     }
 
@@ -49,12 +47,12 @@ Button::draw_self()
         if (m_state == IDLE)
         {
             Rect clip = Rect(0, 0, w(), h());
-            env->canvas->draw(m_image.get(), clip, x(), y());
+            env->canvas->draw(m_texture.get(), clip, x(), y());
         }
         else if (m_state == ON_HOVER)
         {
             Rect clip = Rect(0, h(), w(), h());
-            env->canvas->draw(m_image.get(), clip, x(), y());
+            env->canvas->draw(m_texture.get(), clip, x(), y());
         }
     }
 }

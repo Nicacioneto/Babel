@@ -1,22 +1,22 @@
-#include "button.h"
-#include "font.h"
 #include "menu.h"
-#include "rect.h"
-#include "resourcesmanager.h"
+#include <core/font.h>
+#include <core/rect.h>
+#include <core/resourcesmanager.h>
+#include <core/texture.h>
 
 #define X_BUTTON 188
 #define W_BUTTON 140
 #define H_BUTTON 60
 #define SPACING 170
 
-Menu::Menu(const string& next, const string& image)
-    : Level("", next), m_image(nullptr), m_logo(nullptr), m_play(nullptr),
+Menu::Menu(const string& next, const string& texture)
+    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
         m_settings(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
     env = Environment::get_instance();
 
-    m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
+    m_texture = env->resources_manager->get_texture(texture);
+    m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     
     const int y_button = env->canvas->h() - 149;
     m_play = new Button(this, "start", "res/images/menu/button.png", X_BUTTON,
@@ -62,7 +62,7 @@ void
 Menu::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image.get());
+    env->canvas->draw(m_texture.get());
 
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * env->canvas->scale())/2,
         25 * env->canvas->scale());

@@ -1,11 +1,10 @@
 #include "babel.h"
 #include "credits.h"
-#include "environment.h"
-#include "frontend.h"
 #include "gameover.h"
 #include "menu.h"
 #include "play.h"
 #include "settings.h"
+#include <util/frontend.h>
 
 Babel::Babel()
     : Game("tiamat_logo")

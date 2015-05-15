@@ -1,8 +1,8 @@
 #include "credits.h"
-#include "font.h"
-#include "image.h"
-#include "rect.h"
-#include "resourcesmanager.h"
+#include <core/font.h>
+#include <core/image.h>
+#include <core/rect.h>
+#include <core/resourcesmanager.h>
 
 #define X_BACK 300
 #define Y_BACK 612
@@ -10,12 +10,12 @@
 #define H_BUTTON 60
 
 Credits::Credits(const string& next, const string& image)
-    : Level("", next), m_image(nullptr), m_logo(nullptr), m_credits(nullptr), m_back(nullptr)
+    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_credits(nullptr), m_back(nullptr)
 {
     env = Environment::get_instance();
-    m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
-    m_credits = env->resources_manager->get_image("res/images/menu/credits.png");
+    m_texture = env->resources_manager->get_texture(image);
+    m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
+    m_credits = env->resources_manager->get_texture("res/images/menu/credits.png");
 
     m_back = new Button(this, "back", "res/images/menu/button.png", (env->canvas->w() - W_BUTTON)/2,
         env->canvas->h() - 123, W_BUTTON, H_BUTTON);
@@ -46,7 +46,7 @@ Credits::draw_self()
 
     env->canvas->clear();
 
-    env->canvas->draw(m_image.get());
+    env->canvas->draw(m_texture.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
     env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 183 * scale);
 

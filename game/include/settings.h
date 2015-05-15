@@ -3,24 +3,24 @@
 
 #include "button.h"
 #include "file.h"
-#include "level.h"
+#include <core/level.h>
 #include <memory>
 #include <vector>
 
-class Image;
+class Texture;
 
 class Settings : public Level
 {
 public:
-    Settings(const string& next = "menu", const string& image = "res/images/menu/init-screen.png");
+    Settings(const string& next = "menu", const string& texture = "res/images/menu/init-screen.png");
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
-    shared_ptr<Image> m_image;
-    shared_ptr<Image> m_logo;
-    shared_ptr<Image> m_soundvideo;
-    shared_ptr<Image> m_volume;
-    shared_ptr<Image> m_arrow;
+    shared_ptr<Texture> m_texture;
+    shared_ptr<Texture> m_logo;
+    shared_ptr<Texture> m_soundvideo;
+    shared_ptr<Texture> m_volume;
+    shared_ptr<Texture> m_arrow;
     Button *m_up_volume, *m_down_volume;
     Button *m_up_resolution, *m_down_resolution;
     Button *m_back;

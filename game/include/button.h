@@ -1,10 +1,12 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include "image.h"
-#include "mousebuttoneventlistener.h"
-#include "mousemotioneventlistener.h"
-#include "object.h"
+#include <core/mousebuttonevent.h>
+#include <core/mousebuttoneventlistener.h>
+#include <core/mousemotionevent.h>
+#include <core/mousemotioneventlistener.h>
+#include <core/object.h>
+#include <core/texture.h>
 #include <memory>
 
 using std::shared_ptr;
@@ -26,7 +28,7 @@ public:
     static ActionID clickedID;
 
 private:
-    shared_ptr<Image> m_image;
+    shared_ptr<Texture> m_texture;
     State m_state;
 
     void draw_self();

@@ -5,9 +5,9 @@
  * Date: 10/05/2015
  * License: LGPL. No copyright.
  */
-#include "font.h"
 #include "gameover.h"
-#include "rect.h"
+#include <core/font.h>
+#include <core/rect.h>
 
 GameOver::GameOver(const string& next)
     : Level("", next)

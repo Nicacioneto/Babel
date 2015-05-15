@@ -2,22 +2,22 @@
 #define PLAY_H
 
 #include "button.h"
-#include "level.h"
+#include <core/level.h>
 #include <memory>
 
-class Image;
+class Texture;
 
 class Play : public Level
 {
 public:
-    Play(const string& next = "", const string& image = "res/images/menu/init-screen.png");
+    Play(const string& next = "", const string& texture = "res/images/menu/init-screen.png");
     
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
-    shared_ptr<Image> m_image;
-    shared_ptr<Image> m_logo;
-    shared_ptr<Image> m_slot_bar;
+    shared_ptr<Texture> m_texture;
+    shared_ptr<Texture> m_logo;
+    shared_ptr<Texture> m_slot_bar;
     Button *m_slot1;
     Button *m_slot2;
     Button *m_slot3;

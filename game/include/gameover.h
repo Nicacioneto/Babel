@@ -1,9 +1,9 @@
 #ifndef GAMEOVER_H
 #define GAMEOVER_H
 
-#include "level.h"
-#include "keyboardevent.h"
-#include "keyboardeventlistener.h"
+#include <core/level.h>
+#include <core/keyboardevent.h>
+#include <core/keyboardeventlistener.h>
 #include <memory>
 
 class Image;

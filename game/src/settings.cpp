@@ -1,25 +1,25 @@
-#include "font.h"
-#include "image.h"
-#include "rect.h"
-#include "resourcesmanager.h"
 #include "settings.h"
+#include <core/font.h>
+#include <core/image.h>
+#include <core/rect.h>
+#include <core/resourcesmanager.h>
 #include <algorithm>
 
 #define W_BUTTON 140
 #define H_BUTTON 60
 #define X_VOLUME 296
 
-Settings::Settings(const string& next, const string& image)
-    : Level("", next), m_image(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
+Settings::Settings(const string& next, const string& texture)
+    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
         m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr), m_vol(5)
 {
     env = Environment::get_instance();
-    m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
-    m_soundvideo = env->resources_manager->get_image("res/images/menu/sound-video.png");
-    m_volume = env->resources_manager->get_image("res/images/menu/volume.png");
-    m_arrow = env->resources_manager->get_image("res/images/menu/arrow.png");
+    m_texture = env->resources_manager->get_texture(texture);
+    m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
+    m_soundvideo = env->resources_manager->get_texture("res/images/menu/sound-video.png");
+    m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
+    m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
     string vol = m_file->readText("volume.txt");
     m_vol = atoi(vol.c_str());
@@ -74,7 +74,7 @@ Settings::draw_self()
     shared_ptr<Font> font = env->canvas->font();
 
     env->canvas->clear();
-    env->canvas->draw(m_image.get());
+    env->canvas->draw(m_texture.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
     env->canvas->draw(m_soundvideo.get(), 189 * scale, 321 * scale);
     env->canvas->draw(m_arrow.get(), X_VOLUME * scale, (env->canvas->h() - 20 * scale)/2);

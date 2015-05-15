@@ -2,10 +2,10 @@
 #define CREDITS_H
 
 #include "button.h"
-#include "level.h"
+#include <core/level.h>
 #include <memory>
 
-class Image;
+class Texture;
 
 class Credits : public Level
 {
@@ -15,9 +15,9 @@ public:
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
-    shared_ptr<Image> m_image;
-    shared_ptr<Image> m_logo;
-    shared_ptr<Image> m_credits;
+    shared_ptr<Texture> m_texture;
+    shared_ptr<Texture> m_logo;
+    shared_ptr<Texture> m_credits;
     Button *m_back;
 
     void draw_self();

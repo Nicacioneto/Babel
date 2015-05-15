@@ -1,9 +1,7 @@
 #ifndef BABEL_H
 #define BABEL_H
 
-#include "game.h"
-#include "mousebuttoneventlistener.h"
-#include "mousebuttonevent.h"
+#include <core/game.h>
 
 class Babel : public Game
 {

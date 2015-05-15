@@ -1,8 +1,8 @@
-#include "button.h"
-#include "font.h"
 #include "play.h"
-#include "rect.h"
-#include "resourcesmanager.h"
+#include <core/font.h>
+#include <core/rect.h>
+#include <core/resourcesmanager.h>
+#include <core/texture.h>
 
 #define Y_BUTTON 266
 #define W_BUTTON 305
@@ -11,15 +11,15 @@
 #define H_BUTTON_BACK 60
 #define SPACING 65
 
-Play::Play(const string& next, const string& image)
-    : Level("", next), m_image(nullptr), m_logo(nullptr), m_slot1(nullptr),
+Play::Play(const string& next, const string& texture)
+    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_slot1(nullptr),
         m_slot2(nullptr), m_slot3(nullptr)
 {
     env = Environment::get_instance();
 
-    m_image = env->resources_manager->get_image(image);
-    m_logo = env->resources_manager->get_image("res/images/menu/babel-logo.png");
-    m_slot_bar = env->resources_manager->get_image("res/images/menu/slot-bar.png");
+    m_texture = env->resources_manager->get_texture(texture);
+    m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
+    m_slot_bar = env->resources_manager->get_texture("res/images/menu/slot-bar.png");
     
     const int x_button = (env->canvas->w() - 305) / 2;
     m_slot1 = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
@@ -67,7 +67,7 @@ void
 Play::draw_self()
 {
     env->canvas->clear();
-    env->canvas->draw(m_image.get());
+    env->canvas->draw(m_texture.get());
 
     double scale = env->canvas->scale();
 
