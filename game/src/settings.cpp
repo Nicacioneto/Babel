@@ -25,6 +25,11 @@ Settings::Settings(const string& next, const string& texture)
     string vol = m_file->readText("volume.txt");
     m_vol = atoi(vol.c_str());
 
+    double scale = env->canvas->scale();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(22 * scale);
+
     m_back = new Button(this, "back", "res/images/menu/button.png",
         (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
     m_back->set_text("Back", Color(170, 215, 190));
@@ -52,9 +57,6 @@ Settings::Settings(const string& next, const string& texture)
     add_child(m_down_volume);
     add_child(m_up_resolution);
     add_child(m_down_resolution);
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
 }
 
 void
@@ -121,9 +123,6 @@ Settings::draw_self()
     string text = std::to_string(w) + " x " + std::to_string(h) + " px";
     set_position(env->canvas->w()/2 + 25 * scale, (env->canvas->h() - 25 * scale)/2);
     env->canvas->draw(text, bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    font->set_size(22 * scale);
-    set_position(m_back->x() + 48 * scale, m_back->y() + 15 * scale);
 }
 
 bool
