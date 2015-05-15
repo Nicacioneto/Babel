@@ -12,7 +12,8 @@ class Texture;
 class Settings : public Level
 {
 public:
-    Settings(const string& next = "menu", const string& texture = "res/images/menu/init-screen.png");
+    Settings(const string& next = "menu",
+        const string& texture = "res/images/menu/init-screen.png");
     bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:

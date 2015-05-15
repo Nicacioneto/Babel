@@ -5,8 +5,9 @@
 #include <core/resourcesmanager.h>
 #include <algorithm>
 
-#define W_BUTTON 140
-#define H_BUTTON 60
+#define W_BUTTON_BACK 140
+#define H_BUTTON_BACK 60
+#define BUTTON_SETTING 12
 #define X_VOLUME 296
 
 Settings::Settings(const string& next, const string& texture)
@@ -25,19 +26,20 @@ Settings::Settings(const string& next, const string& texture)
     m_vol = atoi(vol.c_str());
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON)/2, env->canvas->h() - 149, W_BUTTON, H_BUTTON);
+        (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
+    m_back->set_text("Back", Color(170, 215, 190));
 
     m_up_volume = new Button(this, "up_volume", "",
-        X_VOLUME, (env->canvas->h() - 25)/2, 12, 12);
+        X_VOLUME, (env->canvas->h() - 25)/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_down_volume = new Button(this, "down_volume", "",
-        X_VOLUME, env->canvas->h()/2, 12, 12);
+        X_VOLUME, env->canvas->h()/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_up_resolution = new Button(this, "up_resolution", "",
-        env->canvas->w()/2 + 140, (env->canvas->h() - 25)/2, 12, 12);
+        env->canvas->w()/2 + 140, (env->canvas->h() - 25)/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_down_resolution = new Button(this, "down_resolution", "",
-        env->canvas->w()/2 + 140, (env->canvas->h())/2, 12, 12);
+        env->canvas->w()/2 + 140, (env->canvas->h())/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_back->add_observer(this);
     m_up_volume->add_observer(this);
@@ -59,12 +61,22 @@ void
 Settings::update_self(unsigned long)
 {
     double scale = env->canvas->scale();
-    m_back->set_position((env->canvas->w() - W_BUTTON * scale)/2, env->canvas->h() - 149.0 * scale);
+    m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
+        env->canvas->h() - 149.0 * scale);
+    m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
+
     m_up_volume->set_position(X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2);
+    m_up_volume->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+    
     m_down_volume->set_position(X_VOLUME * scale, env->canvas->h()/2);
+    m_down_volume->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+    
     m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale,
         (env->canvas->h() - 25*scale)/2);
+    m_up_resolution->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+    
     m_down_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2);
+    m_down_resolution->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
 }
 
 void
@@ -94,7 +106,7 @@ Settings::draw_self()
     }
 
     font->set_size(24 * scale);
-    set_position((env->canvas->w() - W_BUTTON)/2 + 23 * scale, 167 * scale);
+    set_position((env->canvas->w() - W_BUTTON_BACK)/2 + 23 * scale, 167 * scale);
     env->canvas->draw("OPTIONS", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
     font->set_size(18 * scale);
@@ -112,7 +124,6 @@ Settings::draw_self()
 
     font->set_size(22 * scale);
     set_position(m_back->x() + 48 * scale, m_back->y() + 15 * scale);
-    env->canvas->draw("Back", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
 bool
