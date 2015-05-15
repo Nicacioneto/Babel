@@ -5,13 +5,23 @@
 #include <vector>
 #include <sstream>
 
-using std::vector;
+using std::cerr;
+using std::endl;
 using std::stringstream;
+using std::vector;
 
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
 {
-    load_map();
+    try
+    {
+        load_map();
+    }
+    catch (Exception ex)
+    {
+        cerr << ex.message() << endl;
+        m_done = true;
+    }
     
     env = Environment::get_instance();
     m_tiles[1] = env->resources_manager->get_texture("res/images/hall.bmp");
@@ -216,18 +226,21 @@ Dungeon::turn_right()
 }
 
 void
-Dungeon::load_map()
+Dungeon::load_map() throw (Exception)
 {
-    string file = read_file("res/files/map.txt");
+    // Bin directory for Windows System
+    string file = read_file("bin/map.txt");
+
     stringstream ss;
     ss << file;
+
     vector<vector<int>> map;
     vector<int> p;
 
     int north, east, south, west;
     char garbage;
 
-    while(ss >> north >> east >> south >> west >> garbage)
+    while (ss >> north >> east >> south >> west >> garbage)
     {
         p.push_back(north);
         p.push_back(east);
