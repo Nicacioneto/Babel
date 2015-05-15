@@ -26,10 +26,9 @@ Mapping::draw(Texture *texture, const Rect clip)
             int posy = ky*texture->h();
 
             Environment *env = Environment::get_instance();
-            SDL_Surface * pSurface = SDL_CreateRGBSurface(0, env->canvas->w(), env->canvas->h(),
-                32, 0x000000ff,0x0000ff00,0x00ff0000,0xff000000);
-            Uint32 color = getpixel((SDL_Surface *)texture->data(), posx, posy);
-            putpixel(pSurface, i, j, color);
+
+            Uint32 color = getpixel(env->canvas->bitmap(), posx, posy);
+            putpixel(env->canvas->bitmap(), i, j, color);
         }
     }
 }
@@ -69,14 +68,8 @@ printf("top_y = %.3f, bot_y = %.3f\n", top_y, bot_y);
             double ky = (double) fabs(j - top_y)/(bot_y - top_y);
             int posy = ky*texture->h();
 
-
-            // SDL_Texture * pTexture = SDL_CreateTexture(env->canvas->renderer(), SDL_PIXELFORMAT_RGBA8888,
-            //     SDL_TEXTUREACCESS_STREAMING, env->canvas->w(), env->canvas->h());
-
-            SDL_Surface * pSurface = SDL_CreateRGBSurface(0, env->canvas->w(), env->canvas->h(),
-                32, 0x000000ff,0x0000ff00,0x00ff0000,0xff000000);
-            Uint32 color = getpixel((SDL_Surface *)texture->data(), posx, posy);
-            putpixel(pSurface, i, j, color);
+            Uint32 color = getpixel(env->canvas->bitmap(), posx, posy);
+            putpixel(env->canvas->bitmap(), i, j, color);
         }
         top_y += m_ratio;
         bot_y -= m_ratio;
