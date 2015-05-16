@@ -20,12 +20,21 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     catch (Exception ex)
     {
         cerr << ex.message() << endl;
+        m_next = "";
         m_done = true;
     }
     
     env = Environment::get_instance();
-    m_tiles[1] = env->resources_manager->get_texture("res/images/hall.bmp");
-    m_tiles[2] = env->resources_manager->get_texture("res/images/door.bmp");
+
+    for (int i = 0; i < MAXT; ++i)
+    {
+        try
+        {
+            string img = "res/images/" + std::to_string(i) + ".bmp";
+            m_tiles[i] = env->resources_manager->get_texture(img);
+        }
+        catch (Exception) {}
+    }
 }
 
 void
