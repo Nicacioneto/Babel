@@ -36,16 +36,19 @@ Settings::Settings(const string& next, const string& texture)
     m_back->set_text("Back", Color(170, 215, 190));
 
     m_up_volume = new Button(this, "up_volume", "",
-        X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+        X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale,
+        BUTTON_SETTING * scale);
 
     m_down_volume = new Button(this, "down_volume", "",
         X_VOLUME * scale, env->canvas->h()/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_up_resolution = new Button(this, "up_resolution", "",
-        env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+        env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 25 * scale)/2,
+        BUTTON_SETTING * scale, BUTTON_SETTING * scale);
 
     m_down_resolution = new Button(this, "down_resolution", "",
-        env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+        env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2, BUTTON_SETTING * scale,
+        BUTTON_SETTING * scale);
 
     m_back->add_observer(this);
     m_up_volume->add_observer(this);

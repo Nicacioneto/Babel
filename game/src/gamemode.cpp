@@ -21,8 +21,8 @@ GameMode::GameMode(const string& next, const string&)
         y_button, w_button, h_button);
     m_colony = new Button(this, "colony", "res/images/modes/button.png", 2 * x_button + w_button,
         y_button, w_button, h_button);
-    m_planet = new Button(this, "planet", "res/images/modes/button.png", 3 * x_button + 2 * w_button,
-        y_button, w_button, h_button);
+    m_planet = new Button(this, "planet", "res/images/modes/button.png",
+        3 * x_button + 2 * w_button, y_button, w_button, h_button);
 
     m_babel->add_observer(this);
     m_colony->add_observer(this);
