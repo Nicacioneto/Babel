@@ -4,11 +4,6 @@
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
 
-#define X_BACK 300
-#define Y_BACK 612
-#define W_BUTTON 140
-#define H_BUTTON 60
-
 Credits::Credits(const string& next, const string& image)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_credits(nullptr), m_back(nullptr)
 {
@@ -17,28 +12,24 @@ Credits::Credits(const string& next, const string& image)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_credits = env->resources_manager->get_texture("res/images/menu/credits.png");
 
-    m_back = new Button(this, "back", "res/images/menu/button.png", (env->canvas->w() - W_BUTTON)/2,
-        env->canvas->h() - 123, W_BUTTON, H_BUTTON);
+    double scale = env->canvas->scale();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(22 * scale);
+
+    const int w_button = 140 * scale;
+    const int h_button = 60 * scale;
+    const int x_back = (env->canvas->w() - w_button) / 2;
+    const int y_back = env->canvas->h() - 123 * scale;
+
+    m_back = new Button(this, "back", "res/images/menu/button.png", x_back,
+        y_back, w_button, h_button);
     m_back->set_text("Back", Color(170, 215, 190));
 
     m_back->add_observer(this);
 
     add_child(m_back);
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-}
-
-void
-Credits::update_self(unsigned long)
-{
-    double scale = env->canvas->scale();
-
-    m_back->set_position((env->canvas->w() - W_BUTTON * scale)/2, env->canvas->h() - 123.0 * scale);
-    m_back->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    shared_ptr<Font> font = env->canvas->font();
-    font->set_size(22 * scale);
 }
 
 void

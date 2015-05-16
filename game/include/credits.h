@@ -1,3 +1,4 @@
+
 #ifndef CREDITS_H
 #define CREDITS_H
 
@@ -21,7 +22,6 @@ private:
     Button *m_back;
 
     void draw_self();
-    void update_self(unsigned long elapsed);
 };
 
 #endif
