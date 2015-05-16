@@ -22,7 +22,6 @@ private:
     Button *m_planet;
 
     void draw_self();
-    void update_self(unsigned long elapsed);
 };
 
 #endif
