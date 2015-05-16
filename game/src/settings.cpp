@@ -31,20 +31,21 @@ Settings::Settings(const string& next, const string& texture)
     font->set_size(22 * scale);
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
+        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149.0 * scale,
+        W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
     m_back->set_text("Back", Color(170, 215, 190));
 
     m_up_volume = new Button(this, "up_volume", "",
-        X_VOLUME, (env->canvas->h() - 25)/2, BUTTON_SETTING, BUTTON_SETTING);
+        X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
 
     m_down_volume = new Button(this, "down_volume", "",
-        X_VOLUME, env->canvas->h()/2, BUTTON_SETTING, BUTTON_SETTING);
+        X_VOLUME * scale, env->canvas->h()/2, BUTTON_SETTING, BUTTON_SETTING);
 
     m_up_resolution = new Button(this, "up_resolution", "",
-        env->canvas->w()/2 + 140, (env->canvas->h() - 25)/2, BUTTON_SETTING, BUTTON_SETTING);
+        env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
 
     m_down_resolution = new Button(this, "down_resolution", "",
-        env->canvas->w()/2 + 140, (env->canvas->h())/2, BUTTON_SETTING, BUTTON_SETTING);
+        env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2, BUTTON_SETTING * scale, BUTTON_SETTING * scale);
 
     m_back->add_observer(this);
     m_up_volume->add_observer(this);
@@ -60,7 +61,7 @@ Settings::Settings(const string& next, const string& texture)
 }
 
 void
-Settings::update_self(unsigned long)
+Settings::update_coordinates()
 {
     double scale = env->canvas->scale();
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
@@ -168,6 +169,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
 
         double scale = (double) env->canvas->w() / m_resolutions[m_resolutions.size() - 1];
         env->canvas->set_scale(scale);
+        update_coordinates();
     }
     else if (button->id() == "up_volume")
     {

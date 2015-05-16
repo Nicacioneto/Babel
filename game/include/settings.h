@@ -31,7 +31,7 @@ private:
     std::vector<int> m_resolutions = {800, 1024};
 
     void draw_self();
-    void update_self(unsigned long elapsed);
+    void update_coordinates();
 };
 
 #endif
