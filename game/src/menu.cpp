@@ -4,11 +4,6 @@
 #include <core/resourcesmanager.h>
 #include <core/texture.h>
 
-#define X_BUTTON 188
-#define W_BUTTON 140
-#define H_BUTTON 60
-#define SPACING 170
-
 Menu::Menu(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
         m_settings(nullptr), m_credits(nullptr), m_exit(nullptr)
@@ -18,25 +13,32 @@ Menu::Menu(const string& next, const string& texture)
     m_texture = env->resources_manager->get_texture(texture);
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     
+    double scale = env->canvas->scale();
+
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
+    font->set_size(22 * scale);
+
+    const int x_button = 188 * scale;
+    const int y_button = env->canvas->h() - 149.0 * scale;
+    const int w_button = 140 * scale;
+    const int h_button = 60 * scale;
+    const int spacing = 170 * scale;
     
-    const int y_button = env->canvas->h() - 149;
-    
-    m_play = new Button(this, "start", "res/images/menu/button.png", X_BUTTON,
-        y_button, W_BUTTON, H_BUTTON);
+    m_play = new Button(this, "start", "res/images/menu/button.png", x_button,
+        y_button, w_button, h_button);
     m_play->set_text("Play Game", Color(170, 215, 190));
 
-    m_settings = new Button(this, "settings", "res/images/menu/button.png", X_BUTTON + SPACING * 2,
-        y_button, W_BUTTON, H_BUTTON);
+    m_settings = new Button(this, "settings", "res/images/menu/button.png",
+        x_button + spacing, y_button, w_button, h_button);
     m_settings->set_text("Options", Color(170, 215, 190));
 
-    m_credits = new Button(this, "credits", "res/images/menu/button.png", X_BUTTON + SPACING * 3,
-        y_button, W_BUTTON, H_BUTTON);
+    m_credits = new Button(this, "credits", "res/images/menu/button.png", x_button + 2 * spacing,
+        y_button, w_button, h_button);
     m_credits->set_text("Credits", Color(170, 215, 190));
 
-    m_exit = new Button(this, "exit", "res/images/menu/button.png", X_BUTTON + SPACING * 4,
-        y_button, W_BUTTON, H_BUTTON);
+    m_exit = new Button(this, "exit", "res/images/menu/button.png", x_button + 3 * spacing,
+        y_button, w_button, h_button);
     m_exit->set_text("Exit", Color(170, 215, 190));
 
     m_play->add_observer(this);
@@ -48,30 +50,6 @@ Menu::Menu(const string& next, const string& texture)
     add_child(m_settings);
     add_child(m_credits);
     add_child(m_exit);
-
-}
-
-void
-Menu::update_self(unsigned long)
-{
-    double scale = env->canvas->scale();
-
-    const int y_button = env->canvas->h() - 149.0 * scale;
-
-    m_play->set_position(scale * X_BUTTON, y_button);
-    m_play->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-    
-    m_settings->set_position(scale * (X_BUTTON + SPACING), y_button);
-    m_settings->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    m_credits->set_position(scale * (X_BUTTON + SPACING * 2), y_button);
-    m_credits->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-    
-    m_exit->set_position(scale * (X_BUTTON + SPACING * 3), y_button);
-    m_exit->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    shared_ptr<Font> font = env->canvas->font();
-    font->set_size(22 * scale);
 }
 
 void
