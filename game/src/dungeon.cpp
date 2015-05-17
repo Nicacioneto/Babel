@@ -229,7 +229,7 @@ void
 Dungeon::load_map() throw (Exception)
 {
     // Bin directory for Windows System
-    string file = read_file("bin/map.txt");
+    string file = read_file("map.txt");
 
     stringstream ss;
     ss << file;
