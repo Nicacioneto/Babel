@@ -10,6 +10,7 @@
 using std::list;
 
 class Texture;
+class Bitmap;
 
 #define MAXW 10
 #define MAXH 10
@@ -35,7 +36,8 @@ private:
     int m_x, m_y, m_w, m_h, m_steps;
     Direction m_direction;
     Room m_rooms[MAXW][MAXH];
-    shared_ptr<Texture> m_tiles[MAXT + 1];
+    shared_ptr<Bitmap> m_tiles[MAXT + 1];
+    Bitmap *m_screen;
 
     list<Rect> planes(int w, int h);
 };

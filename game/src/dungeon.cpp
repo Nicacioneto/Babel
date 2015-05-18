@@ -2,6 +2,7 @@
 #include "file.h"
 #include "mapping.h"
 #include <core/rect.h>
+#include <core/bitmap.h>
 #include <vector>
 #include <sstream>
 
@@ -13,6 +14,9 @@ using std::vector;
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
 {
+    env = Environment::get_instance();
+    m_screen = new Bitmap(env->video->canvas());
+
     try
     {
         load_map();
@@ -24,14 +28,13 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
         m_done = true;
     }
     
-    env = Environment::get_instance();
 
     for (int i = 0; i < MAXT; ++i)
     {
         try
         {
             string img = "res/images/" + std::to_string(i) + ".bmp";
-            m_tiles[i] = env->resources_manager->get_texture(img);
+            m_tiles[i] = env->resources_manager->get_bitmap(img);
         }
         catch (Exception) {}
     }
@@ -74,7 +77,7 @@ Dungeon::draw_self()
 
         if (east_tile)
         {
-            mapping.draw(m_tiles[east_tile].get(), f, b);
+            mapping.draw(m_screen, m_tiles[east_tile].get(), f, b);
         }
         
         f.set_x(f.x() + front.w());
@@ -88,7 +91,7 @@ Dungeon::draw_self()
 
         if (west_tile)
         {
-            mapping.draw(m_tiles[west_tile].get(), f, b);
+            mapping.draw(m_screen, m_tiles[west_tile].get(), f, b);
         }
 
 
@@ -98,7 +101,7 @@ Dungeon::draw_self()
         if (north_tile)
         {
 // printf("back = (%d, %d), %dx%d\n", back.x(), back.y(), back.w(), back.h());
-            mapping.draw(m_tiles[north_tile].get(), back);
+            mapping.draw(m_screen, m_tiles[north_tile].get(), back);
             break;
         }
         else
@@ -121,6 +124,8 @@ Dungeon::draw_self()
             }
         }
     }
+
+    env->canvas->draw(m_screen);
 }
 
 list<Rect>
