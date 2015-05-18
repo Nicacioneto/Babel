@@ -32,6 +32,7 @@ private:
     void draw_self();
     void update_self(unsigned long elapsed);
     void load_map() throw (Exception);
+    void load_tiles();
 
     int m_x, m_y, m_w, m_h, m_steps;
     Direction m_direction;

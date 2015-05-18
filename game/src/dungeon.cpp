@@ -17,6 +17,8 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     env = Environment::get_instance();
     m_screen = new Bitmap(env->video->canvas());
 
+    load_tiles();
+
     try
     {
         load_map();
@@ -26,17 +28,6 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
         cerr << ex.message() << endl;
         m_next = "";
         m_done = true;
-    }
-    
-
-    for (int i = 0; i < MAXT; ++i)
-    {
-        try
-        {
-            string img = "res/images/" + std::to_string(i) + ".bmp";
-            m_tiles[i] = env->resources_manager->get_bitmap(img);
-        }
-        catch (Exception) {}
     }
 }
 
@@ -186,7 +177,6 @@ Dungeon::move_forward()
     if (next)
     {
         m_steps = next;
-        
     }
     else
     {
@@ -242,7 +232,6 @@ Dungeon::turn_right()
 void
 Dungeon::load_map() throw (Exception)
 {
-    // Bin directory for Windows System
     string file = read_file("map.txt");
 
     stringstream ss;
@@ -289,5 +278,19 @@ Dungeon::load_map() throw (Exception)
                     break;
             }
         }
+    }
+}
+
+void
+Dungeon::load_tiles()
+{
+    for (int i = 0; i < MAXT; ++i)
+    {
+        try
+        {
+            string img = "res/images/" + std::to_string(i) + ".bmp";
+            m_tiles[i] = env->resources_manager->get_bitmap(img);
+        }
+        catch (Exception) {}
     }
 }
