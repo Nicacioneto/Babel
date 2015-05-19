@@ -4,6 +4,7 @@
 #include "room.h"
 #include "direction.h"
 #include <core/level.h>
+#include "core/keyboardeventlistener.h"
 
 #include <list>
 
@@ -16,17 +17,20 @@ class Bitmap;
 #define MAXH 10
 #define MAXT 10
 
-class Dungeon : public Level
+class Dungeon : public Level, KeyboardEventListener
 {
 public:
     Dungeon(int x = 0, int y = 0, int w = MAXW, int h = MAXH, int steps = 0,
         Direction direction = Direction());
+    ~Dungeon();
 
     void move_backward();
     void move_forward();
 
     void turn_left();
     void turn_right();
+
+    bool onKeyboardEvent(const KeyboardEvent& event);
 
 private:
     void draw_self();

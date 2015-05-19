@@ -3,6 +3,7 @@
 #include "mapping.h"
 #include <core/rect.h>
 #include <core/bitmap.h>
+#include <core/keyboardevent.h>
 #include <vector>
 #include <sstream>
 
@@ -29,6 +30,49 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
         m_next = "";
         m_done = true;
     }
+
+    env->events_manager->register_keyboard_event_listener(this);
+}
+
+Dungeon::~Dungeon()
+{
+    env->events_manager->unregister_keyboard_event_listener(this);
+}
+
+bool
+Dungeon::onKeyboardEvent(const KeyboardEvent& event)
+{
+    switch (event.state())
+    {
+        case KeyboardEvent::PRESSED:
+            switch (event.key())
+            {
+                case KeyboardEvent::UP:
+                    move_forward();
+                    return true;
+                    break;
+                case KeyboardEvent::DOWN:
+                    move_backward();
+                    return true;
+                    break;
+                case KeyboardEvent::RIGHT:
+                    turn_right();
+                    return true;
+                    break;
+                case KeyboardEvent::LEFT:
+                    turn_left();
+                    return true;
+                    break;
+                default:
+                    return false;
+            }
+
+        default:
+            return false;
+            break;
+    }
+
+    return false;
 }
 
 void
