@@ -25,7 +25,7 @@ Credits::Credits(const string& next, const string& image)
 
     m_back = new Button(this, "back", "res/images/menu/button.png", x_back,
         y_back, w_button, h_button);
-    m_back->set_text("Back", Color(170, 215, 190));
+    m_back->set_text("Back");
 
     m_back->add_observer(this);
 

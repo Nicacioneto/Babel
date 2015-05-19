@@ -25,7 +25,7 @@ public:
 
     bool onMouseButtonEvent(const MouseButtonEvent& event);
     bool onMouseMotionEvent(const MouseMotionEvent& event);
-    void set_text(const string& str, const Color& color);
+    void set_text(const string& str, const Color& color = Color(170, 215, 190));
     Text* text();
 
     static ActionID clickedID;

@@ -38,9 +38,9 @@ Settings::Settings(const string& next, const string& texture)
     font->set_size(22 * scale);
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149.0 * scale,
+        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149 * scale,
         W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
-    m_back->set_text("Back", Color(170, 215, 190));
+    m_back->set_text("Back");
 
     m_up_volume = new Button(this, "up_volume", "",
         X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale,
@@ -75,7 +75,7 @@ Settings::update_coordinates()
 {
     double scale = env->canvas->scale();
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
-        env->canvas->h() - 149.0 * scale);
+        env->canvas->h() - 149 * scale);
     m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
 
     m_up_volume->set_position(X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2);

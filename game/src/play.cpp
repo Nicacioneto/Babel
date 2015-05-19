@@ -24,19 +24,19 @@ Play::Play(const string& next, const string& texture)
     const int x_button = (env->canvas->w() - 305) / 2;
     m_slot1 = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
         Y_BUTTON, W_BUTTON, H_BUTTON);
-    m_slot1->set_text("New Game", Color(170, 215, 190));
+    m_slot1->set_text("New Game");
 
     m_slot2 = new Button(this, "slot2", "res/images/menu/stripe.png", x_button,
         Y_BUTTON + SPACING * 2, W_BUTTON, H_BUTTON);
-    m_slot2->set_text("New Game", Color(170, 215, 190));
+    m_slot2->set_text("New Game");
 
     m_slot3 = new Button(this, "slot3", "res/images/menu/stripe.png", x_button,
         Y_BUTTON + SPACING * 3, W_BUTTON, H_BUTTON);
-    m_slot3->set_text("New Game", Color(170, 215, 190));
+    m_slot3->set_text("New Game");
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
         (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
-    m_back->set_text("Back", Color(170, 215, 190));
+    m_back->set_text("Back");
 
     m_slot1->add_observer(this);
     m_slot2->add_observer(this);
@@ -69,7 +69,7 @@ Play::update_self(unsigned long)
     m_slot3->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
 
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
-        env->canvas->h() - 149.0 * scale);
+        env->canvas->h() - 149 * scale);
     m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
 
 

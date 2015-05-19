@@ -20,26 +20,26 @@ Menu::Menu(const string& next, const string& texture)
     font->set_size(22 * scale);
 
     const int x_button = 188 * scale;
-    const int y_button = env->canvas->h() - 149.0 * scale;
+    const int y_button = env->canvas->h() - 149 * scale;
     const int w_button = 140 * scale;
     const int h_button = 60 * scale;
     const int spacing = 170 * scale;
     
     m_play = new Button(this, "start", "res/images/menu/button.png", x_button,
         y_button, w_button, h_button);
-    m_play->set_text("Play Game", Color(170, 215, 190));
+    m_play->set_text("Play Game");
 
     m_settings = new Button(this, "settings", "res/images/menu/button.png",
         x_button + spacing, y_button, w_button, h_button);
-    m_settings->set_text("Options", Color(170, 215, 190));
+    m_settings->set_text("Options");
 
     m_credits = new Button(this, "credits", "res/images/menu/button.png", x_button + 2 * spacing,
         y_button, w_button, h_button);
-    m_credits->set_text("Credits", Color(170, 215, 190));
+    m_credits->set_text("Credits");
 
     m_exit = new Button(this, "exit", "res/images/menu/button.png", x_button + 3 * spacing,
         y_button, w_button, h_button);
-    m_exit->set_text("Exit", Color(170, 215, 190));
+    m_exit->set_text("Exit");
 
     m_play->add_observer(this);
     m_settings->add_observer(this);
@@ -60,8 +60,7 @@ Menu::draw_self()
 
     double scale = env->canvas->scale();
 
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2,
-        25 * scale);
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
 }
 
 bool
