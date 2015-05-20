@@ -107,7 +107,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "slot1")
     {
-        m_next = "dungeon";
+        m_next = "gamemode";
     }
     else if (button->id() == "slot2")
     {
@@ -115,7 +115,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "slot3")
     {
-        m_next = "gameover";
+        m_next = "gamemode";
     }
     else if (button->id() == "back")
     {

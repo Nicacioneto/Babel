@@ -24,12 +24,12 @@ Settings::Settings(const string& next, const string& texture)
 
     try
     {
-        string vol = read_file("files/volume.txt");
+        string vol = read_file("volume.txt");
         m_vol = atoi(vol.c_str());
     }
     catch (Exception)
     {
-        write_file(std::to_string(m_vol), "files/volume.txt");
+        write_file(std::to_string(m_vol), "volume.txt");
     }
 
     double scale = env->canvas->scale();
@@ -196,7 +196,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
         }
     }
 
-    write_file(std::to_string(m_vol), "files/volume.txt");
+    write_file(std::to_string(m_vol), "volume.txt");
 
     return true;
 }

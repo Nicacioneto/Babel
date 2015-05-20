@@ -33,14 +33,11 @@ Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect clip)
 void
 Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
 {
-    int diff = front.x() < 0 ? -front.x() : 0;
     int w = abs(front.x() - back.x());
     int signal = front.x() <= back.x() ? 1 : -1;
-printf("diff = %d, w = %d, signal = %d\n", diff, w, signal);
 
     double top_y = front.y();
     double bot_y = front.y() + front.h();
-printf("top_y = %.3f, bot_y = %.3f\n", top_y, bot_y);
 
     Environment *env = Environment::get_instance();
 

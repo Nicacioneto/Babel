@@ -17,7 +17,7 @@ GameMode::GameMode(const string& next, const string&)
     const int w_button = 305 * scale;
     const int h_button = 716 * scale;
 
-    m_babel = new Button(this, "babel", "res/images/modes/button.png", x_button,
+    m_babel = new Button(this, "tower", "res/images/modes/button.png", x_button,
         y_button, w_button, h_button);
     m_colony = new Button(this, "colony", "res/images/modes/button.png", 2 * x_button + w_button,
         y_button, w_button, h_button);
@@ -52,21 +52,19 @@ GameMode::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    if (button->id() == "babel")
+    if (button->id() == "tower")
     {
-        m_next = "gameover";
-        m_done = true;
+        m_next = "dungeon";
     }
     else if (button->id() == "colony")
     {
         m_next = "gameover";
-        m_done = true;
     }
     else if (button->id() == "planet")
     {
         m_next = "gameover";
-        m_done = true;
     }
 
+    m_done = true;
     return true;
 }
