@@ -8,7 +8,7 @@ CC = g++
 
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
 INCLUDES = -Iinclude -I/usr/local/include/ijengine `sdl2-config --cflags`
-LIBS = -lijengine -lSDL2 -lpthread -lSDL2_image -lSDL2_ttf
+LIBS = -lijengine -lSDL2 -lpthread -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 GAME = $(BIN_DIR)/babel
 GAME_MAIN = $(SRC_DIR)/*.cpp
