@@ -19,17 +19,7 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     m_screen = new Bitmap(env->video->canvas());
 
     load_tiles();
-
-    try
-    {
-        load_map();
-    }
-    catch (Exception ex)
-    {
-        cerr << ex.message() << endl;
-        m_next = "";
-        m_done = true;
-    }
+    load_map();
 
     env->events_manager->register_keyboard_event_listener(this);
 }
@@ -83,7 +73,7 @@ Dungeon::update_self(unsigned long)
 void
 Dungeon::draw_self()
 {
-    env->canvas->clear();
+    m_screen->clear();
 
     list<Rect> ps = planes(env->canvas->w(), env->canvas->h());
     Rect front = ps.front();
@@ -101,14 +91,7 @@ Dungeon::draw_self()
         Rect f { front.x(), front.y(), 0, front.h() };
         Rect b { back.x(), back.y(), 0, back.h() };
 
-// printf("\nNew frame\n");
-// printf("front = (%d, %d), %dx%d\n", front.x(), front.y(), front.w(), front.h());
-// printf("back = (%d, %d), %dx%d\n", back.x(), back.y(), back.w(), back.h());
-// printf("f = (%d, %d), %dx%d\n", f.x(), f.y(), f.w(), f.h());
-// printf("b = (%d, %d), %dx%d\n", b.x(), b.y(), b.w(), b.h());
-
         int east_tile = m_rooms[idx][idy].tile(m_direction.prev());
-// printf("east tile = %d\n", east_tile);
 
         if (east_tile)
         {
@@ -118,40 +101,30 @@ Dungeon::draw_self()
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
 
-// printf("f = (%d, %d), %dx%d\n", f.x(), f.y(), f.w(), f.h());
-// printf("b = (%d, %d), %dx%d\n", b.x(), b.y(), b.w(), b.h());
-
         int west_tile = m_rooms[idx][idy].tile(m_direction.next());
-// printf("west tile = %d\n", west_tile);
 
         if (west_tile)
         {
             mapping.draw(m_screen, m_tiles[west_tile].get(), f, b);
         }
 
-
         int north_tile = m_rooms[idx][idy].tile(m_direction.front());
 
-// printf("north tile = %d\n", north_tile);
         if (north_tile)
         {
-// printf("back = (%d, %d), %dx%d\n", back.x(), back.y(), back.w(), back.h());
             mapping.draw(m_screen, m_tiles[north_tile].get(), back);
             break;
         }
         else
         {
             pair<int, int> v = m_direction.vector();
-// printf("vx = %d, vy = %d\n", v.first, v.second);
             int newx = idx + v.first;
             int newy = idy + v.second;
-// printf("newx = %d, newy = %d\n", newx, newy);
             if (newx >= 0 and newx < m_w and newy >= 0 and newy < m_h)
             {
                 idx = newx;
                 idy = newy;
                 front = back;
-// printf("idx = %d, idy = %d\n", idx, idy);
             }
             else
             {
@@ -171,13 +144,10 @@ Dungeon::planes(int sw, int sh)
     short centery = (sh - center_size)/2;
 
     Rect center { (double)centerx, (double)centery, (double)center_size, (double)center_size };
-// printf("center = (%d, %d), %dx%d\n", center.x(), center.y(), center.w(), center.h());
 
     static constexpr double ratio = 0.6;
     short dx = centerx / 3;
     short dy = dx * ratio;
-
-// printf("dx = %d, dy = %d\n", dx, dy);
 
     list<Rect> ps;
 
@@ -204,11 +174,6 @@ Dungeon::planes(int sw, int sh)
         Rect next { (double)x, (double)y, (double)w, (double)h };
         ps.push_front(next);
     } while (x > 0);
-
-    // for (auto r : ps)
-    // {
-    //     // printf("plane = (%d, %d), %dx%d\n", r.x(), r.y(), r.w(), r.h());
-    // }
 
     return ps;
 }
@@ -274,7 +239,7 @@ Dungeon::turn_right()
 }
 
 void
-Dungeon::load_map() throw (Exception)
+Dungeon::load_map()
 {
     string file = read_file("map.txt");
 
