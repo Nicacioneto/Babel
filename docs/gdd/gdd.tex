@@ -78,7 +78,7 @@
 
 
    {\Large \textbf{GDD}}\\
-   {\Large Versão 0.1}\\[6cm]
+   {\Large Versão 0.5}\\[6cm]
 
    \hspace{.45\textwidth} %posiciona a minipage
   \vfill
@@ -103,7 +103,7 @@
 \TileWallPaper{\paperwidth}{\paperheight}{res/wallpaper_body.jpg}
 \color{white}
 
-\section{Tabela de Revisão}
+\section*{Tabela de Revisão}
 
 
 \begin{table}[h]
@@ -113,12 +113,13 @@
 \begin{tabu}{|l|l|p{60mm}|l|}
 
 \hline 
-\textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                & \textbf{Autor}    \\ \hline
-0.1                 & 14/04/2015        & Versão inicial                                    & Álex Mesquita     \\ \hline
-0.2                 & 15/04/2015        & Requisitos Tecnológicos                           & Álex Mesquita     \\ \hline
-0.3                 & 15/04/2015        & Revisão ortográfica                               &                   \\ \hline
-0.4                 & 25/04/2015        & Front End                                         & Álex Mesquita     \\ \hline
-0.5                 & 29/04/2015        & Atualização da imagem de fundo                    & Álex Mesquita     \\ \hline
+\textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                  & \textbf{Autor}    \\ \hline
+0.1                 & 14/04/2015        & Versão inicial                                      & Álex Mesquita     \\ \hline
+0.2                 & 15/04/2015        & Requisitos Tecnológicos                             & Álex Mesquita     \\ \hline
+0.3                 & 15/04/2015        & Revisão ortográfica                                 &                   \\ \hline
+0.4                 & 25/04/2015        & Front End                                           & Álex Mesquita     \\ \hline
+0.5                 & 29/04/2015        & Atualização da imagem de fundo                      & Álex Mesquita     \\ \hline
+0.5.1               & 21/05/2015        & Criação das mecânicas do jogo - Exploração vertical & Jefferson Xavier  \\ \hline
 \end{tabu}
 \end{table}
 
@@ -136,6 +137,21 @@
 \paragraph{}A partir da visão de sua base o jogador poderá transitar pelos cenários da torre e da superfície do planeta. Para acessar a torre o jogador deverá clicar sobre um botão de missões na torre que estará disponível no cenário da base. Para retornar à sua base, o jogador deverá concluir ou abortar a missão. Do mesmo modo, para acessar a superfície do planeta, o jogador deverá clicar sobre um botão de missões sobre a superfície da torre que também estará disponível no cenário da base. Ao abrir o cenário da superfície, o jogador poderá selecionar qual missão este irá executar, neste cenário terá um botão para se retornar à base.
 
 \paragraph{}O objetivo do jogo é descobrir o propósito da torre e quem construiu esse edifício misterioso. Ao entrar em contato com tal ser, o que ocorreria em seguida? Uma Guerra? Trocas de experiências? Para isso o jogador deverá explorar todos os níveis da torre com os seus personagens. E para facilitar a exploração, será possível coletar \textit{Data points}\footnote{Pontos que serão obtidos através da execução de missões}, podendo assim evoluir os personagens, facilitando o seu desempenho durante as missões na torre. 
+
+\subsection{Mecânicas do Jogo}
+\paragraph{}Esta sessão apresentará todas as mecânicas existentes no jogo, com detalhes sobre as explorações horizontal e vertical, Base, Combates, Eventos e Relógio.
+
+\subsubsection{Exploração Vertical}
+\paragraph{}A Exploração Vertical consiste na exploração da Torre. Que se vai dar em um formato clássico de Dungeon Crawl, a vista em primeira pessoa e a imersão dada contribui para a experiência de exploração e incerteza, ja que a Torre terá corredores labirintíticos.
+
+Na exploração vertical o jogador estará com uma equipe composta por 4 heróis e um drone, o jogador estará comandando esta equipe na direção desejada dentro da torre com um objetivo em mente que pode variar em cada nível de exploração. Durante a exploração da torre podem surgir inimigos que deverão ser combatidos com toda a equipe, podem surgir também alguns objetos que o jogador irá ganhar durante a exploração, tudo que o jogador ganhar durante a exploração da torre poderá ser usado para evolução da base principal. Os níveis de exploração da torre podem ser comparados aos andares da mesma, quanto maior o andar maior será também a dificuldade do jogador para vencer.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{res/Dungeon_Crawler.png}
+\caption{Exploração Vertical - Exemplo de Dungeon Crawl}
+\label{Dungeon Crawler}
+\end{figure}
 
 \section{Esquema de controle e interface com o usuário}
 
