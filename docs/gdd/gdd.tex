@@ -78,7 +78,7 @@
 
 
    {\Large \textbf{GDD}}\\
-   {\Large Versão 0.5}\\[6cm]
+   {\Large Versão 0.6}\\[6cm]
 
    \hspace{.45\textwidth} %posiciona a minipage
   \vfill
@@ -120,7 +120,8 @@
 0.4                 & 25/04/2015        & Front End                                             & Álex Mesquita     \\ \hline
 0.5                 & 29/04/2015        & Atualização da imagem de fundo                        & Álex Mesquita     \\ \hline
 0.5.1               & 21/05/2015        & Criação das mecânicas do jogo - Exploração vertical   & Jefferson Xavier  \\ \hline
-0.5.2               & 21/05/2015        & Criação das mecânicas do jogo - Exploração horizontal & Jefferson Xavier  \\ \hline
+0.5.2               & 21/05/2015        & Criação da Mecânica Exploração horizontal             & Jefferson Xavier  \\ \hline
+0.6                 & 21/05/2015        & Finalização das Mecânicas                             & Jefferson Xavier  \\ \hline
 \end{tabu}
 \end{table}
 
@@ -143,7 +144,7 @@
 \paragraph{}Esta sessão apresentará todas as mecânicas existentes no jogo, com detalhes sobre as explorações horizontal e vertical, Base, Combates, Eventos e Relógio.
 
 \subsubsection{Exploração Vertical}
-\paragraph{}A Exploração Vertical consiste na exploração da Torre. Que se vai dar em um formato clássico de Dungeon Crawl, a vista em primeira pessoa e a imersão dada contribui para a experiência de exploração e incerteza, ja que a Torre terá corredores labirintíticos.
+\paragraph{}A Exploração Vertical consiste na exploração da Torre. Que se vai dar em um formato clássico de Dungeon Crawl, a vista em primeira pessoa e a imersão dada contribui para a experiência de exploração e incerteza, já que a Torre terá corredores labirintíticos.
 
 \paragraph{}Quando o jogador mostra interesse em explorar a Torre, ele deve antes escolher uma equipe que consiste em 4 Heróis e 1 Drone. Depois de selecionado a equipe e o andar que se deseja explorar, as mecânicas da Exploração Vertical começam a agir.
 
@@ -157,11 +158,11 @@
 \centering
 \includegraphics[scale=0.3]{res/Dungeon_Crawler.png}
 \caption{Exploração Vertical - Exemplo de Dungeon Crawl}
-\label{Dungeon Crawler}
+\label{Exploração Vertical - Exemplo de Dungeon Crawl}
 \end{figure}
 
 \subsubsection{Exploração Horizontal}
-\paragraph{}A Exploração Horizontal vem como suporte para a mecânica de Exploração Vertical, que é por onde a maioria da experiência do jogo será passada. É a exploração do planeta, que tem como principal função ser uma fonte de recursos brutos que serão necessários para a costrução e manutenção da sua base de operações, enfatizando o senso de necessidade e sobrevivência da espécie.
+\paragraph{}A Exploração Horizontal vem como suporte para a mecânica de Exploração Vertical, que é por onde a maioria da experiência do jogo será passada. É a exploração do planeta, que tem como principal função ser uma fonte de recursos brutos que serão necessários para a construção e manutenção da sua base de operações, enfatizando o senso de necessidade e sobrevivência da espécie.
 
 \begin{enumerate}
   \item \textbf{Espaço}: A Exploração Horizontal se dá na superfície do planeta colonizado, na região que circunda a misteriosa Torre. Os recursos serão extraídos dos locais próximos.
@@ -173,7 +174,28 @@
 \centering
 \includegraphics[scale=0.3]{res/resources.png}
 \caption{Exemplo de Exploração Horizontal}
-\label{Dungeon Crawler}
+\label{Exemplo de Exploração Horizontal}
+\end{figure}
+
+\subsection{Base Building}
+\paragraph{}Além da exploração da torre e do planeta o jogo também deve conter uma base principal, essa é a base onde o jogador evolui seus personagens, atributos, construções e tecnologias, tudo é evoluído a partir do que é ganho nas explorações vertical e horizontal. Ao todo são sete tipos de construções que existirão na base.
+
+\begin{enumerate}
+  \item \textbf{Fundição/Fábrica}: Criação de equipamentos e drones;
+  \item \textbf{Clínica Genética}: Cura de personagens feridos em uma dada exploração e dá upgrade nos atributos passivos dos personagens, como defesa, vida e quantidade de dano;
+  \item \textbf{Quartel General}: Atualização das unidades militares;
+  \item \textbf{Laboratório}: Atualização das unidades tecnológicas;
+  \item \textbf{Centro de Inteligência}: Atualização das unidades psiônicas;
+  \item \textbf{Centro de Pesquisa}: Pesquisa de novos itens;
+  \item \textbf{Centro de Comando}: Selecionar missões e contratar novos personagens.
+\end{enumerate}
+\newpage
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{res/base_building.png}
+\caption{Exemplo de Base Building}
+\label{Exemplo de Base Building}
 \end{figure}
 
 \section{Esquema de controle e interface com o usuário}
