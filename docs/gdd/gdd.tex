@@ -113,13 +113,14 @@
 \begin{tabu}{|l|l|p{60mm}|l|}
 
 \hline 
-\textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                  & \textbf{Autor}    \\ \hline
-0.1                 & 14/04/2015        & Versão inicial                                      & Álex Mesquita     \\ \hline
-0.2                 & 15/04/2015        & Requisitos Tecnológicos                             & Álex Mesquita     \\ \hline
-0.3                 & 15/04/2015        & Revisão ortográfica                                 &                   \\ \hline
-0.4                 & 25/04/2015        & Front End                                           & Álex Mesquita     \\ \hline
-0.5                 & 29/04/2015        & Atualização da imagem de fundo                      & Álex Mesquita     \\ \hline
-0.5.1               & 21/05/2015        & Criação das mecânicas do jogo - Exploração vertical & Jefferson Xavier  \\ \hline
+\textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                    & \textbf{Autor}    \\ \hline
+0.1                 & 14/04/2015        & Versão inicial                                        & Álex Mesquita     \\ \hline
+0.2                 & 15/04/2015        & Requisitos Tecnológicos                               & Álex Mesquita     \\ \hline
+0.3                 & 15/04/2015        & Revisão ortográfica                                   &                   \\ \hline
+0.4                 & 25/04/2015        & Front End                                             & Álex Mesquita     \\ \hline
+0.5                 & 29/04/2015        & Atualização da imagem de fundo                        & Álex Mesquita     \\ \hline
+0.5.1               & 21/05/2015        & Criação das mecânicas do jogo - Exploração vertical   & Jefferson Xavier  \\ \hline
+0.5.2               & 21/05/2015        & Criação das mecânicas do jogo - Exploração horizontal & Jefferson Xavier  \\ \hline
 \end{tabu}
 \end{table}
 
@@ -144,12 +145,34 @@
 \subsubsection{Exploração Vertical}
 \paragraph{}A Exploração Vertical consiste na exploração da Torre. Que se vai dar em um formato clássico de Dungeon Crawl, a vista em primeira pessoa e a imersão dada contribui para a experiência de exploração e incerteza, ja que a Torre terá corredores labirintíticos.
 
-Na exploração vertical o jogador estará com uma equipe composta por 4 heróis e um drone, o jogador estará comandando esta equipe na direção desejada dentro da torre com um objetivo em mente que pode variar em cada nível de exploração. Durante a exploração da torre podem surgir inimigos que deverão ser combatidos com toda a equipe, podem surgir também alguns objetos que o jogador irá ganhar durante a exploração, tudo que o jogador ganhar durante a exploração da torre poderá ser usado para evolução da base principal. Os níveis de exploração da torre podem ser comparados aos andares da mesma, quanto maior o andar maior será também a dificuldade do jogador para vencer.
+\paragraph{}Quando o jogador mostra interesse em explorar a Torre, ele deve antes escolher uma equipe que consiste em 4 Heróis e 1 Drone. Depois de selecionado a equipe e o andar que se deseja explorar, as mecânicas da Exploração Vertical começam a agir.
+
+\begin{enumerate}
+  \item \textbf{Movimentação}: A Movimentação dentro da Torre é medida por meio de quadrados que compõem o mapa do andar da Torre. Porém, entre um quadrado e outro existem algumas coisas que podem impedir a movimentação da equipe para aquela dada direção;
+  \item \textbf{Eventos}: Os Eventos são conflitos que aparecem ao jogador, e que devem ser resolvidos para que o jogador consiga progredir no jogo. Eles são conflitos que aparecem, propondo um desafio, e são dadas opções ao jogador para que ele possa resolver o dado desafio. Os Eventos podem ser de tipos diferentes, que são: Combates, que é quando inimigos aparecem para o jogador em algum ponto específico da exploração da torre, nesse caso esses inimigos devem ser derrotados pela equipe. Objetos, podem aparecer durante a exploração para que o jogador. Portas, são pontos de divisão do andar da torre, podem servir para separar corredores e salas, por exemplo, podem ser secretas ou inacessíveis também até certo momento da exploração, até que algum inimigo seja derrotado, por exemplo.
+\end{enumerate}
+\newpage
 
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.3]{res/Dungeon_Crawler.png}
 \caption{Exploração Vertical - Exemplo de Dungeon Crawl}
+\label{Dungeon Crawler}
+\end{figure}
+
+\subsubsection{Exploração Horizontal}
+\paragraph{}A Exploração Horizontal vem como suporte para a mecânica de Exploração Vertical, que é por onde a maioria da experiência do jogo será passada. É a exploração do planeta, que tem como principal função ser uma fonte de recursos brutos que serão necessários para a costrução e manutenção da sua base de operações, enfatizando o senso de necessidade e sobrevivência da espécie.
+
+\begin{enumerate}
+  \item \textbf{Espaço}: A Exploração Horizontal se dá na superfície do planeta colonizado, na região que circunda a misteriosa Torre. Os recursos serão extraídos dos locais próximos.
+  \item \textbf{Locais}: Estes locais estarão posicionados em uma malha virtual abstrata, posicionadas nos vértices desta mesma malha. A cada local explorado, é revelado no mapa do planeta todos os locais que ligam aquele local na malha, aumentando as possibilidades e locais de exploração.
+  \item \textbf{Resolução e recompensas}: Todo local de exploração terá algum desafio para ser resolvido e em caso de sucesso o jogador ganhará recursos que poderão ser usados para evolução de sua base. Os desafios podem variar e cabe ao jogador formar a melhor estratégia e mandar a melhor equipe de acordo com as necessidades para cumprir esses objetivos.
+\end{enumerate}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.3]{res/resources.png}
+\caption{Exemplo de Exploração Horizontal}
 \label{Dungeon Crawler}
 \end{figure}
 
