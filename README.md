@@ -1,7 +1,4 @@
-# Babel
-Jogo para a disciplina de Introdução aos Jogos Eletrônicos
-
-Equipe Tiamat
+# Babel - Tiamat Team
 
 ---
 
@@ -13,36 +10,52 @@ Equipe Tiamat
 
 ---
 
-Uso
+Singleplayer game like Sci-fi. The mankind wanders the universe looking for a new habitable planet. They found an unknown planet with a big and strange tower.
+
+The challenge is explore the tower and the planet and expand your resources, but be careful with the mysteries of this new planet.
+
+Usage
 ------------
-Para rodar o jogo é necessário realizar a instalação prévia da engine. Siga os passos:
+Follow this steps to play the game:
+
+Clone the repository:
 ```
-$ git clone http://github.com/ije-tiamat/ije.git
-$ cd engine
+git clone https://github.com/ije-tiamat/babel.git
+```
+
+Installing the Engine:
+```
+$ cd game/lib
+$ tar -vzxf ijengine-0.0.3.tar.gz
+$ make
 $ sudo make install
 ```
+
+Compiling and opening the game:
 ```
-$ git clone https://github.com/ije-tiamat/babel.git
-$ cd game
+$ cd ..
 $ make
 $ bin/babel
 ```
 
-Requisitos
+Enjoy!
+
+Requirements
 ------------
-Antes de rodar Babel, é necessário instalar os seguintes pacotes:
+It's necessary the following packages to compile the game:
+
 - Simple DirectMedia Layer (SDL2) (2.0.3)
-    * mantenedor: http://www.libsdl.org/download-2.0.php
+    * maintainer: http://www.libsdl.org/download-2.0.php
     * debian/ubuntu: sudo apt-get install libsdl2-dev
 
 - TrueType Font library (SDL2-ttf) (2.0.12)
-    * mantenedor: http://www.libsdl.org/projects/SDL_ttf/
+    * maintainer: http://www.libsdl.org/projects/SDL_ttf/
     * debian/ubuntu: sudo apt-get install libsdl2-ttf-dev
 
 - Image loading library (SDL2-image) (2.0.0)
-    * mantenedor: http://www.libsdl.org/projects/SDL_image/
+    * maintainer: http://www.libsdl.org/projects/SDL_image/
     * debian/ubuntu: sudo apt-get install libsdl2-image-dev
 
 - Mixer library (SDL-mixer) (2.0.0)
-    * mantenedor: http://www.libsdl.org/projects/SDL_mixer/
+    * maintainer: http://www.libsdl.org/projects/SDL_mixer/
     * debian/ubuntu: sudo apt-get install libsdl2-mixer-dev
