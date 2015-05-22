@@ -3,8 +3,8 @@
 #include <core/bitmap.h>
 #include <cmath>
 
-Mapping::Mapping(double ratio)
-    : m_ratio(ratio)
+Mapping::Mapping(double vertical_ratio, double horizontal_ratio)
+    : m_vertical_ratio(vertical_ratio), m_horizontal_ratio(horizontal_ratio)
 {
 }
 
@@ -31,7 +31,7 @@ Mapping::draw_center(Bitmap *screen, Bitmap *bitmap, const Rect clip)
 }
 
 void
-Mapping::draw_wall(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
+Mapping::draw_walls(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
 {
     int w = abs(front.x() - back.x());
     int signal = front.x() <= back.x() ? 1 : -1;
@@ -45,8 +45,8 @@ Mapping::draw_wall(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect 
     {
         if (i < 0 or i >= env->canvas->w())
         {
-            top_y += m_ratio;
-            bot_y -= m_ratio;
+            top_y += m_vertical_ratio;
+            bot_y -= m_vertical_ratio;
             continue;
         }
 
@@ -67,13 +67,13 @@ Mapping::draw_wall(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect 
             Uint32 color = bitmap->getpixel(static_cast<SDL_Surface *>(bitmap->data()), posx, posy);
             bitmap->putpixel(static_cast<SDL_Surface *>(screen->data()), i, j, color);
         }
-        top_y += m_ratio;
-        bot_y -= m_ratio;
+        top_y += m_vertical_ratio;
+        bot_y -= m_vertical_ratio;
     }
 }
 
 void
-Mapping::draw_ceiling(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
+Mapping::draw_ceiling_floor(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
 {
     int h = abs(front.y() - back.y());
     int signal = front.y() <= back.y() ? 1 : -1;
@@ -85,10 +85,10 @@ Mapping::draw_ceiling(Bitmap *screen, Bitmap *bitmap, const Rect front, const Re
 
     for (int i = front.y(); i != back.y(); i += signal)
     {
-        if (i < 20 or i >= env->canvas->h())
+        if (i < 20 or i >= env->canvas->h() - 20)
         {
-            left_x += 1.7;
-            right_x -= 1.7;
+            left_x += m_horizontal_ratio;
+            right_x -= m_horizontal_ratio;
             continue;
         }
 
@@ -109,7 +109,7 @@ Mapping::draw_ceiling(Bitmap *screen, Bitmap *bitmap, const Rect front, const Re
             Uint32 color = bitmap->getpixel(static_cast<SDL_Surface *>(bitmap->data()), posx, posy);
             bitmap->putpixel(static_cast<SDL_Surface *>(screen->data()), j, i, color);
         }
-        left_x += 1.7;
-        right_x -= 1.7;
+        left_x += m_horizontal_ratio;
+        right_x -= m_horizontal_ratio;
     }
 }

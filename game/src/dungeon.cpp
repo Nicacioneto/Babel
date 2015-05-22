@@ -95,7 +95,7 @@ Dungeon::draw_self()
 
         if (west_tile)
         {
-            mapping.draw_wall(m_screen, m_tiles[west_tile].get(), f, b);
+            mapping.draw_walls(m_screen, m_tiles[west_tile].get(), f, b);
         }
         
         f.set_x(f.x() + front.w());
@@ -105,7 +105,7 @@ Dungeon::draw_self()
 
         if (east_tile)
         {
-            mapping.draw_wall(m_screen, m_tiles[east_tile].get(), f, b);
+            mapping.draw_walls(m_screen, m_tiles[east_tile].get(), f, b);
         }
 
         f = Rect(front.x(), front.y(), front.w(), 0);
@@ -115,7 +115,7 @@ Dungeon::draw_self()
 
         if (roof_tile)
         {
-            mapping.draw_ceiling(m_screen, m_tiles[roof_tile].get(), f, b);
+            mapping.draw_ceiling_floor(m_screen, m_tiles[roof_tile].get(), f, b);
         }
 
         f.set_y(f.y() + front.h());
@@ -124,7 +124,7 @@ Dungeon::draw_self()
 
         if (floor_tile)
         {
-            mapping.draw_ceiling(m_screen, m_tiles[floor_tile].get(), f, b);
+            mapping.draw_ceiling_floor(m_screen, m_tiles[floor_tile].get(), f, b);
         }
         
         int north_tile = m_rooms[idx][idy].tile(m_direction.front());
