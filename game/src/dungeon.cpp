@@ -91,28 +91,47 @@ Dungeon::draw_self()
         Rect f { front.x(), front.y(), 0, front.h() };
         Rect b { back.x(), back.y(), 0, back.h() };
 
-        int east_tile = m_rooms[idx][idy].tile(m_direction.prev());
+        int west_tile = m_rooms[idx][idy].tile(m_direction.prev());
 
-        if (east_tile)
+        if (west_tile)
         {
-            mapping.draw(m_screen, m_tiles[east_tile].get(), f, b);
+            mapping.draw_wall(m_screen, m_tiles[west_tile].get(), f, b);
         }
         
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
 
-        int west_tile = m_rooms[idx][idy].tile(m_direction.next());
+        int east_tile = m_rooms[idx][idy].tile(m_direction.next());
 
-        if (west_tile)
+        if (east_tile)
         {
-            mapping.draw(m_screen, m_tiles[west_tile].get(), f, b);
+            mapping.draw_wall(m_screen, m_tiles[east_tile].get(), f, b);
         }
 
+        f = Rect(front.x(), front.y(), front.w(), 0);
+        b = Rect(back.x(), back.y(), back.w(), 0);
+
+        int roof_tile = m_rooms[idx][idy].tile(m_direction.roof());
+
+        if (roof_tile)
+        {
+            mapping.draw_ceiling(m_screen, m_tiles[roof_tile].get(), f, b);
+        }
+
+        f.set_y(f.y() + front.h());
+        b.set_y(b.y() + back.h());
+        int floor_tile = m_rooms[idx][idy].tile(m_direction.floor());
+
+        if (floor_tile)
+        {
+            mapping.draw_ceiling(m_screen, m_tiles[floor_tile].get(), f, b);
+        }
+        
         int north_tile = m_rooms[idx][idy].tile(m_direction.front());
 
         if (north_tile)
         {
-            mapping.draw(m_screen, m_tiles[north_tile].get(), back);
+            mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
             break;
         }
         else
@@ -249,15 +268,17 @@ Dungeon::load_map()
     vector<vector<int>> map;
     vector<int> p;
 
-    int north, east, south, west;
+    int north, east, south, west, roof, floor;
     char garbage;
 
-    while (ss >> north >> east >> south >> west >> garbage)
+    while (ss >> north >> east >> south >> west >> roof >> floor >> garbage)
     {
         p.push_back(north);
         p.push_back(east);
         p.push_back(south);
         p.push_back(west);
+        p.push_back(roof);
+        p.push_back(floor);
 
         if (garbage == ';')
         {
@@ -270,7 +291,7 @@ Dungeon::load_map()
     {
         for (unsigned int v = 0, j = 0; v < map[i].size(); ++v)
         {
-            switch (v % 4)
+            switch (v % 6)
             {
                 case 0:
                     m_rooms[i][j].set_tile(Direction::NORTH, map[u][v]);
@@ -283,6 +304,12 @@ Dungeon::load_map()
                     break;
                 case 3:
                     m_rooms[i][j].set_tile(Direction::WEST, map[u][v]);
+                    break;
+                case 4:
+                    m_rooms[i][j].set_tile(Direction::ROOF, map[u][v]);
+                    break;
+                case 5:
+                    m_rooms[i][j].set_tile(Direction::FLOOR, map[u][v]);
                     j++;
                     break;
             }
@@ -295,10 +322,15 @@ Dungeon::load_tiles()
 {
     for (int i = 0; i < MAXT; ++i)
     {
+        string img = "res/images/" + std::to_string(i);
         try
         {
-            string img = "res/images/" + std::to_string(i) + ".bmp";
-            m_tiles[i] = env->resources_manager->get_bitmap(img);
+            try {
+                m_tiles[i] = env->resources_manager->get_bitmap(img + ".png");
+            }
+            catch (Exception) {
+                m_tiles[i] = env->resources_manager->get_bitmap(img + ".bmp");
+            }
         }
         catch (Exception) {}
     }

@@ -13,6 +13,8 @@ public:
     static constexpr int EAST = 1;
     static constexpr int SOUTH = 2;
     static constexpr int WEST = 3;
+    static constexpr int ROOF = 4;
+    static constexpr int FLOOR = 5;
     
     Direction(int front = NORTH);
 
@@ -20,6 +22,8 @@ public:
     int back() const;
     int next() const;
     int prev() const;
+    int roof() const;
+    int floor() const;
 
     void turn_left();
     void turn_right();

@@ -1,7 +1,7 @@
 #include "room.h"
 
-Room::Room(int north, int east, int south, int west)
-    : m_tiles { north, east, south, west }
+Room::Room(int north, int east, int south, int west, int roof, int floor)
+    : m_tiles { north, east, south, west, roof, floor }
 {
 }
 

@@ -9,7 +9,7 @@ Mapping::Mapping(double ratio)
 }
 
 void
-Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect clip)
+Mapping::draw_center(Bitmap *screen, Bitmap *bitmap, const Rect clip)
 {
     int w = clip.x() + clip.w();
     int h = clip.y() + clip.h();
@@ -31,7 +31,7 @@ Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect clip)
 }
 
 void
-Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
+Mapping::draw_wall(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
 {
     int w = abs(front.x() - back.x());
     int signal = front.x() <= back.x() ? 1 : -1;
@@ -69,5 +69,47 @@ Mapping::draw(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
         }
         top_y += m_ratio;
         bot_y -= m_ratio;
+    }
+}
+
+void
+Mapping::draw_ceiling(Bitmap *screen, Bitmap *bitmap, const Rect front, const Rect back)
+{
+    int h = abs(front.y() - back.y());
+    int signal = front.y() <= back.y() ? 1 : -1;
+
+    double left_x = front.x();
+    double right_x = front.x() + front.w();
+
+    Environment *env = Environment::get_instance();
+
+    for (int i = front.y(); i != back.y(); i += signal)
+    {
+        if (i < 20 or i >= env->canvas->h())
+        {
+            left_x += 1.7;
+            right_x -= 1.7;
+            continue;
+        }
+
+        double num = abs(i - front.y());
+        double ky = num/h;
+        int posy = ky*bitmap->h();
+
+        for (int j = left_x; j <= right_x; ++j)
+        {
+            if (j < 0 or j >= env->canvas->w())
+            {
+                continue;
+            }
+
+            double kx = (double) fabs(j - left_x)/(right_x - left_x);
+            int posx = kx*bitmap->w();
+
+            Uint32 color = bitmap->getpixel(static_cast<SDL_Surface *>(bitmap->data()), posx, posy);
+            bitmap->putpixel(static_cast<SDL_Surface *>(screen->data()), j, i, color);
+        }
+        left_x += 1.7;
+        right_x -= 1.7;
     }
 }

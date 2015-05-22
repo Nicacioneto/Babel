@@ -35,6 +35,18 @@ Direction::prev() const
     return (m_front + 3) % 4;
 }
 
+int
+Direction::roof() const
+{
+    return ROOF;
+}
+
+int
+Direction::floor() const
+{
+    return FLOOR;
+}
+
 void
 Direction::turn_left()
 {
@@ -46,7 +58,6 @@ Direction::turn_right()
 {
     m_front = (m_front + 1) % 4;
 }
-
 
 pair<int, int>
 Direction::vector()
