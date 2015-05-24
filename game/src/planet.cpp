@@ -13,7 +13,8 @@
 #define H_BUTTON_GAMEMODE 60
 
 Planet::Planet(const string& next, const string& texture)
-    : Level("", next), m_texture(nullptr), m_misson1(nullptr), m_misson2(nullptr), m_misson3(nullptr), m_gamemode(nullptr)
+    : Level("", next), m_texture(nullptr), m_misson1(nullptr), m_misson2(nullptr),
+        m_misson3(nullptr), m_gamemode(nullptr)
 {
     env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);

@@ -348,10 +348,12 @@ Dungeon::load_tiles()
         string img = "res/images/" + std::to_string(i);
         try
         {
-            try {
+            try
+            {
                 m_tiles[i] = env->resources_manager->get_bitmap(img + ".png");
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 m_tiles[i] = env->resources_manager->get_bitmap(img + ".bmp");
             }
         }
