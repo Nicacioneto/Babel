@@ -22,15 +22,7 @@ Settings::Settings(const string& next, const string& texture)
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
-    try
-    {
-        string vol = read_file("volume.txt");
-        m_vol = atoi(vol.c_str());
-    }
-    catch (Exception)
-    {
-        write_file(std::to_string(m_vol), "volume.txt");
-    }
+    m_vol = volume();
 
     double scale = env->canvas->scale();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -107,12 +99,12 @@ Settings::draw_self()
         (env->canvas->h() - 20 * scale)/2);
 
     int i;
-    for (i = 0; i < (10 - m_vol)*17; i+=17)
+    for (i = 0; i < (10 - m_vol/10)*17; i+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale,
             (env->canvas->h() - 15 * scale)/2);
     }
-    for (int j = i; j < i + m_vol*17; j+=17)
+    for (int j = i; j < i + (m_vol/10)*17; j+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+j) * scale,
             (env->canvas->h() - 15 * scale)/2);
@@ -183,14 +175,16 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "up_volume")
     {
-        if (++m_vol > 10)
+        m_vol += 10;
+        if (m_vol > 100)
         {
-            m_vol = 10;
+            m_vol = 100;
         }
     }
     else if (button->id() == "down_volume")
     {
-        if (--m_vol < 0)
+        m_vol -= 10;
+        if (m_vol < 0)
         {
             m_vol = 0;
         }
@@ -199,4 +193,20 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
     write_file(std::to_string(m_vol), "volume.txt");
 
     return true;
+}
+
+int
+Settings::volume()
+{
+    int volume;
+    try
+    {
+        string vol = read_file("volume.txt");
+        volume = atoi(vol.c_str());
+    }
+    catch (Exception)
+    {
+        write_file(std::to_string(5), "volume.txt");
+    }
+    return volume;
 }

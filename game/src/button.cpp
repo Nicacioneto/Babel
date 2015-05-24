@@ -6,6 +6,7 @@
  * License: LGPL. No copyright.
  */
 #include "button.h"
+#include "settings.h"
 #include <core/color.h>
 #include <core/rect.h>
 
@@ -73,7 +74,7 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
         auto music = env->music;
-        music->set_volume(80);
+        music->set_volume(Settings::volume());
         music->play("res/sfx/uiConfirm1.ogg", 1);
 
         notify(clickedID, coords);
@@ -96,7 +97,7 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
         if (m_state != ON_HOVER)
         {
             auto music = env->music;
-            music->set_volume(80);
+            music->set_volume(Settings::volume());
             music->play("res/sfx/uiMouseOver2.ogg", 1);
         }
         m_state = ON_HOVER;
