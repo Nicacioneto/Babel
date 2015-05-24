@@ -64,7 +64,7 @@ GameMode::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "planet")
     {
-        set_next("gameover");
+        set_next("planet");
     }
 
     finish();

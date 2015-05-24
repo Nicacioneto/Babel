@@ -1,9 +1,8 @@
-Prismic Stars
-Game	Tales of Eternia
+Game	Kichikuo Rance
 Section	Miscellaneous
-Filesize	29.92 KB
-Submitter	SmithyGCN
+Filesize	1.65 MB
+Submitter	Dazz
 Format	PNG (image/png)
-Size	481x268 pixels
-Hits	847
-link	http://www.spriters-resource.com/playstation/toe/sheet/9422/
+Size	640x2828 pixels
+Hits	1,213
+link	http://www.spriters-resource.com/pc_computer/kichikuorance/sheet/37466/

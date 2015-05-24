@@ -4,6 +4,7 @@
 #include "gamemode.h"
 #include "gameover.h"
 #include "menu.h"
+#include "planet.h"
 #include "play.h"
 #include "settings.h"
 #include <util/frontend.h>
@@ -54,6 +55,10 @@ Babel::load_level(const string& id)
     else if (id == "dungeon")
     {
         return load_dungeon();
+    }
+    else if (id == "planet")
+    {
+        return load_planet();
     }
     
     return load_frontend(id);
@@ -118,4 +123,10 @@ Level *
 Babel::load_dungeon()
 {
     return new Dungeon();
+}
+
+Level *
+Babel::load_planet()
+{
+    return new Planet();
 }
