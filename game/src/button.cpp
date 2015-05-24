@@ -90,6 +90,13 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
 
     if (bounding_box().contains(event.x(), event.y()))
     {
+        if (m_state != ON_HOVER)
+        {
+            Environment *env = Environment::get_instance();
+            auto music = env->music;
+            music->set_volume(80);
+            music->play("res/sfx/uiMouseOver2.ogg", 1);
+        }
         m_state = ON_HOVER;
         return true;
     }
