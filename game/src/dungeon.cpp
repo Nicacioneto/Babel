@@ -98,6 +98,8 @@ Dungeon::draw_self()
         Rect b { back.x(), back.y(), 0, back.h() };
 
         int west_tile = m_rooms[idx][idy].tile(m_direction.prev());
+        // env->canvas->draw(f, Color::WHITE);
+        // env->canvas->draw(b, Color::YELLOW);
 
         if (west_tile)
         {
@@ -106,6 +108,9 @@ Dungeon::draw_self()
         
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
+        // env->canvas->draw(f, Color::WHITE);
+        // env->canvas->draw(b, Color::YELLOW);
+
 
         int east_tile = m_rooms[idx][idy].tile(m_direction.next());
 
@@ -116,6 +121,9 @@ Dungeon::draw_self()
 
         f = Rect(front.x(), front.y(), front.w(), 0);
         b = Rect(back.x(), back.y(), back.w(), 0);
+        // env->canvas->draw(f, Color::WHITE);
+        // env->canvas->draw(b, Color::YELLOW);
+
 
         int roof_tile = m_rooms[idx][idy].tile(m_direction.roof());
 
@@ -126,6 +134,9 @@ Dungeon::draw_self()
 
         f.set_y(f.y() + front.h());
         b.set_y(b.y() + back.h());
+        // env->canvas->draw(f, Color::WHITE);
+        // env->canvas->draw(b, Color::YELLOW);
+
         int floor_tile = m_rooms[idx][idy].tile(m_direction.floor());
 
         if (floor_tile)
@@ -137,6 +148,9 @@ Dungeon::draw_self()
 
         if (north_tile)
         {
+            // env->canvas->fill(back, Color::RED);
+            // env->canvas->update();
+            // SDL_Delay(1000);
             mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
             break;
         }
@@ -156,6 +170,7 @@ Dungeon::draw_self()
                 break;
             }
         }
+    // env->canvas->update();
     }
 
     env->canvas->draw(m_screen);
@@ -164,7 +179,7 @@ Dungeon::draw_self()
 list<Rect>
 Dungeon::planes(int sw, int sh)
 {
-    static constexpr unsigned short center_size = 200;
+    unsigned short center_size = sw/4;
     short centerx = (sw - center_size)/2;
     short centery = (sh - center_size)/2;
 
