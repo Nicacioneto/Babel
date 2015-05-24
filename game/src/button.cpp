@@ -73,9 +73,9 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
-        AudioManagerSfx *music = env->sfx;
-        music->set_volume(Settings::volume());
-        music->play("res/sfx/uiConfirm1.ogg", 1);
+        AudioManagerSfx *sfx = env->sfx;
+        sfx->set_volume(Settings::volume());
+        sfx->play("res/sfx/uiConfirm1.ogg", 1);
 
         notify(clickedID, coords);
         return true;
@@ -96,9 +96,9 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            AudioManagerSfx *music = env->sfx;
-            music->set_volume(Settings::volume());
-            music->play("res/sfx/uiMouseOver2.ogg", 1);
+            AudioManagerSfx *sfx = env->sfx;
+            sfx->set_volume(Settings::volume());
+            sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
         m_state = ON_HOVER;
         return true;
