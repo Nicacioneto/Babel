@@ -73,7 +73,7 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
-        auto music = env->music;
+        AudioManagerSfx *music = env->sfx;
         music->set_volume(Settings::volume());
         music->play("res/sfx/uiConfirm1.ogg", 1);
 
@@ -96,7 +96,7 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            auto music = env->music;
+            AudioManagerSfx *music = env->sfx;
             music->set_volume(Settings::volume());
             music->play("res/sfx/uiMouseOver2.ogg", 1);
         }
