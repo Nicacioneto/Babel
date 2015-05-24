@@ -32,6 +32,8 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
 Dungeon::~Dungeon()
 {
     env->events_manager->unregister_keyboard_event_listener(this);
+    AudioManagerMusic *music = env->music;
+    music->stop();
 }
 
 bool
