@@ -7,7 +7,6 @@
  */
 #include "button.h"
 #include <core/color.h>
-#include <core/environment.h>
 #include <core/rect.h>
 
 #include <cstdio>
@@ -40,7 +39,7 @@ Button::~Button()
 void
 Button::draw_self()
 {
-    Environment *env = Environment::get_instance();
+    env = Environment::get_instance();
 
     if (m_state != HIDE)
     {
@@ -73,6 +72,10 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
+        auto music = env->music;
+        music->set_volume(80);
+        music->play("res/sfx/uiConfirm1.ogg", 1);
+
         notify(clickedID, coords);
         return true;
     }
@@ -92,7 +95,6 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            Environment *env = Environment::get_instance();
             auto music = env->music;
             music->set_volume(80);
             music->play("res/sfx/uiMouseOver2.ogg", 1);

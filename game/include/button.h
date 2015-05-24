@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <core/environment.h>
 #include <core/mousebuttonevent.h>
 #include <core/mousebuttoneventlistener.h>
 #include <core/mousemotionevent.h>
@@ -34,6 +35,7 @@ private:
     Text *m_text;
     shared_ptr<Texture> m_texture;
     State m_state;
+    Environment *env;
 
     void draw_self();
 };
