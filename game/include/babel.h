@@ -19,6 +19,7 @@ private:
     Level * load_gamemode();
     Level * load_gameover();
     Level * load_dungeon();
+    Level * load_planet();
 };
 
 #endif
