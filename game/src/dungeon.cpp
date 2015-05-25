@@ -76,11 +76,6 @@ Dungeon::onKeyboardEvent(const KeyboardEvent& event)
 }
 
 void
-Dungeon::update_self(unsigned long)
-{
-}
-
-void
 Dungeon::draw_self()
 {
     Environment *env = Environment::get_instance();

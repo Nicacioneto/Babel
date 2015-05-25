@@ -34,7 +34,6 @@ public:
 
 private:
     void draw_self();
-    void update_self(unsigned long elapsed);
     void load_map();
     void load_tiles();
 

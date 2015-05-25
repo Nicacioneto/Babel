@@ -24,7 +24,6 @@ private:
     Button *m_back;
 
     void draw_self();
-    void update_self(unsigned long elapsed);
 };
 
 #endif

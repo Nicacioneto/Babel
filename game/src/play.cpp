@@ -21,21 +21,29 @@ Play::Play(const string& next, const string& texture)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_slot_bar = env->resources_manager->get_texture("res/images/menu/slot-bar.png");
     
-    const int x_button = (env->canvas->w() - 305) / 2;
+    double scale = env->canvas->scale();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(22 * scale);
+    
+    const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
+
     m_slot1 = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
-        Y_BUTTON, W_BUTTON, H_BUTTON);
+        scale * (Y_BUTTON + SPACING), W_BUTTON * scale, H_BUTTON * scale);
     m_slot1->set_text("New Game");
 
     m_slot2 = new Button(this, "slot2", "res/images/menu/stripe.png", x_button,
-        Y_BUTTON + SPACING * 2, W_BUTTON, H_BUTTON);
+        scale * (Y_BUTTON + SPACING * 2), W_BUTTON * scale, H_BUTTON * scale);
     m_slot2->set_text("New Game");
 
     m_slot3 = new Button(this, "slot3", "res/images/menu/stripe.png", x_button,
-        Y_BUTTON + SPACING * 3, W_BUTTON, H_BUTTON);
+        scale * (Y_BUTTON + SPACING * 3), W_BUTTON * scale, H_BUTTON * scale);
     m_slot3->set_text("New Game");
 
     m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_BACK)/2, env->canvas->h() - 149, W_BUTTON_BACK, H_BUTTON_BACK);
+        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149 * scale,
+        W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
     m_back->set_text("Back");
 
     m_slot1->add_observer(this);
@@ -47,35 +55,6 @@ Play::Play(const string& next, const string& texture)
     add_child(m_slot2);
     add_child(m_slot3);
     add_child(m_back);
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-}
-
-void
-Play::update_self(unsigned long)
-{
-    Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
-
-    const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
-
-    m_slot1->set_position(x_button, scale * (Y_BUTTON + SPACING));
-    m_slot1->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    m_slot2->set_position(x_button, scale * (Y_BUTTON + SPACING * 2));
-    m_slot2->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    m_slot3->set_position(x_button, scale * (Y_BUTTON + SPACING * 3));
-    m_slot3->set_dimensions(W_BUTTON * scale, H_BUTTON * scale);
-
-    m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
-        env->canvas->h() - 149 * scale);
-    m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
-
-
-    shared_ptr<Font> font = env->canvas->font();
-    font->set_size(22 * scale);
 }
 
 void
