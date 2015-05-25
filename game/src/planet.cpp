@@ -16,7 +16,7 @@ Planet::Planet(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_misson1(nullptr), m_misson2(nullptr),
         m_misson3(nullptr), m_gamemode(nullptr)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);
 
     double scale = env->canvas->scale();
@@ -55,7 +55,9 @@ Planet::Planet(const string& next, const string& texture)
 void
 Planet::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env->canvas->clear();
+
     env->canvas->draw(m_texture.get());
     env->canvas->draw(m_misson1->bounding_box(), Color::RED);
     env->canvas->draw(m_misson2->bounding_box(), Color::BLUE);
@@ -74,8 +76,8 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "gamemode")
     {
-        m_next = "gamemode";
-        m_done = true;
+        set_next("gamemode");
+        finish();
     }
     else if (button->id() == "mission1")
     {
