@@ -4,7 +4,7 @@ GameMode::GameMode(const string& next, const string&)
     : Level("", next), m_babelmode(nullptr), m_colonymode(nullptr), m_planetmode(nullptr),
         m_babel(nullptr), m_colony(nullptr), m_planet(nullptr)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
 
     m_babelmode = env->resources_manager->get_texture("res/images/modes/babelmode.png");
     m_colonymode = env->resources_manager->get_texture("res/images/modes/colonymode.png");
@@ -36,7 +36,9 @@ GameMode::GameMode(const string& next, const string&)
 void
 GameMode::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env->canvas->clear();
+    
     env->canvas->draw(m_babelmode.get(), m_babel->x(), m_babel->y());
     env->canvas->draw(m_colonymode.get(), m_colony->x(), m_colony->y());
     env->canvas->draw(m_planetmode.get(), m_planet->x(), m_planet->y());
@@ -54,17 +56,18 @@ GameMode::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "tower")
     {
-        m_next = "dungeon";
+        set_next("dungeon");
     }
     else if (button->id() == "colony")
     {
-        m_next = "gameover";
+        set_next("gameover");
     }
     else if (button->id() == "planet")
     {
-        m_next = "gameover";
+        set_next("gameover");
     }
 
-    m_done = true;
+    finish();
+
     return true;
 }

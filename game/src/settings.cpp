@@ -15,7 +15,8 @@ Settings::Settings(const string& next, const string& texture)
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
         m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr), m_vol(5)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
+
     m_texture = env->resources_manager->get_texture(texture);
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_soundvideo = env->resources_manager->get_texture("res/images/menu/sound-video.png");
@@ -65,7 +66,9 @@ Settings::Settings(const string& next, const string& texture)
 void
 Settings::update_coordinates()
 {
+    Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
+
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
         env->canvas->h() - 149 * scale);
     m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
@@ -87,6 +90,7 @@ Settings::update_coordinates()
 void
 Settings::draw_self()
 {
+    Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
     shared_ptr<Font> font = env->canvas->font();
 
@@ -140,11 +144,12 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "back")
     {
-        m_next = "menu";
-        m_done = true;
+        set_next("menu");
+        finish();
     }
     else if (button->id() == "up_resolution" or button->id() == "down_resolution")
     {
+        Environment *env = Environment::get_instance();
         int w = env->canvas->w();
         int h;
         int position = std::find(m_resolutions.begin(), m_resolutions.end(), w) -

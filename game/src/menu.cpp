@@ -8,7 +8,7 @@ Menu::Menu(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
         m_settings(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
 
     m_texture = env->resources_manager->get_texture(texture);
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
@@ -55,11 +55,12 @@ Menu::Menu(const string& next, const string& texture)
 void
 Menu::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env->canvas->clear();
+
     env->canvas->draw(m_texture.get());
 
     double scale = env->canvas->scale();
-
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
 }
 
@@ -75,17 +76,18 @@ Menu::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "start")
     {
-        m_next = "play";
+        set_next("play");
     }
     else if (button->id() == "settings")
     {
-        m_next = "settings";
+        set_next("settings");
     }
     else if (button->id() == "credits")
     {
-        m_next = "credits";
+        set_next("credits");
     }
 
-    m_done = true;
+    finish();
+
     return true;
 }

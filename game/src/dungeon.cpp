@@ -16,7 +16,8 @@ using std::vector;
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
+
     m_screen = new Bitmap(env->video->canvas());
 
     load_tiles();
@@ -31,6 +32,8 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
 
 Dungeon::~Dungeon()
 {
+    Environment *env = Environment::get_instance();
+
     env->events_manager->unregister_keyboard_event_listener(this);
     AudioManagerMusic *music = env->music;
     music->stop();
@@ -80,6 +83,7 @@ Dungeon::update_self(unsigned long)
 void
 Dungeon::draw_self()
 {
+    Environment *env = Environment::get_instance();
     m_screen->clear();
 
     list<Rect> ps = planes(env->canvas->w(), env->canvas->h());
@@ -327,6 +331,8 @@ Dungeon::load_map()
 void
 Dungeon::load_tiles()
 {
+    Environment *env = Environment::get_instance();
+    
     for (int i = 0; i < MAXT; ++i)
     {
         string img = "res/images/" + std::to_string(i);

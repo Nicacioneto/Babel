@@ -15,7 +15,7 @@ Play::Play(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_slot1(nullptr),
         m_slot2(nullptr), m_slot3(nullptr)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
 
     m_texture = env->resources_manager->get_texture(texture);
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
@@ -55,6 +55,7 @@ Play::Play(const string& next, const string& texture)
 void
 Play::update_self(unsigned long)
 {
+    Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
 
     const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
@@ -80,7 +81,9 @@ Play::update_self(unsigned long)
 void
 Play::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env->canvas->clear();
+    
     env->canvas->draw(m_texture.get());
 
     double scale = env->canvas->scale();
@@ -107,21 +110,22 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "slot1")
     {
-        m_next = "gamemode";
+        set_next("gamemode");
     }
     else if (button->id() == "slot2")
     {
-        m_next = "gamemode";
+        set_next("gamemode");
     }
     else if (button->id() == "slot3")
     {
-        m_next = "gamemode";
+        set_next("gamemode");
     }
     else if (button->id() == "back")
     {
-        m_next = "menu";
+        set_next("menu");
     }
 
-    m_done = true;
+    finish();
+
     return true;
 }

@@ -12,7 +12,7 @@
 GameOver::GameOver(const string& next)
     : Level("", next)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
 
     env->events_manager->register_keyboard_event_listener(this);
 
@@ -23,13 +23,16 @@ GameOver::GameOver(const string& next)
 
 GameOver::~GameOver()
 {
+    Environment *env = Environment::get_instance();
     env->events_manager->unregister_keyboard_event_listener(this);
 }
 
 void
 GameOver::update_self(unsigned long)
 {
+    Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
+
     set_position(env->canvas->w() / (8 * scale), env->canvas->h() / (4 * scale));
 
     shared_ptr<Font> font = env->canvas->font();
@@ -39,6 +42,7 @@ GameOver::update_self(unsigned long)
 void
 GameOver::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env->canvas->clear();
     env->canvas->draw("GAME OVER", bounding_box().x(), bounding_box().y(), Color::YELLOW);
 }
@@ -48,7 +52,7 @@ GameOver::onKeyboardEvent(const KeyboardEvent& event)
 {
     if (event.key() == KeyboardEvent::SPACE)
     {
-        m_done = true;
+        finish();
         return true;
     }
 

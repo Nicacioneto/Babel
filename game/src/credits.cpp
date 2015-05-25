@@ -7,7 +7,8 @@
 Credits::Credits(const string& next, const string& image)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_credits(nullptr), m_back(nullptr)
 {
-    env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
+
     m_texture = env->resources_manager->get_texture(image);
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_credits = env->resources_manager->get_texture("res/images/menu/credits.png");
@@ -35,6 +36,8 @@ Credits::Credits(const string& next, const string& image)
 void
 Credits::draw_self()
 {
+    Environment *env = Environment::get_instance();
+    
     double scale = env->canvas->scale();
 
     env->canvas->clear();
@@ -56,8 +59,8 @@ Credits::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    m_next = "menu";
-    m_done = true;
+    set_next("menu");
+    finish();
 
     return true;
 }
