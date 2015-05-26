@@ -203,7 +203,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
 int
 Settings::volume()
 {
-    int volume;
+    int volume = 5;
     try
     {
         string vol = read_file("volume.txt");
@@ -211,7 +211,7 @@ Settings::volume()
     }
     catch (Exception)
     {
-        write_file(std::to_string(5), "volume.txt");
+        write_file(std::to_string(volume), "volume.txt");
     }
     return volume;
 }
