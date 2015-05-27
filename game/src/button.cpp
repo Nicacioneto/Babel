@@ -6,7 +6,6 @@
  * License: LGPL. No copyright.
  */
 #include "button.h"
-#include "settings.h"
 #include <core/color.h>
 #include <core/mousebuttonevent.h>
 #include <core/mousemotionevent.h>
@@ -34,7 +33,7 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
 Button::~Button()
 {
     Environment *env = Environment::get_instance();
-    env->events_manager->register_listener(this);
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -73,7 +72,7 @@ Button::on_event(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
-        env->sfx->set_volume(Settings::volume());
+        env->sfx->set_volume(5);
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
 
         notify(clickedID, coords);
@@ -95,7 +94,7 @@ Button::on_event(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            env->sfx->set_volume(Settings::volume());
+            env->sfx->set_volume(5);
             env->sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
         m_state = ON_HOVER;

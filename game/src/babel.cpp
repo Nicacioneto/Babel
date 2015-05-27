@@ -11,7 +11,6 @@
 Babel::Babel()
     : Game("tiamat_logo")
 {
-    env = Environment::get_instance();
 }
 
 Babel::~Babel()

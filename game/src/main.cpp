@@ -8,7 +8,7 @@ int main(int, char**)
     try
     {
         Babel babel;
-        babel.init("Babel Game", 1024, 768);
+        babel.init("res/settings.ini");
         babel.run();
     } catch (Exception ex)
     {
