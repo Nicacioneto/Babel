@@ -6,7 +6,7 @@
 
 Menu::Menu(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
-        m_settings(nullptr), m_credits(nullptr), m_exit(nullptr)
+        m_options(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -29,9 +29,9 @@ Menu::Menu(const string& next, const string& texture)
         y_button, w_button, h_button);
     m_play->set_text("Play Game");
 
-    m_settings = new Button(this, "settings", "res/images/menu/button.png",
+    m_options = new Button(this, "options", "res/images/menu/button.png",
         x_button + spacing, y_button, w_button, h_button);
-    m_settings->set_text("Options");
+    m_options->set_text("Options");
 
     m_credits = new Button(this, "credits", "res/images/menu/button.png", x_button + 2 * spacing,
         y_button, w_button, h_button);
@@ -42,12 +42,12 @@ Menu::Menu(const string& next, const string& texture)
     m_exit->set_text("Exit");
 
     m_play->add_observer(this);
-    m_settings->add_observer(this);
+    m_options->add_observer(this);
     m_credits->add_observer(this);
     m_exit->add_observer(this);
 
     add_child(m_play);
-    add_child(m_settings);
+    add_child(m_options);
     add_child(m_credits);
     add_child(m_exit);
 }
@@ -78,9 +78,9 @@ Menu::on_message(Object *sender, MessageID id, Parameters)
     {
         set_next("play");
     }
-    else if (button->id() == "settings")
+    else if (button->id() == "options")
     {
-        set_next("settings");
+        set_next("options");
     }
     else if (button->id() == "credits")
     {

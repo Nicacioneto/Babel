@@ -1,5 +1,5 @@
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef OPTIONS_H
+#define OPTIONS_H
 
 #include "button.h"
 #include "file.h"
@@ -9,10 +9,10 @@
 
 class Texture;
 
-class Settings : public Level
+class Options : public Level
 {
 public:
-    Settings(const string& next = "menu",
+    Options(const string& next = "menu",
         const string& texture = "res/images/menu/init-screen.png");
     bool on_message(Object *sender, MessageID id, Parameters p);
     static int volume();

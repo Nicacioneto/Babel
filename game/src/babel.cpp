@@ -5,7 +5,7 @@
 #include "gameover.h"
 #include "menu.h"
 #include "play.h"
-#include "settings.h"
+#include "options.h"
 #include <util/frontend.h>
 
 Babel::Babel()
@@ -30,9 +30,9 @@ Babel::load_level(const string& id)
     {
         return load_menu();
     }
-    else if (id == "settings")
+    else if (id == "options")
     {
-        return load_settings();
+        return load_options();
     }
     else if (id == "credits")
     {
@@ -84,9 +84,9 @@ Babel::load_menu()
 }
 
 Level *
-Babel::load_settings()
+Babel::load_options()
 {
-    return new Settings();
+    return new Options();
 }
 
 Level *

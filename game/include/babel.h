@@ -13,7 +13,7 @@ private:
     Level * load_level(const string& id);
     Level * load_frontend(const string& id);
     Level * load_menu();
-    Level * load_settings();
+    Level * load_options();
     Level * load_credits();
     Level * load_play();
     Level * load_gamemode();

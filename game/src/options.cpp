@@ -1,5 +1,5 @@
 #include "file.h"
-#include "settings.h"
+#include "options.h"
 #include <algorithm>
 #include <core/font.h>
 #include <core/rect.h>
@@ -10,7 +10,7 @@
 #define BUTTON_SETTING 12
 #define X_VOLUME 296
 
-Settings::Settings(const string& next, const string& texture)
+Options::Options(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
         m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr), m_vol(5)
@@ -64,7 +64,7 @@ Settings::Settings(const string& next, const string& texture)
 }
 
 void
-Settings::update_coordinates()
+Options::update_coordinates()
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
@@ -88,7 +88,7 @@ Settings::update_coordinates()
 }
 
 void
-Settings::draw_self()
+Options::draw_self()
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
@@ -133,7 +133,7 @@ Settings::draw_self()
 }
 
 bool
-Settings::on_message(Object *sender, MessageID id, Parameters)
+Options::on_message(Object *sender, MessageID id, Parameters)
 {
     Button *button = dynamic_cast<Button *>(sender);
 
@@ -201,7 +201,7 @@ Settings::on_message(Object *sender, MessageID id, Parameters)
 }
 
 int
-Settings::volume()
+Options::volume()
 {
     int volume = 5;
     try

@@ -1,7 +1,7 @@
 #include "dungeon.h"
 #include "file.h"
 #include "mapping.h"
-#include "settings.h"
+#include "options.h"
 #include <core/bitmap.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
@@ -24,9 +24,8 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
 
     env->events_manager->register_listener(this);
 
-    AudioManagerMusic *music = env->music;
-    music->set_volume(Settings::volume());
-    music->play("res/music/Pandora_s_Music_Box.ogg", -1);
+    env->music->set_volume(5);
+    env->music->play("res/music/Pandora_s_Music_Box.ogg", -1);
 }
 
 Dungeon::~Dungeon()

@@ -18,7 +18,7 @@ private:
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_logo;
     Button *m_play;
-    Button *m_settings;
+    Button *m_options;
     Button *m_credits;
     Button *m_exit;
 
