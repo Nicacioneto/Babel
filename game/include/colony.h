@@ -14,10 +14,13 @@ public:
     
 private:
     shared_ptr<Texture> m_colony_screen;
+    shared_ptr<Texture> m_right_bracket;
     shared_ptr<Texture> m_colony;
     shared_ptr<Texture> m_center_bracket;
     shared_ptr<Texture> m_tower;
     shared_ptr<Texture> m_planet;
+    shared_ptr<Texture> m_left_bracket;
+    shared_ptr<Texture> m_resources;
 
     void draw_self();
 };
