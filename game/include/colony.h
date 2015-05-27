@@ -12,7 +12,6 @@ class Colony : public Level
 public:
     Colony(const string& next = "");
 
-    
 private:
     shared_ptr<Texture> m_colony_screen;
     shared_ptr<Texture> m_right_bracket;
