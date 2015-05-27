@@ -144,6 +144,7 @@ Options::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
 
     if (button->id() == "back")
     {
@@ -179,10 +180,14 @@ Options::on_message(Object *sender, MessageID id, Parameters)
         double scale = (double) env->canvas->w() / m_resolutions[m_resolutions.size() - 1];
         env->canvas->set_scale(scale);
         update_coordinates();
+
+        settings->write<int>("Game", "w", w);
+        settings->write<int>("Game", "h", h);
+        settings->write<double>("Game", "scale", scale);
+        settings->save("res/settings.ini");
     }
     else if (button->id() == "up_volume" or button->id() == "down_volume")
     {
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
         int volume = settings->read<int>("Game", "volume", 50);
 
         if (button->id() == "up_volume")
