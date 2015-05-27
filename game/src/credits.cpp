@@ -59,7 +59,6 @@ Credits::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    set_next("menu");
     finish();
 
     return true;

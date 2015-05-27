@@ -148,7 +148,6 @@ Options::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "back")
     {
-        set_next("menu");
         finish();
     }
     else if (button->id() == "up_resolution" or button->id() == "down_resolution")

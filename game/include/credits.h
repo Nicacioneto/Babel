@@ -10,7 +10,7 @@ class Texture;
 class Credits : public Level
 {
 public:
-    Credits(const string& next = "", const string& image = "res/images/menu/init-screen.png");
+    Credits(const string& next = "menu", const string& image = "res/images/menu/init-screen.png");
 
     bool on_message(Object *sender, MessageID id, Parameters p);
 
