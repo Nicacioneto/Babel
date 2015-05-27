@@ -341,7 +341,7 @@ Dungeon::load_tiles()
     
     for (int i = 0; i < MAXT; ++i)
     {
-        string img = "res/images/" + std::to_string(i);
+        string img = "res/images/dungeon/" + std::to_string(i);
         try
         {
             try
