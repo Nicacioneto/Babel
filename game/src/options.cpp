@@ -4,6 +4,7 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
+#include <core/settings.h>
 
 #define W_BUTTON_BACK 140
 #define H_BUTTON_BACK 60
@@ -13,7 +14,7 @@
 Options::Options(const string& next, const string& texture)
     : Level("", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
-        m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr), m_vol(5)
+        m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -22,8 +23,6 @@ Options::Options(const string& next, const string& texture)
     m_soundvideo = env->resources_manager->get_texture("res/images/menu/sound-video.png");
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
-
-    m_vol = volume();
 
     double scale = env->canvas->scale();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -93,6 +92,7 @@ Options::draw_self()
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
     shared_ptr<Font> font = env->canvas->font();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
 
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
@@ -102,13 +102,14 @@ Options::draw_self()
     env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale,
         (env->canvas->h() - 20 * scale)/2);
 
-    int i;
-    for (i = 0; i < (10 - m_vol/10)*17; i+=17)
+    int i, volume = settings->read<int>("Game", "volume", 50);
+
+    for (i = 0; i < (10 - volume/10)*17; i+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale,
             (env->canvas->h() - 15 * scale)/2);
     }
-    for (int j = i; j < i + (m_vol/10)*17; j+=17)
+    for (int j = i; j < i + (volume/10)*17; j+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+j) * scale,
             (env->canvas->h() - 15 * scale)/2);
@@ -142,6 +143,8 @@ Options::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
+    Environment *env = Environment::get_instance();
+
     if (button->id() == "back")
     {
         set_next("menu");
@@ -149,7 +152,6 @@ Options::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "up_resolution" or button->id() == "down_resolution")
     {
-        Environment *env = Environment::get_instance();
         int w = env->canvas->w();
         int h;
         int position = std::find(m_resolutions.begin(), m_resolutions.end(), w) -
@@ -178,40 +180,29 @@ Options::on_message(Object *sender, MessageID id, Parameters)
         env->canvas->set_scale(scale);
         update_coordinates();
     }
-    else if (button->id() == "up_volume")
+    else if (button->id() == "up_volume" or button->id() == "down_volume")
     {
-        m_vol += 10;
-        if (m_vol > 100)
-        {
-            m_vol = 100;
-        }
-    }
-    else if (button->id() == "down_volume")
-    {
-        m_vol -= 10;
-        if (m_vol < 0)
-        {
-            m_vol = 0;
-        }
-    }
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+        int volume = settings->read<int>("Game", "volume", 50);
 
-    write_file(std::to_string(m_vol), "volume.txt");
+        if (button->id() == "up_volume")
+        {
+            if (volume < 100)
+            {
+                volume += 10;
+            }
+        }
+        else
+        {
+            if (volume > 0)
+            {
+                volume -= 10;
+            }
+        }
+
+        settings->write<int>("Game", "volume", volume);
+        settings->save("res/settings.ini");
+    }
 
     return true;
-}
-
-int
-Options::volume()
-{
-    int volume = 5;
-    try
-    {
-        string vol = read_file("volume.txt");
-        volume = atoi(vol.c_str());
-    }
-    catch (Exception)
-    {
-        write_file(std::to_string(volume), "volume.txt");
-    }
-    return volume;
 }

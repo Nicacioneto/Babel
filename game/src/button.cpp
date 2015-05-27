@@ -72,7 +72,6 @@ Button::on_event(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
-        env->sfx->set_volume(5);
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
 
         notify(clickedID, coords);
@@ -94,7 +93,6 @@ Button::on_event(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            env->sfx->set_volume(5);
             env->sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
         m_state = ON_HOVER;

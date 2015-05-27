@@ -24,7 +24,6 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
 
     env->events_manager->register_listener(this);
 
-    env->music->set_volume(5);
     env->music->play("res/music/Pandora_s_Music_Box.ogg", -1);
 }
 

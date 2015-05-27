@@ -15,7 +15,6 @@ public:
     Options(const string& next = "menu",
         const string& texture = "res/images/menu/init-screen.png");
     bool on_message(Object *sender, MessageID id, Parameters p);
-    static int volume();
 
 private:
     shared_ptr<Texture> m_texture;
@@ -26,7 +25,6 @@ private:
     Button *m_up_volume, *m_down_volume;
     Button *m_up_resolution, *m_down_resolution;
     Button *m_back;
-    int m_vol;
 
     std::vector<int> m_resolutions = {800, 1024};
 
