@@ -11,6 +11,7 @@ class Colony : public Level
 {
 public:
     Colony(const string& next = "");
+
     
 private:
     shared_ptr<Texture> m_colony_screen;
@@ -22,7 +23,11 @@ private:
     shared_ptr<Texture> m_left_bracket;
     shared_ptr<Texture> m_resources;
 
+    Button *m_tower_button;
+    Button *m_planet_button;
+
     void draw_self();
+    bool on_message(Object *sender, MessageID id, Parameters p);
 };
 
 #endif

@@ -11,8 +11,6 @@ class Menu : public Level
 {
 public:
     Menu(const string& next = "", const string& texture = "res/images/menu/init-screen.png");
-    
-    bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
     shared_ptr<Texture> m_texture;
@@ -23,6 +21,7 @@ private:
     Button *m_exit;
 
     void draw_self();
+    bool on_message(Object *sender, MessageID id, Parameters p);
 };
 
 #endif

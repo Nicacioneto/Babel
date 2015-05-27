@@ -12,8 +12,6 @@ class Credits : public Level
 public:
     Credits(const string& next = "menu", const string& image = "res/images/menu/init-screen.png");
 
-    bool on_message(Object *sender, MessageID id, Parameters p);
-
 private:
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_logo;
@@ -21,6 +19,7 @@ private:
     Button *m_back;
 
     void draw_self();
+    bool on_message(Object *sender, MessageID id, Parameters p);
 };
 
 #endif

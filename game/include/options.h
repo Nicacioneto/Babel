@@ -14,7 +14,6 @@ class Options : public Level
 public:
     Options(const string& next = "menu",
         const string& texture = "res/images/menu/init-screen.png");
-    bool on_message(Object *sender, MessageID id, Parameters p);
 
 private:
     shared_ptr<Texture> m_texture;
@@ -30,6 +29,7 @@ private:
 
     void draw_self();
     void update_coordinates();
+    bool on_message(Object *sender, MessageID id, Parameters p);
 };
 
 #endif
