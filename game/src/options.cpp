@@ -12,7 +12,7 @@
 #define X_VOLUME 296
 
 Options::Options(const string& next, const string& texture)
-    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
+    : Level("options", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
         m_volume(nullptr), m_arrow(nullptr), m_up_volume(nullptr), m_down_volume(nullptr),
         m_up_resolution(nullptr), m_down_resolution(nullptr), m_back(nullptr)
 {

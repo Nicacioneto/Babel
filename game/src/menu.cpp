@@ -5,7 +5,7 @@
 #include <core/texture.h>
 
 Menu::Menu(const string& next, const string& texture)
-    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
+    : Level("menu", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
         m_options(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
     Environment *env = Environment::get_instance();

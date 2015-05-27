@@ -1,12 +1,12 @@
 #include "babel.h"
+#include "colony.h"
 #include "credits.h"
 #include "dungeon.h"
-#include "gamemode.h"
 #include "gameover.h"
 #include "menu.h"
+#include "options.h"
 #include "planet.h"
 #include "play.h"
-#include "options.h"
 #include <util/frontend.h>
 
 Babel::Babel()
@@ -43,13 +43,13 @@ Babel::load_level(const string& id)
     {
         return load_play();
     }
-    else if (id == "gamemode")
-    {
-        return load_gamemode();
-    }
     else if (id == "gameover")
     {
         return load_gameover();
+    }
+    else if (id == "colony")
+    {
+        return load_colony();
     }
     else if (id == "dungeon")
     {
@@ -107,12 +107,6 @@ Babel::load_play()
 }
 
 Level *
-Babel::load_gamemode()
-{
-    return new GameMode();
-}
-
-Level *
 Babel::load_gameover()
 {
     return new GameOver();
@@ -122,6 +116,12 @@ Level *
 Babel::load_dungeon()
 {
     return new Dungeon();
+}
+
+Level *
+Babel::load_colony()
+{
+    return new Colony();
 }
 
 Level *

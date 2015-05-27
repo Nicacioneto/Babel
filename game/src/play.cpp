@@ -12,7 +12,7 @@
 #define SPACING 65
 
 Play::Play(const string& next, const string& texture)
-    : Level("", next), m_texture(nullptr), m_logo(nullptr), m_slot1(nullptr),
+    : Level("play", next), m_texture(nullptr), m_logo(nullptr), m_slot1(nullptr),
         m_slot2(nullptr), m_slot3(nullptr)
 {
     Environment *env = Environment::get_instance();
@@ -89,15 +89,15 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "slot1")
     {
-        set_next("gamemode");
+        set_next("colony");
     }
     else if (button->id() == "slot2")
     {
-        set_next("gamemode");
+        set_next("colony");
     }
     else if (button->id() == "slot3")
     {
-        set_next("gamemode");
+        set_next("colony");
     }
     else if (button->id() == "back")
     {

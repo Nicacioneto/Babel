@@ -17,7 +17,7 @@ public:
 private:
     shared_ptr<Texture> m_texture;
     Button *m_misson1, *m_misson2, *m_misson3;
-    Button *m_gamemode;
+    Button *m_colony;
 
     void draw_self();
 };

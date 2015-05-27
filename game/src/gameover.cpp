@@ -11,7 +11,7 @@
 #include <core/rect.h>
 
 GameOver::GameOver(const string& next)
-    : Level("", next)
+    : Level("gameover", next)
 {
     Environment *env = Environment::get_instance();
 

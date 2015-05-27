@@ -9,12 +9,12 @@
 #define X_MISSION_3 200
 #define Y_MISSION_3 200
 #define SIZE_MISSION 80
-#define W_BUTTON_GAMEMODE 140
-#define H_BUTTON_GAMEMODE 60
+#define W_BUTTON_COLONY 140
+#define H_BUTTON_COLONY 60
 
 Planet::Planet(const string& next, const string& texture)
-    : Level("", next), m_texture(nullptr), m_misson1(nullptr), m_misson2(nullptr),
-        m_misson3(nullptr), m_gamemode(nullptr)
+    : Level("planet", next), m_texture(nullptr), m_misson1(nullptr), m_misson2(nullptr),
+        m_misson3(nullptr), m_colony(nullptr)
 {
     Environment *env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);
@@ -24,10 +24,10 @@ Planet::Planet(const string& next, const string& texture)
     env->canvas->set_font(font);
     font->set_size(22 * scale);
 
-    m_gamemode = new Button(this, "gamemode", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_GAMEMODE * scale)/2, env->canvas->h() - 149 * scale,
-        W_BUTTON_GAMEMODE * scale, H_BUTTON_GAMEMODE * scale);
-    m_gamemode->set_text("gamemode");
+    m_colony = new Button(this, "colony", "res/images/menu/button.png",
+        (env->canvas->w() - W_BUTTON_COLONY * scale)/2, env->canvas->h() - 149 * scale,
+        W_BUTTON_COLONY * scale, H_BUTTON_COLONY * scale);
+    m_colony->set_text("colony");
 
     m_misson1 = new Button(this, "mission1", "",
         X_MISSION_1 * scale, Y_MISSION_1 * scale, SIZE_MISSION * scale,
@@ -41,12 +41,12 @@ Planet::Planet(const string& next, const string& texture)
         X_MISSION_3 * scale, Y_MISSION_3 * scale, SIZE_MISSION * scale,
         SIZE_MISSION * scale);
 
-    m_gamemode->add_observer(this);
+    m_colony->add_observer(this);
     m_misson1->add_observer(this);
     m_misson2->add_observer(this);
     m_misson3->add_observer(this);
 
-    add_child(m_gamemode);
+    add_child(m_colony);
     add_child(m_misson1);
     add_child(m_misson2);
     add_child(m_misson3);
@@ -74,9 +74,9 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    if (button->id() == "gamemode")
+    if (button->id() == "colony")
     {
-        set_next("gamemode");
+        set_next("colony");
         finish();
     }
     else if (button->id() == "mission1")
