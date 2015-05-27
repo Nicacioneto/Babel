@@ -175,10 +175,9 @@ Options::on_message(Object *sender, MessageID id, Parameters)
 
         w = m_resolutions[position];
         h = w * 3 / 4;
-        env->video->set_resolution(w, h);
 
-        double scale = (double) env->canvas->w() / m_resolutions[m_resolutions.size() - 1];
-        env->canvas->set_scale(scale);
+        double scale = (double) w / m_resolutions[m_resolutions.size() - 1];
+        env->video->set_resolution(w, h, scale);
         update_coordinates();
 
         settings->write<int>("Game", "w", w);
