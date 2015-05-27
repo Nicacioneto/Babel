@@ -1,23 +1,23 @@
 #ifndef DUNGEON_H
 #define DUNGEON_H
 
-#include "room.h"
 #include "direction.h"
+#include "room.h"
 #include <core/level.h>
-#include "core/keyboardeventlistener.h"
-
+#include <core/listener.h>
 #include <list>
 
 using std::list;
 
-class Texture;
 class Bitmap;
+class KeyboardEvent;
+class Texture;
 
 #define MAXW 10
 #define MAXH 10
 #define MAXT 10
 
-class Dungeon : public Level, KeyboardEventListener
+class Dungeon : public Level, Listener
 {
 public:
     Dungeon(int x = 0, int y = 0, int w = MAXW, int h = MAXH, int steps = 0,
@@ -30,7 +30,7 @@ public:
     void turn_left();
     void turn_right();
 
-    bool onKeyboardEvent(const KeyboardEvent& event);
+    bool on_event(const KeyboardEvent& event);
 
 private:
     void draw_self();

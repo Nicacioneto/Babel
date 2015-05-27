@@ -2,13 +2,13 @@
 #define GAMEOVER_H
 
 #include <core/level.h>
-#include <core/keyboardevent.h>
-#include <core/keyboardeventlistener.h>
+#include <core/listener.h>
 #include <memory>
 
 class Image;
+class KeyboardEvent;
 
-class GameOver : public Level, public KeyboardEventListener
+class GameOver : public Level, Listener
 {
 public:
     GameOver(const string& next = "menu");
@@ -17,7 +17,7 @@ public:
 private:
     void update_self(unsigned long elapsed);
     void draw_self();
-    bool onKeyboardEvent(const KeyboardEvent& event);
+    bool on_event(const KeyboardEvent& event);
 };
 
 #endif

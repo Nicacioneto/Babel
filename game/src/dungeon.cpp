@@ -2,13 +2,12 @@
 #include "file.h"
 #include "mapping.h"
 #include "settings.h"
-#include <core/rect.h>
 #include <core/bitmap.h>
 #include <core/keyboardevent.h>
-#include <vector>
+#include <core/rect.h>
 #include <sstream>
+#include <vector>
 
-using std::cerr;
 using std::endl;
 using std::stringstream;
 using std::vector;
@@ -23,7 +22,7 @@ Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
     load_tiles();
     load_map();
 
-    env->events_manager->register_keyboard_event_listener(this);
+    env->events_manager->register_listener(this);
 
     AudioManagerMusic *music = env->music;
     music->set_volume(Settings::volume());
@@ -34,13 +33,12 @@ Dungeon::~Dungeon()
 {
     Environment *env = Environment::get_instance();
 
-    env->events_manager->unregister_keyboard_event_listener(this);
-    AudioManagerMusic *music = env->music;
-    music->stop();
+    env->events_manager->unregister_listener(this);
+    env->music->stop();
 }
 
 bool
-Dungeon::onKeyboardEvent(const KeyboardEvent& event)
+Dungeon::on_event(const KeyboardEvent& event)
 {
     switch (event.state())
     {

@@ -7,6 +7,7 @@
  */
 #include "gameover.h"
 #include <core/font.h>
+#include <core/keyboardevent.h>
 #include <core/rect.h>
 
 GameOver::GameOver(const string& next)
@@ -14,7 +15,7 @@ GameOver::GameOver(const string& next)
 {
     Environment *env = Environment::get_instance();
 
-    env->events_manager->register_keyboard_event_listener(this);
+    env->events_manager->register_listener(this);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/FLATS.ttf");
     font->set_style(Font::ITALIC);
@@ -24,7 +25,7 @@ GameOver::GameOver(const string& next)
 GameOver::~GameOver()
 {
     Environment *env = Environment::get_instance();
-    env->events_manager->unregister_keyboard_event_listener(this);
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -48,7 +49,7 @@ GameOver::draw_self()
 }
 
 bool
-GameOver::onKeyboardEvent(const KeyboardEvent& event)
+GameOver::on_event(const KeyboardEvent& event)
 {
     if (event.key() == KeyboardEvent::SPACE)
     {

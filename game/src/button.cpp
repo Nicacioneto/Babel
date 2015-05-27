@@ -8,6 +8,8 @@
 #include "button.h"
 #include "settings.h"
 #include <core/color.h>
+#include <core/mousebuttonevent.h>
+#include <core/mousemotionevent.h>
 #include <core/rect.h>
 
 #include <cstdio>
@@ -19,8 +21,7 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
     : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr), m_state(HIDE)
 {
     Environment *env = Environment::get_instance();
-    env->events_manager->register_mouse_button_event_listener(this);
-    env->events_manager->register_mouse_motion_event_listener(this);
+    env->events_manager->register_listener(this);
 
     if (texture != "")
     {
@@ -33,8 +34,7 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
 Button::~Button()
 {
     Environment *env = Environment::get_instance();
-    env->events_manager->unregister_mouse_button_event_listener(this);
-    env->events_manager->unregister_mouse_motion_event_listener(this);
+    env->events_manager->register_listener(this);
 }
 
 void
@@ -64,7 +64,7 @@ Button::draw_self()
 }
 
 bool
-Button::onMouseButtonEvent(const MouseButtonEvent& event)
+Button::on_event(const MouseButtonEvent& event)
 {
     if (event.state() == MouseButtonEvent::PRESSED and
         event.button() == MouseButtonEvent::LEFT and
@@ -73,9 +73,8 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
 
-        AudioManagerSfx *sfx = env->sfx;
-        sfx->set_volume(Settings::volume());
-        sfx->play("res/sfx/uiConfirm1.ogg", 1);
+        env->sfx->set_volume(Settings::volume());
+        env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
 
         notify(clickedID, coords);
         return true;
@@ -85,7 +84,7 @@ Button::onMouseButtonEvent(const MouseButtonEvent& event)
 }
 
 bool
-Button::onMouseMotionEvent(const MouseMotionEvent& event)
+Button::on_event(const MouseMotionEvent& event)
 {
     if (m_state == HIDE)
     {
@@ -96,9 +95,8 @@ Button::onMouseMotionEvent(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
-            AudioManagerSfx *sfx = env->sfx;
-            sfx->set_volume(Settings::volume());
-            sfx->play("res/sfx/uiMouseOver2.ogg", 1);
+            env->sfx->set_volume(Settings::volume());
+            env->sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
         m_state = ON_HOVER;
         return true;
