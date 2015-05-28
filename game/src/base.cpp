@@ -26,20 +26,18 @@ Base::on_message(Object *sender, MessageID id, Parameters)
 
     if (id != Button::clickedID or not button)
     {
-        return false;
+        Colony *colony = dynamic_cast<Colony *>(sender);
+        if (not colony)
+        {
+            return false;
+        }
+
+        set_next(id);
+        finish();
+        return true;
     }
 
-    if (button->id() == "tower")
-    {
-        set_next("dungeon");
-        finish();
-    }
-    else if (button->id() == "planet")
-    {
-        set_next("planet");
-        finish();
-    }
-    else if (button->id() == "hospital")
+    if (button->id() == "hospital")
     {
         set_next("hospital");
         finish();

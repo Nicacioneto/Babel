@@ -27,7 +27,7 @@ private:
     Button *m_tower;
     Button *m_planet;
 
-    // bool on_message(Object *sender, MessageID id, Parameters p);
+    bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self(double x0 = 0, double y0 = 0);
 };
 

@@ -53,3 +53,29 @@ Colony::draw_self(double, double)
     env->canvas->draw(m_left_bracket.get(), 28 * scale, 175 * scale);
     env->canvas->draw(m_resources.get(), 28 * scale, 120 * scale);
 }
+
+bool
+Colony::on_message(Object *sender, MessageID id, Parameters)
+{
+    Button *button = dynamic_cast<Button *>(sender);
+
+    if (id != Button::clickedID or not button)
+    {
+        return false;
+    }
+
+    if (button->id() == "tower")
+    {
+        notify("dungeon", "");
+    }
+    else if (button->id() == "planet")
+    {
+        notify("planet", "");
+    }
+    else if (button->id() == "center_bracket")
+    {
+        notify("base", "");
+    }
+
+    return true;
+}
