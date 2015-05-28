@@ -89,15 +89,15 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "slot1")
     {
-        set_next("colony");
+        set_next("base");
     }
     else if (button->id() == "slot2")
     {
-        set_next("colony");
+        set_next("base");
     }
     else if (button->id() == "slot3")
     {
-        set_next("colony");
+        set_next("base");
     }
     else if (button->id() == "back")
     {

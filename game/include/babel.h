@@ -12,7 +12,7 @@ public:
 private:
     Level * load_level(const string& id);
     Level * load_frontend(const string& id);
-    Level * load_colony();
+    Level * load_base();
     Level * load_credits();
     Level * load_dungeon();
     Level * load_gameover();

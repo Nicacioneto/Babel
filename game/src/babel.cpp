@@ -1,5 +1,5 @@
 #include "babel.h"
-#include "colony.h"
+#include "base.h"
 #include "credits.h"
 #include "dungeon.h"
 #include "gameover.h"
@@ -48,9 +48,9 @@ Babel::load_level(const string& id)
     {
         return load_gameover();
     }
-    else if (id == "colony")
+    else if (id == "base")
     {
-        return load_colony();
+        return load_base();
     }
     else if (id == "dungeon")
     {
@@ -124,9 +124,9 @@ Babel::load_dungeon()
 }
 
 Level *
-Babel::load_colony()
+Babel::load_base()
 {
-    return new Colony();
+    return new Base();
 }
 
 Level *
