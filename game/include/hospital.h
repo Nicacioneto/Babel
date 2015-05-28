@@ -19,9 +19,9 @@ public:
 private:
     typedef enum { CHAT, ITEMS, RESEARCH, REVIVE } Screen;
     shared_ptr<Texture> m_scenario;
-    shared_ptr<Texture> m_reset;
-    shared_ptr<Texture> m_buy;
     
+    Button *m_reset;
+    Button *m_buy;
     map<ObjectID, Button*> m_buttons;
 
     Screen m_screen;
@@ -33,6 +33,7 @@ private:
     void change_to_chat();
     void change_to_items();
     void change_to_research();
+    void change_to_revive();
 };
 
 #endif
