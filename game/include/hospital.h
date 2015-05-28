@@ -32,6 +32,7 @@ private:
     void change_buttons();
     void change_to_chat();
     void change_to_items();
+    void change_to_research();
 };
 
 #endif

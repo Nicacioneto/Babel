@@ -38,6 +38,10 @@ Hospital::draw_self(double, double)
         case ITEMS:
             change_to_items();
             break;
+
+        case RESEARCH:
+            change_to_research();
+            break;
     }
 }
 
@@ -163,7 +167,7 @@ Hospital::change_to_chat()
     Color color(170, 215, 190);
     
     env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 *scale), color);
-    env->canvas->draw("Text Chat", 305 * scale, 605 * scale, color);
+    env->canvas->draw("Chat Text", 305 * scale, 605 * scale, color);
 }
 
 void
@@ -240,6 +244,70 @@ Hospital::change_to_items()
 
     env->canvas->draw(m_reset.get(), 772 * scale, 693 * scale);
     env->canvas->draw(m_buy.get(), 855 * scale, 693 * scale);
+
+    env->canvas->set_blend_mode(Canvas::NONE);
+}
+
+void
+Hospital::change_to_research()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/";
+    double scale = env->canvas->scale();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18 * scale);
+
+    env->canvas->set_blend_mode(Canvas::BLEND);
+    Color color(170, 215, 190);
+
+    env->canvas->draw("Name", 360 * scale, 188 * scale, color);
+    env->canvas->draw("Time", 855 * scale, 186 * scale, color);
+
+    // temp texture
+    shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "central/research_icon.png");
+    env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
+
+    // temp texture
+    texture = env->resources_manager->get_texture(path + "central/workshop_icon.png");
+    env->canvas->draw(texture.get(), 310 * scale, 236 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 300 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 364 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 428 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 492 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 556 * scale);
+
+    // temp texture
+    texture = env->resources_manager->get_texture(path + "colony_small_button.png");
+    Rect clip(0, 25, 190, 60);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+
+    env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
+    env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
+    env->canvas->draw("Hyper-Metabolism", 360 * scale, 364 * scale, color);
+    env->canvas->draw("Hyper-Metabolism", 360 * scale, 428 * scale, color);
+    env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
+    env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
+
+    env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
+    env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
+    env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
+    env->canvas->draw("70/100", 690 * scale, 428 * scale, color);
+    env->canvas->draw("70/100", 690 * scale, 492 * scale, color);
+    env->canvas->draw("70/100", 690 * scale, 556 * scale, color);
+
+    env->canvas->draw("15:00", 855 * scale, 236 * scale, color);
+    env->canvas->draw("15:00", 855 * scale, 300 * scale, color);
+    env->canvas->draw("15:00", 855 * scale, 364 * scale, color);
+    env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
+    env->canvas->draw("15:00", 855 * scale, 492 * scale, color);
+    env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
 
     env->canvas->set_blend_mode(Canvas::NONE);
 }
