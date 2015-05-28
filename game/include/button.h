@@ -11,7 +11,7 @@
 using std::shared_ptr;
 using std::string;
 
-typedef enum { IDLE, ON_HOVER, HIDE } State;
+typedef enum { IDLE, ON_HOVER, ACTIVE, HIDE } State;
 
 class MouseButtonEvent;
 class MouseMotionEvent;
@@ -29,6 +29,9 @@ public:
     void set_text(const string& str, const Color& color = Color(170, 215, 190));
     Text* text();
 
+    void set_sprites(const int num);
+    void change_state(State to);
+
     static ActionID clickedID;
 
 private:
@@ -36,6 +39,7 @@ private:
     shared_ptr<Texture> m_texture;
     State m_state;
     Environment *env;
+    int m_sprites;
 
     void draw_self(double x0 = 0, double y0 = 0);
 };

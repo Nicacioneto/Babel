@@ -19,16 +19,48 @@ Colony::Colony(const string& next)
     m_resources = env->resources_manager->get_texture(path + "resources.png");
 
     double scale = env->canvas->scale();
+
     m_tower_button = new Button(this, "tower", path + "tower_button.png",
-        28 * scale, 25 * scale, 140 * scale, 156 * scale);
+        28 * scale, 25 * scale, 140 * scale, 156/2 * scale);
+
     m_planet_button = new Button(this, "planet", path + "planet_button.png",
-        855 * scale, 25 * scale, 140 * scale, 156 * scale);
+        855 * scale, 25 * scale, 140 * scale, 156/2 * scale);
+
+    m_barracks_button = new Button(this, "barracks", path + "barracks_button.png",
+        28 * scale, 218 * scale, 190 * scale, 180/3* scale);
+    m_barracks_button->set_sprites(3);
+
+    m_research_button = new Button(this, "research", path + "research_button.png",
+        28 * scale, 322 * scale, 190 * scale, 180/3* scale);
+    m_research_button->set_sprites(3);
+
+    m_hospital_button = new Button(this, "hospital", path + "hospital_button.png",
+        28 * scale, 427 * scale, 190 * scale, 180/3* scale);
+    m_hospital_button->set_sprites(3);
+
+    m_workshop_button = new Button(this, "workshop", path + "workshop_button.png",
+        28 * scale, 531 * scale, 190 * scale, 180/3* scale);
+    m_workshop_button->set_sprites(3);
+
+    m_central_button = new Button(this, "central", path + "central_button.png",
+        28 * scale, 635 * scale, 190 * scale, 180/3* scale);
+    m_central_button->set_sprites(3);
 
     m_tower_button->add_observer(this);
     m_planet_button->add_observer(this);
+    m_barracks_button->add_observer(this);
+    m_research_button->add_observer(this);
+    m_hospital_button->add_observer(this);
+    m_workshop_button->add_observer(this);
+    m_central_button->add_observer(this);
 
     add_child(m_tower_button);
     add_child(m_planet_button);
+    add_child(m_barracks_button);
+    add_child(m_research_button);
+    add_child(m_hospital_button);
+    add_child(m_workshop_button);
+    add_child(m_central_button);
 }
 
 void
@@ -67,6 +99,31 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "planet")
     {
         set_next("planet");
+    }
+    else
+    {
+        if (button->id() != "barracks")
+        {
+            m_barracks_button->change_state(State::IDLE);
+        }
+        if (button->id() != "research")
+        {
+            m_research_button->change_state(State::IDLE);
+        }
+        if (button->id() != "hospital")
+        {
+            m_hospital_button->change_state(State::IDLE);
+        }
+        if (button->id() != "workshop")
+        {
+            m_workshop_button->change_state(State::IDLE);
+        }
+        if (button->id() != "central")
+        {
+            m_central_button->change_state(State::IDLE);
+        }
+
+        return false;
     }
     
     finish();

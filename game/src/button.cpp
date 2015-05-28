@@ -17,7 +17,8 @@ MessageID Button::clickedID = "clicked()";
 
 Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr), m_state(HIDE)
+    : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr),
+        m_state(HIDE), m_sprites(2)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -45,12 +46,19 @@ Button::draw_self(double, double)
     {
         if (m_state == IDLE)
         {
-            Rect clip = Rect(0, 0, m_texture->w(), m_texture->h()/2);
+            Rect clip = Rect(0, 0, m_texture->w(), m_texture->h()/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y());
         }
         else if (m_state == ON_HOVER)
         {
-            Rect clip = Rect(0, m_texture->h()/2, m_texture->w(), m_texture->h()/2);
+            Rect clip = Rect(0, m_texture->h()/m_sprites, m_texture->w(),
+                m_texture->h()/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y());
+        }
+        else if (m_state == ACTIVE)
+        {
+            Rect clip = Rect(0, 2*m_texture->h()/m_sprites, m_texture->w(),
+                m_texture->h()/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y());
         }
 
@@ -71,10 +79,11 @@ Button::on_event(const MouseButtonEvent& event)
     {
         char coords[64];
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
+        notify(clickedID, coords);
 
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
+        m_state = ACTIVE;
 
-        notify(clickedID, coords);
         return true;
     }
 
@@ -84,7 +93,7 @@ Button::on_event(const MouseButtonEvent& event)
 bool
 Button::on_event(const MouseMotionEvent& event)
 {
-    if (m_state == HIDE)
+    if (m_state == HIDE or m_state == ACTIVE)
     {
         return false;
     }
@@ -95,6 +104,7 @@ Button::on_event(const MouseMotionEvent& event)
         {
             env->sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
+
         m_state = ON_HOVER;
         return true;
     }
@@ -114,4 +124,16 @@ Text*
 Button::text()
 {
     return m_text;
+}
+
+void
+Button::set_sprites(const int num)
+{
+    m_sprites = num;
+}
+
+void
+Button::change_state(State to)
+{
+    m_state = to;
 }

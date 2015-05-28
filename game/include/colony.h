@@ -24,6 +24,11 @@ private:
 
     Button *m_tower_button;
     Button *m_planet_button;
+    Button *m_barracks_button;
+    Button *m_research_button;
+    Button *m_hospital_button;
+    Button *m_workshop_button;
+    Button *m_central_button;
 
     void draw_self(double x0 = 0, double y0 = 0);
     bool on_message(Object *sender, MessageID id, Parameters p);
