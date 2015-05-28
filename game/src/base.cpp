@@ -42,16 +42,16 @@ Base::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(id);
         finish();
-        return true;
     }
-
-    if (button->id() == "hospital")
+    else if (button->id() == "hospital")
     {
         set_next("hospital");
         finish();
     }
     else if (button->id() == "central")
     {
+        set_next("central");
+        finish();
     }
 
     return true;

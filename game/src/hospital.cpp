@@ -9,7 +9,7 @@ Hospital::Hospital(const string& next)
     string path = "res/images/colony/";
     m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
 
-    Colony *colony = new Colony(this, "base");
+    Colony *colony = new Colony(this, "hospital");
     colony->add_observer(this);
     add_child(colony);
 
@@ -41,7 +41,6 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(id);
         finish();
-        return true;
     }
     else if (button->id() != "hospital")
     {
