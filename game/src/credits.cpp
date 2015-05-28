@@ -5,7 +5,8 @@
 #include <core/resourcesmanager.h>
 
 Credits::Credits(const string& next, const string& image)
-    : Level("credits", next), m_texture(nullptr), m_logo(nullptr), m_credits(nullptr), m_back(nullptr)
+    : Level("credits", next), m_texture(nullptr), m_logo(nullptr),
+        m_credits(nullptr), m_back(nullptr)
 {
     Environment *env = Environment::get_instance();
 

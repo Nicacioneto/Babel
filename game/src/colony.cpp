@@ -1,11 +1,10 @@
 #include "colony.h"
 
-
 Colony::Colony(const string& next)
-	: Level("colony", next), m_colony_screen(nullptr), m_right_bracket(nullptr),
-	m_colony(nullptr), m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
-	m_left_bracket(nullptr), m_resources(nullptr), m_tower_button(nullptr),
-    m_planet_button(nullptr)
+    : Level("colony", next), m_colony_screen(nullptr), m_right_bracket(nullptr),
+        m_colony(nullptr), m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
+        m_left_bracket(nullptr), m_resources(nullptr), m_tower_button(nullptr),
+        m_planet_button(nullptr)
 {
     Environment *env = Environment::get_instance();
 
