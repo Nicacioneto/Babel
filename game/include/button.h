@@ -19,7 +19,7 @@ class Button : public Object, public Listener
 public:
     typedef enum { IDLE, ON_HOVER, ACTIVE, HIDE } State;
     
-    Button(Object *parent = nullptr, ObjectID id = "", const string& image = "",
+    Button(Object *parent = nullptr, ObjectID id = "", const string& texture = "",
         double x = 0, double y = 0, double w = 100, double h = 100);
 
     ~Button();
@@ -27,10 +27,13 @@ public:
     bool on_event(const MouseButtonEvent& event);
     bool on_event(const MouseMotionEvent& event);
     void set_text(const string& str, const Color& color = Color(170, 215, 190));
+    void remove_text();
     Text* text();
 
     void set_sprites(const int num);
     void change_state(State to);
+
+    void set_texture(const string& texture);
 
     static ActionID clickedID;
 

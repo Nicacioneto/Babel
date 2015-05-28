@@ -35,6 +35,8 @@ Button::~Button()
 {
     Environment *env = Environment::get_instance();
     env->events_manager->unregister_listener(this);
+
+    remove_text();
 }
 
 void
@@ -119,6 +121,16 @@ Button::set_text(const string& str, const Color& color)
     m_text = new Text(this, str, color);
 }
 
+void
+Button::remove_text()
+{
+    if (m_text)
+    {
+        delete m_text;
+        m_text = nullptr;
+    }
+}
+
 Text*
 Button::text()
 {
@@ -135,4 +147,10 @@ void
 Button::change_state(State to)
 {
     m_state = to;
+}
+
+void
+Button::set_texture(const string& texture)
+{
+    m_texture = env->resources_manager->get_texture(texture);
 }
