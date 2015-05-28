@@ -86,18 +86,22 @@ Central::on_message(Object *sender, MessageID id, Parameters)
         if (button->id() == "chat")
         {
             // change_to_chat();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "quests")
         {
             // change_to_quests();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "bestiary")
         {
             // change_to_bestiary();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "timers")
         {
             // change_to_timers();
+            button->change_state(Button::ACTIVE);
         }
 
         if (button->id() != "chat")

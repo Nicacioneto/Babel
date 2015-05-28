@@ -86,18 +86,22 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         if (button->id() == "chat")
         {
             // change_to_chat();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "items")
         {
             // change_to_items();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "research")
         {
             // change_to_research();
+            button->change_state(Button::ACTIVE);
         }
         else if (button->id() == "revive")
         {
             // change_to_revive();
+            button->change_state(Button::ACTIVE);
         }
 
         if (button->id() != "chat")
