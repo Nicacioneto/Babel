@@ -24,10 +24,10 @@ Planet::Planet(const string& next, const string& texture)
     env->canvas->set_font(font);
     font->set_size(22 * scale);
 
-    m_colony = new Button(this, "colony", "res/images/menu/button.png",
+    m_colony = new Button(this, "base", "res/images/menu/button.png",
         (env->canvas->w() - W_BUTTON_COLONY * scale)/2, env->canvas->h() - 149 * scale,
         W_BUTTON_COLONY * scale, H_BUTTON_COLONY * scale);
-    m_colony->set_text("colony");
+    m_colony->set_text("Colony");
 
     m_misson1 = new Button(this, "mission1", "",
         X_MISSION_1 * scale, Y_MISSION_1 * scale, SIZE_MISSION * scale,
@@ -74,9 +74,9 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    if (button->id() == "colony")
+    if (button->id() == "base")
     {
-        set_next("colony");
+        set_next("base");
         finish();
     }
     else if (button->id() == "mission1")

@@ -1,8 +1,7 @@
-#ifndef HOSPITAL_H
-#define HOSPITAL_H
+#ifndef CENTRAL_H
+#define CENTRAL_H
 
 #include "button.h"
-#include "base.h"
 #include <core/level.h>
 #include <memory>
 #include <map>
@@ -11,10 +10,10 @@ using std::map;
 
 class Texture;
 
-class Hospital : public Level
+class Central : public Level
 {
 public:
-    Hospital(const string& next = "");
+    Central(const string& next = "");
 
 private:
     shared_ptr<Texture> m_scenario;
