@@ -29,10 +29,13 @@ private:
     Button *m_hospital;
     Button *m_workshop;
     Button *m_central;
+    Button *m_button;
 
     void draw_self(double x0 = 0, double y0 = 0);
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void add_fixed_children();
     void update_children();
+    void change_to_hospital();
 };
 
 #endif

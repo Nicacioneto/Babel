@@ -11,14 +11,14 @@
 using std::shared_ptr;
 using std::string;
 
-typedef enum { IDLE, ON_HOVER, ACTIVE, HIDE } State;
-
 class MouseButtonEvent;
 class MouseMotionEvent;
 
 class Button : public Object, public Listener
 {
 public:
+    typedef enum { IDLE, ON_HOVER, ACTIVE, HIDE } State;
+    
     Button(Object *parent = nullptr, ObjectID id = "", const string& image = "",
         double x = 0, double y = 0, double w = 100, double h = 100);
 

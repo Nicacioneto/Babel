@@ -57,7 +57,7 @@ Button::draw_self(double, double)
         }
         else if (m_state == ACTIVE)
         {
-            Rect clip = Rect(0, 2*m_texture->h()/m_sprites, m_texture->w(),
+            Rect clip = Rect(0, 2 * m_texture->h()/m_sprites, m_texture->w(),
                 m_texture->h()/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y());
         }
@@ -82,7 +82,6 @@ Button::on_event(const MouseButtonEvent& event)
         notify(clickedID, coords);
 
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
-        m_state = ACTIVE;
 
         return true;
     }
@@ -97,7 +96,6 @@ Button::on_event(const MouseMotionEvent& event)
     {
         return false;
     }
-
     if (bounding_box().contains(event.x(), event.y()))
     {
         if (m_state != ON_HOVER)
@@ -106,10 +104,11 @@ Button::on_event(const MouseMotionEvent& event)
         }
 
         m_state = ON_HOVER;
-        return true;
     }
-
-    m_state = IDLE;
+    else
+    {
+        m_state = IDLE;
+    }
 
     return false;
 }

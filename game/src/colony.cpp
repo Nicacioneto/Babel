@@ -82,40 +82,36 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     if (button->id() == "tower")
     {
         set_next("dungeon");
+        finish();
     }
     else if (button->id() == "planet")
     {
         set_next("planet");
+        finish();
     }
-    else
+    else if (button->id() == "center_bracket")
     {
-        if (button->id() != "barracks")
-        {
-            m_barracks->change_state(State::IDLE);
-        }
-        if (button->id() != "research")
-        {
-            m_research->change_state(State::IDLE);
-        }
-        if (button->id() != "hospital")
-        {
-            m_hospital->change_state(State::IDLE);
-        }
-        if (button->id() != "workshop")
-        {
-            m_workshop->change_state(State::IDLE);
-        }
-        if (button->id() != "central")
-        {
-            m_central->change_state(State::IDLE);
-        }
-
-        return false;
+        update_children();
+    }
+    else if (button->id() == "hospital")
+    {
+        button->change_state(Button::ACTIVE);
+        change_to_hospital();
     }
     
-    finish();
-
     return true;
+}
+
+void
+Colony::add_fixed_children()
+{
+    m_center_bracket->add_observer(this);
+    m_tower->add_observer(this);
+    m_planet->add_observer(this);
+
+    add_child(m_center_bracket);
+    add_child(m_tower);
+    add_child(m_planet);
 }
 
 void
@@ -133,21 +129,55 @@ Colony::update_children()
     m_workshop->set_y(531 * scale);
     m_central->set_y(635 * scale);
 
-    m_center_bracket->add_observer(this);
-    m_tower->add_observer(this);
-    m_planet->add_observer(this);
+    add_fixed_children();
+
     m_barracks->add_observer(this);
     m_research->add_observer(this);
     m_hospital->add_observer(this);
     m_workshop->add_observer(this);
     m_central->add_observer(this);
 
-    add_child(m_center_bracket);
-    add_child(m_tower);
-    add_child(m_planet);
     add_child(m_barracks);
     add_child(m_research);
     add_child(m_hospital);
     add_child(m_workshop);
     add_child(m_central);
+}
+
+void
+Colony::change_to_hospital()
+{
+    remove_observers();
+    remove_children();
+
+    add_fixed_children();
+
+    Environment *env = Environment::get_instance();
+    double scale = env->canvas->scale();
+    
+    m_hospital->set_y(218 * scale);
+    m_hospital->add_observer(this);
+    add_child(m_hospital);
+
+    string path = "res/images/colony/";
+
+    m_button = new Button(this, "chat", path + "colony_small_button.png",
+        28 * scale, 322 * scale, 190 * scale, 120 / 2 * scale);
+    m_button->add_observer(this);
+    add_child(m_button);
+
+    m_button = new Button(this, "items", path + "colony_small_button.png",
+        28 * scale, 427 * scale, 190 * scale, 120 / 2 * scale);
+    m_button->add_observer(this);
+    add_child(m_button);
+
+    m_button = new Button(this, "research", path + "colony_small_button.png",
+        28 * scale, 531 * scale, 190 * scale, 120 / 2 * scale);
+    m_button->add_observer(this);
+    add_child(m_button);
+
+    m_button = new Button(this, "revive", path + "colony_small_button.png",
+        28 * scale, 635 * scale, 190 * scale, 120 / 2 * scale);
+    m_button->add_observer(this);
+    add_child(m_button);
 }
