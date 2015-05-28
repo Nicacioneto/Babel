@@ -2,9 +2,9 @@
 
 Colony::Colony(const string& next)
     : Level("colony", next), m_colony_screen(nullptr), m_right_bracket(nullptr),
-        m_colony(nullptr), m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
-        m_left_bracket(nullptr), m_resources(nullptr), m_tower_button(nullptr),
-        m_planet_button(nullptr)
+        m_colony(nullptr), m_tower_img(nullptr), m_planet_img(nullptr),
+        m_left_bracket(nullptr), m_resources(nullptr), m_center_bracket(nullptr),
+        m_tower(nullptr), m_planet(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -12,55 +12,59 @@ Colony::Colony(const string& next)
     m_colony_screen = env->resources_manager->get_texture(path + "colony_screen.png");
     m_right_bracket = env->resources_manager->get_texture(path + "right_bracket.png");
     m_colony = env->resources_manager->get_texture(path + "colony.png");
-    m_center_bracket = env->resources_manager->get_texture(path + "center_bracket.png");
-    m_tower = env->resources_manager->get_texture(path + "tower.png");
-    m_planet = env->resources_manager->get_texture(path + "planet.png");
+    m_tower_img = env->resources_manager->get_texture(path + "tower.png");
+    m_planet_img = env->resources_manager->get_texture(path + "planet.png");
     m_left_bracket = env->resources_manager->get_texture(path + "left_bracket.png");
     m_resources = env->resources_manager->get_texture(path + "resources.png");
 
     double scale = env->canvas->scale();
 
-    m_tower_button = new Button(this, "tower", path + "tower_button.png",
+    m_center_bracket = new Button(this, "center_bracket", path + "center_bracket_button.png",
+        193 * scale, 25 * scale, 635 * scale, 156/2 * scale);
+
+    m_tower = new Button(this, "tower", path + "tower_button.png",
         28 * scale, 25 * scale, 140 * scale, 156/2 * scale);
 
-    m_planet_button = new Button(this, "planet", path + "planet_button.png",
+    m_planet = new Button(this, "planet", path + "planet_button.png",
         855 * scale, 25 * scale, 140 * scale, 156/2 * scale);
 
-    m_barracks_button = new Button(this, "barracks", path + "barracks_button.png",
+    m_barracks = new Button(this, "barracks", path + "barracks_button.png",
         28 * scale, 218 * scale, 190 * scale, 180/3* scale);
-    m_barracks_button->set_sprites(3);
+    m_barracks->set_sprites(3);
 
-    m_research_button = new Button(this, "research", path + "research_button.png",
+    m_research = new Button(this, "research", path + "research_button.png",
         28 * scale, 322 * scale, 190 * scale, 180/3* scale);
-    m_research_button->set_sprites(3);
+    m_research->set_sprites(3);
 
-    m_hospital_button = new Button(this, "hospital", path + "hospital_button.png",
+    m_hospital = new Button(this, "hospital", path + "hospital_button.png",
         28 * scale, 427 * scale, 190 * scale, 180/3* scale);
-    m_hospital_button->set_sprites(3);
+    m_hospital->set_sprites(3);
 
-    m_workshop_button = new Button(this, "workshop", path + "workshop_button.png",
+    m_workshop = new Button(this, "workshop", path + "workshop_button.png",
         28 * scale, 531 * scale, 190 * scale, 180/3* scale);
-    m_workshop_button->set_sprites(3);
+    m_workshop->set_sprites(3);
 
-    m_central_button = new Button(this, "central", path + "central_button.png",
+    m_central = new Button(this, "central", path + "central_button.png",
         28 * scale, 635 * scale, 190 * scale, 180/3* scale);
-    m_central_button->set_sprites(3);
+    m_central->set_sprites(3);
 
-    m_tower_button->add_observer(this);
-    m_planet_button->add_observer(this);
-    m_barracks_button->add_observer(this);
-    m_research_button->add_observer(this);
-    m_hospital_button->add_observer(this);
-    m_workshop_button->add_observer(this);
-    m_central_button->add_observer(this);
+    m_center_bracket->add_observer(this);
+    m_tower->add_observer(this);
+    m_planet->add_observer(this);
+    m_barracks->add_observer(this);
+    m_research->add_observer(this);
+    m_hospital->add_observer(this);
+    m_workshop->add_observer(this);
+    m_central->add_observer(this);
 
-    add_child(m_tower_button);
-    add_child(m_planet_button);
-    add_child(m_barracks_button);
-    add_child(m_research_button);
-    add_child(m_hospital_button);
-    add_child(m_workshop_button);
-    add_child(m_central_button);
+    add_child(m_center_bracket);
+    add_child(m_tower);
+    add_child(m_planet);
+    add_child(m_barracks);
+    add_child(m_research);
+    add_child(m_hospital);
+    add_child(m_workshop);
+    add_child(m_central);
 }
 
 void
@@ -75,9 +79,8 @@ Colony::draw_self(double, double)
     env->canvas->draw(m_colony_screen.get(), 275 * scale, 173 * scale);
     env->canvas->draw(m_right_bracket.get(), 275 * scale, 173 * scale);
     env->canvas->draw(m_colony.get(), 193 * scale, 25 * scale);
-    env->canvas->draw(m_center_bracket.get(), 193 * scale, 25 * scale);
-    env->canvas->draw(m_tower.get(), 28 * scale, 25 * scale);
-    env->canvas->draw(m_planet.get(), 855 * scale, 25 * scale);
+    env->canvas->draw(m_tower_img.get(), 28 * scale, 25 * scale);
+    env->canvas->draw(m_planet_img.get(), 855 * scale, 25 * scale);
     env->canvas->draw(m_left_bracket.get(), 28 * scale, 175 * scale);
     env->canvas->draw(m_resources.get(), 28 * scale, 120 * scale);
 }
@@ -104,23 +107,23 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     {
         if (button->id() != "barracks")
         {
-            m_barracks_button->change_state(State::IDLE);
+            m_barracks->change_state(State::IDLE);
         }
         if (button->id() != "research")
         {
-            m_research_button->change_state(State::IDLE);
+            m_research->change_state(State::IDLE);
         }
         if (button->id() != "hospital")
         {
-            m_hospital_button->change_state(State::IDLE);
+            m_hospital->change_state(State::IDLE);
         }
         if (button->id() != "workshop")
         {
-            m_workshop_button->change_state(State::IDLE);
+            m_workshop->change_state(State::IDLE);
         }
         if (button->id() != "central")
         {
-            m_central_button->change_state(State::IDLE);
+            m_central->change_state(State::IDLE);
         }
 
         return false;
