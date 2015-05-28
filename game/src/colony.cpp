@@ -86,7 +86,12 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
         change_to_hospital();
         m_buttons[0]->change_state(Button::ACTIVE);
     }
-    
+    else if (button->id() == "central")
+    {
+        change_to_central();
+        m_buttons[0]->change_state(Button::ACTIVE);
+    }
+
     return true;
 }
 
@@ -195,4 +200,37 @@ Colony::change_to_hospital()
 
     m_colony_cenario = env->resources_manager->get_texture(path + 
         "hospital/hospital_chat_scenario.png");
+}
+
+void
+Colony::change_to_central()
+{
+    Environment *env = Environment::get_instance();
+    double scale = env->canvas->scale();
+    string path = "res/images/colony/";
+
+    m_buttons[0]->set_id("central");
+    m_buttons[0]->set_texture(path + "central_button.png");
+
+    for (size_t i = 1; i < m_buttons.size(); ++i)
+    {
+        m_buttons[i]->set_texture(path + "colony_small_button.png");
+    }
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(22 * scale);
+
+    m_buttons[1]->set_id("chat");
+    m_buttons[1]->set_text("Chat");
+    m_buttons[1]->change_state(Button::ACTIVE);
+    m_buttons[2]->set_id("quests");
+    m_buttons[2]->set_text("Quests");
+    m_buttons[3]->set_id("bestiary");
+    m_buttons[3]->set_text("Bestiary");
+    m_buttons[4]->set_id("timers");
+    m_buttons[4]->set_text("Timers");
+
+    m_colony_cenario = env->resources_manager->get_texture(path + 
+        "central/central_chat_scenario.png");
 }

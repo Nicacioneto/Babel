@@ -34,6 +34,7 @@ private:
     void create_buttons();
     void change_to_colony();
     void change_to_hospital();
+    void change_to_central();
 };
 
 #endif
