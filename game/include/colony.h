@@ -32,6 +32,7 @@ private:
 
     void draw_self(double x0 = 0, double y0 = 0);
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void update_children();
 };
 
 #endif
