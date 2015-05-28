@@ -1,7 +1,5 @@
 #include "colony.h"
 #include <core/font.h>
-#include <iostream>
-using namespace std;
 
 Colony::Colony(const string& next)
     : Level("colony", next), m_colony_scenario(nullptr), m_right_bracket(nullptr),

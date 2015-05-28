@@ -5,10 +5,8 @@
 #include <core/level.h>
 #include <map>
 #include <memory>
-#include <vector>
 
 using std::map;
-using std::vector;
 
 class Texture;
 
@@ -34,9 +32,6 @@ private:
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self(double x0 = 0, double y0 = 0);
     void create_buttons();
-
-    void change_to_colony();
-    void change_to_central();
 };
 
 #endif
