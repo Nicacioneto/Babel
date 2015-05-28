@@ -37,7 +37,7 @@ private:
     State m_state;
     Environment *env;
 
-    void draw_self();
+    void draw_self(double x0 = 0, double y0 = 0);
 };
 
 #endif

@@ -53,7 +53,7 @@ Menu::Menu(const string& next, const string& texture)
 }
 
 void
-Menu::draw_self()
+Menu::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

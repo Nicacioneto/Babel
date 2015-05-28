@@ -41,7 +41,7 @@ GameOver::update_self(unsigned long)
 }
 
 void
-GameOver::draw_self()
+GameOver::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

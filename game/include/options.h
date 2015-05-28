@@ -27,7 +27,7 @@ private:
 
     std::vector<int> m_resolutions = {800, 1024};
 
-    void draw_self();
+    void draw_self(double x0 = 0, double y0 = 0);
     void update_coordinates();
     bool on_message(Object *sender, MessageID id, Parameters p);
 };

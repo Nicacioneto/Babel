@@ -33,7 +33,7 @@ Colony::Colony(const string& next)
 }
 
 void
-Colony::draw_self()
+Colony::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     

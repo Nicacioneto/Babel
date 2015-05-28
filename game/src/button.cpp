@@ -37,7 +37,7 @@ Button::~Button()
 }
 
 void
-Button::draw_self()
+Button::draw_self(double, double)
 {
     env = Environment::get_instance();
 

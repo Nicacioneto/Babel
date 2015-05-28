@@ -34,7 +34,7 @@ Credits::Credits(const string& next, const string& image)
 }
 
 void
-Credits::draw_self()
+Credits::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     

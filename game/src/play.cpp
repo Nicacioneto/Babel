@@ -58,7 +58,7 @@ Play::Play(const string& next, const string& texture)
 }
 
 void
-Play::draw_self()
+Play::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

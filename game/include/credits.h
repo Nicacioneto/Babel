@@ -18,7 +18,7 @@ private:
     shared_ptr<Texture> m_credits;
     Button *m_back;
 
-    void draw_self();
+    void draw_self(double x0 = 0, double y0 = 0);
     bool on_message(Object *sender, MessageID id, Parameters p);
 };
 
