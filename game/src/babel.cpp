@@ -1,4 +1,5 @@
 #include "babel.h"
+#include "central.h"
 #include "colony.h"
 #include "credits.h"
 #include "dungeon.h"
@@ -63,6 +64,10 @@ Babel::load_level(const string& id)
     else if (id == "hospital")
     {
         return load_hospital();
+    }
+    else if (id == "central")
+    {
+        return load_central();
     }
     
     return load_frontend(id);
@@ -139,4 +144,10 @@ Level *
 Babel::load_hospital()
 {
     return new Hospital();
+}
+
+Level *
+Babel::load_central()
+{
+    return new Central();
 }

@@ -1,7 +1,7 @@
-#include "hospital.h"
+#include "central.h"
 
-Hospital::Hospital(const string& next)
-    : Level("hospital", next), m_scenario(nullptr), m_right_bracket(nullptr),
+Central::Central(const string& next)
+    : Level("central", next), m_scenario(nullptr), m_right_bracket(nullptr),
         m_colony(nullptr), m_tower_img(nullptr), m_planet_img(nullptr),
         m_left_bracket(nullptr), m_resources(nullptr), m_center_bracket(nullptr),
         m_tower(nullptr), m_planet(nullptr)
@@ -9,7 +9,7 @@ Hospital::Hospital(const string& next)
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
+    m_scenario = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
     m_right_bracket = env->resources_manager->get_texture(path + "right_bracket.png");
     m_colony = env->resources_manager->get_texture(path + "colony.png");
     m_tower_img = env->resources_manager->get_texture(path + "tower.png");
@@ -40,7 +40,7 @@ Hospital::Hospital(const string& next)
 }
 
 void
-Hospital::draw_self(double, double)
+Central::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
@@ -57,7 +57,7 @@ Hospital::draw_self(double, double)
 }
 
 bool
-Hospital::on_message(Object *sender, MessageID id, Parameters)
+Central::on_message(Object *sender, MessageID id, Parameters)
 {
     Button *button = dynamic_cast<Button *>(sender);
 
@@ -87,34 +87,34 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         {
             // change_to_chat();
         }
-        else if (button->id() == "items")
+        else if (button->id() == "quests")
         {
-            // change_to_items();
+            // change_to_quests();
         }
-        else if (button->id() == "research")
+        else if (button->id() == "bestiary")
         {
-            // change_to_research();
+            // change_to_bestiary();
         }
-        else if (button->id() == "revive")
+        else if (button->id() == "timers")
         {
-            // change_to_revive();
+            // change_to_timers();
         }
 
         if (button->id() != "chat")
         {
             m_buttons["chat"]->change_state(Button::IDLE);
         }
-        if (button->id() != "items")
+        if (button->id() != "quests")
         {
-            m_buttons["items"]->change_state(Button::IDLE);
+            m_buttons["quests"]->change_state(Button::IDLE);
         }
-        if (button->id() != "research")
+        if (button->id() != "bestiary")
         {
-            m_buttons["research"]->change_state(Button::IDLE);
+            m_buttons["bestiary"]->change_state(Button::IDLE);
         }
-        if (button->id() != "revive")
+        if (button->id() != "timers")
         {
-            m_buttons["revive"]->change_state(Button::IDLE);
+            m_buttons["timers"]->change_state(Button::IDLE);
         }
         
         return false;
@@ -124,13 +124,13 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
 }
 
 void
-Hospital::create_buttons()
+Central::create_buttons()
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
     string path = "res/images/colony/";
 
-    Button *button =  new Button(this, "hospital", path + "hospital_button.png",
+    Button *button =  new Button(this, "central", path + "central_button.png",
         28 * scale, 218 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
@@ -145,30 +145,31 @@ Hospital::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "items", path + "colony_small_button.png",
+    button = new Button(this, "quests", path + "colony_small_button.png",
         28 * scale, 427 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
-    button->set_text("Items");
+    button->set_text("Quests");
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "research", path + "colony_small_button.png",
+    button = new Button(this, "bestiary", path + "colony_small_button.png",
         28 * scale, 531 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
-    button->set_text("Research");
+    button->set_text("Bestiary");
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "revive", path + "colony_small_button.png",
+    button = new Button(this, "timers", path + "colony_small_button.png",
         28 * scale, 635 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
-    button->set_text("Revive");
+    button->set_text("Timers");
 
     m_buttons[button->id()] = button;
 
-    for (auto it : m_buttons)
+    for (auto it = m_buttons.begin(); it != m_buttons.end(); ++it)
     {
-        it.second->add_observer(this);
-        add_child(it.second);
+        auto id = it->first;
+        m_buttons[id]->add_observer(this);
+        add_child(m_buttons[id]);
     }
 }

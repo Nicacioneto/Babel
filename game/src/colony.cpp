@@ -86,6 +86,8 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "central")
     {
+        set_next("central");
+        finish();
     }
 
     return true;

@@ -2,7 +2,7 @@
 #define HOSPITAL_H
 
 #include "button.h"
-#include "colony.h"
+#include <core/level.h>
 #include <memory>
 #include <map>
 
