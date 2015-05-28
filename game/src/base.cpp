@@ -3,8 +3,13 @@
 #include <core/font.h>
 
 Base::Base(const string& next)
-    : Level("base", next)
+    : Level("base", next), m_scenario(nullptr)
 {
+    Environment *env = Environment::get_instance();
+
+    string path = "res/images/colony/";
+    m_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
+
     Colony *colony = new Colony(this, "base");
     colony->add_observer(this);
     add_child(colony);
@@ -17,6 +22,9 @@ Base::draw_self(double, double)
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();
+
+    double scale = env->canvas->scale();
+    env->canvas->draw(m_scenario.get(), 275 * scale, 173 * scale);
 }
 
 bool

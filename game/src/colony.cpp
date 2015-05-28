@@ -2,14 +2,13 @@
 #include <core/font.h>
 
 Colony::Colony(Object *parent, ObjectID id)
-    : Object(parent, id), m_base_scenario(nullptr), m_right_bracket(nullptr), m_colony(nullptr),
-    m_tower_img(nullptr), m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
+    : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
+     m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
     m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_base_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
     m_right_bracket = env->resources_manager->get_texture(path + "right_bracket.png");
     m_colony = env->resources_manager->get_texture(path + "colony.png");
     m_tower_img = env->resources_manager->get_texture(path + "tower.png");
@@ -43,9 +42,6 @@ Colony::draw_self(double, double)
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();
 
-    env->canvas->clear();
-
-    env->canvas->draw(m_base_scenario.get(), 275 * scale, 173 * scale);
     env->canvas->draw(m_right_bracket.get(), 275 * scale, 173 * scale);
     env->canvas->draw(m_colony.get(), 193 * scale, 25 * scale);
     env->canvas->draw(m_tower_img.get(), 28 * scale, 25 * scale);

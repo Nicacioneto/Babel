@@ -15,7 +15,6 @@ public:
     Colony(Object *parent = nullptr, ObjectID id = "");
 
 private:
-    shared_ptr<Texture> m_base_scenario;
     shared_ptr<Texture> m_right_bracket;
     shared_ptr<Texture> m_colony;
     shared_ptr<Texture> m_tower_img;

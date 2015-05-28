@@ -16,6 +16,8 @@ public:
     Base(const string& next = "");
 
 private:
+	shared_ptr<Texture> m_scenario;
+	
     map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
