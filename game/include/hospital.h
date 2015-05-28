@@ -17,14 +17,21 @@ public:
     Hospital(const string& next = "");
 
 private:
+    typedef enum { CHAT, ITEMS, RESEARCH, REVIVE } Screen;
     shared_ptr<Texture> m_scenario;
+    shared_ptr<Texture> m_reset;
+    shared_ptr<Texture> m_buy;
     
     map<ObjectID, Button*> m_buttons;
+
+    Screen m_screen;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self(double x0 = 0, double y0 = 0);
     void create_buttons();
     void change_buttons();
+    void change_to_chat();
+    void change_to_items();
 };
 
 #endif
