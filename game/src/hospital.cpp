@@ -170,10 +170,9 @@ Hospital::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    for (auto it = m_buttons.begin(); it != m_buttons.end(); ++it)
+    for (auto it : m_buttons)
     {
-        auto id = it->first;
-        m_buttons[id]->add_observer(this);
-        add_child(m_buttons[id]);
+        it.second->add_observer(this);
+        add_child(it.second);
     }
 }

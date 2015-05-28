@@ -3,9 +3,11 @@
 
 #include "button.h"
 #include <core/level.h>
+#include <map>
 #include <memory>
 #include <vector>
 
+using std::map;
 using std::vector;
 
 class Texture;
@@ -27,7 +29,7 @@ private:
     Button *m_center_bracket;
     Button *m_tower;
     Button *m_planet;
-    vector<Button *> m_buttons;
+    map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self(double x0 = 0, double y0 = 0);

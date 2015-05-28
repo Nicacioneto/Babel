@@ -1,5 +1,7 @@
 #include "colony.h"
 #include <core/font.h>
+#include <iostream>
+using namespace std;
 
 Colony::Colony(const string& next)
     : Level("colony", next), m_colony_scenario(nullptr), m_right_bracket(nullptr),
@@ -77,10 +79,6 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
         set_next("planet");
         finish();
     }
-    else if (button->id() == "center_bracket")
-    {
-        change_to_colony();
-    }
     else if (button->id() == "hospital")
     {
         set_next("hospital");
@@ -88,8 +86,6 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "central")
     {
-        change_to_central();
-        m_buttons[0]->change_state(Button::ACTIVE);
     }
 
     return true;
@@ -106,131 +102,35 @@ Colony::create_buttons()
         28 * scale, 218 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 
-    m_buttons.push_back(button);
+    m_buttons[button->id()] = button;
 
     button = new Button(this, "research", path + "research_button.png",
         28 * scale, 322 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 
-    m_buttons.push_back(button);
+    m_buttons[button->id()] = button;
 
     button = new Button(this, "hospital", path + "hospital_button.png",
         28 * scale, 427 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 
-    m_buttons.push_back(button);
+    m_buttons[button->id()] = button;
 
     button = new Button(this, "workshop", path + "workshop_button.png",
         28 * scale, 531 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 
-    m_buttons.push_back(button);
+    m_buttons[button->id()] = button;
 
     button = new Button(this, "central", path + "central_button.png",
         28 * scale, 635 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 
-    m_buttons.push_back(button);
+    m_buttons[button->id()] = button;
 
-    for (size_t i = 0; i < m_buttons.size(); ++i)
+    for (auto it : m_buttons)
     {
-        m_buttons[i]->add_observer(this);
-        add_child(m_buttons[i]);
+        it.second->add_observer(this);
+        add_child(it.second);
     }
-}
-
-void
-Colony::change_to_colony()
-{
-    string path = "res/images/colony/";
-
-    m_buttons[0]->set_id("barracks");
-    m_buttons[0]->remove_text();
-    m_buttons[0]->set_texture(path + "barracks_button.png");
-    m_buttons[0]->change_state(Button::IDLE);
-    m_buttons[1]->set_id("research");
-    m_buttons[1]->remove_text();
-    m_buttons[1]->set_texture(path + "research_button.png");
-    m_buttons[1]->change_state(Button::IDLE);
-    m_buttons[2]->set_id("hospital");
-    m_buttons[2]->remove_text();
-    m_buttons[2]->set_texture(path + "hospital_button.png");
-    m_buttons[2]->change_state(Button::IDLE);
-    m_buttons[3]->set_id("workshop");
-    m_buttons[3]->remove_text();
-    m_buttons[3]->set_texture(path + "workshop_button.png");
-    m_buttons[3]->change_state(Button::IDLE);
-    m_buttons[4]->set_id("central");
-    m_buttons[4]->remove_text();
-    m_buttons[4]->set_texture(path + "central_button.png");
-    m_buttons[4]->change_state(Button::IDLE);
-
-    Environment *env = Environment::get_instance();
-    m_colony_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
-}
-
-void
-Colony::change_to_hospital()
-{
-    Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
-    string path = "res/images/colony/";
-
-    m_buttons[0]->set_id("hospital");
-    m_buttons[0]->set_texture(path + "hospital_button.png");
-
-    for (size_t i = 1; i < m_buttons.size(); ++i)
-    {
-        m_buttons[i]->set_texture(path + "colony_small_button.png");
-    }
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(22 * scale);
-
-    m_buttons[1]->set_id("chat");
-    m_buttons[1]->set_text("Chat");
-    m_buttons[1]->change_state(Button::ACTIVE);
-    m_buttons[2]->set_id("items");
-    m_buttons[2]->set_text("Items");
-    m_buttons[3]->set_id("research");
-    m_buttons[3]->set_text("Research");
-    m_buttons[4]->set_id("revive");
-    m_buttons[4]->set_text("Revive");
-
-    m_colony_scenario = env->resources_manager->get_texture(path +
-        "hospital/hospital_chat_scenario.png");
-}
-
-void
-Colony::change_to_central()
-{
-    Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
-    string path = "res/images/colony/";
-
-    m_buttons[0]->set_id("central");
-    m_buttons[0]->set_texture(path + "central_button.png");
-
-    for (size_t i = 1; i < m_buttons.size(); ++i)
-    {
-        m_buttons[i]->set_texture(path + "colony_small_button.png");
-    }
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(22 * scale);
-
-    m_buttons[1]->set_id("chat");
-    m_buttons[1]->set_text("Chat");
-    m_buttons[1]->change_state(Button::ACTIVE);
-    m_buttons[2]->set_id("quests");
-    m_buttons[2]->set_text("Quests");
-    m_buttons[3]->set_id("bestiary");
-    m_buttons[3]->set_text("Bestiary");
-    m_buttons[4]->set_id("timers");
-    m_buttons[4]->set_text("Timers");
-
-    m_colony_scenario = env->resources_manager->get_texture(path +
-        "central/central_chat_scenario.png");
 }

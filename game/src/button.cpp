@@ -84,7 +84,6 @@ Button::on_event(const MouseButtonEvent& event)
         notify(clickedID, coords);
 
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
-        m_state = ACTIVE;
 
         return true;
     }
