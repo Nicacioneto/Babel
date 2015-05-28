@@ -88,8 +88,8 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "central")
     {
-        change_to_central();
-        m_buttons[0]->change_state(Button::ACTIVE);
+        set_next("central");
+        finish();
     }
 
     return true;
