@@ -20,6 +20,7 @@ private:
     Level * load_options();
     Level * load_planet();
     Level * load_play();
+    Level * load_hospital();
 };
 
 #endif

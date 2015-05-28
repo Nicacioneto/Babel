@@ -3,6 +3,7 @@
 #include "credits.h"
 #include "dungeon.h"
 #include "gameover.h"
+#include "hospital.h"
 #include "menu.h"
 #include "options.h"
 #include "planet.h"
@@ -58,6 +59,10 @@ Babel::load_level(const string& id)
     else if (id == "planet")
     {
         return load_planet();
+    }
+    else if (id == "hospital")
+    {
+        return load_hospital();
     }
     
     return load_frontend(id);
@@ -128,4 +133,10 @@ Level *
 Babel::load_planet()
 {
     return new Planet();
+}
+
+Level *
+Babel::load_hospital()
+{
+    return new Hospital();
 }
