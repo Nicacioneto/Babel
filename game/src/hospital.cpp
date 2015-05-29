@@ -88,28 +88,32 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         if (button->id() == "chat")
         {
             m_screen = CHAT;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
+            m_scenario = env->resources_manager->get_texture(
+                path + "hospital/hospital_chat_scenario.png");
             m_reset->change_state(Button::HIDE);
             m_buy->change_state(Button::HIDE);
         }
         else if (button->id() == "items")
         {
             m_screen = ITEMS;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
+            m_scenario = env->resources_manager->get_texture(
+                path + "hospital/hospital_scenario.png");
             m_reset->change_state(Button::IDLE);
             m_buy->change_state(Button::IDLE);
         }
         else if (button->id() == "research")
         {
             m_screen = RESEARCH;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
+            m_scenario = env->resources_manager->get_texture(
+                path + "hospital/hospital_scenario.png");
             m_reset->change_state(Button::HIDE);
             m_buy->change_state(Button::HIDE);
         }
         else if (button->id() == "revive")
         {
             m_screen = REVIVE;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
+            m_scenario = env->resources_manager->get_texture(
+                path + "hospital/hospital_scenario.png");
             m_reset->change_state(Button::HIDE);
             m_buy->change_state(Button::HIDE);
         }
@@ -219,21 +223,12 @@ Hospital::change_to_items()
     env->canvas->draw("Qnt.", 855 * scale, 186 * scale, color);
 
     // temp texture
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "hospital/material_power_icon.png");
+    shared_ptr<Texture> texture = env->resources_manager->get_texture(
+        path + "hospital/material_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    // temp texture
-    texture = env->resources_manager->get_texture(path + "central/workshop_icon.png");
-    env->canvas->draw(texture.get(), 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 556 * scale);
-
-    // temp texture
-    texture = env->resources_manager->get_texture(path + "colony_small_button.png");
-    Rect clip(0, 25, 190, 60);
+    texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+    Rect clip = Rect(0, 25, 50, 50/2);
     env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
@@ -241,6 +236,16 @@ Hospital::change_to_items()
     env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
 
+    texture = env->resources_manager->get_texture(path + "big_list.png");
+    clip = Rect(0, 0, 602, 75/3);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
+
+    // Name
     color.set_a(100);
     env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
@@ -249,6 +254,7 @@ Hospital::change_to_items()
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
 
+    // Material/Power
     env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
@@ -256,6 +262,7 @@ Hospital::change_to_items()
     env->canvas->draw("70/100", 690 * scale, 492 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 556 * scale, color);
 
+    // Qnt
     env->canvas->draw("10/20", 855 * scale, 236 * scale, color);
     env->canvas->draw("13/20", 855 * scale, 300 * scale, color);
     env->canvas->draw("14/15", 855 * scale, 364 * scale, color);
@@ -263,6 +270,7 @@ Hospital::change_to_items()
     env->canvas->draw("13/20", 855 * scale, 492 * scale, color);
     env->canvas->draw("13/20", 855 * scale, 556 * scale, color);
 
+    // Total
     env->canvas->draw("TOTAL", 607 * scale, 633 * scale, color);
     font->set_size(16 * scale);
     env->canvas->draw("800", 800 * scale, 633 * scale, Color::RED);
@@ -293,22 +301,12 @@ Hospital::change_to_research()
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
-    // temp texture
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "hospital/material_power_icon.png");
+    shared_ptr<Texture> texture = env->resources_manager->get_texture(
+        path + "hospital/material_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    // temp texture
-    texture = env->resources_manager->get_texture(path + "central/workshop_icon.png");
-    env->canvas->draw(texture.get(), 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), 310 * scale, 556 * scale);
-
-    // temp texture
-    texture = env->resources_manager->get_texture(path + "colony_small_button.png");
-    Rect clip(0, 25, 190, 60);
+    texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+    Rect clip = Rect(0, 25, 50, 50/2);
     env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
@@ -316,6 +314,7 @@ Hospital::change_to_research()
     env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
 
+    // Name
     env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 364 * scale, color);
@@ -323,6 +322,7 @@ Hospital::change_to_research()
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
 
+    // Material/Power
     env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
@@ -330,12 +330,22 @@ Hospital::change_to_research()
     env->canvas->draw("70/100", 690 * scale, 492 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 556 * scale, color);
 
+    // Time
     env->canvas->draw("15:00", 855 * scale, 236 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 300 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 364 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 492 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
+
+    texture = env->resources_manager->get_texture(path + "big_list.png");
+    clip = Rect(0, 0, 602, 75/3);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
 
     env->canvas->set_blend_mode(Canvas::NONE);
 }
@@ -358,7 +368,8 @@ Hospital::change_to_revive()
     env->canvas->draw("Class", 524 * scale, 186 * scale, color);
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "hospital/material_power_icon.png");
+    shared_ptr<Texture> texture = env->resources_manager->get_texture(
+        path + "hospital/material_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
     texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
@@ -394,12 +405,12 @@ Hospital::change_to_revive()
 
     texture = env->resources_manager->get_texture(path + "big_list.png");
     clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
 
     env->canvas->set_blend_mode(Canvas::NONE);
 }
