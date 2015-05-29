@@ -79,47 +79,43 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
+    else if (button->id() == "reset")
+    {
+        m_buy->change_state(Button::IDLE);
+    }
+    else if (button->id() == "buy")
+    {
+        button->change_state(Button::ACTIVE);
+    }
     else if (button->id() != "hospital")
     {
         Environment *env = Environment::get_instance();
         string path = "res/images/colony/";
+
+        m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
         change_buttons();
 
         if (button->id() == "chat")
         {
             m_screen = CHAT;
             m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
-            m_reset->change_state(Button::HIDE);
-            m_buy->change_state(Button::HIDE);
         }
         else if (button->id() == "items")
         {
             m_screen = ITEMS;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
             m_reset->change_state(Button::IDLE);
             m_buy->change_state(Button::IDLE);
         }
         else if (button->id() == "research")
         {
             m_screen = RESEARCH;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
-            m_reset->change_state(Button::HIDE);
-            m_buy->change_state(Button::HIDE);
         }
         else if (button->id() == "revive")
         {
             m_screen = REVIVE;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
-            m_reset->change_state(Button::HIDE);
-            m_buy->change_state(Button::HIDE);
         }
 
         button->change_state(Button::ACTIVE);
-
-        if (button->id() == "reset")
-        {
-            button->change_state(Button::ON_HOVER);
-        }
     }
 
     return true;
@@ -185,6 +181,9 @@ Hospital::change_buttons()
             it.second->change_state(Button::IDLE);
         }
     }
+
+    m_reset->change_state(Button::HIDE);
+    m_buy->change_state(Button::HIDE);
 }
 
 void
