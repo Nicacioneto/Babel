@@ -25,7 +25,7 @@ all:
 	@make $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@echo Building $^
+	@echo Building $@
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(GAME_MAIN) $(OBJ)
