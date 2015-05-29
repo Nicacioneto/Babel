@@ -98,7 +98,8 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         if (button->id() == "chat")
         {
             m_screen = CHAT;
-            m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
+            m_scenario = env->resources_manager->get_texture(path +
+                "hospital/hospital_chat_scenario.png");
         }
         else if (button->id() == "items")
         {
