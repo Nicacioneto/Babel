@@ -42,7 +42,7 @@ Central::draw_self(double, double)
             break;
 
         case TIMERS:
-            // change_to_timers();
+            change_to_timers();
             break;
     }
 }
@@ -224,6 +224,35 @@ Central::change_to_bestiary()
     env->canvas->set_font(font);
     font->set_size(18 * scale);
 
+    Color color(170, 215, 190);
+    env->canvas->draw("Name", 360 * scale, 188 * scale, color);
+    
+    shared_ptr<Texture> texture = env->resources_manager->get_texture(
+        path + "central/research_icon.png");
+    env->canvas->draw(texture.get(), 310 * scale, 236 * scale);
+    env->canvas->draw(texture.get(), 310 * scale, 300 * scale);
+
+    // Name
+    env->canvas->draw("Zoombie", 360 * scale, 236 * scale, color);
+    env->canvas->draw("Monster Boss", 360 * scale, 300 * scale, color);
+
+    texture = env->resources_manager->get_texture(path + "big_list.png");
+    Rect clip = Rect(0, 0, 602, 75/3);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+}
+
+void
+Central::change_to_timers()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/";
+    double scale = env->canvas->scale();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18 * scale);
+
     env->canvas->set_blend_mode(Canvas::BLEND);
     Color color(170, 215, 190);
 
@@ -272,4 +301,5 @@ Central::change_to_bestiary()
     env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
 
     env->canvas->set_blend_mode(Canvas::NONE);
+
 }

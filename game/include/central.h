@@ -30,6 +30,7 @@ private:
     void change_to_chat();
     void change_to_quests();
     void change_to_bestiary();
+    void change_to_timers();
 };
 
 #endif
