@@ -217,9 +217,8 @@ Hospital::change_to_items()
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
     env->canvas->draw("Qnt.", 855 * scale, 186 * scale, color);
 
-    // temp texture
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/material_power_icon.png");
+        path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
     texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
@@ -249,7 +248,7 @@ Hospital::change_to_items()
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
 
-    // Material/Power
+    // Matter/Power
     env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
@@ -297,7 +296,7 @@ Hospital::change_to_research()
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/material_power_icon.png");
+        path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
     texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
@@ -317,7 +316,7 @@ Hospital::change_to_research()
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
 
-    // Material/Power
+    // Matter/Power
     env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
     env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
@@ -364,7 +363,7 @@ Hospital::change_to_revive()
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/material_power_icon.png");
+        path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
     texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
@@ -392,7 +391,7 @@ Hospital::change_to_revive()
     env->canvas->draw("Sabouteur", 524 * scale, 492 * scale, color);
     env->canvas->draw("Soldier", 524 * scale, 556 * scale, color);
 
-    // Power
+    // Matter/Power
     env->canvas->draw("70/120", 690 * scale, 428 * scale, color);
     
     // Time
