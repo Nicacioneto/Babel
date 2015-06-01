@@ -1,19 +1,16 @@
-NAME = babel
-
 SRC_DIR = src
 OBJ_DIR = obj
 LIB_DIR = lib
 BIN_DIR = bin
 RES_DIR = res
 DLL_DIR = res/dll
-FILES_DIR = files
 
 CC = x86_64-w64-mingw32-g++
 SDL_MINGW_ROOT = /usr/x86_64-w64-mingw32
 
 CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
 INCLUDES = -Iinclude -I$(SDL_MINGW_ROOT)/include/ijengine `$(SDL_MINGW_ROOT)/bin/sdl2-config --cflags`
-LIBS = -lijengine `$(SDL_MINGW_ROOT)/bin/sdl2-config --libs` -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lmingw32
+LIBS = -lijengine `$(SDL_MINGW_ROOT)/bin/sdl2-config --libs` -lpthread -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lmingw32
 
 GAME = $(BIN_DIR)/babel
 
@@ -28,8 +25,8 @@ all: $(GAME)
 	@echo --- Done
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@echo Building $^
-	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR) $(FILES_DIR)
+	@echo Building $@
+	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 $(GAME): $(OBJ)
@@ -38,14 +35,6 @@ $(GAME): $(OBJ)
 
 clean:
 	@echo Cleaning...
-	@find . -name *.o -exec rm {} \;
-	@find . -name *.d -exec rm {} \;
-	@find . -name *.dll -exec rm {} \;
-	@rm -rf *~ *.o bin/ obj/ files/
-	@rm -f *.dll
-	@rm -f LICENSES.txt
-
-dist-clean: clean
-	@find . -name *.a -exec rm {} \;
+	@rm -rf obj/ bin/ *~
 
 -include $(OBJ:.o=.d)

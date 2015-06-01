@@ -1,5 +1,4 @@
 SRC_DIR = src
-INC_DIR = include
 OBJ_DIR = obj
 LIB_DIR = lib
 BIN_DIR = bin
@@ -15,8 +14,6 @@ GAME_MAIN = $(SRC_DIR)/*.cpp
 
 SRC = ${wildcard $(SRC_DIR)/*.cpp}
 OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}} 
-
-TEST = $(BIN_DIR)/test
 
 .PHONY: clean depend
 
