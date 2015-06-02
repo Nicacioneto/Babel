@@ -25,8 +25,8 @@ Credits::Credits(const string& next, const string& image)
     const int x_back = (env->canvas->w() - w_button) / 2;
     const int y_back = env->canvas->h() - 123 * scale;
 
-    m_back = new Button(this, "back", "res/images/menu/button.png", x_back,
-        y_back, w_button, h_button);
+    m_back = new Button(this, "back", "res/images/menu/button.png",
+        x_back, y_back, w_button, h_button);
     m_back->set_text("Back");
 
     m_back->add_observer(this);
@@ -42,7 +42,6 @@ Credits::draw_self(double, double)
     double scale = env->canvas->scale();
 
     env->canvas->clear();
-
     env->canvas->draw(m_texture.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
     env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 183 * scale);

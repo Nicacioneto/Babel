@@ -197,7 +197,7 @@ Hospital::change_to_chat()
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
-    env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 *scale), color);
+    env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 * scale), color);
     env->canvas->draw("Chat Text", 305 * scale, 605 * scale, color);
 }
 

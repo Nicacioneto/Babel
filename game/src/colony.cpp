@@ -3,8 +3,8 @@
 
 Colony::Colony(Object *parent, ObjectID id)
     : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
-     m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
-    m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr)
+        m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
+        m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -20,10 +20,8 @@ Colony::Colony(Object *parent, ObjectID id)
 
     m_center_bracket = new Button(this, "center_bracket", path + "center_bracket_button.png",
         193 * scale, 25 * scale, 635 * scale, 156/2 * scale);
-
     m_tower = new Button(this, "tower", path + "tower_button.png",
         28 * scale, 25 * scale, 140 * scale, 156/2 * scale);
-
     m_planet = new Button(this, "planet", path + "planet_button.png",
         855 * scale, 25 * scale, 140 * scale, 156/2 * scale);
 

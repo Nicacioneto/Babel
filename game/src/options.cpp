@@ -79,7 +79,7 @@ Options::update_coordinates()
     m_down_volume->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
     
     m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale,
-        (env->canvas->h() - 25*scale)/2);
+        (env->canvas->h() - 25 * scale)/2);
     m_up_resolution->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
     
     m_down_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2);
@@ -102,14 +102,14 @@ Options::draw_self(double, double)
     env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale,
         (env->canvas->h() - 20 * scale)/2);
 
-    int i, volume = settings->read<int>("Game", "volume", 50);
+    int i, volume = settings->read<int>("Game", "volume", 50)/10;
 
-    for (i = 0; i < (10 - volume/10)*17; i+=17)
+    for (i = 0; i < (10 - volume)*17; i+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale,
             (env->canvas->h() - 15 * scale)/2);
     }
-    for (int j = i; j < i + (volume/10)*17; j+=17)
+    for (int j = i; j < i + volume*17; j+=17)
     {
         env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+j) * scale,
             (env->canvas->h() - 15 * scale)/2);
@@ -159,16 +159,16 @@ Options::on_message(Object *sender, MessageID id, Parameters)
 
         if (button->id() == "up_resolution")
         {
-            if (position + 1 < (int) m_resolutions.size())
+            if (++position == (int) m_resolutions.size())
             {
-                position++;
+                position = m_resolutions.size() - 1;
             }
         }
         else
         {
-            if (position - 1 >= 0)
+            if (--position < 0)
             {
-                position--;
+                position = 0;
             }
         }
 
@@ -186,24 +186,24 @@ Options::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "up_volume" or button->id() == "down_volume")
     {
-        int volume = settings->read<int>("Game", "volume", 50);
+        int volume = settings->read<int>("Game", "volume", 50)/10;
 
         if (button->id() == "up_volume")
         {
-            if (volume < 100)
+            if (++volume > 10)
             {
-                volume += 10;
+                volume = 10;
             }
         }
         else
         {
-            if (volume > 0)
+            if (--volume < 0)
             {
-                volume -= 10;
+                volume = 0;
             }
         }
 
-        settings->write<int>("Game", "volume", volume);
+        settings->write<int>("Game", "volume", volume*10);
         settings->save("res/settings.ini");
     }
 

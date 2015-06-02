@@ -89,9 +89,9 @@ Central::on_message(Object *sender, MessageID id, Parameters)
         }
         else if (button->id() == "timers")
         {
-            // m_screen = TIMERS;
-            // m_scenario = env->resources_manager->get_texture(
-            //     path + "central/central_scenario.png");
+            m_screen = TIMERS;
+            m_scenario = env->resources_manager->get_texture(
+                path + "central/central_scenario.png");
         }
         
         button->change_state(Button::ACTIVE);
@@ -173,7 +173,7 @@ Central::change_to_chat()
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
-    env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 *scale), color);
+    env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 * scale), color);
     env->canvas->draw("Chat Text", 305 * scale, 605 * scale, color);
 }
 
@@ -301,5 +301,4 @@ Central::change_to_timers()
     env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
 
     env->canvas->set_blend_mode(Canvas::NONE);
-
 }
