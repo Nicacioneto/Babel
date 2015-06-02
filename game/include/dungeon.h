@@ -13,14 +13,12 @@ class Bitmap;
 class KeyboardEvent;
 class Texture;
 
-#define MAXW 10
-#define MAXH 10
 #define MAXT 10
 
 class Dungeon : public Level, Listener
 {
 public:
-    Dungeon(int x = 0, int y = 0, int w = MAXW, int h = MAXH, int steps = 0,
+    Dungeon(int x = 0, int y = 0, int w = 1, int h = 1, int steps = 0,
         Direction direction = Direction());
     ~Dungeon();
 
@@ -39,7 +37,7 @@ private:
 
     int m_x, m_y, m_w, m_h, m_steps;
     Direction m_direction;
-    Room m_rooms[MAXW][MAXH];
+    Room **m_rooms;
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
     Bitmap *m_screen;
 

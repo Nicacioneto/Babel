@@ -33,6 +33,13 @@ Dungeon::~Dungeon()
 
     env->events_manager->unregister_listener(this);
     env->music->stop();
+
+    for (int i = 0; i < m_w; ++i)
+    {
+        delete [] m_rooms[i];
+    }
+
+    delete [] m_rooms;
 }
 
 bool
@@ -302,6 +309,15 @@ Dungeon::load_map()
             map.push_back(p);
             p.clear();
         }
+    }
+
+    m_w = map.size();
+    m_h = map[0].size();
+
+    m_rooms = new Room*[m_w];
+    for (int i = 0; i < m_w; ++i)
+    {
+        m_rooms[i] = new Room[m_h];
     }
 
     for (unsigned int u = 0, i = map.size()-1; u < map.size(); ++u, --i)
