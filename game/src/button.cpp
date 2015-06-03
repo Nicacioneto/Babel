@@ -46,7 +46,7 @@ Button::draw_self()
 
     if (m_state != HIDE)
     {
-        if (m_state == IDLE)
+        if (m_state == IDLE or m_sprites == 1)
         {
             Rect clip = Rect(0, 0, m_texture->w(), m_texture->h()/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y());
