@@ -16,13 +16,12 @@ private:
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_logo;
     shared_ptr<Texture> m_slot_bar;
-    Button *m_slot1;
-    Button *m_slot2;
-    Button *m_slot3;
+    Button *m_slots[3][2];
     Button *m_back;
 
     void draw_self(double x0 = 0, double y0 = 0);
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void slots();
 };
 
 #endif
