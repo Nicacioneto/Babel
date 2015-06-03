@@ -203,6 +203,9 @@ Options::on_message(Object *sender, MessageID id, Parameters)
             }
         }
 
+        env->music->set_volume(volume*10);
+        env->sfx->set_volume(volume*10);
+
         settings->write<int>("Game", "volume", volume*10);
         settings->save("res/settings.ini");
     }
