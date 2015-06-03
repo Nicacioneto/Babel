@@ -31,7 +31,7 @@ public:
     bool on_event(const KeyboardEvent& event);
 
 private:
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     void load_map();
     void load_tiles();
 

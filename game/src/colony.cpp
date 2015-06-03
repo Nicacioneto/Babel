@@ -35,7 +35,7 @@ Colony::Colony(Object *parent, ObjectID id)
 }
 
 void
-Colony::draw_self(double, double)
+Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();

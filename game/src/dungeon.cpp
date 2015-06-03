@@ -79,7 +79,7 @@ Dungeon::on_event(const KeyboardEvent& event)
 }
 
 void
-Dungeon::draw_self(double, double)
+Dungeon::draw_self()
 {
     Environment *env = Environment::get_instance();
     m_screen->clear();

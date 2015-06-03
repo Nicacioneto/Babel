@@ -18,7 +18,7 @@ private:
     Button *m_misson1, *m_misson2, *m_misson3;
     Button *m_colony;
 
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
 };
 

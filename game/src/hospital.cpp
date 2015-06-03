@@ -35,7 +35,7 @@ Hospital::Hospital(const string& next)
 }
 
 void
-Hospital::draw_self(double, double)
+Hospital::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

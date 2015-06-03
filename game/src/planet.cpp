@@ -53,7 +53,7 @@ Planet::Planet(const string& next, const string& texture)
 }
 
 void
-Planet::draw_self(double, double)
+Planet::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

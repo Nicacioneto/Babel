@@ -19,7 +19,7 @@ private:
     Button *m_slots[3][2];
     Button *m_back;
 
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void slots();
 };

@@ -19,7 +19,7 @@ Central::Central(const string& next)
 }
 
 void
-Central::draw_self(double, double)
+Central::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

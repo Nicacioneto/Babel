@@ -87,7 +87,7 @@ Options::update_coordinates()
 }
 
 void
-Options::draw_self(double, double)
+Options::draw_self()
 {
     Environment *env = Environment::get_instance();
     double scale = env->canvas->scale();

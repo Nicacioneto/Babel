@@ -18,7 +18,7 @@ Base::Base(const string& next)
 }
 
 void
-Base::draw_self(double, double)
+Base::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();

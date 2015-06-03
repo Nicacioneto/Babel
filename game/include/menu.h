@@ -20,7 +20,7 @@ private:
     Button *m_credits;
     Button *m_exit;
 
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
 };
 

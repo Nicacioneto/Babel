@@ -44,7 +44,7 @@ private:
     Environment *env;
     int m_sprites;
 
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
 };
 
 #endif

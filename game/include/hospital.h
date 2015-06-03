@@ -27,7 +27,7 @@ private:
     Screen m_screen;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     void create_buttons();
     void change_buttons();
     void change_to_chat();

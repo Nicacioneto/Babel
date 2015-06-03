@@ -16,7 +16,7 @@ public:
     
 private:
     void update_self(unsigned long elapsed);
-    void draw_self(double x0 = 0, double y0 = 0);
+    void draw_self();
     bool on_event(const KeyboardEvent& event);
 };
 
