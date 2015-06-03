@@ -1,6 +1,7 @@
 #include "babel.h"
 #include "base.h"
 #include "central.h"
+#include "combat.h"
 #include "credits.h"
 #include "dungeon.h"
 #include "gameover.h"
@@ -83,6 +84,10 @@ Babel::load_level(const string& id)
     else if (id == "gameover")
     {
         return new GameOver();
+    }
+    else if (id == "combat")
+    {
+        return new Combat();
     }
     
     return load_frontend(id);
