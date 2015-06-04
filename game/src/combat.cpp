@@ -2,7 +2,7 @@
 #include "character.h"
 
 Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_attacker(0)
+    : Level("combat", next), m_texture(nullptr), m_character_attacker(0), m_enemy_attacker(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -30,12 +30,17 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     {
         return false;
     }
+    else if (!m_characters.size())
+    {
+        set_next("base");
+        finish();
+        return false;
+    }
 
     auto it = m_characters.begin();
-    for(int i = 0; i < m_attacker; ++i, ++it); //Not work well as other operators ++
-    
-    m_attacker++;
-    m_attacker %= m_characters.size();
+    m_character_attacker %= m_characters.size();
+    for(int i = 0; i < m_character_attacker; ++i, ++it); //Not work well as other operators ++
+    ++m_character_attacker;
 
     Character *attacker = it->second;
     Character *enemy = m_enemies[id];
@@ -47,7 +52,18 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
         enemy->remove_observer(this);
         remove_child(enemy);
 
+        m_enemies.erase(id);
         delete enemy;
+
+        if (!m_enemies.size())
+        {
+            set_next("dungeon");
+            finish();
+        }
+    }
+    else
+    {
+        enemy_attack();
     }
 
     return true;
@@ -78,6 +94,8 @@ Combat::load_enemies()
 {
     Character *enemy = new Character(this, "god_of_war", "god_of_war.png", 0,
         0, 200, 300);
+    enemy->set_life(30);
+    enemy->set_attack(50);
 
     m_enemies[enemy->id()] = enemy;
 
@@ -85,5 +103,28 @@ Combat::load_enemies()
     {
         it.second->add_observer(this);
         add_child(it.second);
+    }
+}
+
+void
+Combat::enemy_attack()
+{
+    auto it = m_enemies.begin();
+    m_enemy_attacker %= m_enemies.size();
+    for(int i = 0; i < m_enemy_attacker; ++i, ++it); //Not work well as other operators ++
+    ++m_enemy_attacker;
+
+    Character *enemy = it->second;
+    Character *character = m_characters.begin()->second;
+
+    character->receive_damage(enemy->attack());
+
+    if (character->life() <= 0)
+    {
+        character->remove_observer(this);
+        remove_child(character);
+
+        m_characters.erase(character->id());
+        delete character;
     }
 }
