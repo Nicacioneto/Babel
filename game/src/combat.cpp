@@ -16,7 +16,6 @@ void
 Combat::draw_self()
 {
     Environment *env = Environment::get_instance();
-    
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
 }
@@ -25,12 +24,12 @@ bool
 Combat::on_message(Object *sender, MessageID id, Parameters)
 {
     Character *character = dynamic_cast<Character *>(sender);
-    
+
     if (not character or m_characters.find(character->id()) != m_characters.end())
     {
         return false;
     }
-    else if (!m_characters.size())
+    else if (not m_characters.size())
     {
         set_next("base");
         finish();
@@ -39,7 +38,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 
     auto it = m_characters.begin();
     m_character_attacker %= m_characters.size();
-    for(int i = 0; i < m_character_attacker; ++i, ++it); //Not work well as other operators ++
+    for (int i = 0; i < m_character_attacker; ++i, ++it); // Not work well as other ++ operators
     ++m_character_attacker;
 
     Character *attacker = it->second;
@@ -55,7 +54,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
         m_enemies.erase(id);
         delete enemy;
 
-        if (!m_enemies.size())
+        if (not m_enemies.size())
         {
             set_next("dungeon");
             finish();
@@ -72,13 +71,13 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 void
 Combat::load_characters()
 {
-    Character *character = new Character(this, "luigi", "luigi.png", 500,
-        300, 200, 300);
+    Character *character = new Character(this, "luigi", "luigi.png",
+        500, 300, 200, 300);
 
     m_characters[character->id()] = character;
 
-    character = new Character(this, "link", "link.png", 300,
-        300, 200, 300);
+    character = new Character(this, "link", "link.png",
+        300, 300, 200, 300);
 
     m_characters[character->id()] = character;
 
@@ -92,8 +91,8 @@ Combat::load_characters()
 void
 Combat::load_enemies()
 {
-    Character *enemy = new Character(this, "god_of_war", "god_of_war.png", 0,
-        0, 200, 300);
+    Character *enemy = new Character(this, "god_of_war", "god_of_war.png",
+        0, 0, 200, 300);
     enemy->set_life(30);
     enemy->set_attack(50);
 
@@ -111,7 +110,7 @@ Combat::enemy_attack()
 {
     auto it = m_enemies.begin();
     m_enemy_attacker %= m_enemies.size();
-    for(int i = 0; i < m_enemy_attacker; ++i, ++it); //Not work well as other operators ++
+    for (int i = 0; i < m_enemy_attacker; ++i, ++it); // Not work well as other ++ operators
     ++m_enemy_attacker;
 
     Character *enemy = it->second;

@@ -7,7 +7,7 @@
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h)
     : Object(parent, id, x, y, w, h), m_character(nullptr), m_lvl(1), m_life(100),
-    m_attack(10), m_defense(5)
+        m_attack(10), m_defense(5)
 {
 
     Environment *env = Environment::get_instance();

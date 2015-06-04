@@ -16,13 +16,14 @@ public:
     ~Character();
 
     void receive_damage(double damage);
+
     int lvl();
-    void set_lvl(int lvl);
     double life();
-    void set_life(double life);
     double attack();
-    void set_attack(double attack);
     double defense();
+    void set_lvl(int lvl);
+    void set_life(double life);
+    void set_attack(double attack);
     void set_defense(double defense);
 
 private:
@@ -32,7 +33,6 @@ private:
     double m_life, m_attack, m_defense;
 
     void draw_self();
-
     bool on_event(const MouseButtonEvent& event);
 };
 
