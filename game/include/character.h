@@ -3,15 +3,19 @@
 
 #include "button.h"
 #include <core/object.h>
+#include <core/listener.h>
 
 class Texture;
+class MouseButtonEvent;
 
-class Character : public Object
+class Character : public Object, public Listener
 {
 public:
     Character(Object *parent = nullptr, ObjectID id = "", const string& character = "",
         double x = 0, double y = 0, double w = 100, double h = 100);
+    ~Character();
 
+    void receive_damage(double damage);
     int lvl();
     void set_lvl(int lvl);
     double life();
@@ -28,6 +32,8 @@ private:
     double m_life, m_attack, m_defense;
 
     void draw_self();
+
+    bool on_event(const MouseButtonEvent& event);
 };
 
 #endif
