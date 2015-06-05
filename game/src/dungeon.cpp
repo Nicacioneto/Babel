@@ -53,26 +53,25 @@ Dungeon::on_event(const KeyboardEvent& event)
                 case KeyboardEvent::UP:
                     move_forward();
                     return true;
-                    break;
                 case KeyboardEvent::DOWN:
                     move_backward();
                     return true;
-                    break;
                 case KeyboardEvent::RIGHT:
                     turn_right();
                     return true;
-                    break;
                 case KeyboardEvent::LEFT:
                     turn_left();
                     return true;
-                    break;
+                case KeyboardEvent::ESCAPE:
+                    set_next("base");
+                    finish();
+                    return true;
                 default:
                     return false;
             }
 
         default:
             return false;
-            break;
     }
 
     return false;

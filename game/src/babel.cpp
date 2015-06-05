@@ -122,8 +122,6 @@ Babel::on_event(const KeyboardEvent& event)
     {
         m_level->set_next("menu");
         m_level->finish();
-        
-        return true;
     }
 
     return false;
