@@ -11,6 +11,7 @@
 #include "planet.h"
 #include "play.h"
 #include <util/frontend.h>
+#include <core/keyboardevent.h>
 
 Babel::Babel()
     : Game("tiamat_logo")
@@ -111,4 +112,19 @@ Babel::load_frontend(const string& id)
     }
 
     return nullptr;
+}
+
+bool
+Babel::on_event(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::ESCAPE)
+    {
+        m_level->set_next("menu");
+        m_level->finish();
+        
+        return true;
+    }
+
+    return false;
 }

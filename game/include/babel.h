@@ -10,6 +10,8 @@ public:
     ~Babel();
 
 private:
+	bool on_event(const KeyboardEvent& event);
+	
     Level * load_level(const string& id);
     Level * load_frontend(const string& id);
 };
