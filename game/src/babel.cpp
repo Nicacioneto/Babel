@@ -12,6 +12,7 @@
 #include "play.h"
 #include <util/frontend.h>
 #include <core/keyboardevent.h>
+#include <core/settings.h>
 
 Babel::Babel()
     : Game("tiamat_logo")
@@ -122,6 +123,24 @@ Babel::on_event(const KeyboardEvent& event)
     {
         m_level->set_next("menu");
         m_level->finish();
+    }
+    else if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::F11)
+    {
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+
+        if (env->video->fullscreen())
+        {
+            env->video->set_fullscreen(false);
+            settings->write<bool>("Game", "fullscreen", false);
+        }
+        else
+        {
+            env->video->set_fullscreen(true);
+            settings->write<bool>("Game", "fullscreen", true);
+        }
+
+        settings->save("res/settings.ini");
     }
 
     return false;
