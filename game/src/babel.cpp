@@ -123,6 +123,8 @@ Babel::on_event(const KeyboardEvent& event)
     {
         m_level->set_next("menu");
         m_level->finish();
+        Environment *env = Environment::get_instance();
+        env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::F11)
