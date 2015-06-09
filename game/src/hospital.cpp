@@ -212,7 +212,6 @@ Hospital::change_to_items()
     env->canvas->set_font(font);
     font->set_size(18 * scale);
 
-    env->canvas->set_blend_mode(Canvas::BLEND);
     Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
@@ -241,7 +240,6 @@ Hospital::change_to_items()
     env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
 
     // Name
-    color.set_a(100);
     env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
     env->canvas->draw("Hyper-Metabolism", 360 * scale, 364 * scale, color);
@@ -275,8 +273,6 @@ Hospital::change_to_items()
     env->canvas->draw("176", 800 * scale, 660 * scale, color);
     env->canvas->draw("/", 837 * scale, 660 * scale, color);
     env->canvas->draw("176", 855 * scale, 660 * scale, color);
-
-    env->canvas->set_blend_mode(Canvas::NONE);
 }
 
 void
@@ -290,7 +286,6 @@ Hospital::change_to_research()
     env->canvas->set_font(font);
     font->set_size(18 * scale);
 
-    env->canvas->set_blend_mode(Canvas::BLEND);
     Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
@@ -308,6 +303,15 @@ Hospital::change_to_research()
     env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+
+    texture = env->resources_manager->get_texture(path + "big_list.png");
+    clip = Rect(0, 0, 602, 75/3);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
 
     // Name
     env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
@@ -332,17 +336,6 @@ Hospital::change_to_research()
     env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 492 * scale, color);
     env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
-
-    texture = env->resources_manager->get_texture(path + "big_list.png");
-    clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
-
-    env->canvas->set_blend_mode(Canvas::NONE);
 }
 
 void
@@ -356,7 +349,6 @@ Hospital::change_to_revive()
     env->canvas->set_font(font);
     font->set_size(18 * scale);
 
-    env->canvas->set_blend_mode(Canvas::BLEND);
     Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
@@ -375,6 +367,15 @@ Hospital::change_to_revive()
     env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
     env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+
+    texture = env->resources_manager->get_texture(path + "big_list.png");
+    clip = Rect(0, 0, 602, 75/3);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
+    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
 
     // Name
     env->canvas->draw("Isaac", 360 * scale, 236 * scale, color);
@@ -397,15 +398,4 @@ Hospital::change_to_revive()
     
     // Time
     env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
-
-    texture = env->resources_manager->get_texture(path + "big_list.png");
-    clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
-
-    env->canvas->set_blend_mode(Canvas::NONE);
 }
