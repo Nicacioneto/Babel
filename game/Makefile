@@ -5,7 +5,7 @@ BIN_DIR = bin
 
 CC = g++
 
-CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD -g3
+CFLAGS = -W -Wall -pedantic -ansi -std=c++11 -MMD 
 INCLUDES = -Iinclude -I/usr/local/include/ijengine `sdl2-config --cflags`
 LIBS = -lijengine `sdl2-config --libs` -lpthread -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
@@ -25,9 +25,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $@
 	@$(CC) -c $(CFLAGS) $(INCLUDES) $< -o $@
 
-$(GAME): $(GAME_MAIN) $(OBJ)
+$(GAME): $(OBJ)
 	@echo Building executable...
-	@$(CC) $(CFLAGS) $(INCLUDES) $(GAME_MAIN) -o $@ $(LIBS)
+	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ $(OBJ) $(LIBS)
 	@echo --- Done
 
 clean:
