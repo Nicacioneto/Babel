@@ -13,7 +13,8 @@ using std::stringstream;
 using std::vector;
 
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
-    : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction)
+    : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction),
+      m_state(WAITING), m_delta(0), m_last(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -251,23 +252,11 @@ Dungeon::planes(int sw, int sh, double& ratio)
 void
 Dungeon::move_forward()
 {
-    int next = (m_steps + 1) % 4;
-
-    if (next)
+    if (m_state == WAITING)
     {
-        m_steps = next;
-    }
-    else
-    {
-        int tile = m_rooms[m_x][m_y].tile(m_direction.front());
-
-        if (tile == 0)
-        {
-            pair<int, int> v = m_direction.vector();
-            m_x += v.first;
-            m_y += v.second;
-            m_steps = 0;
-        }
+        m_state = MOVING;
+        m_delta = 1;
+        m_last = 10000;
     }
 }
 
@@ -399,3 +388,44 @@ Dungeon::load_tiles()
         catch (Exception) {}
     }
 }
+
+void
+Dungeon::update_self(unsigned long elapsed)
+{
+    if (m_state == WAITING)
+        return;
+
+    if (m_last == 0)
+        m_last = elapsed;
+
+    if (elapsed - m_last < 5)
+        return;
+
+    m_last = elapsed;
+
+    int next = (m_steps + 4 + m_delta) % 4;
+
+    if (next)
+    {
+        m_steps = next;
+    }
+    else
+    {
+        int tile;
+
+        if (m_delta > 0)
+            tile = m_rooms[m_x][m_y].tile(m_direction.front());
+
+        if (tile == 0)
+        {
+            pair<int, int> v = m_direction.vector();
+            m_x += v.first;
+            m_y += v.second;
+            m_steps = 0;
+        }
+
+        m_state = WAITING;
+    }
+
+}
+

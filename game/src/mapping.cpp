@@ -85,12 +85,12 @@ Mapping::draw_ceiling_floor(Bitmap *screen, Bitmap *bitmap, const Rect front, co
 
     for (int i = front.y(); i != back.y(); i += signal)
     {
-        if (i < 20 or i >= env->canvas->h() - 20)
+        if (i < 0 or i >= env->canvas->h())
         {
             left_x += m_horizontal_ratio;
             right_x -= m_horizontal_ratio;
             continue;
-        }
+        } 
 
         double num = abs(i - front.y());
         double ky = num/h;

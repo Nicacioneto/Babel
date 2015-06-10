@@ -19,7 +19,7 @@ OBJ = ${addprefix $(OBJ_DIR)/, ${notdir ${SRC:.cpp=.o}}}
 
 all:
 	@mkdir -p $(OBJ_DIR) $(LIB_DIR) $(BIN_DIR)
-	@make $(GAME)
+	$(MAKE) $(GAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo Building $@
