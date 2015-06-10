@@ -41,7 +41,8 @@ private:
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
     Bitmap *m_screen;
 
-    list<Rect> planes(int w, int h);
+    list<Rect> planes(int w, int h, double& ratio);
+    Rect center(int sw, int sh) const;
 };
 
 #endif

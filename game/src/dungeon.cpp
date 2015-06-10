@@ -83,17 +83,25 @@ Dungeon::draw_self()
     Environment *env = Environment::get_instance();
     m_screen->clear();
 
-    list<Rect> ps = planes(env->canvas->w(), env->canvas->h());
+    double ratio;
+
+    list<Rect> ps = planes(env->canvas->w(), env->canvas->h(), ratio);
     Rect front = ps.front();
     ps.pop_front();
 
-    Mapping mapping;
+    Mapping mapping(ratio, 1/ratio);
 
     int idx = m_x, idy = m_y;
+    bool blocked = false;
+    Rect back;
+    Rect center_rect = center(env->canvas->w(), env->canvas->h());
+    int levels = 0;
 
     while (not ps.empty())
     {
-        Rect back = ps.front();
+        ++levels;
+
+        back = ps.front();
         ps.pop_front();
 
         Rect f { front.x(), front.y(), 0, front.h() };
@@ -154,6 +162,7 @@ Dungeon::draw_self()
             // env->canvas->update();
             // SDL_Delay(1000);
             mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
+            blocked = true;
             break;
         }
         else
@@ -172,22 +181,41 @@ Dungeon::draw_self()
                 break;
             }
         }
-    // env->canvas->update();
     }
+
+    if (not blocked or (blocked and levels > 3))
+        m_screen->fill(center_rect, 0);
 
     env->canvas->draw(m_screen);
 }
 
-list<Rect>
-Dungeon::planes(int sw, int sh)
+Rect
+Dungeon::center(int sw, int sh) const
 {
-    unsigned short center_size = sw/4;
-    short centerx = (sw - center_size)/2;
-    short centery = (sh - center_size)/2;
+    unsigned short centerw = sw/4;
+    unsigned short centerh = sh/4;
 
-    Rect center { (double)centerx, (double)centery, (double)center_size, (double)center_size };
+    short centerx = (sw - centerw)/2;
+    short centery = (sh - centerh)/2;
 
-    static constexpr double ratio = 0.6;
+    Rect center { (double)centerx, (double)centery, (double)centerw, (double)centerh };
+
+    return center;
+}
+
+list<Rect>
+Dungeon::planes(int sw, int sh, double& ratio)
+{
+    unsigned short centerw = sw/4;
+    unsigned short centerh = sh/4;
+
+    short centerx = (sw - centerw)/2;
+    short centery = (sh - centerh)/2;
+
+    Rect center { (double)centerx, (double)centery, (double)centerw, (double)centerh };
+
+    ratio = center.y() / center.x();
+
     short dx = centerx / 3;
     short dy = dx * ratio;
 
@@ -216,7 +244,7 @@ Dungeon::planes(int sw, int sh)
         Rect next { (double)x, (double)y, (double)w, (double)h };
         ps.push_front(next);
     } while (x > 0);
-
+    
     return ps;
 }
 
