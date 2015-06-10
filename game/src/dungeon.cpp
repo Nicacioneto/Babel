@@ -283,7 +283,7 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    string file = read_file("map.txt");
+    string file = read_file("res/maps/map.txt");
 
     stringstream ss;
     ss << file;
