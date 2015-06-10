@@ -1,0 +1,15 @@
+[Printing: 3D Gun]
+time = 15:00
+icon =workshop
+
+[Reviving: Isaac]
+time = 15:00
+icon =research
+
+[Researching: Laser Guns]
+time = 15:00
+icon =hospital
+
+[Reviving: Galileu]
+time = 15:00
+icon =hospital

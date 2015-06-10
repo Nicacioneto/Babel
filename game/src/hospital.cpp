@@ -198,9 +198,9 @@ Hospital::change_to_chat()
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/chat.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
     map< string, map<string, string> > sections = settings->sections();
-    string text = sections["Chat"]["welcome"];
+    string text = sections["Hospital"]["welcome"];
     env->canvas->draw(text, (305 + 5) * scale, 605 * scale, color);
     env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 * scale), color);
 }
@@ -221,10 +221,10 @@ Hospital::change_to_items()
     env->canvas->draw("Qnt.", 855 * scale, 186 * scale, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/matter_power_icon.png");
+        path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -242,7 +242,7 @@ Hospital::change_to_items()
         if (not qnt_earned.empty())
             env->canvas->draw(qnt_earned + "/" + qnt_total, 855 * scale, y * scale, color);
 
-        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
         env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
@@ -280,10 +280,10 @@ Hospital::change_to_research()
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/matter_power_icon.png");
+        path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -300,7 +300,7 @@ Hospital::change_to_research()
         if (not time.empty())
             env->canvas->draw(time, 855 * scale, y * scale, color);
 
-        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
         env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
@@ -329,10 +329,11 @@ Hospital::change_to_revive()
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "hospital/matter_power_icon.png");
+        path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/characters.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(
+        "res/datas/characters.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -351,7 +352,7 @@ Hospital::change_to_revive()
         if (not time.empty())
             env->canvas->draw(time, 855 * scale, y * scale, color);
 
-        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
         env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
