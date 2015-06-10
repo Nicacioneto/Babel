@@ -198,8 +198,11 @@ Hospital::change_to_chat()
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/chat.sav");
+    map< string, map<string, string> > sections = settings->sections();
+    string text = sections["Chat"]["welcome"];
+    env->canvas->draw(text, (305 + 5) * scale, 605 * scale, color);
     env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 * scale), color);
-    env->canvas->draw("Chat Text", 305 * scale, 605 * scale, color);
 }
 
 void
@@ -221,7 +224,7 @@ Hospital::change_to_items()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -280,7 +283,7 @@ Hospital::change_to_research()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -329,7 +332,7 @@ Hospital::change_to_revive()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/character.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/hospital/characters.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
