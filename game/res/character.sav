@@ -1,0 +1,35 @@
+[Isaac]
+class = Soldier
+matter =
+power =
+time =
+
+[Albert]
+class = Enforcer
+matter =
+power =
+time =
+
+[Newton]
+class = Ghost
+matter =
+power =
+time =
+
+[Clarke]
+class = Medic
+matter = 10
+power = 120
+time = 15:00
+
+[Brooker]
+class = Sabouteur
+matter =
+power =
+time =
+
+[Michael]
+class = Soldier
+matter =
+power =
+time =

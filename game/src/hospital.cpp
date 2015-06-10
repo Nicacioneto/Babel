@@ -2,6 +2,7 @@
 #include "hospital.h"
 #include <core/font.h>
 #include <core/rect.h>
+#include <core/settings.h>
 
 Hospital::Hospital(const string& next)
     : Level("hospital", next), m_scenario(nullptr), m_reset(nullptr),
@@ -207,12 +208,11 @@ Hospital::change_to_items()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = env->canvas->scale();
+    Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
-
-    Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
     env->canvas->draw("Qnt.", 855 * scale, 186 * scale, color);
@@ -221,49 +221,35 @@ Hospital::change_to_items()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
-    Rect clip = Rect(0, 25, 50, 50/2);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/items.sav");
+    map< string, map<string, string> > sections = settings->sections();
 
-    texture = env->resources_manager->get_texture(path + "big_list.png");
-    clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
+    int y = 236;
+    for (auto section : sections)
+    {
+        string name = section.first;
+        string matter = section.second["matter"];
+        string power = section.second["power"];
+        string qnt_earned = section.second["qnt_earned"];
+        string qnt_total = section.second["qnt_total"];
 
-    // Name
-    env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 364 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 428 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
+        env->canvas->draw(name, 360 * scale, y * scale, color);
+        if (not matter.empty())
+            env->canvas->draw(matter + "/" + power, 690 * scale, y * scale, color);
+        if (not qnt_earned.empty())
+            env->canvas->draw(qnt_earned + "/" + qnt_total, 855 * scale, y * scale, color);
 
-    // Matter/Power
-    env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 428 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 492 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 556 * scale, color);
+        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        Rect clip = Rect(0, 25, 50, 50/2);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
-    // Qnt
-    env->canvas->draw("10/20", 855 * scale, 236 * scale, color);
-    env->canvas->draw("13/20", 855 * scale, 300 * scale, color);
-    env->canvas->draw("14/15", 855 * scale, 364 * scale, color);
-    env->canvas->draw("10/10", 855 * scale, 428 * scale, color);
-    env->canvas->draw("13/20", 855 * scale, 492 * scale, color);
-    env->canvas->draw("13/20", 855 * scale, 556 * scale, color);
+        texture = env->resources_manager->get_texture(path + "big_list.png");
+        clip = Rect(0, 0, 602, 75/3);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
 
-    // Total
+        y += 64;
+    }
+
     env->canvas->draw("TOTAL", 607 * scale, 633 * scale, color);
     font->set_size(16 * scale);
     env->canvas->draw("800", 800 * scale, 633 * scale, Color::RED);
@@ -281,12 +267,11 @@ Hospital::change_to_research()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = env->canvas->scale();
+    Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
-
-    Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
     env->canvas->draw("Time", 855 * scale, 186 * scale, color);
@@ -295,47 +280,33 @@ Hospital::change_to_research()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
-    Rect clip = Rect(0, 25, 50, 50/2);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/items.sav");
+    map< string, map<string, string> > sections = settings->sections();
 
-    texture = env->resources_manager->get_texture(path + "big_list.png");
-    clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
+    int y = 236;
+    for (auto section : sections)
+    {
+        string name = section.first;
+        string matter = section.second["matter"];
+        string power = section.second["power"];
+        string time = section.second["time"];
 
-    // Name
-    env->canvas->draw("Health Potion I", 360 * scale, 236 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 300 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 364 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 428 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 492 * scale, color);
-    env->canvas->draw("Hyper-Metabolism", 360 * scale, 556 * scale, color);
+        env->canvas->draw(name, 360 * scale, y * scale, color);
+        if (not matter.empty())
+            env->canvas->draw(matter + "/" + power, 690 * scale, y * scale, color);
+        if (not time.empty())
+            env->canvas->draw(time, 855 * scale, y * scale, color);
 
-    // Matter/Power
-    env->canvas->draw("70/100", 690 * scale, 236 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 300 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 364 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 428 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 492 * scale, color);
-    env->canvas->draw("70/100", 690 * scale, 556 * scale, color);
+        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        Rect clip = Rect(0, 25, 50, 50/2);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
-    // Time
-    env->canvas->draw("15:00", 855 * scale, 236 * scale, color);
-    env->canvas->draw("15:00", 855 * scale, 300 * scale, color);
-    env->canvas->draw("15:00", 855 * scale, 364 * scale, color);
-    env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
-    env->canvas->draw("15:00", 855 * scale, 492 * scale, color);
-    env->canvas->draw("15:00", 855 * scale, 556 * scale, color);
+        texture = env->resources_manager->get_texture(path + "big_list.png");
+        clip = Rect(0, 0, 602, 75/3);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
+
+        y += 64;
+    }
 }
 
 void
@@ -344,12 +315,11 @@ Hospital::change_to_revive()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = env->canvas->scale();
+    Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
-
-    Color color(170, 215, 190);
 
     env->canvas->draw("Name", 360 * scale, 188 * scale, color);
     env->canvas->draw("Class", 524 * scale, 186 * scale, color);
@@ -359,43 +329,32 @@ Hospital::change_to_revive()
         path + "hospital/matter_power_icon.png");
     env->canvas->draw(texture.get(), 690 * scale, 188 * scale);
 
-    texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
-    Rect clip = Rect(0, 25, 50, 50/2);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 236 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 300 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 364 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 428 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 492 * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, 556 * scale);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/character.sav");
+    map< string, map<string, string> > sections = settings->sections();
 
-    texture = env->resources_manager->get_texture(path + "big_list.png");
-    clip = Rect(0, 0, 602, 75/3);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (236 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (300 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (364 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (428 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (492 + 5) * scale);
-    env->canvas->draw(texture.get(), clip, 310 * scale, (556 + 5) * scale);
+    int y = 236;
+    for (auto section : sections)
+    {
+        string name = section.first;
+        string class_ = section.second["class"];
+        string matter = section.second["matter"];
+        string power = section.second["power"];
+        string time = section.second["time"];
 
-    // Name
-    env->canvas->draw("Isaac", 360 * scale, 236 * scale, color);
-    env->canvas->draw("Albert", 360 * scale, 300 * scale, color);
-    env->canvas->draw("Newton", 360 * scale, 364 * scale, color);
-    env->canvas->draw("Clarke", 360 * scale, 428 * scale, color);
-    env->canvas->draw("Brooker", 360 * scale, 492 * scale, color);
-    env->canvas->draw("Michael", 360 * scale, 556 * scale, color);
+        env->canvas->draw(name, 360 * scale, y * scale, color);
+        env->canvas->draw(class_, 524 * scale, y * scale, color);
+        if (not matter.empty())
+            env->canvas->draw(matter + "/" + power, 690 * scale, y * scale, color);
+        if (not time.empty())
+            env->canvas->draw(time, 855 * scale, y * scale, color);
 
-    // Class
-    env->canvas->draw("Soldier", 524 * scale, 236 * scale, color);
-    env->canvas->draw("Enforcer", 524 * scale, 300 * scale, color);
-    env->canvas->draw("Ghost", 524 * scale, 364 * scale, color);
-    env->canvas->draw("Medic", 524 * scale, 428 * scale, color);
-    env->canvas->draw("Sabouteur", 524 * scale, 492 * scale, color);
-    env->canvas->draw("Soldier", 524 * scale, 556 * scale, color);
+        texture = env->resources_manager->get_texture(path + "hospital/health_icon.png");
+        Rect clip = Rect(0, 25, 50, 50/2);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
 
-    // Matter/Power
-    env->canvas->draw("70/120", 690 * scale, 428 * scale, color);
-    
-    // Time
-    env->canvas->draw("15:00", 855 * scale, 428 * scale, color);
+        texture = env->resources_manager->get_texture(path + "big_list.png");
+        clip = Rect(0, 0, 602, 75/3);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
+        y += 64;
+    }
 }
