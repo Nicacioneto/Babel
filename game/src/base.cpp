@@ -64,7 +64,7 @@ Base::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "research", path + "research_button.png",
+    button = new Button(this, "facilities", path + "facilities_button.png",
         28 * scale, 322 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
 

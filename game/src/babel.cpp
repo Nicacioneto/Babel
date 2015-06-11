@@ -4,6 +4,7 @@
 #include "combat.h"
 #include "credits.h"
 #include "dungeon.h"
+#include "facilities.h"
 #include "gameover.h"
 #include "hospital.h"
 #include "menu.h"
@@ -65,10 +66,9 @@ Babel::load_level(const string& id)
         // TODO
         return new Base();
     }
-    else if (id == "research")
+    else if (id == "facilities")
     {
-        // TODO
-        return new Base();
+        return new Facilities();
     }
     else if (id == "hospital")
     {

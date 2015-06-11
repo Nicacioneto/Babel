@@ -3,3 +3,6 @@ welcome = Welcome to Hospital
 
 [Central]
 welcome = Welcome to Central
+
+[Facilities]
+welcome = Welcome to Facilities
