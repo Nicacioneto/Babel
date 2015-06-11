@@ -23,7 +23,7 @@ Base::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    double scale = env->canvas->scale();
+    double scale = 1;
     env->canvas->draw(m_scenario.get(), 275 * scale, 173 * scale);
 }
 
@@ -55,7 +55,7 @@ void
 Base::create_buttons()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
     string path = "res/images/colony/";
 
     Button *button =  new Button(this, "barracks", path + "barracks_button.png",

@@ -16,7 +16,7 @@ Colony::Colony(Object *parent, ObjectID id)
     m_left_bracket = env->resources_manager->get_texture(path + "left_bracket.png");
     m_resources = env->resources_manager->get_texture(path + "resources.png");
 
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     m_center_bracket = new Button(this, "center_bracket", path + "center_bracket_button.png",
         193 * scale, 25 * scale, 635 * scale, 156/2 * scale);
@@ -38,7 +38,7 @@ void
 Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     env->canvas->draw(m_right_bracket.get(), 275 * scale, 173 * scale);
     env->canvas->draw(m_colony.get(), 193 * scale, 25 * scale);

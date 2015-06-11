@@ -14,7 +14,7 @@ Credits::Credits(const string& next, const string& image)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_credits = env->resources_manager->get_texture("res/images/menu/credits.png");
 
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
@@ -39,7 +39,7 @@ Credits::draw_self()
 {
     Environment *env = Environment::get_instance();
     
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     env->canvas->clear();
     env->canvas->draw(m_texture.get());

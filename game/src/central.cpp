@@ -25,7 +25,7 @@ Central::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    double scale = env->canvas->scale();
+    double scale = 1;
     env->canvas->draw(m_scenario.get(), 275 * scale, 173 * scale);
 
     switch (m_screen)
@@ -105,7 +105,7 @@ void
 Central::create_buttons()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
     string path = "res/images/colony/";
 
     Button *button =  new Button(this, "central", path + "central_button.png",
@@ -170,7 +170,7 @@ Central::change_to_chat()
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    double scale = env->canvas->scale();
+    double scale = 1;
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
@@ -186,7 +186,7 @@ Central::change_to_quests()
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
-    double scale = env->canvas->scale();
+    double scale = 1;
     Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -222,7 +222,7 @@ Central::change_to_bestiary()
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
-    double scale = env->canvas->scale();
+    double scale = 1;
     Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -261,7 +261,7 @@ Central::change_to_timers()
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
-    double scale = env->canvas->scale();
+    double scale = 1;
     Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");

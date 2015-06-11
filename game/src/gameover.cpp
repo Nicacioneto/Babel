@@ -32,7 +32,7 @@ void
 GameOver::update_self(unsigned long)
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     set_position(env->canvas->w() / (8 * scale), env->canvas->h() / (4 * scale));
 

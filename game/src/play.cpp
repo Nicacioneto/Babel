@@ -21,7 +21,7 @@ Play::Play(const string& next, const string& texture)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_slot_bar = env->resources_manager->get_texture("res/images/menu/slot-bar.png");
     
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
@@ -38,7 +38,7 @@ Play::draw_self()
     
     env->canvas->draw(m_texture.get());
 
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2,
         25 * scale);
@@ -124,7 +124,7 @@ void
 Play::slots()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
     const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");

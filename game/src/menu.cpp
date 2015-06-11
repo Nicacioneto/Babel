@@ -2,6 +2,7 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
+#include <core/settings.h>
 #include <core/texture.h>
 
 Menu::Menu(const string& next, const string& texture)
@@ -9,11 +10,14 @@ Menu::Menu(const string& next, const string& texture)
         m_options(nullptr), m_credits(nullptr), m_exit(nullptr)
 {
     Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+    double scale = settings->read<double>("Game", "scale", 1);
 
     m_texture = env->resources_manager->get_texture(texture);
+    m_texture->scale(scale);
+
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
-    
-    double scale = env->canvas->scale();
+    m_logo->scale(scale);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
@@ -59,9 +63,7 @@ Menu::draw_self()
     env->canvas->clear();
 
     env->canvas->draw(m_texture.get());
-
-    double scale = env->canvas->scale();
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w())/2, env->canvas->h() * 0.025);
 }
 
 bool

@@ -19,7 +19,7 @@ Planet::Planet(const string& next, const string& texture)
     Environment *env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);
 
-    double scale = env->canvas->scale();
+    double scale = 1;
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(22 * scale);

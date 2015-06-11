@@ -24,7 +24,7 @@ Options::Options(const string& next, const string& texture)
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
-    double scale = env->canvas->scale();
+    double scale = 1;
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(22 * scale);
@@ -66,7 +66,7 @@ void
 Options::update_coordinates()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
 
     m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
         env->canvas->h() - 149 * scale);
@@ -90,7 +90,7 @@ void
 Options::draw_self()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
     shared_ptr<Font> font = env->canvas->font();
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
 
