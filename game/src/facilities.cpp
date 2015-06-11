@@ -91,7 +91,7 @@ void
 Facilities::create_buttons()
 {
     Environment *env = Environment::get_instance();
-    double scale = env->canvas->scale();
+    double scale = 1;
     string path = "res/images/colony/";
 
     Button *button =  new Button(this, "facilities", path + "facilities_button.png",
@@ -155,7 +155,7 @@ Facilities::change_to_chat()
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    double scale = env->canvas->scale();
+    double scale = 1;
     font->set_size(18 * scale);
     Color color(170, 215, 190);
     
@@ -171,7 +171,7 @@ Facilities::change_to_military()
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
-    double scale = env->canvas->scale();
+    double scale = 1;
     Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -220,7 +220,7 @@ Facilities::change_to_psionic()
 {
     // Environment *env = Environment::get_instance();
     // string path = "res/images/colony/";
-    // double scale = env->canvas->scale();
+    // double scale = 1;
     // Color color(170, 215, 190);
 
     // shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -268,7 +268,7 @@ Facilities::change_to_tech()
 {
     // Environment *env = Environment::get_instance();
     // string path = "res/images/colony/";
-    // double scale = env->canvas->scale();
+    // double scale = 1;
     // Color color(170, 215, 190);
 
     // shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
