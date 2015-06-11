@@ -24,6 +24,7 @@ GameOver::GameOver(const string& next)
     font->set_style(Font::ITALIC);
     env->canvas->set_font(font);
     font->set_size(100);
+    set_position((150 / W) * env->canvas->w(), (H - 500) / H * env->canvas->h());
 }
 
 GameOver::~GameOver()
@@ -37,8 +38,7 @@ GameOver::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();
-    env->canvas->draw("GAME OVER", (150 / W) * env->canvas->w(),
-        (H - 500) / H * env->canvas->h(), Color::YELLOW);
+    env->canvas->draw("GAME OVER", bounding_box().x(), bounding_box().y(), Color::YELLOW);
 }
 
 bool

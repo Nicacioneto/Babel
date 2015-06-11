@@ -5,6 +5,8 @@
 #include <core/settings.h>
 #include <core/texture.h>
 
+#define W 1024.0
+#define H 768.0
 #define Y_BUTTON 266
 #define W_BUTTON 305
 #define H_BUTTON 40
@@ -21,12 +23,11 @@ Play::Play(const string& next, const string& texture)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_slot_bar = env->resources_manager->get_texture("res/images/menu/slot-bar.png");
     
-    double scale = 1;
-
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(22 * scale);
-    
+    font->set_size(22);
+    set_position(((W - 115) / W * env->canvas->w()) / 2, 192 / H * env->canvas->h());
+
     slots();
 }
 
@@ -38,15 +39,12 @@ Play::draw_self()
     
     env->canvas->draw(m_texture.get());
 
-    double scale = 1;
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w())/2,
+        25 / H * env->canvas->h());
 
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2,
-        25 * scale);
+    env->canvas->draw(m_slot_bar.get(), (env->canvas->w() - m_slot_bar->w())/2,
+        (Y_BUTTON + 30) / H * env->canvas->h());
 
-    env->canvas->draw(m_slot_bar.get(), (env->canvas->w() - m_slot_bar->w() * scale)/2,
-        (Y_BUTTON + 30) * scale);
-
-    set_position((env->canvas->w() - 115 * scale) / 2,  192 * scale);
     env->canvas->draw("PLAY GAME", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
@@ -124,8 +122,7 @@ void
 Play::slots()
 {
     Environment *env = Environment::get_instance();
-    double scale = 1;
-    const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
+    const int x_button = ((W - W_BUTTON) / W * env->canvas->w()) / 2;
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
     string text;
@@ -134,8 +131,8 @@ Play::slots()
     if (saved)
     {
         text = "Slot 1";
-        m_slots[0][1] = new Button(this, "slot1_x", "res/images/menu/x.png", x_button + 280 * scale,
-            scale * (Y_BUTTON + SPACING + 12), 13 * scale, 18 * scale);
+        m_slots[0][1] = new Button(this, "slot1_x", "res/images/menu/x.png", x_button + 280,
+            ((Y_BUTTON + SPACING + 12) / H) * env->canvas->h(), 13, 18);
         m_slots[0][1]->set_sprites(1);
         m_slots[0][1]->add_observer(this);
         add_child(m_slots[0][1]);
@@ -146,15 +143,15 @@ Play::slots()
     }
 
     m_slots[0][0] = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
-        scale * (Y_BUTTON + SPACING), W_BUTTON * scale, H_BUTTON * scale);
+        ((Y_BUTTON + SPACING) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
     m_slots[0][0]->set_text(text);
 
     saved = settings->read<int>("Slots", "slot2", 0);
     if (saved)
     {
         text = "Slot 2";
-        m_slots[1][1] = new Button(this, "slot2_x", "res/images/menu/x.png", x_button + 280 * scale,
-            scale * (Y_BUTTON + SPACING * 2 + 12), 13 * scale, 18 * scale);
+        m_slots[1][1] = new Button(this, "slot2_x", "res/images/menu/x.png", x_button + 280,
+            ((Y_BUTTON + SPACING * 2 + 12) / H) * env->canvas->h(), 13, 18);
         m_slots[1][1]->set_sprites(1);
         m_slots[1][1]->add_observer(this);
         add_child(m_slots[1][1]);
@@ -165,15 +162,15 @@ Play::slots()
     }
 
     m_slots[1][0] = new Button(this, "slot2", "res/images/menu/stripe.png", x_button,
-        scale * (Y_BUTTON + SPACING * 2), W_BUTTON * scale, H_BUTTON * scale);
+        ((Y_BUTTON + SPACING * 2) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
     m_slots[1][0]->set_text(text);
 
     saved = settings->read<int>("Slots", "slot3", 0);
     if (saved)
     {
         text = "Slot 3";
-        m_slots[2][1] = new Button(this, "slot3_x", "res/images/menu/x.png", x_button + 280 * scale,
-            scale * (Y_BUTTON + SPACING * 3 + 12), 13 * scale, 18 * scale);
+        m_slots[2][1] = new Button(this, "slot3_x", "res/images/menu/x.png", x_button + 280,
+            ((Y_BUTTON + SPACING * 3 + 12) / H) * env->canvas->h(), 13, 18);
         m_slots[2][1]->set_sprites(1);
         m_slots[2][1]->add_observer(this);
         add_child(m_slots[2][1]);
@@ -184,12 +181,15 @@ Play::slots()
     }
 
     m_slots[2][0] = new Button(this, "slot3", "res/images/menu/stripe.png", x_button,
-        scale * (Y_BUTTON + SPACING * 3), W_BUTTON * scale, H_BUTTON * scale);
+        ((Y_BUTTON + SPACING * 3) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
     m_slots[2][0]->set_text(text);
 
-    m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149 * scale,
-        W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
+    int x = (W - W_BUTTON_BACK)/(W * 2) * env->canvas->w();
+    int y = (H - W_BUTTON_BACK)/H * env->canvas->h();
+    int w = (W_BUTTON_BACK/W) * env->canvas->w();
+    int h = (H_BUTTON_BACK/H) * env->canvas->h();
+
+    m_back = new Button(this, "back", "res/images/menu/button.png", x, y, w, h);
     m_back->set_text("Back");
 
     for (auto slot : m_slots)
