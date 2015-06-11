@@ -4,6 +4,9 @@
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
 
+#define W 1024.0
+#define H 768.0
+
 Credits::Credits(const string& next, const string& image)
     : Level("credits", next), m_texture(nullptr), m_logo(nullptr),
         m_credits(nullptr), m_back(nullptr)
@@ -14,19 +17,16 @@ Credits::Credits(const string& next, const string& image)
     m_logo = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
     m_credits = env->resources_manager->get_texture("res/images/menu/credits.png");
 
-    double scale = 1;
-
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(22 * scale);
+    font->set_size(22);
 
-    const int w_button = 140 * scale;
-    const int h_button = 60 * scale;
-    const int x_back = (env->canvas->w() - w_button) / 2;
-    const int y_back = env->canvas->h() - 123 * scale;
+    int x = (W - 140)/(W * 2) * env->canvas->w();
+    int y = (H - 140)/H * env->canvas->h();
+    int w = (140/W) * env->canvas->w();
+    int h = (60/H) * env->canvas->h();
 
-    m_back = new Button(this, "back", "res/images/menu/button.png",
-        x_back, y_back, w_button, h_button);
+    m_back = new Button(this, "back", "res/images/menu/button.png", x, y, w, h);
     m_back->set_text("Back");
 
     m_back->add_observer(this);
@@ -38,15 +38,16 @@ void
 Credits::draw_self()
 {
     Environment *env = Environment::get_instance();
-    
-    double scale = 1;
 
+    int x = 360/W * env->canvas->w();
+    int y = 193/H * env->canvas->h();
+    
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
-    env->canvas->draw(m_credits.get(), (env->canvas->w() - m_credits->w() * scale)/2, 183 * scale);
+    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w())/2, 25);
+    env->canvas->draw(m_credits.get(), x, y);
 
-    set_position(m_back->x() + 48 * scale, m_back->y() + 15 * scale);
+    set_position(m_back->x() + 48, m_back->y() + 15);
 }
 
 bool
