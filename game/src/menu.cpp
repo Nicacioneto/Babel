@@ -24,20 +24,20 @@ Menu::Menu(const string& next, const string& texture)
     const int h_button = (60 / 768.0) * env->canvas->h();
     const int spacing = (170 / 1024.0) * env->canvas->w();
     
-    m_play = new Button(this, "start", "res/images/menu/button.png", x_button,
-        y_button, w_button, h_button);
+    m_play = new Button(this, "start", "res/images/menu/button.png",
+        x_button, y_button, w_button, h_button);
     m_play->set_text("Play Game");
 
     m_options = new Button(this, "options", "res/images/menu/button.png",
         x_button + spacing, y_button, w_button, h_button);
     m_options->set_text("Options");
 
-    m_credits = new Button(this, "credits", "res/images/menu/button.png", x_button + 2 * spacing,
-        y_button, w_button, h_button);
+    m_credits = new Button(this, "credits", "res/images/menu/button.png",
+        x_button + 2 * spacing, y_button, w_button, h_button);
     m_credits->set_text("Credits");
 
-    m_exit = new Button(this, "exit", "res/images/menu/button.png", x_button + 3 * spacing,
-        y_button, w_button, h_button);
+    m_exit = new Button(this, "exit", "res/images/menu/button.png",
+        x_button + 3 * spacing, y_button, w_button, h_button);
     m_exit->set_text("Exit");
 
     m_play->add_observer(this);

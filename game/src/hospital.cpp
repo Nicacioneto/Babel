@@ -126,7 +126,11 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
 void
 Hospital::create_buttons()
 {
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
     double scale = 1;
+    font->set_size(24 * scale);
     string path = "res/images/colony/";
 
     Button *button =  new Button(this, "hospital", path + "hospital_button.png",
@@ -207,11 +211,11 @@ Hospital::change_to_chat()
 void
 Hospital::change_to_items()
 {
-    Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = 1;
     Color color(170, 215, 190);
 
+    Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
@@ -235,6 +239,11 @@ Hospital::change_to_items()
         string qnt_earned = section.second["qnt_earned"];
         string qnt_total = section.second["qnt_total"];
 
+        matter.pop_back();
+        power.pop_back();
+        qnt_earned.pop_back();
+        qnt_total.pop_back();
+
         env->canvas->draw(name, 360 * scale, y * scale, color);
         if (not matter.empty())
             env->canvas->draw(matter + "/" + power, 690 * scale, y * scale, color);
@@ -243,11 +252,13 @@ Hospital::change_to_items()
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale,
+            50 * scale, 25 * scale);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale,
+            602 * scale, 25 * scale);
 
         y += 64;
     }
@@ -266,11 +277,11 @@ Hospital::change_to_items()
 void
 Hospital::change_to_research()
 {
-    Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = 1;
     Color color(170, 215, 190);
 
+    Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
@@ -293,6 +304,10 @@ Hospital::change_to_research()
         string power = section.second["power"];
         string time = section.second["time"];
 
+        matter.pop_back();
+        power.pop_back();
+        time.pop_back();
+
         env->canvas->draw(name, 360 * scale, y * scale, color);
         if (not matter.empty())
             env->canvas->draw(matter + "/" + power, 690 * scale, y * scale, color);
@@ -301,11 +316,13 @@ Hospital::change_to_research()
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale,
+            50 * scale, 25 * scale);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale,
+            602 * scale, 25 * scale);
 
         y += 64;
     }
@@ -314,11 +331,11 @@ Hospital::change_to_research()
 void
 Hospital::change_to_revive()
 {
-    Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
     double scale = 1;
     Color color(170, 215, 190);
 
+    Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18 * scale);
@@ -344,6 +361,11 @@ Hospital::change_to_revive()
         string power = section.second["power"];
         string time = section.second["time"];
 
+        class_.pop_back();
+        matter.pop_back();
+        power.pop_back();
+        time.pop_back();
+
         env->canvas->draw(name, 360 * scale, y * scale, color);
         env->canvas->draw(class_, 524 * scale, y * scale, color);
         if (not matter.empty())
@@ -353,11 +375,14 @@ Hospital::change_to_revive()
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, y * scale,
+            50 * scale, 25 * scale);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale);
+        env->canvas->draw(texture.get(), clip, 310 * scale, (y + 5) * scale,
+            602 * scale, 25 * scale);
+
         y += 64;
     }
 }

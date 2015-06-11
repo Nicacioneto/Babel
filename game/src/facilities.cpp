@@ -93,6 +93,11 @@ Facilities::create_buttons()
     double scale = 1;
     string path = "res/images/colony/";
 
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(24 * scale);
+
     Button *button =  new Button(this, "facilities", path + "facilities_button.png",
         28 * scale, 218 * scale, 190 * scale, 180/3* scale);
     button->set_sprites(3);
