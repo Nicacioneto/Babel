@@ -13,6 +13,8 @@
 #include <core/settings.h>
 
 #include <cstdio>
+#include <iostream>
+using namespace std;
 
 MessageID Button::clickedID = "clicked()";
 
@@ -26,7 +28,7 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
 
     if (texture != "")
     {
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+        shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
         double scale = settings->read<double>("Game", "scale", 1);
 
         m_texture = env->resources_manager->get_texture(texture);
@@ -54,20 +56,20 @@ Button::draw_self()
     {
         if (m_state == IDLE or m_sprites == 1)
         {
-            Rect clip = Rect(0, 0, m_texture->w(), m_texture->h()/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y());
+            Rect clip = Rect(0, 0, m_texture->size().first, m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
         else if (m_state == ON_HOVER)
         {
-            Rect clip = Rect(0, m_texture->h()/m_sprites, m_texture->w(),
-                m_texture->h()/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y());
+            Rect clip = Rect(0, m_texture->size().second/m_sprites, m_texture->size().first,
+                m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
         else if (m_state == ACTIVE)
         {
-            Rect clip = Rect(0, 2 * m_texture->h()/m_sprites, m_texture->w(),
-                m_texture->h()/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y());
+            Rect clip = Rect(0, 2 * m_texture->size().second/m_sprites, m_texture->size().first,
+                m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
 
         if (m_text)

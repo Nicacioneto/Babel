@@ -92,7 +92,7 @@ Options::draw_self()
     Environment *env = Environment::get_instance();
     double scale = 1;
     shared_ptr<Font> font = env->canvas->font();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
@@ -144,7 +144,7 @@ Options::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
     if (button->id() == "back")
     {
@@ -182,7 +182,7 @@ Options::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Game", "w", w);
         settings->write<int>("Game", "h", h);
         settings->write<double>("Game", "scale", scale);
-        settings->save("res/settings.ini");
+        settings->save(env->m_settings_path);
     }
     else if (button->id() == "up_volume" or button->id() == "down_volume")
     {
@@ -207,7 +207,7 @@ Options::on_message(Object *sender, MessageID id, Parameters)
         env->sfx->set_volume(volume*10);
 
         settings->write<int>("Game", "volume", volume*10);
-        settings->save("res/settings.ini");
+        settings->save(env->m_settings_path);
     }
 
     return true;

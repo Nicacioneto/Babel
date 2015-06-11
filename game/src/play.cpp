@@ -61,7 +61,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
     int slot1 = settings->read<int>("Slots", "slot1", 0);
     int slot2 = settings->read<int>("Slots", "slot2", 0);
@@ -114,7 +114,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         set_next("menu");
     }
 
-    settings->save("res/settings.ini");
+    settings->save(env->m_settings_path);
     finish();
 
     return true;
@@ -127,7 +127,7 @@ Play::slots()
     double scale = 1;
     const int x_button = (env->canvas->w() - W_BUTTON * scale) / 2;
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
     string text;
 
     int saved = settings->read<int>("Slots", "slot1", 0);

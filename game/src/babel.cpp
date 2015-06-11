@@ -129,7 +129,7 @@ Babel::on_event(const KeyboardEvent& event)
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::F11)
     {
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/settings.ini");
+        shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
         if (env->video->fullscreen())
         {
@@ -142,7 +142,7 @@ Babel::on_event(const KeyboardEvent& event)
             settings->write<bool>("Game", "fullscreen", true);
         }
 
-        settings->save("res/settings.ini");
+        settings->save(env->m_settings_path);
     }
 
     return false;
