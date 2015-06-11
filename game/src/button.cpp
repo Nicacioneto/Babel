@@ -28,12 +28,7 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
 
     if (texture != "")
     {
-        shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
-        double scale = settings->read<double>("Game", "scale", 1);
-
         m_texture = env->resources_manager->get_texture(texture);
-        m_texture->scale(scale);
-
         m_state = IDLE;
     }
 

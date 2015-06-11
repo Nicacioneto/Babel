@@ -5,6 +5,9 @@
 #include <core/settings.h>
 #include <core/texture.h>
 
+#define W 1024.0
+#define H 768.0
+
 Menu::Menu(const string& next, const string& texture)
     : Level("menu", next), m_texture(nullptr), m_logo(nullptr), m_play(nullptr),
         m_options(nullptr), m_credits(nullptr), m_exit(nullptr)
@@ -18,11 +21,11 @@ Menu::Menu(const string& next, const string& texture)
     env->canvas->set_font(font);
     font->set_size(22);
 
-    const int x_button = (188 / 1024.0) * env->canvas->w();
-    const int y_button = (768 - 149) / 768.0 * env->canvas->h();
-    const int w_button = (140 / 1024.0) * env->canvas->w();
-    const int h_button = (60 / 768.0) * env->canvas->h();
-    const int spacing = (170 / 1024.0) * env->canvas->w();
+    const int x_button = (188 / W) * env->canvas->w();
+    const int y_button = (H - 149) / H * env->canvas->h();
+    const int w_button = (140 / W) * env->canvas->w();
+    const int h_button = (60 / H) * env->canvas->h();
+    const int spacing = (170 / W) * env->canvas->w();
     
     m_play = new Button(this, "start", "res/images/menu/button.png",
         x_button, y_button, w_button, h_button);
@@ -59,7 +62,7 @@ Menu::draw_self()
 
     env->canvas->draw(m_texture.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w())/2,
-        25 / 768.0 * env->canvas->h());
+        25 / H * env->canvas->h());
 }
 
 bool
