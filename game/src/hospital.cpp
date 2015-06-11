@@ -126,7 +126,6 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
 void
 Hospital::create_buttons()
 {
-    Environment *env = Environment::get_instance();
     double scale = 1;
     string path = "res/images/colony/";
 
