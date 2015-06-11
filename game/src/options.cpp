@@ -6,10 +6,8 @@
 #include <core/resourcesmanager.h>
 #include <core/settings.h>
 
-#define W_BUTTON_BACK 140
-#define H_BUTTON_BACK 60
-#define BUTTON_SETTING 12
-#define X_VOLUME 296
+#define W 1024.0
+#define H 768.0
 
 Options::Options(const string& next, const string& texture)
     : Level("options", next), m_texture(nullptr), m_logo(nullptr), m_soundvideo(nullptr),
@@ -24,30 +22,29 @@ Options::Options(const string& next, const string& texture)
     m_volume = env->resources_manager->get_texture("res/images/menu/volume.png");
     m_arrow = env->resources_manager->get_texture("res/images/menu/arrow.png");
 
-    double scale = 1;
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(22 * scale);
+    font->set_size(22);
 
-    m_back = new Button(this, "back", "res/images/menu/button.png",
-        (env->canvas->w() - W_BUTTON_BACK * scale)/2, env->canvas->h() - 149 * scale,
-        W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
+    int x = (W - 140)/(W * 2) * env->canvas->w();
+    int y = (H - 140)/H * env->canvas->h();
+    int w = (140/W) * env->canvas->w();
+    int h = (60/H) * env->canvas->h();
+
+    m_back = new Button(this, "back", "res/images/menu/button.png", x, y, w, h);
     m_back->set_text("Back");
 
     m_up_volume = new Button(this, "up_volume", "",
-        X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2, BUTTON_SETTING * scale,
-        BUTTON_SETTING * scale);
+        300, (env->canvas->h() - 25)/2, 12, 12);
 
     m_down_volume = new Button(this, "down_volume", "",
-        X_VOLUME * scale, env->canvas->h()/2, BUTTON_SETTING, BUTTON_SETTING);
+        300, env->canvas->h()/2, 12, 12);
 
     m_up_resolution = new Button(this, "up_resolution", "",
-        env->canvas->w()/2 + 140 * scale, (env->canvas->h() - 25 * scale)/2,
-        BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+        env->canvas->w()/2 + 140, (env->canvas->h() - 25)/2, 12, 12);
 
     m_down_resolution = new Button(this, "down_resolution", "",
-        env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2, BUTTON_SETTING * scale,
-        BUTTON_SETTING * scale);
+        env->canvas->w()/2 + 140, (env->canvas->h())/2, 12, 12);
 
     m_back->add_observer(this);
     m_up_volume->add_observer(this);
@@ -66,70 +63,110 @@ void
 Options::update_coordinates()
 {
     Environment *env = Environment::get_instance();
-    double scale = 1;
 
-    m_back->set_position((env->canvas->w() - W_BUTTON_BACK * scale)/2,
-        env->canvas->h() - 149 * scale);
-    m_back->set_dimensions(W_BUTTON_BACK * scale, H_BUTTON_BACK * scale);
+    int x = (W - 140)/(W * 2) * env->canvas->w();
+    int y = (H - 149)/H * env->canvas->h();
+    int w = (140/W) * env->canvas->w();
+    int h = (60/H) * env->canvas->h();
+    m_back->set_position(x, y);
+    m_back->set_dimensions(w, h);
+    m_back->set_text("Back");
 
-    m_up_volume->set_position(X_VOLUME * scale, (env->canvas->h() - 25 * scale)/2);
-    m_up_volume->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
-    
-    m_down_volume->set_position(X_VOLUME * scale, env->canvas->h()/2);
-    m_down_volume->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
-    
-    m_up_resolution->set_position(env->canvas->w()/2 + 140 * scale,
-        (env->canvas->h() - 25 * scale)/2);
-    m_up_resolution->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
-    
-    m_down_resolution->set_position(env->canvas->w()/2 + 140 * scale, (env->canvas->h())/2);
-    m_down_resolution->set_dimensions(BUTTON_SETTING * scale, BUTTON_SETTING * scale);
+    x = (300)/W * env->canvas->w();
+    y = (H - 25)/(H * 2) * env->canvas->h();
+    w = (12/W) * env->canvas->w();
+    h = (12/H) * env->canvas->h();
+    m_up_volume->set_position(x, y);
+    m_up_volume->set_dimensions(w, h);
+
+    y = env->canvas->h()/2;
+    m_down_volume->set_position(x, y);
+    m_down_volume->set_dimensions(w, h);
+
+    x = (W/2 + 140)/W * env->canvas->w();
+    y = (H - 25)/(H * 2) * env->canvas->h();
+    w = (12/W) * env->canvas->w();
+    h = (12/H) * env->canvas->h();
+    m_up_resolution->set_position(x, y);
+    m_up_resolution->set_dimensions(w, h);
+
+    y = (env->canvas->h())/2;
+    m_down_resolution->set_position(x, y);
+    m_down_resolution->set_dimensions(w, h);
 }
 
 void
 Options::draw_self()
 {
+    update_coordinates(); // TO FIX
+
     Environment *env = Environment::get_instance();
-    double scale = 1;
     shared_ptr<Font> font = env->canvas->font();
     shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
-    env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w() * scale)/2, 25 * scale);
-    env->canvas->draw(m_soundvideo.get(), 189 * scale, 321 * scale);
-    env->canvas->draw(m_arrow.get(), X_VOLUME * scale, (env->canvas->h() - 20 * scale)/2);
-    env->canvas->draw(m_arrow.get(), env->canvas->w()/2 + 140 * scale,
-        (env->canvas->h() - 20 * scale)/2);
+
+    int x = (env->canvas->w() - m_logo->w())/2;
+    int y = 25/H * env->canvas->h();
+    int w, h;
+    env->canvas->draw(m_logo.get(), x, y);
+
+    x = 189/W * env->canvas->w();
+    y = 321/H * env->canvas->h();
+    env->canvas->draw(m_soundvideo.get(), x, y);
+
+    x = 300/W * env->canvas->w();
+    y = (H - 20)/(H * 2) * env->canvas->h();
+    env->canvas->draw(m_arrow.get(), x, y);
+    
+    x = (W/2 + 140)/W * env->canvas->w();
+    env->canvas->draw(m_arrow.get(), x, y);
 
     int i, volume = settings->read<int>("Game", "volume", 50)/10;
 
     for (i = 0; i < (10 - volume)*17; i+=17)
     {
-        env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), (313+i) * scale,
-            (env->canvas->h() - 15 * scale)/2);
+        x = (318 + i)/W * env->canvas->w();
+        y = (H - 15)/(H*2) * env->canvas->h();
+        h = 15/W * env->canvas->w();
+        w = h;
+        env->canvas->draw(m_volume.get(), Rect(0, 15, 15, 15), x, y, h, w);
     }
     for (int j = i; j < i + volume*17; j+=17)
     {
-        env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), (313+j) * scale,
-            (env->canvas->h() - 15 * scale)/2);
+        x = (318 + j)/W * env->canvas->w();
+        y = (H - 15)/(H*2) * env->canvas->h();
+        h = 15/W * env->canvas->w();
+        w = h;
+        env->canvas->draw(m_volume.get(), Rect(0, 0, 15, 15), x, y, w, h);
     }
 
-    font->set_size(24 * scale);
-    set_position((env->canvas->w() - W_BUTTON_BACK)/2 + 23 * scale, 167 * scale);
+    x = 465/W * env->canvas->w();
+    y = 190/H * env->canvas->h();
+
+    font->set_size(24);
+    set_position(x, y);
     env->canvas->draw("OPTIONS", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    font->set_size(18 * scale);
-    set_position((bounding_box().y() + 250) * scale, env->canvas->h()/2 - 37 * scale);
+    x = 425/W * env->canvas->w();
+    y = (H - 65)/(H*2) * env->canvas->h();
+
+    font->set_size(18);
+    set_position(x, y);
     env->canvas->draw("Volume", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    set_position(env->canvas->w()/2 + 20 * scale, env->canvas->h()/2 - 37 * scale);
+    x = (W/2 + 20)/W * env->canvas->w();
+    set_position(x, y);
     env->canvas->draw("Resolution", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    int w = env->canvas->w();
-    int h = env->canvas->h();
+    x += 5;
+    y = 372/H * env->canvas->h();
+
+    w = env->canvas->w();
+    h = env->canvas->h();
     string text = std::to_string(w) + " x " + std::to_string(h) + " px";
-    set_position(env->canvas->w()/2 + 25 * scale, (env->canvas->h() - 25 * scale)/2);
+    set_position(x, y);
     env->canvas->draw(text, bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
