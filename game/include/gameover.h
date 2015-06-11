@@ -15,7 +15,6 @@ public:
     ~GameOver();
     
 private:
-    void update_self(unsigned long elapsed);
     void draw_self();
     bool on_event(const KeyboardEvent& event);
 };

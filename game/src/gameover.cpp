@@ -10,6 +10,9 @@
 #include <core/keyboardevent.h>
 #include <core/rect.h>
 
+#define W 1024.0
+#define H 768.0
+
 GameOver::GameOver(const string& next)
     : Level("gameover", next)
 {
@@ -20,6 +23,7 @@ GameOver::GameOver(const string& next)
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/FLATS.ttf");
     font->set_style(Font::ITALIC);
     env->canvas->set_font(font);
+    font->set_size(100);
 }
 
 GameOver::~GameOver()
@@ -29,23 +33,12 @@ GameOver::~GameOver()
 }
 
 void
-GameOver::update_self(unsigned long)
-{
-    Environment *env = Environment::get_instance();
-    double scale = 1;
-
-    set_position(env->canvas->w() / (8 * scale), env->canvas->h() / (4 * scale));
-
-    shared_ptr<Font> font = env->canvas->font();
-    font->set_size(100 * scale);
-}
-
-void
 GameOver::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();
-    env->canvas->draw("GAME OVER", bounding_box().x(), bounding_box().y(), Color::YELLOW);
+    env->canvas->draw("GAME OVER", (150 / W) * env->canvas->w(),
+        (H - 500) / H * env->canvas->h(), Color::YELLOW);
 }
 
 bool
