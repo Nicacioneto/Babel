@@ -252,7 +252,10 @@ Central::change_to_bestiary()
         string name = section.first;
         string icon = section.second["icon"];
 
-        icon.pop_back();
+        if (icon.back() == '\r')
+        {
+            icon.pop_back();
+        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not icon.empty())
@@ -297,8 +300,11 @@ Central::change_to_timers()
         string time = section.second["time"];
         string icon = section.second["icon"];
 
-        time.pop_back();
-        icon.pop_back();
+        if (icon.back() == '\r')
+        {
+            time.pop_back();
+            icon.pop_back();
+        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not time.empty())

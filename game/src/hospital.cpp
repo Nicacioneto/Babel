@@ -248,10 +248,13 @@ Hospital::change_to_items()
         string qnt_earned = section.second["qnt_earned"];
         string qnt_total = section.second["qnt_total"];
 
-        matter.pop_back();
-        power.pop_back();
-        qnt_earned.pop_back();
-        qnt_total.pop_back();
+        if (matter.back() == '\r')
+        {
+            matter.pop_back();
+            power.pop_back();
+            qnt_earned.pop_back();
+            qnt_total.pop_back();
+        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
@@ -321,9 +324,12 @@ Hospital::change_to_research()
         string power = section.second["power"];
         string time = section.second["time"];
 
-        matter.pop_back();
-        power.pop_back();
-        time.pop_back();
+        if (matter.back() == '\r')
+        {
+            matter.pop_back();
+            power.pop_back();
+            time.pop_back();
+        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
@@ -384,10 +390,13 @@ Hospital::change_to_revive()
         string power = section.second["power"];
         string time = section.second["time"];
 
-        class_.pop_back();
-        matter.pop_back();
-        power.pop_back();
-        time.pop_back();
+        if (matter.back() == '\r')
+        {
+            class_.pop_back();
+            matter.pop_back();
+            power.pop_back();
+            time.pop_back();
+        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         env->canvas->draw(class_, (524 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
