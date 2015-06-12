@@ -43,12 +43,18 @@ Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
 
-    env->canvas->draw(m_right_bracket.get(), (275 / W) * env->canvas->w(),(173 / H) * env->canvas->h());
-    env->canvas->draw(m_colony.get(), (193 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
-    env->canvas->draw(m_tower_img.get(), (28 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
-    env->canvas->draw(m_planet_img.get(), (855 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
-    env->canvas->draw(m_left_bracket.get(), (28 / W) * env->canvas->w(),(175 / H) * env->canvas->h());
-    env->canvas->draw(m_resources.get(), (28 / W) * env->canvas->w(),(120 / H) * env->canvas->h());
+    env->canvas->draw(m_right_bracket.get(), (275 / W) * env->canvas->w(),
+        (173 / H) * env->canvas->h());
+    env->canvas->draw(m_colony.get(), (193 / W) * env->canvas->w(),
+        (25 / H) * env->canvas->h());
+    env->canvas->draw(m_tower_img.get(), (28 / W) * env->canvas->w(),
+        (25 / H) * env->canvas->h());
+    env->canvas->draw(m_planet_img.get(), (855 / W) * env->canvas->w(),
+        (25 / H) * env->canvas->h());
+    env->canvas->draw(m_left_bracket.get(), (28 / W) * env->canvas->w(),
+        (175 / H) * env->canvas->h());
+    env->canvas->draw(m_resources.get(), (28 / W) * env->canvas->w(),
+        (120 / H) * env->canvas->h());
 }
 
 bool

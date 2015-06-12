@@ -185,7 +185,9 @@ Dungeon::draw_self()
     }
 
     if (not blocked or (blocked and levels > 3))
+    {
         m_screen->fill(center_rect, 0);
+    }
 
     env->canvas->draw(m_screen);
 }
@@ -393,13 +395,19 @@ void
 Dungeon::update_self(unsigned long elapsed)
 {
     if (m_state == WAITING)
+    {
         return;
+    }
 
     if (m_last == 0)
+    {
         m_last = elapsed;
+    }
 
     if (elapsed - m_last < 5)
+    {
         return;
+    }
 
     m_last = elapsed;
 
@@ -414,7 +422,9 @@ Dungeon::update_self(unsigned long elapsed)
         int tile;
 
         if (m_delta > 0)
+        {
             tile = m_rooms[m_x][m_y].tile(m_direction.front());
+        }
 
         if (tile == 0)
         {
@@ -428,4 +438,3 @@ Dungeon::update_self(unsigned long elapsed)
     }
 
 }
-

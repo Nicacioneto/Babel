@@ -38,7 +38,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 
     auto it = m_characters.begin();
     m_character_attacker %= m_characters.size();
-    for (int i = 0; i < m_character_attacker; ++i, ++it); // Not work well as other ++ operators
+    for (int i = 0; i < m_character_attacker; ++i, ++it) {}; // Not work well as other ++ operators
     ++m_character_attacker;
 
     Character *attacker = it->second;
@@ -110,7 +110,7 @@ Combat::enemy_attack()
 {
     auto it = m_enemies.begin();
     m_enemy_attacker %= m_enemies.size();
-    for (int i = 0; i < m_enemy_attacker; ++i, ++it); // Not work well as other ++ operators
+    for (int i = 0; i < m_enemy_attacker; ++i, ++it) {}; // Not work well as other ++ operators
     ++m_enemy_attacker;
 
     Character *enemy = it->second;

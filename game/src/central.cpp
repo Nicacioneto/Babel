@@ -206,7 +206,9 @@ Central::change_to_quests()
 
         env->canvas->draw(name, 360 * scale, y * scale, color);
         if (not new_.empty())
+        {
             env->canvas->draw("NEW", 690 * scale, y * scale, color);
+        }
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         Rect clip = Rect(0, 0, 602, 75/3);

@@ -212,7 +212,8 @@ Hospital::change_to_chat()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
-    env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(), (605 / H) * env->canvas->h(), color);
+    env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
+        (605 / H) * env->canvas->h(), color);
     env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
         (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
 }
@@ -254,11 +255,15 @@ Hospital::change_to_items()
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
+        {
             env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
+        }
         if (not qnt_earned.empty())
+        {
             env->canvas->draw(qnt_earned + "/" + qnt_total, (855 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
+        }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
@@ -277,7 +282,8 @@ Hospital::change_to_items()
 
     env->canvas->draw("TOTAL", (607 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
     font->set_size(16);
-    env->canvas->draw("800", (800 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), Color::RED);
+    env->canvas->draw("800", (800 / W) * env->canvas->w(),
+        (633 / H) * env->canvas->h(), Color::RED);
     env->canvas->draw("/", (837 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
     env->canvas->draw("176", (855 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
     env->canvas->draw("176", (855 / W) * env->canvas->w(), (660 / H) * env->canvas->h(), color);
@@ -321,10 +327,15 @@ Hospital::change_to_research()
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
+        {
             env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
+        }
         if (not time.empty())
-            env->canvas->draw(time, (855 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        {
+            env->canvas->draw(time, (855 / W) * env->canvas->w(),
+                (y / H) * env->canvas->h(), color);
+        }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
@@ -334,7 +345,8 @@ Hospital::change_to_research()
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
         env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(), (602 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+            ((y+5) / H) * env->canvas->h(), (602 / W) * env->canvas->w(),
+            (25 / H) * env->canvas->h());
 
         y += 64;
     }
@@ -380,10 +392,15 @@ Hospital::change_to_revive()
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         env->canvas->draw(class_, (524 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
+        {
             env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
+        }
         if (not time.empty())
-            env->canvas->draw(time, (855 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        {
+            env->canvas->draw(time, (855 / W) * env->canvas->w(),
+                (y / H) * env->canvas->h(), color);
+        }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
