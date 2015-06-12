@@ -109,6 +109,10 @@ Central::create_buttons()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(24);
+
     const int x = (28 / W) * env->canvas->w();
     const int w = (190 / W) * env->canvas->w();
     const int h = (180/3 / H) * env->canvas->h();
