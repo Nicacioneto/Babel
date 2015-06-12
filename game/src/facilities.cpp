@@ -6,6 +6,9 @@
 #include <core/rect.h>
 #include <core/settings.h>
 
+#define W 1024.0
+#define H 768.0
+
 Facilities::Facilities(const string& next)
     : Level("facilities", next), m_screen(CHAT)
 {
@@ -90,23 +93,26 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
 void
 Facilities::create_buttons()
 {
-    double scale = 1;
+    Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
-    Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(24 * scale);
+    font->set_size(24);
+
+    const int x = (28 / W) * env->canvas->w();
+    const int w = (190 / W) * env->canvas->w();
+    const int h = (180/3 / H) * env->canvas->h();
 
     Button *button =  new Button(this, "facilities", path + "facilities_button.png",
-        28 * scale, 218 * scale, 190 * scale, 180/3* scale);
+        x, (218 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "chat", path + "colony_small_button.png",
-        28 * scale, 322 * scale, 190 * scale, 180/3* scale);
+        x, (322 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->set_text("Chat");
     button->change_state(Button::ACTIVE);
@@ -114,21 +120,21 @@ Facilities::create_buttons()
     m_buttons[button->id()] = button;
 
     button = new Button(this, "military", path + "colony_small_button.png",
-        28 * scale, 427 * scale, 190 * scale, 180/3* scale);
+        x, (427 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->set_text("Military");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "psionic", path + "colony_small_button.png",
-        28 * scale, 531 * scale, 190 * scale, 180/3* scale);
+        x, (531 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->set_text("Psionic");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "tech", path + "colony_small_button.png",
-        28 * scale, 635 * scale, 190 * scale, 180/3* scale);
+        x, (635 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->set_text("Technologic");
 
@@ -157,17 +163,18 @@ void
 Facilities::change_to_chat()
 {
     Environment *env = Environment::get_instance();
+
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    double scale = 1;
-    font->set_size(18 * scale);
+    font->set_size(18);
     Color color(170, 215, 190);
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Facilities"]["welcome"];
-    env->canvas->draw(text, (305 + 5) * scale, 605 * scale, color);
-    env->canvas->draw(Rect(305 * scale, 605 * scale, 670 * scale, 116 * scale), color);
+    env->canvas->draw(text, ((305+5) / W) * env->canvas->w(), (605 / H) * env->canvas->h(), color);
+    env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
+        (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
 }
 
 void
@@ -175,48 +182,51 @@ Facilities::change_to_military()
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
-    double scale = 1;
     Color color(170, 215, 190);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(16 * scale);
+    font->set_size(16);
 
     shared_ptr<Texture> texture;
 
     for (int i = 0, y = 235; i < 5; ++i, y += 77)
     {
         texture = env->resources_manager->get_texture(path + "rifle.png");
-        env->canvas->draw(texture.get(), 384 * scale, y * scale);
+        env->canvas->draw(texture.get(), (384 / W) * env->canvas->w(), (y / H) * env->canvas->h());
         texture = env->resources_manager->get_texture(path + "shotgun.png");
-        env->canvas->draw(texture.get(), 462 * scale, y * scale);
+        env->canvas->draw(texture.get(), (462 / W) * env->canvas->w(), (y / H) * env->canvas->h());
         texture = env->resources_manager->get_texture(path + "pistol_red.png");
-        env->canvas->draw(texture.get(), 540 * scale, y * scale);
+        env->canvas->draw(texture.get(), (540 / W) * env->canvas->w(), (y / H) * env->canvas->h());
         texture = env->resources_manager->get_texture(path + "sniper_red.png");
-        env->canvas->draw(texture.get(), 618 * scale, y * scale);
+        env->canvas->draw(texture.get(), (618 / W) * env->canvas->w(), (y / H) * env->canvas->h());
         texture = env->resources_manager->get_texture(path + "rifle_red.png");
-        env->canvas->draw(texture.get(), 696 * scale, y * scale);
+        env->canvas->draw(texture.get(), (696 / W) * env->canvas->w(), (y / H) * env->canvas->h());
         texture = env->resources_manager->get_texture(path + "shotgun_red.png");
-        env->canvas->draw(texture.get(), 774 * scale, y * scale);
+        env->canvas->draw(texture.get(), (774 / W) * env->canvas->w(), (y / H) * env->canvas->h());
 
-        Point a(360 * scale, (y - 14) * scale);
-        Point b(851 * scale, (y - 14) * scale);
+        Point a((360 / W) * env->canvas->w(), ((y-14) / H) * env->canvas->h());
+        Point b((851 / W) * env->canvas->w(), ((y-14) / H) * env->canvas->h());
         env->canvas->draw(Line(a, b), color);
     }
 
     texture = env->resources_manager->get_texture(path + "wake.png");
-    env->canvas->draw(texture.get(), 308 * scale, 628 * scale);
+    env->canvas->draw(texture.get(), (308 / W) * env->canvas->w(), (628 / H) * env->canvas->h());
 
-    Rect rect(333 * scale, 196 * scale, 25 * scale, 442 * scale);
+    Rect rect((333 / W) * env->canvas->w(), (196 / H) * env->canvas->h(),
+        (25 / W) * env->canvas->w(), (442 / H) * env->canvas->h());
     env->canvas->draw(rect, color);
 
-    rect = Rect(340 * scale, 535 * scale, 10 * scale, 102 * scale);
+    rect = Rect((340 / W) * env->canvas->w(), (535 / H) * env->canvas->h(),
+        (10 / W) * env->canvas->w(), (102 / H) * env->canvas->h());
     env->canvas->fill(rect, Color(206, 178, 46));
 
     texture = env->resources_manager->get_texture(path + "meter.png");
-    env->canvas->draw(texture.get(), 290 * scale, 535-13 * scale);
+    env->canvas->draw(texture.get(), (290 / W) * env->canvas->w(),
+        ((535-13) / H) * env->canvas->h());
 
-    env->canvas->draw("999", 290+4 * scale, 535-13+1 * scale, color);
+    env->canvas->draw("999", ((290+4) / W) * env->canvas->w(),
+        ((535-13+1) / H) * env->canvas->h(), color);
 }
 
 void
