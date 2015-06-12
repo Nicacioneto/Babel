@@ -131,8 +131,10 @@ Play::slots()
     if (saved)
     {
         text = "Slot 1";
-        m_slots[0][1] = new Button(this, "slot1_x", "res/images/menu/x.png", x_button + 280,
-            ((Y_BUTTON + SPACING + 12) / H) * env->canvas->h(), 13, 18);
+        m_slots[0][1] = new Button(this, "slot1_x", "res/images/menu/x.png",
+            x_button + ((280 / W) * env->canvas->w()),
+            ((Y_BUTTON + SPACING + 12) / H) * env->canvas->h(), (13 / W) * env->canvas->w(),
+            (18 / H) * env->canvas->h());
         m_slots[0][1]->set_sprites(1);
         m_slots[0][1]->add_observer(this);
         add_child(m_slots[0][1]);
@@ -143,15 +145,18 @@ Play::slots()
     }
 
     m_slots[0][0] = new Button(this, "slot1", "res/images/menu/stripe.png", x_button,
-        ((Y_BUTTON + SPACING) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
+        ((Y_BUTTON + SPACING) / H) * env->canvas->h(), (W_BUTTON / W) * env->canvas->w(),
+        (H_BUTTON / H) * env->canvas->h());
     m_slots[0][0]->set_text(text);
 
     saved = settings->read<int>("Slots", "slot2", 0);
     if (saved)
     {
         text = "Slot 2";
-        m_slots[1][1] = new Button(this, "slot2_x", "res/images/menu/x.png", x_button + 280,
-            ((Y_BUTTON + SPACING * 2 + 12) / H) * env->canvas->h(), 13, 18);
+        m_slots[1][1] = new Button(this, "slot2_x", "res/images/menu/x.png",
+            x_button + ((280 / W) * env->canvas->w()),
+            ((Y_BUTTON + SPACING * 2 + 12) / H) * env->canvas->h(), (13 / W) * env->canvas->w(),
+            (18 / H) * env->canvas->h());
         m_slots[1][1]->set_sprites(1);
         m_slots[1][1]->add_observer(this);
         add_child(m_slots[1][1]);
@@ -162,15 +167,18 @@ Play::slots()
     }
 
     m_slots[1][0] = new Button(this, "slot2", "res/images/menu/stripe.png", x_button,
-        ((Y_BUTTON + SPACING * 2) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
+        ((Y_BUTTON + SPACING * 2) / H) * env->canvas->h(), (W_BUTTON / W) * env->canvas->w(),
+        (H_BUTTON / H) * env->canvas->h());
     m_slots[1][0]->set_text(text);
 
     saved = settings->read<int>("Slots", "slot3", 0);
     if (saved)
     {
         text = "Slot 3";
-        m_slots[2][1] = new Button(this, "slot3_x", "res/images/menu/x.png", x_button + 280,
-            ((Y_BUTTON + SPACING * 3 + 12) / H) * env->canvas->h(), 13, 18);
+        m_slots[2][1] = new Button(this, "slot3_x", "res/images/menu/x.png",
+            x_button + ((280 / W) * env->canvas->w()),
+            ((Y_BUTTON + SPACING * 3 + 12) / H) * env->canvas->h(), (13 / W) * env->canvas->w(),
+            (18 / H) * env->canvas->h());
         m_slots[2][1]->set_sprites(1);
         m_slots[2][1]->add_observer(this);
         add_child(m_slots[2][1]);
@@ -181,7 +189,8 @@ Play::slots()
     }
 
     m_slots[2][0] = new Button(this, "slot3", "res/images/menu/stripe.png", x_button,
-        ((Y_BUTTON + SPACING * 3) / H) * env->canvas->h(), W_BUTTON, H_BUTTON);
+        ((Y_BUTTON + SPACING * 3) / H) * env->canvas->h(), (W_BUTTON / W) * env->canvas->w(),
+        (H_BUTTON / H) * env->canvas->h());
     m_slots[2][0]->set_text(text);
 
     int x = (W - W_BUTTON_BACK)/(W * 2) * env->canvas->w();
