@@ -33,7 +33,12 @@ public:
     typedef enum { MOVING, WAITING } State;
 
 private:
+    void steps_to_foward();
+    void steps_to_backward();
+
+    void update_self(unsigned long);
     void draw_self();
+
     void load_map();
     void load_tiles();
 
@@ -50,7 +55,6 @@ private:
     list<Rect> planes(int w, int h, double& ratio);
     Rect center(int sw, int sh) const;
 
-    void update_self(unsigned long);
 };
 
 #endif

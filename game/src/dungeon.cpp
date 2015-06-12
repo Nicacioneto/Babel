@@ -7,6 +7,8 @@
 #include <core/rect.h>
 #include <sstream>
 #include <vector>
+#include <iostream>
+using namespace std;
 
 using std::endl;
 using std::stringstream;
@@ -79,6 +81,86 @@ Dungeon::on_event(const KeyboardEvent& event)
 }
 
 void
+Dungeon::steps_to_foward()
+{
+    int next = (m_steps + 4 + m_delta) % 4;
+
+    if (next)
+    {
+        m_steps = next;
+    }
+    else
+    {
+        int tile = m_rooms[m_x][m_y].tile(m_direction.front());
+
+        if (tile == 0)
+        {
+            pair<int, int> v = m_direction.vector();
+            m_x += v.first;
+            m_y += v.second;
+            m_steps = 0;
+        }
+
+        m_state = WAITING;
+    }
+}
+
+void
+Dungeon::steps_to_backward()
+{
+    int next = m_steps - 1;
+
+    if (next > -1)
+    {
+        m_steps = next;
+    }
+    else
+    {
+        int tile = m_rooms[m_x][m_y].tile(m_direction.back());
+
+        if (tile == 0)
+        {
+            pair<int, int> v = m_direction.vector();
+            m_x -= v.first;
+            m_y -= v.second;
+            m_steps = 3;
+        }
+
+        m_state = WAITING;
+    }
+}
+
+void
+Dungeon::update_self(unsigned long elapsed)
+{
+    if (m_state == WAITING)
+    {
+        return;
+    }
+
+    if (m_last == 0)
+    {
+        m_last = elapsed;
+    }
+
+    if (elapsed - m_last < 5)
+    {
+        return;
+    }
+
+    m_last = elapsed;
+
+    if (m_delta == 1)
+    {
+        steps_to_foward();
+    }
+    else if (m_delta == -1)
+    {
+        steps_to_backward();
+    }
+}
+
+void
 Dungeon::draw_self()
 {
     Environment *env = Environment::get_instance();
@@ -109,9 +191,6 @@ Dungeon::draw_self()
         Rect b { back.x(), back.y(), 0, back.h() };
 
         int west_tile = m_rooms[idx][idy].tile(m_direction.prev());
-        // env->canvas->draw(f, Color::WHITE);
-        // env->canvas->draw(b, Color::YELLOW);
-
         if (west_tile)
         {
             mapping.draw_walls(m_screen, m_tiles[west_tile].get(), f, b);
@@ -119,9 +198,6 @@ Dungeon::draw_self()
         
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
-        // env->canvas->draw(f, Color::WHITE);
-        // env->canvas->draw(b, Color::YELLOW);
-
 
         int east_tile = m_rooms[idx][idy].tile(m_direction.next());
 
@@ -132,9 +208,6 @@ Dungeon::draw_self()
 
         f = Rect(front.x(), front.y(), front.w(), 0);
         b = Rect(back.x(), back.y(), back.w(), 0);
-        // env->canvas->draw(f, Color::WHITE);
-        // env->canvas->draw(b, Color::YELLOW);
-
 
         int roof_tile = m_rooms[idx][idy].tile(m_direction.roof());
 
@@ -145,9 +218,6 @@ Dungeon::draw_self()
 
         f.set_y(f.y() + front.h());
         b.set_y(b.y() + back.h());
-        // env->canvas->draw(f, Color::WHITE);
-        // env->canvas->draw(b, Color::YELLOW);
-
         int floor_tile = m_rooms[idx][idy].tile(m_direction.floor());
 
         if (floor_tile)
@@ -265,23 +335,11 @@ Dungeon::move_forward()
 void
 Dungeon::move_backward()
 {
-    int next = m_steps - 1;
-
-    if (next > -1)
+    if (m_state == WAITING)
     {
-        m_steps = next;
-    }
-    else
-    {
-        int tile = m_rooms[m_x][m_y].tile(m_direction.back());
-
-        if (tile == 0)
-        {
-            pair<int, int> v = m_direction.vector();
-            m_x -= v.first;
-            m_y -= v.second;
-            m_steps = 3;
-        }
+        m_state = MOVING;
+        m_delta = -1;
+        m_last = 10000;
     }
 }
 
@@ -389,52 +447,4 @@ Dungeon::load_tiles()
         }
         catch (Exception) {}
     }
-}
-
-void
-Dungeon::update_self(unsigned long elapsed)
-{
-    if (m_state == WAITING)
-    {
-        return;
-    }
-
-    if (m_last == 0)
-    {
-        m_last = elapsed;
-    }
-
-    if (elapsed - m_last < 5)
-    {
-        return;
-    }
-
-    m_last = elapsed;
-
-    int next = (m_steps + 4 + m_delta) % 4;
-
-    if (next)
-    {
-        m_steps = next;
-    }
-    else
-    {
-        int tile;
-
-        if (m_delta > 0)
-        {
-            tile = m_rooms[m_x][m_y].tile(m_direction.front());
-        }
-
-        if (tile == 0)
-        {
-            pair<int, int> v = m_direction.vector();
-            m_x += v.first;
-            m_y += v.second;
-            m_steps = 0;
-        }
-
-        m_state = WAITING;
-    }
-
 }
