@@ -14,7 +14,7 @@ Hospital::Hospital(const string& next)
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
-    m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_chat_scenario.png");
+    m_scenario = env->resources_manager->get_texture(path + "hospital/chat_scenario.png");
 
     m_reset = new Button(this, "reset", path + "hospital/reset.png",
         (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
@@ -96,14 +96,14 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         Environment *env = Environment::get_instance();
         string path = "res/images/colony/";
 
-        m_scenario = env->resources_manager->get_texture(path + "hospital/hospital_scenario.png");
+        m_scenario = env->resources_manager->get_texture(path + "hospital/scenario.png");
         change_buttons();
 
         if (button->id() == "chat")
         {
             m_screen = CHAT;
             m_scenario = env->resources_manager->get_texture(path +
-                "hospital/hospital_chat_scenario.png");
+                "hospital/chat_scenario.png");
         }
         else if (button->id() == "items")
         {

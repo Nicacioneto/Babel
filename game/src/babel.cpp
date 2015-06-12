@@ -11,6 +11,7 @@
 #include "options.h"
 #include "planet.h"
 #include "play.h"
+#include "workshop.h"
 #include <util/frontend.h>
 #include <core/keyboardevent.h>
 #include <core/settings.h>
@@ -76,8 +77,7 @@ Babel::load_level(const string& id)
     }
     else if (id == "workshop")
     {
-        // TODO
-        return new Base();
+        return new Workshop();
     }
     else if (id == "central")
     {
