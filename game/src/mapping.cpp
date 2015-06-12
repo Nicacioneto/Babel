@@ -90,7 +90,7 @@ Mapping::draw_ceiling_floor(Bitmap *screen, Bitmap *bitmap, const Rect front, co
             left_x += m_horizontal_ratio;
             right_x -= m_horizontal_ratio;
             continue;
-        } 
+        }
 
         double num = abs(i - front.y());
         double ky = num/h;
