@@ -1,6 +1,9 @@
 #include "colony.h"
 #include <core/font.h>
 
+#define W 1024.0
+#define H 768.0
+
 Colony::Colony(Object *parent, ObjectID id)
     : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
         m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
@@ -16,14 +19,15 @@ Colony::Colony(Object *parent, ObjectID id)
     m_left_bracket = env->resources_manager->get_texture(path + "left_bracket.png");
     m_resources = env->resources_manager->get_texture(path + "resources.png");
 
-    double scale = 1;
-
     m_center_bracket = new Button(this, "center_bracket", path + "center_bracket_button.png",
-        193 * scale, 25 * scale, 635 * scale, 156/2 * scale);
+        (193 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
+        (635 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
     m_tower = new Button(this, "tower", path + "tower_button.png",
-        28 * scale, 25 * scale, 140 * scale, 156/2 * scale);
+        (28 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
+        (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
     m_planet = new Button(this, "planet", path + "planet_button.png",
-        855 * scale, 25 * scale, 140 * scale, 156/2 * scale);
+        (855 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
+        (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
 
     m_center_bracket->add_observer(this);
     m_tower->add_observer(this);
@@ -38,14 +42,13 @@ void
 Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
-    double scale = 1;
 
-    env->canvas->draw(m_right_bracket.get(), 275 * scale, 173 * scale);
-    env->canvas->draw(m_colony.get(), 193 * scale, 25 * scale);
-    env->canvas->draw(m_tower_img.get(), 28 * scale, 25 * scale);
-    env->canvas->draw(m_planet_img.get(), 855 * scale, 25 * scale);
-    env->canvas->draw(m_left_bracket.get(), 28 * scale, 175 * scale);
-    env->canvas->draw(m_resources.get(), 28 * scale, 120 * scale);
+    env->canvas->draw(m_right_bracket.get(), (275 / W) * env->canvas->w(),(173 / H) * env->canvas->h());
+    env->canvas->draw(m_colony.get(), (193 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
+    env->canvas->draw(m_tower_img.get(), (28 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
+    env->canvas->draw(m_planet_img.get(), (855 / W) * env->canvas->w(),(25 / H) * env->canvas->h());
+    env->canvas->draw(m_left_bracket.get(), (28 / W) * env->canvas->w(),(175 / H) * env->canvas->h());
+    env->canvas->draw(m_resources.get(), (28 / W) * env->canvas->w(),(120 / H) * env->canvas->h());
 }
 
 bool
