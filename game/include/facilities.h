@@ -20,7 +20,9 @@ private:
     typedef enum { CHAT, MILITARY, PSIONIC, TECH } Screen;
 
     Screen m_screen;
+    Button *button;
     map<ObjectID, Button*> m_buttons;
+    int m_waked;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
