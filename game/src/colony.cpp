@@ -1,5 +1,6 @@
 #include "colony.h"
 #include <core/font.h>
+#include <core/settings.h>
 
 #define W 1024.0
 #define H 768.0
@@ -7,7 +8,8 @@
 Colony::Colony(Object *parent, ObjectID id)
     : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
         m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
-        m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr)
+        m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
+        m_data(0), m_matter(0), m_energy(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -36,6 +38,11 @@ Colony::Colony(Object *parent, ObjectID id)
     add_child(m_center_bracket);
     add_child(m_tower);
     add_child(m_planet);
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    m_data = settings->read<int>("Colony", "data", 0);
+    m_matter = settings->read<int>("Colony", "matter", 0);
+    m_energy = settings->read<int>("Colony", "energy", 0);
 }
 
 void
@@ -55,6 +62,17 @@ Colony::draw_self()
         (175 / H) * env->canvas->h());
     env->canvas->draw(m_resources.get(), (28 / W) * env->canvas->w(),
         (120 / H) * env->canvas->h());
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    font->set_size(18);
+
+    Color color(170, 215, 190);
+    int x = (120 / W) * env->canvas->w();
+    int y = (120 / H) * env->canvas->h();
+
+    env->canvas->draw(std::to_string(m_data), x, y, color);
+    env->canvas->draw(std::to_string(m_matter), x + 170, y, color);
+    env->canvas->draw(std::to_string(m_energy), x + 160*2, y, color);
 }
 
 bool

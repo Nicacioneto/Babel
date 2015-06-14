@@ -65,13 +65,28 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "wake")
     {
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        int data = settings->read<int>("Colony", "data", 0);
+
+        if (data == 0)
+        {
+            return true;
+        }
+
         if (++m_waked > 100)
         {
             m_waked = 100;
         }
+        else
+        {
+            --data;
+        }
 
-        Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
+        settings->write<int>("Colony", "data", data);
+        settings->save("res/datas/colony.sav");
+
+        settings = env->resources_manager->get_settings("res/datas/facilities.sav");
         settings->write<int>("Military", "waked", m_waked);
         settings->save("res/datas/facilities.sav");
     }
@@ -202,19 +217,25 @@ Facilities::change_to_military()
 
     shared_ptr<Texture> texture;
 
-    for (int i = 0, y = 235; i < 5; ++i, y += 77)
+    for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
-        texture = env->resources_manager->get_texture(path + "rifle.png");
+        string red = "_red";
+        if (m_waked / 19 >= i)
+        {
+            red = "";
+        }
+
+        texture = env->resources_manager->get_texture(path + "rifle" + red + ".png");
         env->canvas->draw(texture.get(), (384 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
-        texture = env->resources_manager->get_texture(path + "shotgun.png");
+        texture = env->resources_manager->get_texture(path + "shotgun" + red + ".png");
         env->canvas->draw(texture.get(), (462 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
-        texture = env->resources_manager->get_texture(path + "pistol_red.png");
+        texture = env->resources_manager->get_texture(path + "pistol" + red + ".png");
         env->canvas->draw(texture.get(), (540 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
-        texture = env->resources_manager->get_texture(path + "sniper_red.png");
+        texture = env->resources_manager->get_texture(path + "sniper" + red + ".png");
         env->canvas->draw(texture.get(), (618 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
-        texture = env->resources_manager->get_texture(path + "rifle_red.png");
+        texture = env->resources_manager->get_texture(path + "rifle" + red + ".png");
         env->canvas->draw(texture.get(), (696 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
-        texture = env->resources_manager->get_texture(path + "shotgun_red.png");
+        texture = env->resources_manager->get_texture(path + "shotgun" + red + ".png");
         env->canvas->draw(texture.get(), (774 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
 
         Point a((360 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
