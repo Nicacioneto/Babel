@@ -42,6 +42,8 @@ private:
     void load_map();
     void load_tiles();
 
+    void calculate_probability_combat();
+
     int m_x, m_y, m_w, m_h;
     int m_steps, m_delta, m_probability_combat;
     unsigned long m_last;

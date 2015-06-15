@@ -7,7 +7,6 @@
 #include <core/rect.h>
 #include <sstream>
 #include <vector>
-#include <iostream>
 #include <core/settings.h>
 
 #define PROBABILITY_STEPWISE 2;
@@ -91,7 +90,7 @@ Dungeon::on_event(const KeyboardEvent& event)
 void
 Dungeon::steps_to_foward()
 {
-    int next = (m_steps + 4 + m_delta) % 4;
+    int next = (m_steps + m_delta) % 4;
 
     if (next)
     {
@@ -107,6 +106,7 @@ Dungeon::steps_to_foward()
             m_x += v.first;
             m_y += v.second;
             m_steps = 0;
+            calculate_probability_combat();
         }
 
         m_state = WAITING;
@@ -132,6 +132,7 @@ Dungeon::steps_to_backward()
             m_x -= v.first;
             m_y -= v.second;
             m_steps = 3;
+            calculate_probability_combat();
         }
 
         m_state = WAITING;
@@ -165,30 +166,6 @@ Dungeon::update_self(unsigned long elapsed)
     else if (m_delta == -1)
     {
         steps_to_backward();
-    }
-
-    if (m_steps)
-    {
-        return;
-    }
-
-    srand (time(NULL));
-
-    int random = rand() % 100;
-
-    if (random < m_probability_combat)
-    {
-        Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
-        settings->write<int>("Dungeon", "x", m_x);
-        settings->write<int>("Dungeon", "y", m_y);
-        settings->save("res/datas/dungeon.sav");
-        set_next("combat");
-        finish();
-    }
-    else
-    {
-        m_probability_combat += PROBABILITY_STEPWISE;
     }
 }
 
@@ -499,5 +476,28 @@ Dungeon::load_tiles()
             }
         }
         catch (Exception) {}
+    }
+}
+
+void
+Dungeon::calculate_probability_combat()
+{
+    srand (time(NULL));
+
+    int random = rand() % 100;
+
+    if (random < m_probability_combat)
+    {
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
+        settings->write<int>("Dungeon", "x", m_x);
+        settings->write<int>("Dungeon", "y", m_y);
+        settings->save("res/datas/dungeon.sav");
+        set_next("combat");
+        finish();
+    }
+    else
+    {
+        m_probability_combat += PROBABILITY_STEPWISE;
     }
 }
