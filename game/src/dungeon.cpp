@@ -269,23 +269,7 @@ Dungeon::draw_self()
 
     auto texture = env->resources_manager->get_texture("res/images/dungeon/compass.png");
 
-    int x;
-    switch (m_direction.front())
-    {
-        case Direction::NORTH:
-            x = 0;
-            break;
-        case Direction::EAST:
-            x = 140;
-            break;
-        case Direction::SOUTH:
-            x = 140*2;
-            break;
-        case Direction::WEST:
-            x = 140*3;
-            break;
-    }
-
+    int x = 140 * m_direction.front();
     env->canvas->draw(texture.get(), Rect(x, 0, 140, 140),
         (60/1024.0) * env->canvas->w(),
         (600/800.0) * env->canvas->h(),
