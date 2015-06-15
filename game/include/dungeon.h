@@ -42,11 +42,11 @@ private:
     void load_map();
     void load_tiles();
 
-    int m_x, m_y, m_w, m_h, m_steps;
+    int m_x, m_y, m_w, m_h;
+    int m_steps, m_delta;
+    unsigned long m_last;
     Direction m_direction;
     State m_state;
-    int m_delta;
-    unsigned long m_last;
     Room **m_rooms;
 
     shared_ptr<Bitmap> m_tiles[MAXT + 1];

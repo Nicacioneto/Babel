@@ -15,8 +15,8 @@ using std::stringstream;
 using std::vector;
 
 Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
-    : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_direction(direction),
-      m_state(WAITING), m_delta(0), m_last(0)
+    : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_delta(0),
+        m_last(0), m_direction(direction), m_state(WAITING)
 {
     Environment *env = Environment::get_instance();
 
@@ -229,9 +229,6 @@ Dungeon::draw_self()
 
         if (north_tile)
         {
-            // env->canvas->fill(back, Color::RED);
-            // env->canvas->update();
-            // SDL_Delay(1000);
             mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
             blocked = true;
             break;
@@ -260,6 +257,30 @@ Dungeon::draw_self()
     }
 
     env->canvas->draw(m_screen);
+
+    auto texture = env->resources_manager->get_texture("res/images/dungeon/compass.png");
+
+    int x;
+    switch (m_direction.front())
+    {
+        case Direction::NORTH:
+            x = 0;
+            break;
+        case Direction::EAST:
+            x = 140;
+            break;
+        case Direction::SOUTH:
+            x = 140*2;
+            break;
+        case Direction::WEST:
+            x = 140*3;
+            break;
+    }
+
+    env->canvas->draw(texture.get(), Rect(x, 0, 140, 140),
+        (60/1024.0) * env->canvas->w(),
+        (600/800.0) * env->canvas->h(),
+        140, 140);
 }
 
 Rect
