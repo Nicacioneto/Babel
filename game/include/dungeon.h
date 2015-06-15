@@ -18,7 +18,7 @@ class Texture;
 class Dungeon : public Level, Listener
 {
 public:
-    Dungeon(int x = 0, int y = 0, int w = 1, int h = 1, int steps = 0,
+    Dungeon(int w = 1, int h = 1, int steps = 0, int probability_combat = 10,
         Direction direction = Direction());
     ~Dungeon();
 
@@ -43,7 +43,7 @@ private:
     void load_tiles();
 
     int m_x, m_y, m_w, m_h;
-    int m_steps, m_delta;
+    int m_steps, m_delta, m_probability_combat;
     unsigned long m_last;
     Direction m_direction;
     State m_state;

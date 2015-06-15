@@ -8,17 +8,25 @@
 #include <sstream>
 #include <vector>
 #include <iostream>
-using namespace std;
+#include <core/settings.h>
+
+#define PROBABILITY_STEPWISE 2;
 
 using std::endl;
 using std::stringstream;
 using std::vector;
 
-Dungeon::Dungeon(int x, int y, int w, int h, int steps, Direction direction)
-    : Level("", ""), m_x(x), m_y(y), m_w(w), m_h(h), m_steps(steps), m_delta(0),
-        m_last(0), m_direction(direction), m_state(WAITING)
+Dungeon::Dungeon(int w, int h, int steps, int probability_combat, Direction direction)
+    : Level("", ""), m_w(w), m_h(h), m_steps(steps),
+        m_delta(0), m_probability_combat(probability_combat), m_last(0),
+        m_direction(direction), m_state(WAITING)
 {
     Environment *env = Environment::get_instance();
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
+
+    m_x = settings->read<int>("Dungeon", "x", 0);
+    m_y = settings->read<int>("Dungeon", "y", 0);
 
     m_screen = new Bitmap(env->video->canvas());
 
@@ -157,6 +165,30 @@ Dungeon::update_self(unsigned long elapsed)
     else if (m_delta == -1)
     {
         steps_to_backward();
+    }
+
+    if (m_steps)
+    {
+        return;
+    }
+
+    srand (time(NULL));
+
+    int random = rand() % 100;
+
+    if (random < m_probability_combat)
+    {
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
+        settings->write<int>("Dungeon", "x", m_x);
+        settings->write<int>("Dungeon", "y", m_y);
+        settings->save("res/datas/dungeon.sav");
+        set_next("combat");
+        finish();
+    }
+    else
+    {
+        m_probability_combat += PROBABILITY_STEPWISE;
     }
 }
 
