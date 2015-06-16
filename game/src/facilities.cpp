@@ -273,10 +273,36 @@ Facilities::change_to_military()
     add_child(button);
 
     path = "res/images/colony/icons/";
+
+    if (m_colony->matter() >= m_matter_price)
+    {
+        y = 0;
+        color = Color(170, 215, 190);
+    }
+    else
+    {
+        y = 20;
+        color = Color(145, 6, 6);
+    }
+
+    Rect clip = Rect(0, y, 24, 20);
     texture = env->resources_manager->get_texture(path + "matter.png");
-    env->canvas->draw(texture.get(), 385/W * env->canvas->w(), 670/H * env->canvas->h());
+    env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
+
+    if (m_colony->energy() >= m_energy_price)
+    {
+        y = 0;
+        color = Color(170, 215, 190);
+    }
+    else
+    {
+        y = 18;
+        color = Color(145, 6, 6);
+    }
+
+    clip = Rect(0, y, 11, 18);
     texture = env->resources_manager->get_texture(path + "energy.png");
-    env->canvas->draw(texture.get(), 478/W * env->canvas->w(), 670/H * env->canvas->h());
+    env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
 
     env->canvas->draw(std::to_string(m_matter_price), 425/W * env->canvas->w(),
         670/H * env->canvas->h(), color);

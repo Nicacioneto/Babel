@@ -20,9 +20,9 @@ public:
 private:
     typedef enum { CHAT, MILITARY, PSIONIC, TECH } Screen;
 
+    Button *button;
     Colony *m_colony;
     Screen m_screen;
-    Button *button;
     map<ObjectID, Button*> m_buttons;
     int m_waked, m_matter_price, m_energy_price;
 
