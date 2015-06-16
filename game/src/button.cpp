@@ -13,25 +13,26 @@
 #include <core/settings.h>
 
 #include <cstdio>
-#include <iostream>
-using namespace std;
 
 MessageID Button::clickedID = "clicked()";
 
 Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
     : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr),
-        m_state(HIDE), m_sprites(2)
+        m_state(IDLE), m_sprites(2)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
-    if (texture != "")
+    if (texture.empty())
+    {
+        m_state = HIDE;
+        set_visible(false);
+    }
+    else
     {
         m_texture = env->resources_manager->get_texture(texture);
-        m_state = IDLE;
     }
-
 }
 
 Button::~Button()
@@ -45,33 +46,31 @@ Button::~Button()
 void
 Button::draw_self()
 {
+    Environment *env = Environment::get_instance();
     env = Environment::get_instance();
 
-    if (m_state != HIDE)
+    if (m_state == IDLE or m_sprites == 1)
     {
-        if (m_state == IDLE or m_sprites == 1)
-        {
-            Rect clip = Rect(0, 0, m_texture->size().first, m_texture->size().second/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
-        }
-        else if (m_state == ON_HOVER)
-        {
-            Rect clip = Rect(0, m_texture->size().second/m_sprites, m_texture->size().first,
-                m_texture->size().second/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
-        }
-        else if (m_state == ACTIVE)
-        {
-            Rect clip = Rect(0, 2 * m_texture->size().second/m_sprites, m_texture->size().first,
-                m_texture->size().second/m_sprites);
-            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
-        }
+        Rect clip = Rect(0, 0, m_texture->size().first, m_texture->size().second/m_sprites);
+        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+    }
+    else if (m_state == ON_HOVER)
+    {
+        Rect clip = Rect(0, m_texture->size().second/m_sprites, m_texture->size().first,
+            m_texture->size().second/m_sprites);
+        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+    }
+    else if (m_state == ACTIVE)
+    {
+        Rect clip = Rect(0, 2 * m_texture->size().second/m_sprites, m_texture->size().first,
+            m_texture->size().second/m_sprites);
+        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+    }
 
-        if (m_text)
-        {
-            m_text->align_to(this, Object::CENTER, Object::MIDDLE);
-            m_text->draw();
-        }
+    if (m_text)
+    {
+        m_text->align_to(this, Object::CENTER, Object::MIDDLE);
+        m_text->draw();
     }
 }
 
@@ -86,6 +85,7 @@ Button::on_event(const MouseButtonEvent& event)
         sprintf(coords, "%.2f,%.2f", event.x(), event.y());
         notify(clickedID, coords);
 
+        Environment *env = Environment::get_instance();
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
 
         return true;
@@ -106,6 +106,7 @@ Button::on_event(const MouseMotionEvent& event)
     {
         if (m_state != ON_HOVER)
         {
+            Environment *env = Environment::get_instance();
             env->sfx->play("res/sfx/uiMouseOver2.ogg", 1);
         }
 
@@ -156,5 +157,6 @@ Button::change_state(State to)
 void
 Button::set_texture(const string& texture)
 {
+    Environment *env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);
 }

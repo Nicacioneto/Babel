@@ -41,7 +41,6 @@ private:
     Text *m_text;
     shared_ptr<Texture> m_texture;
     State m_state;
-    Environment *env;
     int m_sprites;
 
     void draw_self();

@@ -223,6 +223,24 @@ Facilities::create_buttons()
 
     m_buttons[button->id()] = button;
 
+    button = new Button(this, "mwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
+        60, 60);
+    button->set_active(false);
+
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "pwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
+        60, 60);
+    button->set_active(false);
+
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "twake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
+        60, 60);
+    button->set_active(false);
+
+    m_buttons[button->id()] = button;
+
     for (auto b : m_buttons)
     {
         b.second->add_observer(this);
@@ -235,7 +253,10 @@ Facilities::change_buttons()
 {
     for (auto b : m_buttons)
     {
-        if (b.first != "facilities")
+        if (b.first != "facilities" and
+            b.first != "mwake" and
+            b.first != "pwake" and
+            b.first != "twake")
         {
             b.second->change_state(Button::IDLE);
         }
@@ -263,6 +284,10 @@ Facilities::change_to_chat()
 void
 Facilities::change_to_military()
 {
+    m_buttons["mwake"]->set_active(true);
+    m_buttons["pwake"]->set_active(false);
+    m_buttons["twake"]->set_active(false);
+
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -324,11 +349,6 @@ Facilities::change_to_military()
     env->canvas->draw(std::to_string(m_mwaked), ((290+4) / W) * env->canvas->w(),
         ((y + 1) / H) * env->canvas->h(), color);
 
-    button = new Button(this, "mwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
-    button->add_observer(this);
-    add_child(button);
-
     path = "res/images/colony/icons/";
 
     if (m_colony->matter() >= m_matter_price)
@@ -370,6 +390,10 @@ Facilities::change_to_military()
 void
 Facilities::change_to_psionic()
 {
+    m_buttons["mwake"]->set_active(false);
+    m_buttons["pwake"]->set_active(true);
+    m_buttons["twake"]->set_active(false);
+
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -407,7 +431,7 @@ Facilities::change_to_psionic()
     }
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-    m_pwaked = settings->read<int>("Military", "waked", 0);
+    m_pwaked = settings->read<int>("Psionic", "waked", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
         (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
@@ -430,11 +454,6 @@ Facilities::change_to_psionic()
 
     env->canvas->draw(std::to_string(m_pwaked), ((290+4) / W) * env->canvas->w(),
         ((y + 1) / H) * env->canvas->h(), color);
-
-    button = new Button(this, "pwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
-    button->add_observer(this);
-    add_child(button);
 
     path = "res/images/colony/icons/";
 
@@ -477,6 +496,10 @@ Facilities::change_to_psionic()
 void
 Facilities::change_to_tech()
 {
+    m_buttons["mwake"]->set_active(false);
+    m_buttons["pwake"]->set_active(false);
+    m_buttons["twake"]->set_active(true);
+
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -514,7 +537,7 @@ Facilities::change_to_tech()
     }
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-    m_pwaked = settings->read<int>("Tech", "waked", 0);
+    m_twaked = settings->read<int>("Tech", "waked", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
         (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
@@ -535,13 +558,8 @@ Facilities::change_to_tech()
     env->canvas->draw(texture.get(), (290 / W) * env->canvas->w(),
         (y / H) * env->canvas->h());
 
-    env->canvas->draw(std::to_string(m_pwaked), ((290+4) / W) * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_twaked), ((290+4) / W) * env->canvas->w(),
         ((y + 1) / H) * env->canvas->h(), color);
-
-    button = new Button(this, "twake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
-    button->add_observer(this);
-    add_child(button);
 
     path = "res/images/colony/icons/";
 
