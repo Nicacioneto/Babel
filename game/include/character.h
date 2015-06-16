@@ -15,7 +15,7 @@ public:
         double x = 0, double y = 0, double w = 100, double h = 100);
     ~Character();
 
-    void receive_damage(double damage);
+    void receive_damage(Character *character);
 
     int lvl();
     int cooldown();

@@ -50,9 +50,21 @@ Character::on_event(const MouseButtonEvent& event)
 }
 
 void
-Character::receive_damage(double damage)
+Character::receive_damage(Character *attacker)
 {
-    damage = (damage > m_defense ? damage - m_defense : 0);
+    double damage = 0;
+
+    if (attacker->attack() > m_defense)
+    {
+        damage = attacker->attack() - m_defense;
+    }
+    else
+    {
+        damage = attacker->attack() * 0.1;
+    }
+
+    //TO DO Balance attacks
+
     m_life -= damage;
 }
 

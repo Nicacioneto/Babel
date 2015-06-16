@@ -70,7 +70,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     Character *attacker = m_characters[m_attacker];
     Character *enemy = m_enemies[id];
 
-    enemy->receive_damage(attacker->attack());
+    enemy->receive_damage(attacker);
 
     if (enemy->life() <= 0)
     {
@@ -136,7 +136,7 @@ Combat::enemy_attack(Character* enemy)
 {
     Character *character = m_characters.begin()->second;
 
-    character->receive_damage(enemy->attack());
+    character->receive_damage(enemy);
 
     if (character->life() <= 0)
     {
