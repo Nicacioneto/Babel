@@ -24,7 +24,7 @@ private:
     Screen m_screen;
     Button *button;
     map<ObjectID, Button*> m_buttons;
-    int m_waked;
+    int m_waked, m_matter_price, m_energy_price;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

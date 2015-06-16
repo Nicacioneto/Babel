@@ -9,10 +9,9 @@
 #define H 768.0
 
 Facilities::Facilities(const string& next)
-    : Level("facilities", next), m_screen(CHAT), m_waked(0)
+    : Level("facilities", next), m_screen(CHAT), m_waked(0),
+        m_matter_price(10), m_energy_price(10)
 {
-    string path = "res/images/colony/facilities/";
-    
     m_colony = new Colony(this, "facilities");
     m_colony->add_observer(this);
     add_child(m_colony);
@@ -64,9 +63,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "wake")
     {
-        int data = m_colony->data();
+        int matter = m_colony->matter();
+        int energy = m_colony->energy();
 
-        if (data == 0)
+        if (matter < m_matter_price || energy < m_energy_price)
         {
             return true;
         }
@@ -77,10 +77,12 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            --data;
+            matter -= m_matter_price;
+            energy -= m_energy_price;
         }
 
-        m_colony->set_data(data);
+        m_colony->set_matter(matter);
+        m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
         auto settings = env->resources_manager->get_settings("res/datas/facilities.sav");
@@ -269,6 +271,17 @@ Facilities::change_to_military()
         60, 60);
     button->add_observer(this);
     add_child(button);
+
+    path = "res/images/colony/icons/";
+    texture = env->resources_manager->get_texture(path + "matter.png");
+    env->canvas->draw(texture.get(), 385/W * env->canvas->w(), 670/H * env->canvas->h());
+    texture = env->resources_manager->get_texture(path + "energy.png");
+    env->canvas->draw(texture.get(), 478/W * env->canvas->w(), 670/H * env->canvas->h());
+
+    env->canvas->draw(std::to_string(m_matter_price), 425/W * env->canvas->w(),
+        670/H * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_energy_price), 510/W * env->canvas->w(),
+        670/H * env->canvas->h(), color);
 }
 
 void
