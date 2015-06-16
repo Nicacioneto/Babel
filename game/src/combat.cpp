@@ -90,8 +90,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 {
     Character *character = dynamic_cast<Character *>(sender);
 
-    if (not character or m_characters.find(character->id()) != m_characters.end() or
-        m_state != CHARACTER_ATTACK)
+    if (not character or m_state != CHARACTER_ATTACK)
     {
         return false;
     }
@@ -139,6 +138,7 @@ Combat::load_characters()
     {
         it.second->add_observer(this);
         add_child(it.second);
+        it.second->set_active(false);
 
         m_attackers.insert(pair<int, string>(it.second->cooldown(), it.second->id()));
     }
