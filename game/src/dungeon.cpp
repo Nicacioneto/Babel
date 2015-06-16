@@ -60,15 +60,19 @@ Dungeon::on_event(const KeyboardEvent& event)
         case KeyboardEvent::PRESSED:
             switch (event.key())
             {
+                case KeyboardEvent::UP:
                 case KeyboardEvent::W:
                     move_forward();
                     return true;
+                case KeyboardEvent::DOWN:
                 case KeyboardEvent::S:
                     move_backward();
                     return true;
+                case KeyboardEvent::RIGHT:
                 case KeyboardEvent::D:
                     turn_right();
                     return true;
+                case KeyboardEvent::LEFT:
                 case KeyboardEvent::A:
                     turn_left();
                     return true;
