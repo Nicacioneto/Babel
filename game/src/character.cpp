@@ -6,8 +6,8 @@
 
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_character(nullptr), m_lvl(1), m_life(100),
-        m_attack(10), m_defense(5)
+    : Object(parent, id, x, y, w, h), m_character(nullptr), m_lvl(1), m_cooldown(1),
+        m_attacks_quantity(1), m_life(100), m_attack(10), m_defense(5), m_mind_points(1), m_armor(1)
 {
 
     Environment *env = Environment::get_instance();
@@ -102,4 +102,51 @@ void
 Character::set_defense(double defense)
 {
     m_defense = defense;
+}
+
+int
+Character::cooldown()
+{
+    return m_cooldown;
+}
+
+void
+Character::set_cooldown(int cooldown)
+{
+    m_cooldown = cooldown;
+}
+
+double
+Character::mind_points()
+{
+    return m_mind_points;
+}
+
+void
+Character::set_mind_points(double mind_points)
+{
+    m_mind_points = mind_points;
+}
+
+double
+Character::armor()
+{
+    return m_armor;
+}
+
+void
+Character::set_armor(double armor)
+{
+    m_armor = armor;
+}
+
+int
+Character::attacks_quantity()
+{
+    return m_attacks_quantity;
+}
+void
+Character::set_attacks_quantity(int attacks_quantity)
+{
+    m_attacks_quantity = attacks_quantity;
 }

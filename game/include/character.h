@@ -18,19 +18,28 @@ public:
     void receive_damage(double damage);
 
     int lvl();
+    int cooldown();
+    int attacks_quantity();
     double life();
+    double mind_points();
     double attack();
     double defense();
+    double armor();
+
     void set_lvl(int lvl);
+    void set_cooldown(int cooldown);
+    void set_attacks_quantity(int attacks_quantity);
     void set_life(double life);
+    void set_mind_points(double mind_points);
     void set_attack(double attack);
     void set_defense(double defense);
+    void set_armor(double armor);
 
 private:
     shared_ptr<Texture> m_character;
 
-    int m_lvl;
-    double m_life, m_attack, m_defense;
+    int m_lvl, m_cooldown, m_attacks_quantity;
+    double m_life, m_attack, m_defense, m_mind_points, m_armor;
 
     void draw_self();
     bool on_event(const MouseButtonEvent& event);
