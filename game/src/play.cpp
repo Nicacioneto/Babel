@@ -74,7 +74,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "slot2")
     {
-        set_next("combat");
+        set_next("base");
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", 1);
         settings->write<int>("Slots", "slot3", slot3);
