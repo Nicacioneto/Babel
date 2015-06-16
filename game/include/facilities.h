@@ -24,7 +24,8 @@ private:
     Colony *m_colony;
     Screen m_screen;
     map<ObjectID, Button*> m_buttons;
-    int m_waked, m_matter_price, m_energy_price;
+    int m_mwaked, m_pwaked, m_twaked;
+    int m_matter_price, m_energy_price;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
