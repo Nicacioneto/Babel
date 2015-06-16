@@ -49,7 +49,7 @@ Character::on_event(const MouseButtonEvent& event)
     return false;
 }
 
-void
+int
 Character::receive_damage(Character *attacker)
 {
     double damage = 0;
@@ -65,7 +65,10 @@ Character::receive_damage(Character *attacker)
 
     //TO DO Balance attacks
 
-    m_life -= damage;
+    int d = round(damage);
+    m_life -= d;
+
+    return d;
 }
 
 int

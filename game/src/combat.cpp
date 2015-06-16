@@ -1,9 +1,16 @@
 #include "combat.h"
 #include "character.h"
-#include <iostream>
+#include <core/font.h>
+
+using std::make_pair;
+using std::to_string;
+
+#define H 768.0
+#define DELAY 1000
 
 Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK)
+    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK), m_last(0),
+    m_damage(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -14,7 +21,7 @@ Combat::Combat(const string& next, const string& image)
 }
 
 void
-Combat::update_self(unsigned long)
+Combat::update_self(unsigned long elapsed)
 {
     if (m_characters.empty())
     {
@@ -26,7 +33,21 @@ Combat::update_self(unsigned long)
         set_next("dungeon");
         finish();
     }
-    else if(m_state == ENEMY_ATTACK)
+
+    if (not m_last or m_state == CHARACTER_ATTACK)
+    {
+        m_last = elapsed;
+        return;
+    }
+    else if (elapsed - m_last < DELAY)
+    {
+        return;
+    }
+
+    m_last = elapsed;
+    m_state = ENEMY_ATTACK;
+    
+    if (m_state == ENEMY_ATTACK)
     {
         m_attacker = m_attackers.begin()->second;
         
@@ -54,6 +75,14 @@ Combat::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
+
+    if (m_state == SHOW_DAMAGE)
+    {
+        shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+        env->canvas->set_font(font);
+        font->set_size(20);
+        env->canvas->draw("-" + to_string(m_damage), m_receiver.first, m_receiver.second, Color::RED);
+    }
 }
 
 bool
@@ -70,7 +99,10 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     Character *attacker = m_characters[m_attacker];
     Character *enemy = m_enemies[id];
 
-    enemy->receive_damage(attacker);
+    m_damage = enemy->receive_damage(attacker);
+
+    Environment *env = Environment::get_instance();
+    receiver(enemy->x() + enemy->w() / 2, enemy->y() + enemy->h() + (10 / H * env->canvas->h()));
 
     if (enemy->life() <= 0)
     {
@@ -81,7 +113,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
         delete enemy;
     }
 
-    m_state = ENEMY_ATTACK;
+    m_state = SHOW_DAMAGE;
     update_attackers(attacker);
 
     return true;
@@ -136,7 +168,10 @@ Combat::enemy_attack(Character* enemy)
 {
     Character *character = m_characters.begin()->second;
 
-    character->receive_damage(enemy);
+    m_damage = character->receive_damage(enemy);
+
+    Environment *env = Environment::get_instance();
+    receiver(character->x() + character->w() / 2, character->y() - (10 / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {
@@ -148,6 +183,7 @@ Combat::enemy_attack(Character* enemy)
     }
 
     update_attackers(enemy);
+    m_state = SHOW_DAMAGE;
 }
 
 void
@@ -159,4 +195,10 @@ Combat::update_attackers(Character* character)
     int new_cooldown = character->cooldown() * attacks_quantity;
 
     m_attackers.insert(pair<int, string>(new_cooldown, character->id()));
+}
+
+void
+Combat::receiver(double x, double y)
+{
+    m_receiver = make_pair(x, y);
 }
