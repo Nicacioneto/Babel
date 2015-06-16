@@ -18,8 +18,7 @@ class Texture;
 class Dungeon : public Level, Listener
 {
 public:
-    Dungeon(int w = 1, int h = 1, int steps = 0, int probability_combat = 10,
-        Direction direction = Direction());
+    Dungeon(int w = 1, int h = 1, int steps = 0, int probability_combat = 10);
     ~Dungeon();
 
     void move_backward();

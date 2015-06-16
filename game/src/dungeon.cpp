@@ -15,10 +15,9 @@ using std::endl;
 using std::stringstream;
 using std::vector;
 
-Dungeon::Dungeon(int w, int h, int steps, int probability_combat, Direction direction)
+Dungeon::Dungeon(int w, int h, int steps, int probability_combat)
     : Level("", ""), m_w(w), m_h(h), m_steps(steps),
-        m_delta(0), m_probability_combat(probability_combat), m_last(0),
-        m_direction(direction), m_state(WAITING)
+        m_delta(0), m_probability_combat(probability_combat), m_last(0), m_state(WAITING)
 {
     Environment *env = Environment::get_instance();
 
@@ -26,6 +25,9 @@ Dungeon::Dungeon(int w, int h, int steps, int probability_combat, Direction dire
 
     m_x = settings->read<int>("Dungeon", "x", 0);
     m_y = settings->read<int>("Dungeon", "y", 0);
+
+    int direction = settings->read<int>("Dungeon", "direction", 0);
+    m_direction = Direction(direction);
 
     m_screen = new Bitmap(env->video->canvas());
 
@@ -473,6 +475,8 @@ Dungeon::calculate_probability_combat()
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
         settings->write<int>("Dungeon", "x", m_x);
         settings->write<int>("Dungeon", "y", m_y);
+        settings->write<int>("Dungeon", "direction", m_direction.front());
+
         settings->save("res/datas/dungeon.sav");
         set_next("combat");
         finish();

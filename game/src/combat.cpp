@@ -125,6 +125,7 @@ Combat::load_characters()
     Character *character = new Character(this, "luigi", "luigi.png",
         500, 300, 200, 300);
     character->set_cooldown(5);
+    character->set_attack(50);
 
     m_characters[character->id()] = character;
 
