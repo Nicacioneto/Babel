@@ -14,6 +14,14 @@ class Colony : public Object
 public:
     Colony(Object *parent = nullptr, ObjectID id = "");
 
+    int data() const;
+    int matter() const;
+    int energy() const;
+
+    void set_data(int data);
+    void set_matter(int matter);
+    void set_energy(int energy);
+
 private:
     shared_ptr<Texture> m_right_bracket;
     shared_ptr<Texture> m_colony;

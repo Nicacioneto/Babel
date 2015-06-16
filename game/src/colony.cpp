@@ -100,3 +100,51 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
 
     return true;
 }
+
+int
+Colony::data() const
+{
+    return m_data;
+}
+
+int
+Colony::matter() const
+{
+    return m_matter;
+}
+
+int
+Colony::energy() const
+{
+    return m_energy;
+}
+
+void
+Colony::set_data(int data)
+{
+    Environment *env = Environment::get_instance();
+    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    settings->write<int>("Colony", "data", data);
+    settings->save("res/datas/colony.sav");
+    m_data = data;
+}
+
+void
+Colony::set_matter(int matter)
+{
+    Environment *env = Environment::get_instance();
+    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    settings->write<int>("Colony", "matter", matter);
+    settings->save("res/datas/colony.sav");
+    m_matter = matter;
+}
+
+void
+Colony::set_energy(int energy)
+{
+    Environment *env = Environment::get_instance();
+    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    settings->write<int>("Colony", "energy", energy);
+    settings->save("res/datas/colony.sav");
+    m_energy = energy;
+}

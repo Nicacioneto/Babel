@@ -3,6 +3,7 @@
 
 #include "button.h"
 #include "base.h"
+#include "colony.h"
 #include <core/level.h>
 #include <memory>
 #include <map>
@@ -19,6 +20,7 @@ public:
 private:
     typedef enum { CHAT, MILITARY, PSIONIC, TECH } Screen;
 
+    Colony *m_colony;
     Screen m_screen;
     Button *button;
     map<ObjectID, Button*> m_buttons;

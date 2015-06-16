@@ -1,4 +1,3 @@
-#include "colony.h"
 #include "facilities.h"
 #include <core/font.h>
 #include <core/line.h>
@@ -14,9 +13,9 @@ Facilities::Facilities(const string& next)
 {
     string path = "res/images/colony/facilities/";
     
-    Colony *colony = new Colony(this, "facilities");
-    colony->add_observer(this);
-    add_child(colony);
+    m_colony = new Colony(this, "facilities");
+    m_colony->add_observer(this);
+    add_child(m_colony);
 
     create_buttons();
 }
@@ -65,9 +64,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "wake")
     {
-        Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
-        int data = settings->read<int>("Colony", "data", 0);
+        int data = m_colony->data();
 
         if (data == 0)
         {
@@ -83,10 +80,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
             --data;
         }
 
-        settings->write<int>("Colony", "data", data);
-        settings->save("res/datas/colony.sav");
+        m_colony->set_data(data);
 
-        settings = env->resources_manager->get_settings("res/datas/facilities.sav");
+        Environment *env = Environment::get_instance();
+        auto settings = env->resources_manager->get_settings("res/datas/facilities.sav");
         settings->write<int>("Military", "waked", m_waked);
         settings->save("res/datas/facilities.sav");
     }
