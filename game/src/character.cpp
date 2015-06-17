@@ -127,7 +127,7 @@ void
 Character::set_level(int level)
 {
     m_level = level;
-    write_file("level", level);
+    write<int>("level", level);
 }
 
 int
@@ -140,7 +140,7 @@ void
 Character::set_levelup(int levelup)
 {
     m_levelup = levelup;
-    write_file("levelup", levelup);
+    write<int>("levelup", levelup);
 }
 
 int
@@ -153,7 +153,7 @@ void
 Character::set_military(int military)
 {
     m_military = military;
-    write_file("military", military);
+    write<int>("military", military);
 }
 
 int
@@ -166,7 +166,7 @@ void
 Character::set_psionic(int psionic)
 {
     m_psionic = psionic;
-    write_file("psionic", psionic);
+    write<int>("psionic", psionic);
 }
 
 int
@@ -179,7 +179,7 @@ void
 Character::set_tech(int tech)
 {
     m_tech = tech;
-    write_file("tech", tech);
+    write<int>("tech", tech);
 }
 
 int
@@ -192,7 +192,7 @@ void
 Character::set_might(int might)
 {
     m_might = might;
-    write_file("might", might);
+    write<int>("might", might);
 }
 
 int
@@ -205,7 +205,7 @@ void
 Character::set_mind(int mind)
 {
     m_mind = mind;
-    write_file("mind", mind);
+    write<int>("mind", mind);
 }
 
 int
@@ -218,7 +218,7 @@ void
 Character::set_perception(int perception)
 {
     m_perception = perception;
-    write_file("perception", perception);
+    write<int>("perception", perception);
 }
 
 int
@@ -231,7 +231,7 @@ void
 Character::set_agility(int agility)
 {
     m_agility = agility;
-    write_file("agility", agility);
+    write<int>("agility", agility);
 }
 
 int
@@ -244,7 +244,7 @@ void
 Character::set_might_attack(int might_attack)
 {
     m_might_attack = might_attack;
-    write_file("might_attack", might_attack);
+    write<int>("might_attack", might_attack);
 }
 
 int
@@ -257,7 +257,7 @@ void
 Character::set_mind_attack(int mind_attack)
 {
     m_mind_attack = mind_attack;
-    write_file("mind_attack", mind_attack);
+    write<int>("mind_attack", mind_attack);
 }
 
 int
@@ -270,7 +270,7 @@ void
 Character::set_cooldown(int cooldown)
 {
     m_cooldown = cooldown;
-    write_file("cooldown", cooldown);
+    write<int>("cooldown", cooldown);
 }
 
 int
@@ -283,7 +283,7 @@ void
 Character::set_defense(int defense)
 {
     m_defense = defense;
-    write_file("defense", defense);
+    write<int>("defense", defense);
 }
 
 int
@@ -296,7 +296,7 @@ void
 Character::set_might_armor(int might_armor)
 {
     m_might_armor = might_armor;
-    write_file("might_armor", might_armor);
+    write<int>("might_armor", might_armor);
 }
 
 int
@@ -309,7 +309,7 @@ void
 Character::set_mind_armor(int mind_armor)
 {
     m_mind_armor = mind_armor;
-    write_file("mind_armor", mind_armor);
+    write<int>("mind_armor", mind_armor);
 }
 
 int
@@ -322,7 +322,7 @@ void
 Character::set_critical(int critical)
 {
     m_critical = critical;
-    write_file("critical", critical);
+    write<int>("critical", critical);
 }
 
 int
@@ -335,7 +335,7 @@ void
 Character::set_life(int life)
 {
     m_life = life;
-    write_file("life", life);
+    write<int>("life", life);
 }
 
 int
@@ -348,7 +348,7 @@ void
 Character::set_shield(int shield)
 {
     m_shield = shield;
-    write_file("shield", shield);
+    write<int>("shield", shield);
 }
 
 int
@@ -361,7 +361,7 @@ void
 Character::set_mp(int mp)
 {
     m_mp = mp;
-    write_file("mp", mp);
+    write<int>("mp", mp);
 }
 
 int
@@ -374,7 +374,7 @@ void
 Character::set_max_life(int max_life)
 {
     m_max_life = max_life;
-    write_file("max_life", max_life);
+    write<int>("max_life", max_life);
 }
 
 int
@@ -387,7 +387,7 @@ void
 Character::set_max_shield(int max_shield)
 {
     m_max_shield = max_shield;
-    write_file("max_shield", max_shield);
+    write<int>("max_shield", max_shield);
 }
 
 int
@@ -400,11 +400,11 @@ void
 Character::set_max_mp(int max_mp)
 {
     m_max_mp = max_mp;
-    write_file("max_mp", max_mp);
+    write<int>("max_mp", max_mp);
 }
 
-void
-Character::write_file(string attr, int value)
+template<typename T> void
+Character::write(const string& attr, const T& value)
 {
     if (m_name != "Default")
     {

@@ -98,7 +98,9 @@ private:
     void init();
     void draw_self();
     bool on_event(const MouseButtonEvent& event);
-    void write_file(string attr, int value);
+
+    template<typename T>
+    void write(const string& name, const T& value);
 };
 
 #endif
