@@ -4,7 +4,6 @@
 #include "button.h"
 #include <core/level.h>
 #include <map>
-#include <iostream>
 
 using std::multimap;
 using std::pair;
