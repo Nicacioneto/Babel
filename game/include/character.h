@@ -37,9 +37,16 @@ public:
 
 private:
     shared_ptr<Texture> m_character;
-
-    int m_lvl, m_cooldown, m_attacks_quantity;
-    double m_life, m_attack, m_defense, m_mind_points, m_armor;
+    shared_ptr<Settings> m_settings;
+    
+    int m_lvl;
+    int m_cooldown;
+    int m_attacks_quantity;
+    double m_life;
+    double m_attack;
+    double m_defense;
+    double m_mind_points;
+    double m_armor;
 
     void draw_self();
     bool on_event(const MouseButtonEvent& event);

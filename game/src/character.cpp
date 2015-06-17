@@ -8,7 +8,7 @@ using namespace std;
 
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_character(nullptr), m_lvl(1), m_cooldown(1),
+    : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr), m_lvl(1), m_cooldown(1),
         m_attacks_quantity(1), m_life(100), m_attack(10), m_defense(5), m_mind_points(1), m_armor(1)
 {
 
@@ -17,6 +17,7 @@ Character::Character(Object *parent, ObjectID id, const string& character,
 
     string path = "res/images/characters/";
     m_character = env->resources_manager->get_texture(path + character);
+    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
 
     if (!w and !h)
     {

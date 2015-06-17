@@ -189,7 +189,7 @@ Barracks::draw_self()
     string agility = it->second["agility"];
     string might_attack = it->second["might_attack"];
     string mind_attack = it->second["mind_attack"];
-    string speed = it->second["speed"];
+    string cooldown = it->second["cooldown"];
     string defense = it->second["defense"];
     string might_armor = it->second["might_armor"];
     string mind_armor = it->second["mind_armor"];
@@ -208,7 +208,7 @@ Barracks::draw_self()
         agility.pop_back();
         might_attack.pop_back();
         mind_attack.pop_back();
-        speed.pop_back();
+        cooldown.pop_back();
         defense.pop_back();
         might_armor.pop_back();
         mind_armor.pop_back();
@@ -238,7 +238,7 @@ Barracks::draw_self()
     color = Color(82, 104, 93);
     env->canvas->draw(might_attack, (780/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
     env->canvas->draw(mind_attack, (780/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-    env->canvas->draw(speed, (780/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
+    env->canvas->draw(cooldown, (780/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
     env->canvas->draw(defense, (780/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
 
     env->canvas->draw(might_armor, (900/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
