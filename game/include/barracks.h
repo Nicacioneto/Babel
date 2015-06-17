@@ -17,6 +17,8 @@ public:
 
 private:
     map<ObjectID, Button*> m_buttons;
+    shared_ptr<Settings> m_settings;
+    int m_character;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

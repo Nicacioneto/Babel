@@ -10,7 +10,7 @@
 using std::to_string;
 
 Barracks::Barracks(const string& next)
-    : Level("barracks", next)
+    : Level("barracks", next), m_character(0)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
@@ -30,6 +30,8 @@ Barracks::Barracks(const string& next)
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
 }
 
 void
@@ -172,81 +174,82 @@ Barracks::draw_self()
     font->set_size(32);
     Color color(170, 215, 190);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/barracks.sav");
-    auto sections = settings->sections();
+    auto it = m_settings->sections().begin();
+    for (int i = 0; i < m_character; ++it, ++i); // not very well with other ++ operators
 
-    for (auto character : sections)
+    string name = it->first;
+    string level = it->second["level"];
+    string levelup = it->second["levelup"];
+    string m = it->second["m"];
+    string p = it->second["p"];
+    string t = it->second["t"];
+    string might = it->second["might"];
+    string mind = it->second["mind"];
+    string perception = it->second["perception"];
+    string agility = it->second["agility"];
+    string might_attack = it->second["might_attack"];
+    string mind_attack = it->second["mind_attack"];
+    string speed = it->second["speed"];
+    string defense = it->second["defense"];
+    string might_armor = it->second["might_armor"];
+    string mind_armor = it->second["mind_armor"];
+    string critical = it->second["critical"];
+
+    if (level.back() == '\r')
     {
-        string name = character.first;
-        string level = character.second["level"];
-        string levelup = character.second["levelup"];
-        string m = character.second["m"];
-        string p = character.second["p"];
-        string t = character.second["t"];
-        string might = character.second["might"];
-        string mind = character.second["mind"];
-        string perception = character.second["perception"];
-        string agility = character.second["agility"];
-        string attack = character.second["attack"];
-        string speed = character.second["speed"];
-        string defence = character.second["defence"];
-        string armor = character.second["armor"];
-        string critical = character.second["critical"];
-
-        if (level.back() == '\r')
-        {
-            level.pop_back();
-            levelup.pop_back();
-            m.pop_back();
-            p.pop_back();
-            t.pop_back();
-            might.pop_back();
-            mind.pop_back();
-            perception.pop_back();
-            agility.pop_back();
-            attack.pop_back();
-            speed.pop_back();
-            defence.pop_back();
-            armor.pop_back();
-            critical.pop_back();
-        }
-
-        env->canvas->draw(name, (112/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
-        env->canvas->draw(level, (300/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
-
-        font->set_size(16);
-        env->canvas->draw(name, (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
-        font->set_size(18);
-        env->canvas->draw("level", (257/W) * env->canvas->w(), (99/H) * env->canvas->h(), Color(82, 104, 93));
-        env->canvas->draw(m, (295/W) * env->canvas->w(), (167/H) * env->canvas->h(), Color(208, 179, 43));
-        env->canvas->draw(p, (295/W) * env->canvas->w(), (198/H) * env->canvas->h(), Color(166, 69, 151));
-        env->canvas->draw(t, (295/W) * env->canvas->w(), (229/H) * env->canvas->h(), Color(78, 191, 190));
-
-        font->set_size(22);
-        env->canvas->draw(levelup, (500/W) * env->canvas->w(), (370/H) * env->canvas->h(), Color(62, 108, 236));
-
-        font->set_size(12);
-        env->canvas->draw(might, (607/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-        env->canvas->draw(mind, (607/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-        env->canvas->draw(perception, (607/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-        env->canvas->draw(agility, (607/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
-
-        color = Color(82, 104, 93);
-        env->canvas->draw(attack, (780/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-        env->canvas->draw(attack, (780/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-        env->canvas->draw(speed, (780/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-        env->canvas->draw(defence, (780/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
-
-        env->canvas->draw(armor, (900/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-        env->canvas->draw(armor, (900/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-        env->canvas->draw(critical, (900/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-        env->canvas->draw(critical, (900/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
-
-        font->set_size(16);
-        settings = env->resources_manager->get_settings("res/datas/colony.sav");
-        int data = settings->read<int>("Colony", "data", 0);
-        env->canvas->draw(to_string(data), (500/W) * env->canvas->w(), (415/H) * env->canvas->h(), Color(170, 215, 190));
+        level.pop_back();
+        levelup.pop_back();
+        m.pop_back();
+        p.pop_back();
+        t.pop_back();
+        might.pop_back();
+        mind.pop_back();
+        perception.pop_back();
+        agility.pop_back();
+        might_attack.pop_back();
+        mind_attack.pop_back();
+        speed.pop_back();
+        defense.pop_back();
+        might_armor.pop_back();
+        mind_armor.pop_back();
+        critical.pop_back();
     }
+
+    env->canvas->draw(name, (112/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
+    env->canvas->draw(level, (300/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
+
+    font->set_size(16);
+    env->canvas->draw(name, (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
+    font->set_size(18);
+    env->canvas->draw("level", (257/W) * env->canvas->w(), (99/H) * env->canvas->h(), Color(82, 104, 93));
+    env->canvas->draw(m, (295/W) * env->canvas->w(), (167/H) * env->canvas->h(), Color(208, 179, 43));
+    env->canvas->draw(p, (295/W) * env->canvas->w(), (198/H) * env->canvas->h(), Color(166, 69, 151));
+    env->canvas->draw(t, (295/W) * env->canvas->w(), (229/H) * env->canvas->h(), Color(78, 191, 190));
+
+    font->set_size(22);
+    env->canvas->draw(levelup, (500/W) * env->canvas->w(), (370/H) * env->canvas->h(), Color(62, 108, 236));
+
+    font->set_size(12);
+    env->canvas->draw(might, (607/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
+    env->canvas->draw(mind, (607/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
+    env->canvas->draw(perception, (607/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
+    env->canvas->draw(agility, (607/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+
+    color = Color(82, 104, 93);
+    env->canvas->draw(might_attack, (780/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
+    env->canvas->draw(mind_attack, (780/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
+    env->canvas->draw(speed, (780/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
+    env->canvas->draw(defense, (780/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+
+    env->canvas->draw(might_armor, (900/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
+    env->canvas->draw(mind_armor, (900/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
+    env->canvas->draw(critical, (900/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
+    env->canvas->draw(critical, (900/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+
+    font->set_size(16);
+    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    int data = settings->read<int>("Colony", "data", 0);
+    env->canvas->draw(to_string(data), (500/W) * env->canvas->w(), (415/H) * env->canvas->h(), Color(170, 215, 190));
 }
 
 bool
@@ -261,12 +264,18 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        // TODO
+        if (m_character == 0)
+        {
+            m_character = m_settings->sections().size() - 1;
+        }
+        else
+        {
+            --m_character;
+        }
     }
     else if (button->id() == "right_arrow")
     {
-
-        // TODO
+        m_character = (m_character + 1) % m_settings->sections().size();
     }
 
     return true;
