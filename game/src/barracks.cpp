@@ -264,13 +264,9 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        if (m_character == 0)
+        if (--m_character < 0)
         {
             m_character = m_settings->sections().size() - 1;
-        }
-        else
-        {
-            --m_character;
         }
     }
     else if (button->id() == "right_arrow")

@@ -4,7 +4,6 @@
 #include <core/mousebuttonevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
-#include <cmath>
 
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h, const string& name)
