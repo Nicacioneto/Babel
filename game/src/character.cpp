@@ -3,31 +3,60 @@
 #include <core/texture.h>
 #include <core/mousebuttonevent.h>
 #include <core/rect.h>
+#include <core/settings.h>
 #include <cmath>
 
 Character::Character(Object *parent, ObjectID id, const string& character,
-    double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr), m_lvl(1), m_cooldown(1),
-        m_attacks_quantity(1), m_life(100), m_attack(10), m_defense(5), m_mind_points(1), m_armor(1)
+    double x, double y, double w, double h, const string& name)
+    : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr),
+    m_name(name), m_attacks_quantity(1)
 {
-
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
     string path = "res/images/characters/";
     m_character = env->resources_manager->get_texture(path + character);
-    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
 
     if (!w and !h)
     {
         set_dimensions(m_character->w(), m_character->h());
     }
+
+    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
+    init();
 }
 
 Character::~Character()
 {
     Environment *env = Environment::get_instance();
     env->events_manager->unregister_listener(this);
+}
+
+void
+Character::init()
+{
+    m_level = m_settings->read<int>(m_name, "level", 0);
+    m_levelup = m_settings->read<int>(m_name, "levelup", 0);
+    m_military = m_settings->read<int>(m_name, "military", 0);
+    m_psionic = m_settings->read<int>(m_name, "psionic", 0);
+    m_tech = m_settings->read<int>(m_name, "tech", 0);
+    m_might = m_settings->read<int>(m_name, "might", 0);
+    m_mind = m_settings->read<int>(m_name, "mind", 0);
+    m_perception = m_settings->read<int>(m_name, "perception", 0);
+    m_agility = m_settings->read<int>(m_name, "agility", 0);
+    m_might_attack = m_settings->read<int>(m_name, "might_attack", 0);
+    m_mind_attack = m_settings->read<int>(m_name, "mind_attack", 0);
+    m_cooldown = m_settings->read<int>(m_name, "cooldown", 0);
+    m_defense = m_settings->read<int>(m_name, "defense", 0);
+    m_might_armor = m_settings->read<int>(m_name, "might_armor", 0);
+    m_mind_armor = m_settings->read<int>(m_name, "mind_armor", 0);
+    m_critical = m_settings->read<int>(m_name, "critical", 0);
+    m_life = m_settings->read<int>(m_name, "life", 0);
+    m_shield = m_settings->read<int>(m_name, "shield", 0);
+    m_mp = m_settings->read<int>(m_name, "mp", 0);
+    m_max_life = m_settings->read<int>(m_name, "max_life", 0);
+    m_max_shield = m_settings->read<int>(m_name, "max_shield", 0);
+    m_max_mp = m_settings->read<int>(m_name, "max_mp", 0);
 }
 
 void
@@ -61,13 +90,13 @@ Character::receive_damage(Character *attacker)
 {
     double damage = 0;
 
-    if (attacker->attack() > m_defense)
+    if (attacker->might_attack() > m_defense)
     {
-        damage = attacker->attack() - m_defense;
+        damage = attacker->might_attack() - m_defense;
     }
     else
     {
-        damage = attacker->attack() * 0.1;
+        damage = attacker->might_attack() * 0.1;
     }
 
     //TO DO Balance attacks
@@ -79,51 +108,157 @@ Character::receive_damage(Character *attacker)
 }
 
 int
-Character::lvl()
+Character::attacks_quantity()
 {
-    return m_lvl;
+    return m_attacks_quantity;
+}
+void
+Character::set_attacks_quantity(int attacks_quantity)
+{
+    m_attacks_quantity = attacks_quantity;
+}
+
+int
+Character::level()
+{
+    return m_level;
 }
 
 void
-Character::set_lvl(int lvl)
+Character::set_level(int level)
 {
-    m_lvl = lvl;
+    m_level = level;
+    m_settings->write<int>(m_name, "level", level);
 }
 
-double
-Character::life()
+int
+Character::levelup()
 {
-    return m_life;
-}
-
-void
-Character::set_life(double life)
-{
-    m_life = life;
-}
-
-double
-Character::attack()
-{
-    return m_attack;
+    return m_levelup;
 }
 
 void
-Character::set_attack(double attack)
+Character::set_levelup(int levelup)
 {
-    m_attack = attack;
+    m_levelup = levelup;
+    m_settings->write<int>(m_name, "levelup", levelup);
 }
 
-double
-Character::defense()
+int
+Character::military()
 {
-    return m_defense;
+    return m_military;
 }
 
 void
-Character::set_defense(double defense)
+Character::set_military(int military)
 {
-    m_defense = defense;
+    m_military = military;
+    m_settings->write<int>(m_name, "military", military);
+}
+
+int
+Character::psionic()
+{
+    return m_psionic;
+}
+
+void
+Character::set_psionic(int psionic)
+{
+    m_psionic = psionic;
+    m_settings->write<int>(m_name, "psionic", psionic);
+}
+
+int
+Character::tech()
+{
+    return m_tech;
+}
+
+void
+Character::set_tech(int tech)
+{
+    m_tech = tech;
+    m_settings->write<int>(m_name, "tech", tech);
+}
+
+int
+Character::might()
+{
+    return m_might;
+}
+
+void
+Character::set_might(int might)
+{
+    m_might = might;
+    m_settings->write<int>(m_name, "might", might);
+}
+
+int
+Character::mind()
+{
+    return m_mind;
+}
+
+void
+Character::set_mind(int mind)
+{
+    m_mind = mind;
+    m_settings->write<int>(m_name, "mind", mind);
+}
+
+int
+Character::perception()
+{
+    return m_perception;
+}
+
+void
+Character::set_perception(int perception)
+{
+    m_perception = perception;
+    m_settings->write<int>(m_name, "perception", perception);
+}
+
+int
+Character::agility()
+{
+    return m_agility;
+}
+
+void
+Character::set_agility(int agility)
+{
+    m_agility = agility;
+    m_settings->write<int>(m_name, "agility", agility);
+}
+
+int
+Character::might_attack()
+{
+    return m_might_attack;
+}
+
+void
+Character::set_might_attack(int might_attack)
+{
+    m_might_attack = might_attack;
+    m_settings->write<int>(m_name, "might_attack", might_attack);
+}
+
+int
+Character::mind_attack()
+{
+    return m_mind_attack;
+}
+
+void
+Character::set_mind_attack(int mind_attack)
+{
+    m_mind_attack = mind_attack;
+    m_settings->write<int>(m_name, "mind_attack", mind_attack);
 }
 
 int
@@ -136,39 +271,135 @@ void
 Character::set_cooldown(int cooldown)
 {
     m_cooldown = cooldown;
-}
-
-double
-Character::mind_points()
-{
-    return m_mind_points;
-}
-
-void
-Character::set_mind_points(double mind_points)
-{
-    m_mind_points = mind_points;
-}
-
-double
-Character::armor()
-{
-    return m_armor;
-}
-
-void
-Character::set_armor(double armor)
-{
-    m_armor = armor;
+    m_settings->write<int>(m_name, "cooldown", cooldown);
 }
 
 int
-Character::attacks_quantity()
+Character::defense()
 {
-    return m_attacks_quantity;
+    return m_defense;
 }
+
 void
-Character::set_attacks_quantity(int attacks_quantity)
+Character::set_defense(int defense)
 {
-    m_attacks_quantity = attacks_quantity;
+    m_defense = defense;
+    m_settings->write<int>(m_name, "defense", defense);
+}
+
+int
+Character::might_armor()
+{
+    return m_might_armor;
+}
+
+void
+Character::set_might_armor(int might_armor)
+{
+    m_might_armor = might_armor;
+    m_settings->write<int>(m_name, "might_armor", might_armor);
+}
+
+int
+Character::mind_armor()
+{
+    return m_mind_armor;
+}
+
+void
+Character::set_mind_armor(int mind_armor)
+{
+    m_mind_armor = mind_armor;
+    m_settings->write<int>(m_name, "mind_armor", mind_armor);
+}
+
+int
+Character::critical()
+{
+    return m_critical;
+}
+
+void
+Character::set_critical(int critical)
+{
+    m_critical = critical;
+    m_settings->write<int>(m_name, "critical", critical);
+}
+
+int
+Character::life()
+{
+    return m_life;
+}
+
+void
+Character::set_life(int life)
+{
+    m_life = life;
+    m_settings->write<int>(m_name, "life", life);
+}
+
+int
+Character::shield()
+{
+    return m_shield;
+}
+
+void
+Character::set_shield(int shield)
+{
+    m_shield = shield;
+    m_settings->write<int>(m_name, "shield", shield);
+}
+
+int
+Character::mp()
+{
+    return m_mp;
+}
+
+void
+Character::set_mp(int mp)
+{
+    m_mp = mp;
+    m_settings->write<int>(m_name, "mp", mp);
+}
+
+int
+Character::max_life()
+{
+    return m_max_life;
+}
+
+void
+Character::set_max_life(int max_life)
+{
+    m_max_life = max_life;
+    m_settings->write<int>(m_name, "max_life", max_life);
+}
+
+int
+Character::max_shield()
+{
+    return m_max_shield;
+}
+
+void
+Character::set_max_shield(int max_shield)
+{
+    m_max_shield = max_shield;
+    m_settings->write<int>(m_name, "max_shield", max_shield);
+}
+
+int
+Character::max_mp()
+{
+    return m_max_mp;
+}
+
+void
+Character::set_max_mp(int max_mp)
+{
+    m_max_mp = max_mp;
+    m_settings->write<int>(m_name, "max_mp", max_mp);
 }

@@ -3,7 +3,6 @@
 #include <core/font.h>
 #include <core/text.h>
 
-using std::make_pair;
 using std::to_string;
 
 #define W 1024.0

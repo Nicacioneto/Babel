@@ -1,3 +1,27 @@
+[Default]
+level = 1
+levelup = 1
+military = q
+psionic = 0
+tech = 0
+might = 10
+mind = 10
+perception = 10
+agility = 10
+might_attack = 20
+mind_attack = 20
+cooldown = 1
+defense = 10
+might_armor = 12
+mind_armor = 12
+critical = 2
+life = 100
+shield = 30
+mp = 20
+max_life = 100
+max_shield = 30
+max_mp = 20
+
 [Isaac]
 level = 3
 levelup = 17

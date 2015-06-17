@@ -6,7 +6,6 @@
 #include <map>
 
 using std::multimap;
-using std::pair;
 
 class Character;
 class Text;
