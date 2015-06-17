@@ -54,9 +54,9 @@ Combat::update_self(unsigned long elapsed)
     
     m_attacker = m_attackers.begin()->second;
     
-    Character *enemy = (m_enemies.find(m_attacker) != m_enemies.end() ? 
+    Character *enemy = (m_enemies.find(m_attacker) != m_enemies.end() ?
         m_enemies[m_attacker] : nullptr);
-    Character *character = (m_characters.find(m_attacker) != m_characters.end() ? 
+    Character *character = (m_characters.find(m_attacker) != m_characters.end() ?
         m_characters[m_attacker] : nullptr);
 
     if (enemy)
