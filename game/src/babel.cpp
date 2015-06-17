@@ -1,4 +1,5 @@
 #include "babel.h"
+#include "barracks.h"
 #include "base.h"
 #include "central.h"
 #include "combat.h"
@@ -64,8 +65,7 @@ Babel::load_level(const string& id)
     }
     else if (id == "barracks")
     {
-        // TODO
-        return new Base();
+        return new Barracks();
     }
     else if (id == "facilities")
     {
