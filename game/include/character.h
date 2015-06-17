@@ -98,6 +98,7 @@ private:
     void init();
     void draw_self();
     bool on_event(const MouseButtonEvent& event);
+    void write_file(string attr, int value);
 };
 
 #endif
