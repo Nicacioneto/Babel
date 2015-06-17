@@ -187,7 +187,7 @@ Combat::enemy_attack(Character* enemy)
     m_damage = character->receive_damage(enemy);
 
     Environment *env = Environment::get_instance();
-    receiver(character->x() + character->w() / 2, ((character->y() - 10) / H * env->canvas->h()));
+    receiver(character->x() + character->w() / 2, ((character->y() - 25) / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {

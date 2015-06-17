@@ -26,7 +26,6 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
 
     if (texture.empty())
     {
-        m_state = HIDE;
         set_visible(false);
     }
     else
@@ -97,7 +96,7 @@ Button::on_event(const MouseButtonEvent& event)
 bool
 Button::on_event(const MouseMotionEvent& event)
 {
-    if (m_state == HIDE or m_state == ACTIVE)
+    if (m_state == ACTIVE)
     {
         return false;
     }

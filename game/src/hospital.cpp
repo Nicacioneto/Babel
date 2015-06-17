@@ -19,13 +19,15 @@ Hospital::Hospital(const string& next)
     m_reset = new Button(this, "reset", path + "hospital/reset.png",
         (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
         (57 / W) * env->canvas->w(), (52/2 / H) * env->canvas->h());
-    m_reset->change_state(Button::HIDE);
+    m_reset->set_visible(false);
+    m_reset->set_active(false);
 
     m_buy = new Button(this, "buy", path + "hospital/buy.png",
         (772 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
         (58 / W) * env->canvas->w(), (78/3 / H) * env->canvas->h());
     m_buy->set_sprites(3);
-    m_buy->change_state(Button::HIDE);
+    m_buy->set_visible(false);
+    m_buy->set_active(false);
 
     m_reset->add_observer(this);
     m_buy->add_observer(this);
@@ -108,8 +110,12 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         else if (button->id() == "items")
         {
             m_screen = ITEMS;
-            m_reset->change_state(Button::IDLE);
-            m_buy->change_state(Button::IDLE);
+            
+            m_reset->set_visible(true);
+            m_reset->set_active(true);
+
+            m_buy->set_visible(true);
+            m_buy->set_active(true);
         }
         else if (button->id() == "research")
         {
@@ -194,8 +200,11 @@ Hospital::change_buttons()
         }
     }
 
-    m_reset->change_state(Button::HIDE);
-    m_buy->change_state(Button::HIDE);
+    m_reset->set_visible(false);
+    m_reset->set_active(false);
+
+    m_buy->set_visible(false);
+    m_buy->set_active(false);
 }
 
 void
