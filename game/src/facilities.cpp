@@ -11,7 +11,7 @@
 Facilities::Facilities(const string& next)
     : Level("facilities", next), m_screen(CHAT),
         m_mwaked(0), m_pwaked(0), m_twaked(0),
-        m_matter_price(10), m_energy_price(10)
+        m_matter_cost(10), m_energy_cost(10)
 {
     m_colony = new Colony(this, "facilities");
     m_colony->add_observer(this);
@@ -67,7 +67,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int matter = m_colony->matter();
         int energy = m_colony->energy();
 
-        if (matter < m_matter_price || energy < m_energy_price)
+        if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
@@ -78,8 +78,8 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_price;
-            energy -= m_energy_price;
+            matter -= m_matter_cost;
+            energy -= m_energy_cost;
         }
 
         m_colony->set_matter(matter);
@@ -95,7 +95,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int matter = m_colony->matter();
         int energy = m_colony->energy();
 
-        if (matter < m_matter_price || energy < m_energy_price)
+        if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
@@ -106,8 +106,8 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_price;
-            energy -= m_energy_price;
+            matter -= m_matter_cost;
+            energy -= m_energy_cost;
         }
 
         m_colony->set_matter(matter);
@@ -123,7 +123,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int matter = m_colony->matter();
         int energy = m_colony->energy();
 
-        if (matter < m_matter_price || energy < m_energy_price)
+        if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
@@ -134,8 +134,8 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_price;
-            energy -= m_energy_price;
+            matter -= m_matter_cost;
+            energy -= m_energy_cost;
         }
 
         m_colony->set_matter(matter);
@@ -351,7 +351,7 @@ Facilities::change_to_military()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_price)
+    if (m_colony->matter() >= m_matter_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -366,7 +366,7 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
 
-    if (m_colony->energy() >= m_energy_price)
+    if (m_colony->energy() >= m_energy_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -381,9 +381,9 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_price), 425/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_price), 510/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
 }
 
@@ -457,7 +457,7 @@ Facilities::change_to_psionic()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_price)
+    if (m_colony->matter() >= m_matter_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -472,7 +472,7 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
 
-    if (m_colony->energy() >= m_energy_price)
+    if (m_colony->energy() >= m_energy_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -487,9 +487,9 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_price), 425/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_price), 510/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
 }
 
@@ -563,7 +563,7 @@ Facilities::change_to_tech()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_price)
+    if (m_colony->matter() >= m_matter_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -578,7 +578,7 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
 
-    if (m_colony->energy() >= m_energy_price)
+    if (m_colony->energy() >= m_energy_cost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -593,8 +593,8 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_price), 425/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_price), 510/W * env->canvas->w(),
+    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
         670/H * env->canvas->h(), color);
 }
