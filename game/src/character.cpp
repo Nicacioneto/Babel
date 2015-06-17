@@ -17,6 +17,11 @@ Character::Character(Object *parent, ObjectID id, const string& character,
 
     string path = "res/images/characters/";
     m_character = env->resources_manager->get_texture(path + character);
+
+    if (!w and !h)
+    {
+        set_dimensions(m_character->w(), m_character->h());
+    }
 }
 
 Character::~Character()

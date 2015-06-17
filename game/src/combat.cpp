@@ -1,6 +1,7 @@
 #include "combat.h"
 #include "character.h"
 #include <core/font.h>
+#include <core/text.h>
 
 using std::make_pair;
 using std::to_string;
@@ -10,12 +11,16 @@ using std::to_string;
 #define DELAY 1000
 
 Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK), m_last(0),
-    m_damage(0)
+    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
+    m_last(0), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     m_texture = env->resources_manager->get_texture(image);
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(25);
 
     load_characters();
     load_enemies();
@@ -80,10 +85,7 @@ Combat::draw_self()
 
     if (m_state == SHOW_DAMAGE)
     {
-        shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-        env->canvas->set_font(font);
-        font->set_size(25);
-        env->canvas->draw("-" + to_string(m_damage), m_receiver.first, m_receiver.second, Color::RED);
+        m_text->draw();
     }
 }
 
@@ -100,10 +102,12 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     Character *attacker = m_characters[m_attacker];
     Character *enemy = m_enemies[id];
 
-    m_damage = enemy->receive_damage(attacker);
-
     Environment *env = Environment::get_instance();
-    receiver(enemy->x() + enemy->w() / 2, ((enemy->y() + enemy->h() + 10) / H * env->canvas->h()));
+
+    int damage = enemy->receive_damage(attacker);
+    set_text("-" + to_string(damage), Color::RED);
+    m_text->set_position(enemy->x() + enemy->w() / 2 - m_text->w() / 2,
+        ((enemy->y() + enemy->h() + 10) / H * env->canvas->h()));
 
     if (enemy->life() <= 0)
     {
@@ -125,20 +129,18 @@ Combat::load_characters()
 {
     Environment *env = Environment::get_instance();
     
-    int y = ((env->canvas->h() - 300) / H) * env->canvas->h();
-    int w = (200 / W) * env->canvas->w();
-    int h = (300 / H) * env->canvas->h();
+    int y = (620 / H) * env->canvas->h();
 
-    Character *character = new Character(this, "kenny1", "kenny.png", 0, y, w, h);
+    Character *character = new Character(this, "albert", "albert.png", (29 / W) * env->canvas->w(), y);
     m_characters[character->id()] = character;
 
-    character = new Character(this, "kenny2", "kenny.png", (250 / W) * env->canvas->w(), y, w, h);
+    character = new Character(this, "booker", "booker.png", (276 / W) * env->canvas->w(), y);
     m_characters[character->id()] = character;
 
-    character = new Character(this, "kenny3", "kenny.png", (550 / W) * env->canvas->w(), y, w, h);
+    character = new Character(this, "isaac", "isaac.png", (525 / W) * env->canvas->w(), y);
     m_characters[character->id()] = character;
 
-    character = new Character(this, "kenny4", "kenny.png", (800 / W) * env->canvas->w(), y, w, h);
+    character = new Character(this, "newton", "newton.png", (773 / W) * env->canvas->w(), y);
     m_characters[character->id()] = character;
 
     for (auto it : m_characters)
@@ -185,10 +187,12 @@ Combat::enemy_attack(Character* enemy)
 {
     Character *character = m_characters.begin()->second;
 
-    m_damage = character->receive_damage(enemy);
-
     Environment *env = Environment::get_instance();
-    receiver(character->x() + character->w() / 2, ((character->y() - 35) / H * env->canvas->h()));
+    
+    int damage = character->receive_damage(enemy);
+    set_text("-" + to_string(damage), Color::RED);
+    m_text->set_position(character->x() + character->w() / 2 - m_text->w() / 2,
+        ((character->y() - 35) / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {
@@ -215,7 +219,13 @@ Combat::update_attackers(Character* character)
 }
 
 void
-Combat::receiver(double x, double y)
+Combat::set_text(const string& str, const Color& color)
 {
-    m_receiver = make_pair(x, y);
+    if (m_text)
+    {
+        delete m_text;
+        m_text = nullptr;
+    }
+
+    m_text = new Text(this, str, color);
 }

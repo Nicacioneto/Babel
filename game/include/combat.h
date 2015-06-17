@@ -9,8 +9,9 @@
 using std::multimap;
 using std::pair;
 
-class Texture;
 class Character;
+class Text;
+class Texture;
 
 class Combat : public Level
 {
@@ -28,8 +29,7 @@ private:
 
     State m_state;
     unsigned long m_last;
-    int m_damage;
-    pair<double, double> m_receiver;
+    Text *m_text;
 
     void update_self(unsigned long elapsed);
     void draw_self();
@@ -38,7 +38,7 @@ private:
     void load_enemies();
     void enemy_attack(Character* enemy);
     void update_attackers(Character* character);
-    void receiver(double x, double y);
+    void set_text(const string& str, const Color& color);
 };
 
 #endif

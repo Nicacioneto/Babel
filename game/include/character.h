@@ -12,7 +12,7 @@ class Character : public Object, public Listener
 {
 public:
     Character(Object *parent = nullptr, ObjectID id = "", const string& character = "",
-        double x = 0, double y = 0, double w = 100, double h = 100);
+        double x = 0, double y = 0, double w = 0, double h = 0);
     ~Character();
 
     int receive_damage(Character *character);
