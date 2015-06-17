@@ -17,6 +17,8 @@ Combat::Combat(const string& next, const string& image)
 
     m_texture = env->resources_manager->get_texture(image);
 
+    env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
+
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(25);
@@ -37,15 +39,19 @@ Combat::~Combat()
 void
 Combat::update_self(unsigned long elapsed)
 {
+    Environment *env = Environment::get_instance();
+
     if (m_characters.empty())
     {
         set_next("base");
         finish();
+        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
     }
     else if (m_enemies.empty())
     {
         set_next("dungeon");
         finish();
+        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
     }
 
     if (not m_last or m_state == CHARACTER_ATTACK)
@@ -116,6 +122,8 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     set_text("-" + to_string(damage), Color::RED);
     m_text->set_position(enemy->x() + enemy->w() / 2 - m_text->w() / 2,
         ((enemy->y() + enemy->h() + 10) / H * env->canvas->h()));
+
+    env->sfx->play("res/sfx/uiTavern_Ghost2.ogg", 1);
 
     if (enemy->life() <= 0)
     {
@@ -201,6 +209,8 @@ Combat::enemy_attack(Character* enemy)
     set_text("-" + to_string(damage), Color::RED);
     m_text->set_position(character->x() + character->w() / 2 - m_text->w() / 2,
         ((character->y() - m_text->h() - 10) / H * env->canvas->h()));
+
+    env->sfx->play("res/sfx/uiTavern_Enforcer.ogg", 1);
 
     if (character->life() <= 0)
     {
