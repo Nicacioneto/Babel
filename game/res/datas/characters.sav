@@ -1,9 +1,9 @@
 [Isaac]
 level = 3
 levelup = 17
-m = 0
-p = 1
-t = 2
+military = 0
+psionic = 1
+tech = 2
 might = 10
 mind = 10
 perception = 10
@@ -25,9 +25,9 @@ max_mp = 20
 [Albert]
 level = 1
 levelup = 10
-m = 1
-p = 0
-t = 0
+military = 1
+psionic = 0
+tech = 0
 might = 5
 mind = 3
 perception = 6
@@ -49,9 +49,9 @@ max_mp = 20
 [Newton]
 level = 3
 levelup = 17
-m = 0
-p = 1
-t = 2
+military = 0
+psionic = 1
+tech = 2
 might = 10
 mind = 10
 perception = 10
@@ -73,9 +73,9 @@ max_mp = 20
 [Clarke]
 level = 5
 levelup = 17
-m = 2
-p = 3
-t = 0
+military = 2
+psionic = 3
+tech = 0
 might = 30
 mind = 13
 perception = 23
@@ -97,9 +97,9 @@ max_mp = 20
 [Brooker]
 level = 3
 levelup = 17
-m = 0
-p = 1
-t = 2
+military = 0
+psionic = 1
+tech = 2
 might = 10
 mind = 10
 perception = 10
@@ -121,9 +121,9 @@ max_mp = 20
 [Michael]
 level = 3
 levelup = 17
-m = 0
-p = 1
-t = 2
+military = 0
+psionic = 1
+tech = 2
 might = 10
 mind = 10
 perception = 10
