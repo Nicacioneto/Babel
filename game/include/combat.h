@@ -18,6 +18,7 @@ class Combat : public Level
 public:
     typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE } State;
     Combat(const string& next = "", const string& image = "res/images/combat/arena.png");
+    ~Combat();
 
 private:
     shared_ptr<Texture> m_texture;

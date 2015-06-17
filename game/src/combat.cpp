@@ -26,6 +26,15 @@ Combat::Combat(const string& next, const string& image)
     load_enemies();
 }
 
+Combat::~Combat()
+{
+    if (m_text)
+    {
+        delete m_text;
+        m_text = nullptr;
+    }
+}
+
 void
 Combat::update_self(unsigned long elapsed)
 {
@@ -192,7 +201,7 @@ Combat::enemy_attack(Character* enemy)
     int damage = character->receive_damage(enemy);
     set_text("-" + to_string(damage), Color::RED);
     m_text->set_position(character->x() + character->w() / 2 - m_text->w() / 2,
-        ((character->y() - 35) / H * env->canvas->h()));
+        ((character->y() - m_text->h() - 10) / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {
