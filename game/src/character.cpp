@@ -3,6 +3,8 @@
 #include <core/texture.h>
 #include <core/mousebuttonevent.h>
 #include <core/rect.h>
+#include <iostream>
+using namespace std;
 
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h)
@@ -27,7 +29,7 @@ void
 Character::draw_self()
 {
     Environment *env = Environment::get_instance();
-    env->canvas->draw(m_character.get(), x(), y());
+    env->canvas->draw(m_character.get(), x(), y(), w(), h());
 }
 
 bool

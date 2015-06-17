@@ -5,6 +5,7 @@
 using std::make_pair;
 using std::to_string;
 
+#define W 1024.0
 #define H 768.0
 #define DELAY 1000
 
@@ -101,7 +102,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     m_damage = enemy->receive_damage(attacker);
 
     Environment *env = Environment::get_instance();
-    receiver(enemy->x() + enemy->w() / 2, enemy->y() + enemy->h() + (10 / H * env->canvas->h()));
+    receiver(enemy->x() + enemy->w() / 2, ((enemy->y() + enemy->h() + 10) / H * env->canvas->h()));
 
     if (enemy->life() <= 0)
     {
@@ -121,17 +122,22 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 void
 Combat::load_characters()
 {
-    Character *character = new Character(this, "luigi", "luigi.png",
-        500, 300, 200, 300);
-    character->set_cooldown(5);
-    character->set_attack(50);
+    Environment *env = Environment::get_instance();
+    
+    int y = ((env->canvas->h() - 300) / H) * env->canvas->h();
+    int w = (200 / W) * env->canvas->w();
+    int h = (300 / H) * env->canvas->h();
 
+    Character *character = new Character(this, "kenny1", "kenny.png", 0, y, w, h);
     m_characters[character->id()] = character;
 
-    character = new Character(this, "link", "link.png",
-        300, 300, 200, 300);
-    character->set_cooldown(3);
+    character = new Character(this, "kenny2", "kenny.png", (250 / W) * env->canvas->w(), y, w, h);
+    m_characters[character->id()] = character;
 
+    character = new Character(this, "kenny3", "kenny.png", (550 / W) * env->canvas->w(), y, w, h);
+    m_characters[character->id()] = character;
+
+    character = new Character(this, "kenny4", "kenny.png", (800 / W) * env->canvas->w(), y, w, h);
     m_characters[character->id()] = character;
 
     for (auto it : m_characters)
@@ -147,12 +153,21 @@ Combat::load_characters()
 void
 Combat::load_enemies()
 {
-    Character *enemy = new Character(this, "god_of_war", "god_of_war.png",
-        0, 0, 200, 300);
-    enemy->set_life(30);
-    enemy->set_attack(50);
-    enemy->set_cooldown(2);
+    Environment *env = Environment::get_instance();
 
+    int w = (200 / W) * env->canvas->w();
+    int h = (300 / H) * env->canvas->h();
+
+    Character *enemy = new Character(this, "timber1", "timber.png", 0, 0, w, h);
+    m_enemies[enemy->id()] = enemy;
+
+    enemy = new Character(this, "timber2", "timber.png", (250 / W) * env->canvas->w(), 0, w, h);
+    m_enemies[enemy->id()] = enemy;
+
+    enemy = new Character(this, "timber3", "timber.png", (550 / W) * env->canvas->w(), 0, w, h);
+    m_enemies[enemy->id()] = enemy;
+
+    enemy = new Character(this, "timber4", "timber.png", (800 / W) * env->canvas->w(), 0, w, h);
     m_enemies[enemy->id()] = enemy;
 
     for (auto it : m_enemies)
@@ -172,7 +187,7 @@ Combat::enemy_attack(Character* enemy)
     m_damage = character->receive_damage(enemy);
 
     Environment *env = Environment::get_instance();
-    receiver(character->x() + character->w() / 2, character->y() - (10 / H * env->canvas->h()));
+    receiver(character->x() + character->w() / 2, ((character->y() - 10) / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {
