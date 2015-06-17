@@ -5,9 +5,10 @@
 #include <core/bitmap.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
+#include <core/settings.h>
 #include <sstream>
 #include <vector>
-#include <core/settings.h>
+#include <ctime>
 
 #define PROBABILITY_STEPWISE 2;
 

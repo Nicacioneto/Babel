@@ -3,8 +3,7 @@
 #include <core/texture.h>
 #include <core/mousebuttonevent.h>
 #include <core/rect.h>
-#include <iostream>
-using namespace std;
+#include <cmath>
 
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h)
