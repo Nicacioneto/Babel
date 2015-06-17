@@ -120,8 +120,9 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 
     int damage = enemy->receive_damage(attacker);
     set_text("-" + to_string(damage), Color::RED);
+    
     m_text->set_position(enemy->x() + enemy->w() / 2 - m_text->w() / 2,
-        ((enemy->y() + enemy->h() + 10) / H * env->canvas->h()));
+        enemy->y() + enemy->h() + ((10 / H) * env->canvas->h()));
 
     env->sfx->play("res/sfx/uiTavern_Ghost2.ogg", 1);
 
@@ -208,7 +209,7 @@ Combat::enemy_attack(Character* enemy)
     int damage = character->receive_damage(enemy);
     set_text("-" + to_string(damage), Color::RED);
     m_text->set_position(character->x() + character->w() / 2 - m_text->w() / 2,
-        ((character->y() - m_text->h() - 10) / H * env->canvas->h()));
+        character->y() - m_text->h() - ((10 / H) * env->canvas->h()));
 
     env->sfx->play("res/sfx/uiTavern_Enforcer.ogg", 1);
 
