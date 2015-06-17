@@ -218,7 +218,7 @@ Hospital::change_to_chat()
 
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),

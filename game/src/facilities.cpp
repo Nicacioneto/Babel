@@ -86,9 +86,9 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-        settings->write<int>("Military", "waked", m_mwaked);
-        settings->save("res/datas/facilities.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        settings->write<int>("Facilities", "military", m_mwaked);
+        settings->save("res/datas/colony.sav");
     }
     else if (button->id() == "pwake")
     {
@@ -114,9 +114,9 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-        settings->write<int>("Psionic", "waked", m_pwaked);
-        settings->save("res/datas/facilities.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        settings->write<int>("Facilities", "psionic", m_pwaked);
+        settings->save("res/datas/colony.sav");
     }
     else if (button->id() == "twake")
     {
@@ -142,9 +142,9 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-        settings->write<int>("Tech", "waked", m_twaked);
-        settings->save("res/datas/facilities.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        settings->write<int>("Facilities", "tech", m_twaked);
+        settings->save("res/datas/colony.sav");
     }
     else if (button->id() != "facilities")
     {
@@ -273,7 +273,7 @@ Facilities::change_to_chat()
     font->set_size(18);
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Facilities"]["welcome"];
     env->canvas->draw(text, ((305+5) / W) * env->canvas->w(), (605 / H) * env->canvas->h(), color);
@@ -324,8 +324,8 @@ Facilities::change_to_military()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-    m_mwaked = settings->read<int>("Military", "waked", 0);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    m_mwaked = settings->read<int>("Facilities", "military", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
         (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
@@ -430,8 +430,8 @@ Facilities::change_to_psionic()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-    m_pwaked = settings->read<int>("Psionic", "waked", 0);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    m_pwaked = settings->read<int>("Facilities", "psionic", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
         (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
@@ -536,8 +536,8 @@ Facilities::change_to_tech()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/facilities.sav");
-    m_twaked = settings->read<int>("Tech", "waked", 0);
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    m_twaked = settings->read<int>("Facilities", "tech", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
         (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());

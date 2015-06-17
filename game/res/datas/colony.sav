@@ -1,6 +1,25 @@
 
+[Central]
+
+welcome =  Welcome to Central
+
 [Colony]
 
-data = 2000
-energy = 2000
-matter = 2000
+data =  2000
+energy = 1900
+matter = 1900
+
+[Facilities]
+
+military = 10
+psionic =  0
+tech =  0
+welcome =  Welcome to Facilities
+
+[Hospital]
+
+welcome =  Welcome to Hospital
+
+[Workshop]
+
+welcome =  0

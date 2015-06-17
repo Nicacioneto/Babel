@@ -183,7 +183,7 @@ Central::change_to_chat()
     font->set_size(18);
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/chat.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Central"]["welcome"];
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
