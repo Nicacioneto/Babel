@@ -44,30 +44,31 @@ Combat::update_self(unsigned long elapsed)
     {
         return;
     }
+    else if (elapsed - m_last < DELAY * 2)
+    {
+        m_state = ENEMY_ATTACK;
+        return;
+    }
 
     m_last = elapsed;
-    m_state = ENEMY_ATTACK;
     
-    if (m_state == ENEMY_ATTACK)
+    m_attacker = m_attackers.begin()->second;
+    
+    Character *enemy = (m_enemies.find(m_attacker) != m_enemies.end() ? 
+        m_enemies[m_attacker] : nullptr);
+    Character *character = (m_characters.find(m_attacker) != m_characters.end() ? 
+        m_characters[m_attacker] : nullptr);
+
+    if (enemy)
     {
-        m_attacker = m_attackers.begin()->second;
-        
-        Character *enemy = (m_enemies.find(m_attacker) != m_enemies.end() ? 
-            m_enemies[m_attacker] : nullptr);
-        Character *character = (m_characters.find(m_attacker) != m_characters.end() ? 
-            m_characters[m_attacker] : nullptr);
-
-        if (enemy)
-        {
-            enemy_attack(enemy);
-        }
-        else if (character)
-        {
-            m_state = CHARACTER_ATTACK;
-        }
-
-        m_attackers.erase(m_attackers.begin());
+        enemy_attack(enemy);
     }
+    else if (character)
+    {
+        m_state = CHARACTER_ATTACK;
+    }
+
+    m_attackers.erase(m_attackers.begin());
 }
 
 void
@@ -81,7 +82,7 @@ Combat::draw_self()
     {
         shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
         env->canvas->set_font(font);
-        font->set_size(20);
+        font->set_size(25);
         env->canvas->draw("-" + to_string(m_damage), m_receiver.first, m_receiver.second, Color::RED);
     }
 }
@@ -187,7 +188,7 @@ Combat::enemy_attack(Character* enemy)
     m_damage = character->receive_damage(enemy);
 
     Environment *env = Environment::get_instance();
-    receiver(character->x() + character->w() / 2, ((character->y() - 25) / H * env->canvas->h()));
+    receiver(character->x() + character->w() / 2, ((character->y() - 35) / H * env->canvas->h()));
 
     if (character->life() <= 0)
     {
