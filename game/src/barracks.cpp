@@ -286,35 +286,44 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "levelup_m")
     {
         Character *c = current_char();
-        int data = Colony().data();
-        Colony().set_data(data - c->levelup_m());
+        if (c->military() < 20)
+        {
+            int data = Colony().data();
+            Colony().set_data(data - c->levelup_m());
 
-        int lvl = c->military();
-        c->set_military(lvl + 1);
+            int lvl = c->military();
+            c->set_military(lvl + 1);
 
-        update_char_attributes(c, "M");
+            update_char_attributes(c, "M");
+        }
     }
     else if (button->id() == "levelup_p")
     {
         Character *c = current_char();
-        int data = Colony().data();
-        Colony().set_data(data - c->levelup_p());
+        if (c->psionic() < 20)
+        {
+            int data = Colony().data();
+            Colony().set_data(data - c->levelup_p());
 
-        int lvl = c->psionic();
-        c->set_psionic(lvl + 1);
+            int lvl = c->psionic();
+            c->set_psionic(lvl + 1);
 
-        update_char_attributes(c, "P");
+            update_char_attributes(c, "P");
+        }
     }
     else if (button->id() == "levelup_t")
     {
         Character *c = current_char();
-        int data = Colony().data();
-        Colony().set_data(data - c->levelup_t());
+        if (c->tech() < 20)
+        {
+            int data = Colony().data();
+            Colony().set_data(data - c->levelup_t());
 
-        int lvl = c->tech();
-        c->set_tech(lvl + 1);
+            int lvl = c->tech();
+            c->set_tech(lvl + 1);
 
-        update_char_attributes(c, "T");
+            update_char_attributes(c, "T");
+        }
     }
     else if (button->id() == "back")
     {
