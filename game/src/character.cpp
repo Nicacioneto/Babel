@@ -38,7 +38,9 @@ Character::init()
     m_military = m_settings->read<int>(m_name, "military", 0);
     m_psionic = m_settings->read<int>(m_name, "psionic", 0);
     m_tech = m_settings->read<int>(m_name, "tech", 0);
-    m_levelup = m_settings->read<int>(m_name, "levelup", 0);
+    m_levelup_m = m_settings->read<int>(m_name, "levelup_m", 0);
+    m_levelup_p = m_settings->read<int>(m_name, "levelup_p", 0);
+    m_levelup_t = m_settings->read<int>(m_name, "levelup_t", 0);
     m_shield = m_settings->read<int>(m_name, "shield", 0);
     m_max_shield = m_settings->read<int>(m_name, "max_shield", 0);
     m_life = m_settings->read<int>(m_name, "life", 0);
@@ -139,9 +141,21 @@ Character::might() const
 }
 
 int
-Character::levelup() const
+Character::levelup_m() const
 {
-    return m_levelup;
+    return m_levelup_m;
+}
+
+int
+Character::levelup_p() const
+{
+    return m_levelup_p;
+}
+
+int
+Character::levelup_t() const
+{
+    return m_levelup_t;
 }
 
 int
@@ -280,10 +294,24 @@ Character::set_tech(int tech)
 }
 
 void
-Character::set_levelup(int levelup)
+Character::set_levelup_m(int levelup_m)
 {
-    m_levelup = levelup;
-    write<int>("levelup", levelup);
+    m_levelup_m = levelup_m;
+    write<int>("levelup_m", levelup_m);
+}
+
+void
+Character::set_levelup_p(int levelup_p)
+{
+    m_levelup_p = levelup_p;
+    write<int>("levelup_p", levelup_p);
+}
+
+void
+Character::set_levelup_t(int levelup_t)
+{
+    m_levelup_t = levelup_t;
+    write<int>("levelup_t", levelup_t);
 }
 
 void

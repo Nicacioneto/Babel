@@ -21,7 +21,9 @@ public:
     int military() const;
     int psionic() const;
     int tech() const;
-    int levelup() const;
+    int levelup_m() const;
+    int levelup_p() const;
+    int levelup_t() const;
     int shield() const;
     int max_shield() const;
     int life() const;
@@ -46,7 +48,9 @@ public:
     void set_military(int military);
     void set_psionic(int psionic);
     void set_tech(int tech);
-    void set_levelup(int levelup);
+    void set_levelup_m(int levelup);
+    void set_levelup_p(int levelup);
+    void set_levelup_t(int levelup);
     void set_shield(int shield);
     void set_max_shield(int max_shield);
     void set_life(int life);
@@ -77,7 +81,9 @@ private:
     int m_military;
     int m_psionic;
     int m_tech;
-    int m_levelup;
+    int m_levelup_m;
+    int m_levelup_p;
+    int m_levelup_t;
     int m_shield;
     int m_max_shield;
     int m_life;
