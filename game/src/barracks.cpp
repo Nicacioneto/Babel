@@ -13,11 +13,7 @@ using namespace std;
 using std::to_string;
 
 Barracks::Barracks(const string& next)
-    : Level("barracks", next), m_settings(nullptr), m_big_card(nullptr),
-    m_bracket(nullptr), m_bracket_m(nullptr), m_bracket_p(nullptr), m_bracket_t(nullptr),
-    m_attributes(nullptr), m_stats(nullptr), m_levelup(nullptr),
-    m_military(nullptr), m_psionic(nullptr), m_tech(nullptr), m_equip(nullptr),
-    m_rifle(nullptr), m_armor(nullptr), m_shield(nullptr), m_equip_change(nullptr), m_character(0)
+    : Level("barracks", next), m_settings(nullptr), m_character(0)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
@@ -38,26 +34,25 @@ Barracks::Barracks(const string& next)
         add_child(b.second);
     }
 
-    m_big_card = env->resources_manager->get_texture(path + "card_big.png");
-    m_bracket = env->resources_manager->get_texture(path + "bracket.png");
-    m_bracket_m = env->resources_manager->get_texture(path + "bracket-m.png");
-    m_bracket_p = env->resources_manager->get_texture(path + "bracket-p.png");
-    m_bracket_t = env->resources_manager->get_texture(path + "bracket-t.png");
-    m_attributes = env->resources_manager->get_texture(path + "attributes.png");
-    m_stats = env->resources_manager->get_texture(path + "stats.png");
-    m_levelup = env->resources_manager->get_texture(path + "levelup.png");
-    m_military = env->resources_manager->get_texture(path + "military.png");
-    m_psionic = env->resources_manager->get_texture(path + "psionic.png");
-    m_tech = env->resources_manager->get_texture(path + "tech.png");
-    m_equip = env->resources_manager->get_texture(path + "equip_shelf.png");
-    m_rifle  = env->resources_manager->get_texture(path + "rifle.png");
-    m_armor  = env->resources_manager->get_texture(path + "armor.png");
-    m_shield  = env->resources_manager->get_texture(path + "shield.png");
-    m_equip_change = env->resources_manager->get_texture(path + "equip_change.png");
+    m_textures["card_big"] = env->resources_manager->get_texture(path + "card_big.png");
+    m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
+    m_textures["bracket_m"] = env->resources_manager->get_texture(path + "bracket-m.png");
+    m_textures["bracket_p"] = env->resources_manager->get_texture(path + "bracket-p.png");
+    m_textures["bracket_t"] = env->resources_manager->get_texture(path + "bracket-t.png");
+    m_textures["attributes"] = env->resources_manager->get_texture(path + "attributes.png");
+    m_textures["stats"] = env->resources_manager->get_texture(path + "stats.png");
+    m_textures["levelup"] = env->resources_manager->get_texture(path + "levelup.png");
+    m_textures["military"] = env->resources_manager->get_texture(path + "military.png");
+    m_textures["psionic"] = env->resources_manager->get_texture(path + "psionic.png");
+    m_textures["tech"] = env->resources_manager->get_texture(path + "tech.png");
+    m_textures["equip"] = env->resources_manager->get_texture(path + "equip_shelf.png");
+    m_textures["rifle"] = env->resources_manager->get_texture(path + "rifle.png");
+    m_textures["armor"] = env->resources_manager->get_texture(path + "armor.png");
+    m_textures["shield"] = env->resources_manager->get_texture(path + "shield.png");
+    m_textures["equip_change"] = env->resources_manager->get_texture(path + "equip_change.png");
 
     load_characters();
 
-    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
 }
 
 void
@@ -66,92 +61,87 @@ Barracks::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_big_card.get(), (112 / W) * env->canvas->w(), (130 / H) * env->canvas->h());
-    env->canvas->draw(m_bracket.get(), (30 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["card_big"].get(), (112 / W) * env->canvas->w(), (130 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["bracket"].get(), (30 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
 
     int y = (470 / H) * env->canvas->h();
-    env->canvas->draw(m_bracket_m.get(), (112 / W) * env->canvas->w(), y);
-    env->canvas->draw(m_bracket_p.get(), (402 / W) * env->canvas->w(), y);
-    env->canvas->draw(m_bracket_t.get(), (690 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["bracket_m"].get(), (112 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["bracket_p"].get(), (402 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["bracket_t"].get(), (690 / W) * env->canvas->w(), y);
 
     y = (485 / H) * env->canvas->h();
-    env->canvas->draw(m_military.get(), (135 / W) * env->canvas->w(), y);
-    env->canvas->draw(m_psionic.get(), (420 / W) * env->canvas->w(), y);
-    env->canvas->draw(m_tech.get(), (710 / W) * env->canvas->w(), y);
-
+    env->canvas->draw(m_textures["military"].get(), (135 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["psionic"].get(), (420 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["tech"].get(), (710 / W) * env->canvas->w(), y);
 
     y = (128 / H) * env->canvas->h();
-
-    env->canvas->draw(m_attributes.get(), (402 / W) * env->canvas->w(), y);
-    env->canvas->draw(m_stats.get(), (690 / W) * env->canvas->w(), y);
-    
-    env->canvas->draw(m_levelup.get(), (402 / W) * env->canvas->w(), (322 / H) * env->canvas->h());
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-    env->canvas->draw("level", (257/W) * env->canvas->w(), (99/H) * env->canvas->h(), Color(82, 104, 93));
+    env->canvas->draw(m_textures["attributes"].get(), (402 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["stats"].get(), (690 / W) * env->canvas->w(), y);
+    env->canvas->draw(m_textures["levelup"].get(), (402 / W) * env->canvas->w(), (322 / H) * env->canvas->h());
 
     draw_character();
 
-    // x = (130/W) * env->canvas->w();
-    // y = (530/H) * env->canvas->h();
+    shared_ptr<Texture> texture;
+    string path = "res/images/colony/barracks/";
 
-    // for (int i = 1; i <= 5; ++i, x += 38)
-    // {
-    //     texture = env->resources_manager->get_texture(path + "Skill_M_" + to_string(i) + ".png");
-    //     env->canvas->draw(texture.get(), x, y);
-    // }
+    int x = 130;
+    y = (530/H) * env->canvas->h();
 
-    // for (int i = 0, x = 130; i < 5; ++i, x += 38)
-    // {
-    //     for (int j = 0, y = 567; j < 3; ++j, y += 37)
-    //     {
-    //         texture = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
-    //         env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
-    //     }
-    // }
+    for (int i = 1; i <= 5; ++i, x += 38)
+    {
+        texture = env->resources_manager->get_texture(path + "Skill_M_" + to_string(i) + ".png");
+        env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), y);
+    }
 
-    // x = (420/W) * env->canvas->w();
+    for (int i = 0, x = 130; i < 5; ++i, x += 38)
+    {
+        for (int j = 0, y = 567; j < 3; ++j, y += 37)
+        {
+            texture = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
+            env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+        }
+    }
 
-    // for (int i = 1; i <= 5; ++i, x += 38)
-    // {
-    //     texture = env->resources_manager->get_texture(path + "Skill_P_" + to_string(i) + ".png");
-    //     env->canvas->draw(texture.get(), x, y);
-    // }
+    x = 420;
 
-    // for (int i = 0, x = 420; i < 5; ++i, x += 38)
-    // {
-    //     for (int j = 0, y = 567; j < 3; ++j, y += 37)
-    //     {
-    //         texture = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
-    //         env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
-    //     }
-    // }
+    for (int i = 1; i <= 5; ++i, x += 38)
+    {
+        texture = env->resources_manager->get_texture(path + "Skill_P_" + to_string(i) + ".png");
+        env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), y);
+    }
 
-    // x = (710/W) * env->canvas->w();
+    for (int i = 0, x = 420; i < 5; ++i, x += 38)
+    {
+        for (int j = 0, y = 567; j < 3; ++j, y += 37)
+        {
+            texture = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
+            env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+        }
+    }
 
-    // for (int i = 1; i <= 5; ++i, x += 38)
-    // {
-    //     texture = env->resources_manager->get_texture(path + "Skill_T_" + to_string(i) + ".png");
-    //     env->canvas->draw(texture.get(), x, y);
-    // }
+    x = 710;
 
-    // for (int i = 0, x = 710; i < 5; ++i, x += 38)
-    // {
-    //     for (int j = 0, y = 567; j < 3; ++j, y += 37)
-    //     {
-    //         texture = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
-    //         env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
-    //     }
-    // }
+    for (int i = 1; i <= 5; ++i, x += 38)
+    {
+        texture = env->resources_manager->get_texture(path + "Skill_T_" + to_string(i) + ".png");
+        env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), y);
+    }
+
+    for (int i = 0, x = 710; i < 5; ++i, x += 38)
+    {
+        for (int j = 0, y = 567; j < 3; ++j, y += 37)
+        {
+            texture = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
+            env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+        }
+    }
 }
 
 void
 Barracks::draw_character()
 {
     auto it = m_characters.begin();
-    for (int i = 0; i < m_character; ++it, ++i) {}; // not very well with other ++ operators
+    for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
 
     Character *character = it->second;
 
@@ -164,10 +154,6 @@ Barracks::draw_character()
     Color color(170, 215, 190);
     
     env->canvas->draw(character->id(), (112 / W) * env->canvas->w(), (90 / H) * env->canvas->h(), color);
-
-    int lvl = character->military() + character->psionic() + character->tech();
-
-    env->canvas->draw(to_string(lvl), (300 / W) * env->canvas->w(), (90 / H) * env->canvas->h(), color);
 
     font->set_size(14);
     int x = (607 / W) * env->canvas->w();
@@ -199,8 +185,8 @@ Barracks::draw_character()
     env->canvas->draw(to_string(data), (500/W) * env->canvas->w(),
         (415/H) * env->canvas->h(), Color(170, 215, 190));
 
-    env->canvas->draw(character->id(), (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
     font->set_size(18);
+    env->canvas->draw(character->id(), (250/W) * env->canvas->w(), (132/H) * env->canvas->h(), color);
     env->canvas->draw(to_string(character->military()), (295/W) * env->canvas->w(),
         (167/H) * env->canvas->h(), Color(208, 179, 43));
     env->canvas->draw(to_string(character->psionic()), (295/W) * env->canvas->w(),
@@ -244,23 +230,14 @@ Barracks::load_characters()
     int w = (222 / W) * env->canvas->w();
     int h = (270 / H) * env->canvas->h();
 
-    Character *character = new Character(this, "Isaac", "psionic_big.png", x, y, w, h, "Isaac");
-    m_characters[character->id()] = character;
+    auto settings = env->resources_manager->get_settings("res/datas/characters.sav");
+    auto sections = settings->sections();
 
-    character = new Character(this, "Albert", "psionic_big.png", x, y, w, h, "Albert");
-    m_characters[character->id()] = character;
-
-    character = new Character(this, "Newton", "psionic_big.png", x, y, w, h, "Newton");
-    m_characters[character->id()] = character;
-
-    character = new Character(this, "Clarke", "psionic_big.png", x, y, w, h, "Clarke");
-    m_characters[character->id()] = character;
-
-    character = new Character(this, "Brooker", "psionic_big.png", x, y, w, h, "Brooker");
-    m_characters[character->id()] = character;
-
-    character = new Character(this, "Michael", "psionic_big.png", x, y, w, h, "Michael");
-    m_characters[character->id()] = character;
+    for (auto section : sections)
+    {
+        Character *character = new Character(this, section.first, "psionic_big.png", x, y, w, h);
+        m_characters[character->id()] = character;
+    }
 
     for (auto it : m_characters)
     {

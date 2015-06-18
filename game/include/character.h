@@ -11,8 +11,8 @@ class MouseButtonEvent;
 class Character : public Object, public Listener
 {
 public:
-    Character(Object *parent = nullptr, ObjectID id = "", const string& character = "",
-        double x = 0, double y = 0, double w = 0, double h = 0, const string& name = "Default");
+    Character(Object *parent = nullptr, ObjectID id = "Default", const string& character = "",
+        double x = 0, double y = 0, double w = 0, double h = 0);
     ~Character();
 
     int receive_damage(Character *character);

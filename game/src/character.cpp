@@ -6,9 +6,9 @@
 #include <core/settings.h>
 
 Character::Character(Object *parent, ObjectID id, const string& character,
-    double x, double y, double w, double h, const string& name)
+    double x, double y, double w, double h)
     : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr),
-        m_name(name), m_attacks_quantity(1)
+        m_name(id), m_attacks_quantity(1)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
