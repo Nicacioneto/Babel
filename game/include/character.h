@@ -18,7 +18,6 @@ public:
     int receive_damage(Character *character);
 
     int attacks_quantity();
-    int level();
     int levelup();
     int military();
     int psionic();
@@ -42,7 +41,6 @@ public:
     int max_mp();
 
     void set_attacks_quantity(int attacks_quantity);
-    void set_level(int level);
     void set_levelup(int levelup);
     void set_military(int military);
     void set_psionic(int psionic);
@@ -72,7 +70,6 @@ private:
     string m_name;
     int m_attacks_quantity;
 
-    int m_level;
     int m_levelup;
     int m_military;
     int m_psionic;

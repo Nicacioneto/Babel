@@ -1,7 +1,6 @@
 [Default]
-level = 1
 levelup = 1
-military = q
+military = 1
 psionic = 0
 tech = 0
 might = 10
@@ -23,7 +22,6 @@ max_shield = 30
 max_mp = 20
 
 [Isaac]
-level = 3
 levelup = 17
 military = 0
 psionic = 1
@@ -47,7 +45,6 @@ max_shield = 30
 max_mp = 20
 
 [Albert]
-level = 1
 levelup = 10
 military = 1
 psionic = 0
@@ -71,7 +68,6 @@ max_shield = 30
 max_mp = 20
 
 [Newton]
-level = 3
 levelup = 17
 military = 0
 psionic = 1
@@ -95,7 +91,6 @@ max_shield = 30
 max_mp = 20
 
 [Clarke]
-level = 5
 levelup = 17
 military = 2
 psionic = 3
@@ -119,7 +114,6 @@ max_shield = 30
 max_mp = 20
 
 [Brooker]
-level = 3
 levelup = 17
 military = 0
 psionic = 1
@@ -143,7 +137,6 @@ max_shield = 30
 max_mp = 20
 
 [Michael]
-level = 3
 levelup = 17
 military = 0
 psionic = 1

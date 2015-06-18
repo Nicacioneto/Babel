@@ -8,7 +8,7 @@
 Character::Character(Object *parent, ObjectID id, const string& character,
     double x, double y, double w, double h, const string& name)
     : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr),
-    m_name(name), m_attacks_quantity(1)
+        m_name(name), m_attacks_quantity(1)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -16,7 +16,7 @@ Character::Character(Object *parent, ObjectID id, const string& character,
     string path = "res/images/characters/";
     m_character = env->resources_manager->get_texture(path + character);
 
-    if (!w and !h)
+    if (not w and not h)
     {
         set_dimensions(m_character->w(), m_character->h());
     }
@@ -34,7 +34,6 @@ Character::~Character()
 void
 Character::init()
 {
-    m_level = m_settings->read<int>(m_name, "level", 0);
     m_levelup = m_settings->read<int>(m_name, "levelup", 0);
     m_military = m_settings->read<int>(m_name, "military", 0);
     m_psionic = m_settings->read<int>(m_name, "psionic", 0);
@@ -115,19 +114,6 @@ void
 Character::set_attacks_quantity(int attacks_quantity)
 {
     m_attacks_quantity = attacks_quantity;
-}
-
-int
-Character::level()
-{
-    return m_level;
-}
-
-void
-Character::set_level(int level)
-{
-    m_level = level;
-    write<int>("level", level);
 }
 
 int
@@ -408,6 +394,6 @@ Character::write(const string& attr, const T& value)
 {
     if (m_name != "Default")
     {
-        m_settings->write<int>(m_name, attr, value);   
+        m_settings->write<int>(m_name, attr, value);
     }
 }

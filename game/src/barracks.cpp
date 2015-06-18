@@ -178,7 +178,6 @@ Barracks::draw_self()
     for (int i = 0; i < m_character; ++it, ++i); // not very well with other ++ operators
 
     string name = it->first;
-    string level = it->second["level"];
     string levelup = it->second["levelup"];
     string military = it->second["military"];
     string psionic = it->second["psionic"];
@@ -195,9 +194,8 @@ Barracks::draw_self()
     string mind_armor = it->second["mind_armor"];
     string critical = it->second["critical"];
 
-    if (level.back() == '\r')
+    if (levelup.back() == '\r')
     {
-        level.pop_back();
         levelup.pop_back();
         military.pop_back();
         psionic.pop_back();
@@ -216,12 +214,10 @@ Barracks::draw_self()
     }
 
     env->canvas->draw(name, (112/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
-    env->canvas->draw(level, (300/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
 
     font->set_size(16);
     env->canvas->draw(name, (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
     font->set_size(18);
-    env->canvas->draw("level", (257/W) * env->canvas->w(), (99/H) * env->canvas->h(), Color(82, 104, 93));
     env->canvas->draw(military, (295/W) * env->canvas->w(), (167/H) * env->canvas->h(), Color(208, 179, 43));
     env->canvas->draw(psionic, (295/W) * env->canvas->w(), (198/H) * env->canvas->h(), Color(166, 69, 151));
     env->canvas->draw(tech, (295/W) * env->canvas->w(), (229/H) * env->canvas->h(), Color(78, 191, 190));
