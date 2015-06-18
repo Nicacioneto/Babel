@@ -40,6 +40,7 @@ private:
     int m_character;
 
     void draw_self();
+    void draw_character();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
 };

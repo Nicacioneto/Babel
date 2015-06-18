@@ -86,11 +86,13 @@ Barracks::draw_self()
     env->canvas->draw(m_stats.get(), (690 / W) * env->canvas->w(), y);
     
     env->canvas->draw(m_levelup.get(), (402 / W) * env->canvas->w(), (322 / H) * env->canvas->h());
-    
-    // x = (670/W) * env->canvas->w();
-    // y = (353/H) * env->canvas->h();
-    // texture = env->resources_manager->get_texture(path + "equip_change.png");
-    // env->canvas->draw(texture.get(), x, y);
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
+    env->canvas->draw("level", (257/W) * env->canvas->w(), (99/H) * env->canvas->h(), Color(82, 104, 93));
+
+    draw_character();
 
     // x = (130/W) * env->canvas->w();
     // y = (530/H) * env->canvas->h();
@@ -143,84 +145,68 @@ Barracks::draw_self()
     //         env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
     //     }
     // }
+}
 
-    // shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    // env->canvas->set_font(font);
-    // font->set_size(32);
-    // Color color(170, 215, 190);
+void
+Barracks::draw_character()
+{
+    auto it = m_characters.begin();
+    for (int i = 0; i < m_character; ++it, ++i) {}; // not very well with other ++ operators
 
-    // auto it = m_settings->sections().begin();
-    // for (int i = 0; i < m_character; ++it, ++i); // not very well with other ++ operators
+    Character *character = it->second;
 
-    // string name = it->first;
-    // string levelup = it->second["levelup"];
-    // string military = it->second["military"];
-    // string psionic = it->second["psionic"];
-    // string tech = it->second["tech"];
-    // string might = it->second["might"];
-    // string mind = it->second["mind"];
-    // string perception = it->second["perception"];
-    // string agility = it->second["agility"];
-    // string might_attack = it->second["might_attack"];
-    // string mind_attack = it->second["mind_attack"];
-    // string cooldown = it->second["cooldown"];
-    // string defense = it->second["defense"];
-    // string might_armor = it->second["might_armor"];
-    // string mind_armor = it->second["mind_armor"];
-    // string critical = it->second["critical"];
+    character->set_visible(true);
 
-    // if (levelup.back() == '\r')
-    // {
-    //     levelup.pop_back();
-    //     military.pop_back();
-    //     psionic.pop_back();
-    //     tech.pop_back();
-    //     might.pop_back();
-    //     mind.pop_back();
-    //     perception.pop_back();
-    //     agility.pop_back();
-    //     might_attack.pop_back();
-    //     mind_attack.pop_back();
-    //     cooldown.pop_back();
-    //     defense.pop_back();
-    //     might_armor.pop_back();
-    //     mind_armor.pop_back();
-    //     critical.pop_back();
-    // }
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(32);
+    Color color(170, 215, 190);
+    
+    env->canvas->draw(character->id(), (112 / W) * env->canvas->w(), (90 / H) * env->canvas->h(), color);
 
-    // env->canvas->draw(name, (112/W) * env->canvas->w(), (90/H) * env->canvas->h(), color);
+    int lvl = character->military() + character->psionic() + character->tech();
 
-    // font->set_size(16);
-    // env->canvas->draw(name, (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
-    // font->set_size(18);
-    // env->canvas->draw(military, (295/W) * env->canvas->w(), (167/H) * env->canvas->h(), Color(208, 179, 43));
-    // env->canvas->draw(psionic, (295/W) * env->canvas->w(), (198/H) * env->canvas->h(), Color(166, 69, 151));
-    // env->canvas->draw(tech, (295/W) * env->canvas->w(), (229/H) * env->canvas->h(), Color(78, 191, 190));
+    env->canvas->draw(to_string(lvl), (300 / W) * env->canvas->w(), (90 / H) * env->canvas->h(), color);
 
-    // font->set_size(22);
-    // env->canvas->draw(levelup, (500/W) * env->canvas->w(), (370/H) * env->canvas->h(), Color(62, 108, 236));
+    font->set_size(14);
+    int x = (607 / W) * env->canvas->w();
+    env->canvas->draw(to_string(character->might()), x, (165 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->mind()), x, (200 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->perception()), x, (235 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->agility()), x, (270 / H) * env->canvas->h(), color);
 
-    // font->set_size(12);
-    // env->canvas->draw(might, (607/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-    // env->canvas->draw(mind, (607/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-    // env->canvas->draw(perception, (607/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-    // env->canvas->draw(agility, (607/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+    font->set_size(12);
+    x = (780 / W) * env->canvas->w();
+    env->canvas->draw(to_string(character->might_attack()), x, (165 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->mind_attack()), x, (200 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->cooldown()), x, (235 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->defense()), x, (270 / H) * env->canvas->h(), color);
 
-    // color = Color(82, 104, 93);
-    // env->canvas->draw(might_attack, (780/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-    // env->canvas->draw(mind_attack, (780/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-    // env->canvas->draw(cooldown, (780/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-    // env->canvas->draw(defense, (780/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+    x = (900 / W) * env->canvas->w();
+    env->canvas->draw(to_string(character->might_armor()), x, (165 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->mind_armor()), x, (200 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->critical()), x, (235 / H) * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->critical()), x, (270 / H) * env->canvas->h(), color);
 
-    // env->canvas->draw(might_armor, (900/W) * env->canvas->w(), (165/H) * env->canvas->h(), color);
-    // env->canvas->draw(mind_armor, (900/W) * env->canvas->w(), (200/H) * env->canvas->h(), color);
-    // env->canvas->draw(critical, (900/W) * env->canvas->w(), (235/H) * env->canvas->h(), color);
-    // env->canvas->draw(critical, (900/W) * env->canvas->w(), (270/H) * env->canvas->h(), color);
+    font->set_size(22);
+    env->canvas->draw(to_string(character->levelup()), (500/W) * env->canvas->w(),
+        (370/H) * env->canvas->h(), Color(62, 108, 236));
 
-    // font->set_size(16);
-    // auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    // int data = settings->read<int>("Colony", "data", 0);
-    // env->canvas->draw(to_string(data), (500/W) * env->canvas->w(), (415/H) * env->canvas->h(), Color(170, 215, 190));
+    font->set_size(16);
+    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    int data = settings->read<int>("Colony", "data", 0);
+    env->canvas->draw(to_string(data), (500/W) * env->canvas->w(),
+        (415/H) * env->canvas->h(), Color(170, 215, 190));
+
+    env->canvas->draw(character->id(), (250/W) * env->canvas->w(), (129/H) * env->canvas->h(), color);
+    font->set_size(18);
+    env->canvas->draw(to_string(character->military()), (295/W) * env->canvas->w(),
+        (167/H) * env->canvas->h(), Color(208, 179, 43));
+    env->canvas->draw(to_string(character->psionic()), (295/W) * env->canvas->w(),
+        (198/H) * env->canvas->h(), Color(166, 69, 151));
+    env->canvas->draw(to_string(character->tech()), (295/W) * env->canvas->w(),
+        (229/H) * env->canvas->h(), Color(78, 191, 190));
 }
 
 bool
@@ -237,12 +223,12 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     {
         if (--m_character < 0)
         {
-            m_character = m_settings->sections().size() - 1;
+            m_character = m_characters.size() - 1;
         }
     }
     else if (button->id() == "right_arrow")
     {
-        m_character = (m_character + 1) % m_settings->sections().size();
+        m_character = (m_character + 1) % m_characters.size();
     }
 
     return true;
@@ -261,25 +247,27 @@ Barracks::load_characters()
     Character *character = new Character(this, "Isaac", "psionic_big.png", x, y, w, h, "Isaac");
     m_characters[character->id()] = character;
 
-    // Character *character = new Character(this, "Albert", "psionic_big.png", x, y, w, h, "Albert");
-    // m_characters[character->id()] = character;
+    character = new Character(this, "Albert", "psionic_big.png", x, y, w, h, "Albert");
+    m_characters[character->id()] = character;
 
-    // Character *character = new Character(this, "Newton", "psionic_big.png", x, y, w, h, "Newton");
-    // m_characters[character->id()] = character;
+    character = new Character(this, "Newton", "psionic_big.png", x, y, w, h, "Newton");
+    m_characters[character->id()] = character;
 
-    // Character *character = new Character(this, "Clarke", "psionic_big.png", x, y, w, h, "Clarke");
-    // m_characters[character->id()] = character;
+    character = new Character(this, "Clarke", "psionic_big.png", x, y, w, h, "Clarke");
+    m_characters[character->id()] = character;
 
-    // Character *character = new Character(this, "Brooker", "psionic_big.png", x, y, w, h, "Brooker");
-    // m_characters[character->id()] = character;
+    character = new Character(this, "Brooker", "psionic_big.png", x, y, w, h, "Brooker");
+    m_characters[character->id()] = character;
 
-    // Character *character = new Character(this, "Michael", "psionic_big.png", x, y, w, h, "Michael");
+    character = new Character(this, "Michael", "psionic_big.png", x, y, w, h, "Michael");
     m_characters[character->id()] = character;
 
     for (auto it : m_characters)
     {
         it.second->add_observer(this);
         add_child(it.second);
+
         it.second->set_active(false);
+        it.second->set_visible(false);
     }
 }
