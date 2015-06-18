@@ -27,6 +27,7 @@ private:
     void draw_character();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
+    Character * current_char() const;
 };
 
 #endif

@@ -9,7 +9,7 @@ Colony::Colony(Object *parent, ObjectID id)
     : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
         m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
         m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
-        m_data(0), m_matter(0), m_energy(0)
+        m_data(0), m_matter(0), m_energy(0), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -39,10 +39,10 @@ Colony::Colony(Object *parent, ObjectID id)
     add_child(m_tower);
     add_child(m_planet);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    m_data = settings->read<int>("Colony", "data", 0);
-    m_matter = settings->read<int>("Colony", "matter", 0);
-    m_energy = settings->read<int>("Colony", "energy", 0);
+    m_settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    m_data = m_settings->read<int>("Colony", "data", 0);
+    m_matter = m_settings->read<int>("Colony", "matter", 0);
+    m_energy = m_settings->read<int>("Colony", "energy", 0);
 }
 
 void
@@ -122,29 +122,27 @@ Colony::energy() const
 void
 Colony::set_data(int data)
 {
-    Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    settings->write<int>("Colony", "data", data);
-    settings->save("res/datas/colony.sav");
     m_data = data;
+    write<int>("data", data);
 }
 
 void
 Colony::set_matter(int matter)
 {
-    Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    settings->write<int>("Colony", "matter", matter);
-    settings->save("res/datas/colony.sav");
     m_matter = matter;
+    write<int>("matter", matter);
 }
 
 void
 Colony::set_energy(int energy)
 {
-    Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    settings->write<int>("Colony", "energy", energy);
-    settings->save("res/datas/colony.sav");
     m_energy = energy;
+    write<int>("energy", energy);
+}
+
+template<typename T> void
+Colony::write(const string& attr, const T& value)
+{
+    m_settings->write<int>("Colony", attr, value);
+    m_settings->save("res/datas/colony.sav");
 }

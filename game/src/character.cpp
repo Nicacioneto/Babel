@@ -453,5 +453,6 @@ Character::write(const string& attr, const T& value)
     if (m_name != "Default")
     {
         m_settings->write<int>(m_name, attr, value);
+        m_settings->save("res/datas/characters.sav");
     }
 }

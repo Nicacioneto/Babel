@@ -38,8 +38,13 @@ private:
     int m_matter;
     int m_energy;
 
+    shared_ptr<Settings> m_settings;
+
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
+
+    template<typename T>
+    void write(const string& attr, const T& value);
 };
 
 #endif

@@ -42,7 +42,7 @@ Barracks::Barracks(const string& next)
     m_buttons[button->id()] = button;
 
     button = new Button(this, "equip_shelf", path + "equip_shelf.png", (690/W) * env->canvas->w(),
-        (322/H) * env->canvas->h(), 255, 122);
+        (322/H) * env->canvas->h(), 225, 122);
     button->set_sprites(3);    
     m_buttons[button->id()] = button;
 
@@ -171,10 +171,7 @@ Barracks::draw_self()
 void
 Barracks::draw_character()
 {
-    auto it = m_characters.begin();
-    for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
-
-    Character *character = it->second;
+    Character *character = current_char();
     character->set_visible(true);
 
     Environment *env = Environment::get_instance();
@@ -207,11 +204,9 @@ Barracks::draw_character()
     env->canvas->draw(m_textures["isaac_skills"].get(), (112 / W) * env->canvas->w(), (376 / H) * env->canvas->h());
 
     font->set_size(16);
-    auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
-    int data = settings->read<int>("Colony", "data", 0);
+    int data = Colony().data();
     env->canvas->draw(to_string(data), (500/W) * env->canvas->w(),
         (353/H) * env->canvas->h(), Color(170, 215, 190));
-
 
     font->set_size(18);
     x = 112;
@@ -221,11 +216,11 @@ Barracks::draw_character()
     m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
     env->canvas->draw(m_textures["card_big"].get(), (x / W) * env->canvas->w(), (y / H) * env->canvas->h());
     env->canvas->draw(character->id(), (x + 131)/W * env->canvas->w(), (y + 5)/H * env->canvas->h(), color);
-    env->canvas->draw(to_string(character->military()), (x+186)/W * env->canvas->w(),
+    env->canvas->draw(to_string(character->military()), (x+182)/W * env->canvas->w(),
         (y + 38)/H * env->canvas->h(), Color(208, 179, 43));
-    env->canvas->draw(to_string(character->psionic()), (x+186)/W * env->canvas->w(),
+    env->canvas->draw(to_string(character->psionic()), (x+182)/W * env->canvas->w(),
         (y + 70)/H * env->canvas->h(), Color(166, 69, 151));
-    env->canvas->draw(to_string(character->tech()), (x+186)/W * env->canvas->w(),
+    env->canvas->draw(to_string(character->tech()), (x+182)/W * env->canvas->w(),
         (y + 100)/H * env->canvas->h(), Color(78, 191, 190));
 
     font->set_size(14);
@@ -285,6 +280,33 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     {
         m_character = (m_character + 1) % m_characters.size();
     }
+    else if (button->id() == "levelup_m")
+    {
+        Character *c = current_char();
+        int data = Colony().data();
+        Colony().set_data(data - c->levelup_m());
+
+        int lvl = c->military();
+        c->set_military(lvl + 1);
+    }
+    else if (button->id() == "levelup_p")
+    {
+        Character *c = current_char();
+        int data = Colony().data();
+        Colony().set_data(data - c->levelup_p());
+
+        int lvl = c->psionic();
+        c->set_psionic(lvl + 1);
+    }
+    else if (button->id() == "levelup_t")
+    {
+        Character *c = current_char();
+        int data = Colony().data();
+        Colony().set_data(data - c->levelup_t());
+
+        int lvl = c->tech();
+        c->set_tech(lvl + 1);
+    }
     else if (button->id() == "back")
     {
         set_next("base");
@@ -314,8 +336,6 @@ Barracks::load_characters()
             Character *character = new Character(this, section.first, "test_big.png",
                 x, y, w, h, section.first);
             m_characters[character->id()] = character;
-
-
         }
     }
 
@@ -327,4 +347,12 @@ Barracks::load_characters()
         it.second->set_active(false);
         it.second->set_visible(false);
     }
+}
+
+Character *
+Barracks::current_char() const
+{
+    auto it = m_characters.begin();
+    for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
+    return it->second;
 }
