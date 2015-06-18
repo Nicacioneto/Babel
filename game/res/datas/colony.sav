@@ -1,7 +1,7 @@
 
 [Central]
 
-welcome =   Welcome to Central
+welcome = Welcome to Central
 
 [Colony]
 
@@ -14,12 +14,12 @@ matter = 1800
 military = 20
 psionic =   0
 tech =   0
-welcome =   Welcome to Facilities
+welcome = Welcome to Facilities
 
 [Hospital]
 
-welcome =   Welcome to Hospital
+welcome = Welcome to Hospital
 
 [Workshop]
 
-welcome =   Welcome to Workshop
+welcome = Welcome to Workshop
