@@ -81,6 +81,13 @@ Barracks::draw_self()
     env->canvas->draw(m_textures["stats"].get(), (690 / W) * env->canvas->w(), y);
     env->canvas->draw(m_textures["levelup"].get(), (402 / W) * env->canvas->w(), (322 / H) * env->canvas->h());
 
+    env->canvas->draw(m_textures["equip"].get(), (690 / W) * env->canvas->w(), (322 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["rifle"].get(), (690 / W) * env->canvas->w(), (360 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["armor"].get(), (772 / W) * env->canvas->w(), (360 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["shield"].get(), (855 / W) * env->canvas->w(), (360 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["equip_change"].get(), (670 / W) * env->canvas->w(),
+        (353 / H) * env->canvas->h());
+
     draw_character();
 
     shared_ptr<Texture> texture;
