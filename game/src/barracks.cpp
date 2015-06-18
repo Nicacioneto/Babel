@@ -38,17 +38,17 @@ Barracks::Barracks(const string& next)
 
     button = new Button(this, "levelup_t", path + "levelup-t.png", (560/W) * env->canvas->w(),
         (390/H) * env->canvas->h(), 60, 40);
-    button->set_sprites(3);    
+    button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "equip_shelf", path + "equip_shelf.png", (690/W) * env->canvas->w(),
         (322/H) * env->canvas->h(), 225, 122);
-    button->set_sprites(3);    
+    button->set_sprites(3);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "back", "", (912/W) * env->canvas->w(),
-        (55/H) * env->canvas->h());
-    button->set_text("BACK  X", Color(160, 7, 7));
+    button = new Button(this, "back", path + "back.png", (912/W) * env->canvas->w(),
+        (55/H) * env->canvas->h(), 67, 26);
+    button->set_sprites(1);
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
