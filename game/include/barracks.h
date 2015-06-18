@@ -28,6 +28,7 @@ private:
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
     Character * current_char() const;
+    void update_char_attributes(Character *c, string class_);
 };
 
 #endif

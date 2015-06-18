@@ -291,6 +291,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
         int lvl = c->military();
         c->set_military(lvl + 1);
+
+        update_char_attributes(c, "M");
     }
     else if (button->id() == "levelup_p")
     {
@@ -300,6 +302,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
         int lvl = c->psionic();
         c->set_psionic(lvl + 1);
+
+        update_char_attributes(c, "P");
     }
     else if (button->id() == "levelup_t")
     {
@@ -309,6 +313,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
         int lvl = c->tech();
         c->set_tech(lvl + 1);
+
+        update_char_attributes(c, "T");
     }
     else if (button->id() == "back")
     {
@@ -358,4 +364,21 @@ Barracks::current_char() const
     auto it = m_characters.begin();
     for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
     return it->second;
+}
+
+void
+Barracks::update_char_attributes(Character *c, string class_)
+{
+    Environment *env = Environment::get_instance();
+    auto settings = env->resources_manager->get_settings("res/datas/levelup.sav");
+    c->set_life(c->life() + settings->read<int>(class_, "life", 0));
+    c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));
+    c->set_mp(c->mp() + settings->read<int>(class_, "mp", 0));
+    c->set_max_mp(c->max_mp() + settings->read<int>(class_, "mp", 0));
+    c->set_might(c->might() + settings->read<int>(class_, "might", 0));
+    c->set_mind(c->mind() + settings->read<int>(class_, "mind", 0));
+    c->set_resilience(c->resilience() + settings->read<int>(class_, "resilience", 0));
+    c->set_willpower(c->willpower() + settings->read<int>(class_, "willpower", 0));
+    c->set_agility(c->agility() + settings->read<int>(class_, "agility", 0));
+    c->set_perception(c->perception() + settings->read<int>(class_, "perception", 0));
 }
