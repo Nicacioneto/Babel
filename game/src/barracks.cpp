@@ -28,6 +28,11 @@ Barracks::Barracks(const string& next)
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
+    button = new Button(this, "back", "", (912/W) * env->canvas->w(),
+        (55/H) * env->canvas->h());
+    button->set_text("BACK  X", Color(160, 7, 7));
+    m_buttons[button->id()] = button;
+
     for (auto b : m_buttons)
     {
         b.second->add_observer(this);
@@ -185,13 +190,50 @@ Barracks::draw_character()
         (415/H) * env->canvas->h(), Color(170, 215, 190));
 
     font->set_size(18);
-    env->canvas->draw(character->id(), (250/W) * env->canvas->w(), (132/H) * env->canvas->h(), color);
-    env->canvas->draw(to_string(character->military()), (295/W) * env->canvas->w(),
-        (167/H) * env->canvas->h(), Color(208, 179, 43));
-    env->canvas->draw(to_string(character->psionic()), (295/W) * env->canvas->w(),
-        (198/H) * env->canvas->h(), Color(166, 69, 151));
-    env->canvas->draw(to_string(character->tech()), (295/W) * env->canvas->w(),
-        (229/H) * env->canvas->h(), Color(78, 191, 190));
+    x = 112;
+    int y = 125;
+    env->canvas->draw(character->id(), (x + 131)/W * env->canvas->w(), (y + 5)/H * env->canvas->h(), color);
+    env->canvas->draw(to_string(character->military()), (x+186)/W * env->canvas->w(),
+        (y+43)/H * env->canvas->h(), Color(208, 179, 43));
+    env->canvas->draw(to_string(character->psionic()), (x+186)/W * env->canvas->w(),
+        (y+75)/H * env->canvas->h(), Color(166, 69, 151));
+    env->canvas->draw(to_string(character->tech()), (x+186)/W * env->canvas->w(),
+        (y+105)/H * env->canvas->h(), Color(78, 191, 190));
+
+    font->set_size(14);
+
+    // number of digits
+    char buffer_length[100];
+    sprintf(buffer_length, "%d\n", character->shield());
+    string sf = buffer_length;
+
+    env->canvas->draw(to_string(character->shield()),
+        (x + 159 + 7 * (3 - sf.size()))/W * env->canvas->w(),
+        (y + 166)/H * env->canvas->h(), Color::WHITE);
+
+    sprintf(buffer_length, "%d\n", character->life());
+    sf = buffer_length;
+    env->canvas->draw(to_string(character->life()),
+        (x + 159 + 7 * (3 - sf.size()))/W * env->canvas->w(),
+        (y + 195)/H * env->canvas->h(), Color::WHITE);
+
+    sprintf(buffer_length, "%d\n", character->mp());
+    sf = buffer_length;
+    env->canvas->draw(to_string(character->mp()),
+        (x + 159 + 7 * (3 - sf.size()))/W * env->canvas->w(),
+        (y + 225)/H * env->canvas->h(), Color::WHITE);
+
+    env->canvas->draw("/", (x + 175)/W * env->canvas->w(), (y + 166)/H * env->canvas->h(), Color::WHITE);
+    env->canvas->draw("/", (x + 175)/W * env->canvas->w(), (y + 195)/H * env->canvas->h(), Color::WHITE);
+    env->canvas->draw("/", (x + 175)/W * env->canvas->w(), (y + 225)/H * env->canvas->h(), Color::WHITE);
+
+    font->set_size(10);
+    env->canvas->draw(to_string(character->max_shield()), (x + 183)/W * env->canvas->w(),
+        (y + 170)/H * env->canvas->h(), Color::WHITE);
+    env->canvas->draw(to_string(character->max_life()), (x + 183)/W * env->canvas->w(),
+        (y + 199)/H * env->canvas->h(), Color::WHITE);
+    env->canvas->draw(to_string(character->max_mp()), (x + 183)/W * env->canvas->w(),
+        (y + 229)/H * env->canvas->h(), Color::WHITE);
 }
 
 bool
@@ -214,6 +256,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "right_arrow")
     {
         m_character = (m_character + 1) % m_characters.size();
+    }
+    else if (button->id() == "back")
+    {
+        set_next("base");
+        finish();
     }
 
     return true;

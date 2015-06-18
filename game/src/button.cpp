@@ -48,22 +48,26 @@ Button::draw_self()
     Environment *env = Environment::get_instance();
     env = Environment::get_instance();
 
-    if (m_state == IDLE or m_sprites == 1)
+    if (m_texture)
     {
-        Rect clip = Rect(0, 0, m_texture->size().first, m_texture->size().second/m_sprites);
-        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
-    }
-    else if (m_state == ON_HOVER)
-    {
-        Rect clip = Rect(0, m_texture->size().second/m_sprites, m_texture->size().first,
-            m_texture->size().second/m_sprites);
-        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
-    }
-    else if (m_state == ACTIVE)
-    {
-        Rect clip = Rect(0, 2 * m_texture->size().second/m_sprites, m_texture->size().first,
-            m_texture->size().second/m_sprites);
-        env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+        if (m_state == IDLE or m_sprites == 1)
+        {
+            Rect clip = Rect(0, 0, m_texture->size().first, m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+        }
+        else if (m_state == ON_HOVER)
+        {
+            Rect clip = Rect(0, m_texture->size().second/m_sprites, m_texture->size().first,
+                m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+        }
+        else if (m_state == ACTIVE)
+        {
+            Rect clip = Rect(0, 2 * m_texture->size().second/m_sprites, m_texture->size().first,
+                m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+        }
+
     }
 
     if (m_text)
@@ -122,7 +126,14 @@ Button::on_event(const MouseMotionEvent& event)
 void
 Button::set_text(const string& str, const Color& color)
 {
+    set_visible(true);
     m_text = new Text(this, str, color);
+
+    if (not m_texture)
+    {
+        set_w(m_text->w());
+        set_h(m_text->h());
+    }
 }
 
 void
