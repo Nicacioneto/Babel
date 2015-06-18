@@ -1,6 +1,6 @@
 
 [Dungeon]
 
-direction = 2
-x = 2
-y = 0
+direction = 0
+x = 3
+y = 3

@@ -4,8 +4,6 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
-#include <iostream>
-using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -281,8 +279,12 @@ Barracks::load_characters()
 
     for (auto section : sections)
     {
-        Character *character = new Character(this, section.first, "psionic_big.png", x, y, w, h);
-        m_characters[character->id()] = character;
+        if (section.first != "Default")
+        {
+            Character *character = new Character(this, section.first, "psionic_big.png",
+                x, y, w, h, section.first);
+            m_characters[character->id()] = character;
+        }
     }
 
     for (auto it : m_characters)

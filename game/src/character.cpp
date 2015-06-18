@@ -7,9 +7,9 @@
 #include <cmath>
 
 Character::Character(Object *parent, ObjectID id, const string& texture,
-    double x, double y, double w, double h)
+    double x, double y, double w, double h, const string& name)
     : Object(parent, id, x, y, w, h), m_texture(nullptr), m_settings(nullptr),
-        m_name(id), m_attacks_quantity(1)
+        m_name(name), m_attacks_quantity(1)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
