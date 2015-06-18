@@ -1,0 +1,9 @@
+[Kukri Pistol]
+m = 1
+p = 0
+t = 0
+might = 7
+mind = 0
+speed = 0
+agility = 0
+hit_chance = 5
