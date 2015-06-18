@@ -52,7 +52,6 @@ Barracks::Barracks(const string& next)
     m_textures["equip_change"] = env->resources_manager->get_texture(path + "equip_change.png");
 
     load_characters();
-
 }
 
 void
