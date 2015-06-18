@@ -11,7 +11,7 @@ class MouseButtonEvent;
 class Character : public Object, public Listener
 {
 public:
-    Character(Object *parent = nullptr, ObjectID id = "Default", const string& character = "",
+    Character(Object *parent = nullptr, ObjectID id = "Default", const string& texture = "",
         double x = 0, double y = 0, double w = 0, double h = 0);
     ~Character();
 
@@ -64,7 +64,7 @@ public:
     void set_max_mp(int max_mp);
 
 private:
-    shared_ptr<Texture> m_character;
+    shared_ptr<Texture> m_texture;
     shared_ptr<Settings> m_settings;
 
     string m_name;

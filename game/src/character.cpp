@@ -5,20 +5,20 @@
 #include <core/rect.h>
 #include <core/settings.h>
 
-Character::Character(Object *parent, ObjectID id, const string& character,
+Character::Character(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
-    : Object(parent, id, x, y, w, h), m_character(nullptr), m_settings(nullptr),
+    : Object(parent, id, x, y, w, h), m_texture(nullptr), m_settings(nullptr),
         m_name(id), m_attacks_quantity(1)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
     string path = "res/images/characters/";
-    m_character = env->resources_manager->get_texture(path + character);
+    m_texture = env->resources_manager->get_texture(path + texture);
 
     if (not w and not h)
     {
-        set_dimensions(m_character->w(), m_character->h());
+        set_dimensions(m_texture->w(), m_texture->h());
     }
 
     m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
@@ -61,7 +61,7 @@ void
 Character::draw_self()
 {
     Environment *env = Environment::get_instance();
-    env->canvas->draw(m_character.get(), x(), y(), w(), h());
+    env->canvas->draw(m_texture.get(), x(), y(), w(), h());
 }
 
 bool
