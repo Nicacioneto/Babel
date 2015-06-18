@@ -92,7 +92,6 @@ Babel::load_level(const string& id)
         return new Combat();
     }
     
-    return new Barracks();
     return load_frontend(id);
 }
 

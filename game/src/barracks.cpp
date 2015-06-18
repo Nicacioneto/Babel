@@ -208,14 +208,16 @@ Barracks::draw_character()
     env->canvas->draw(to_string(data), (500/W) * env->canvas->w(),
         (353/H) * env->canvas->h(), Color(170, 215, 190));
 
-    font->set_size(18);
     x = 112;
     int y = 87;
+    font->set_size(18);
     m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
     m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
     m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
     env->canvas->draw(m_textures["card_big"].get(), (x / W) * env->canvas->w(), (y / H) * env->canvas->h());
     env->canvas->draw(character->id(), (x + 131)/W * env->canvas->w(), (y + 5)/H * env->canvas->h(), color);
+
+    font->set_style(Font::BOLD);
     env->canvas->draw(to_string(character->military()), (x+182)/W * env->canvas->w(),
         (y + 38)/H * env->canvas->h(), Color(208, 179, 43));
     env->canvas->draw(to_string(character->psionic()), (x+182)/W * env->canvas->w(),
@@ -224,6 +226,7 @@ Barracks::draw_character()
         (y + 100)/H * env->canvas->h(), Color(78, 191, 190));
 
     font->set_size(14);
+    font->set_style(Font::NORMAL);
 
     // number of digits
     char buffer_length[100];
