@@ -153,9 +153,9 @@ Central::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    for (auto it = m_buttons.begin(); it != m_buttons.end(); ++it)
+    for (auto b : m_buttons)
     {
-        auto id = it->first;
+        auto id = b.first;
         m_buttons[id]->add_observer(this);
         add_child(m_buttons[id]);
     }
@@ -164,11 +164,11 @@ Central::create_buttons()
 void
 Central::change_buttons()
 {
-    for (auto it : m_buttons)
+    for (auto b : m_buttons)
     {
-        if (it.first != "central")
+        if (b.first != "central")
         {
-            it.second->change_state(Button::IDLE);
+            b.second->change_state(Button::IDLE);
         }
     }
 }

@@ -93,9 +93,9 @@ Base::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    for (auto it : m_buttons)
+    for (auto b : m_buttons)
     {
-        it.second->add_observer(this);
-        add_child(it.second);
+        b.second->add_observer(this);
+        add_child(b.second);
     }
 }
