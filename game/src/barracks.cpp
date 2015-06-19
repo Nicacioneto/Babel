@@ -177,21 +177,24 @@ Barracks::draw_self()
         }
     }
 
-    x = 710;
+    x = (710/W) * env->canvas->w();
     y = (530/H) * env->canvas->h();
 
-    for (int i = 1; i <= 5; ++i, x += 38)
+    for (int i = 1; i <= 4; ++i, y += h)
     {
-        texture = env->resources_manager->get_texture(path + "Skill_T_" + to_string(i) + ".png");
-        env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), y);
-    }
-
-    for (int i = 0, x = 710; i < 5; ++i, x += 38)
-    {
-        for (int j = 0, y = 567; j < 3; ++j, y += 37)
+        x = (710/W) * env->canvas->w();
+        for (int j = 1; j <= 5; ++j, x += w)
         {
-            texture = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
-            env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+            if ( (i - 1)*5 + j <= character->tech())
+            {
+                texture = env->resources_manager->get_texture(path + "Skill_T_" + to_string((i - 1)*5 + j) + ".png");
+                env->canvas->draw(texture.get(), x, y);
+            }
+            else
+            {
+                texture = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
+                env->canvas->draw(texture.get(), x, y);
+            }
         }
     }
 }
