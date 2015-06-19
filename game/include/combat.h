@@ -3,6 +3,7 @@
 
 #include "button.h"
 #include <core/level.h>
+#include <core/listener.h>
 #include <map>
 
 using std::multimap;
@@ -11,15 +12,16 @@ class Character;
 class Text;
 class Texture;
 
-class Combat : public Level
+class Combat : public Level, public Listener
 {
 public:
-    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE } State;
+    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE, FINISHED_COMBAT } State;
     Combat(const string& next = "", const string& image = "res/images/combat/arena.png");
     ~Combat();
 
 private:
     shared_ptr<Texture> m_texture;
+    shared_ptr<Texture> m_result;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, Character*> m_enemies;
 
@@ -38,6 +40,7 @@ private:
     void enemy_attack(Character* enemy);
     void update_attackers(Character* character);
     void set_text(const string& str, const Color& color);
+    bool on_event(const KeyboardEvent& event);
 };
 
 #endif

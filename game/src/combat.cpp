@@ -1,7 +1,9 @@
 #include "combat.h"
 #include "character.h"
 #include <core/font.h>
+#include <core/rect.h>
 #include <core/text.h>
+#include <core/keyboardevent.h>
 
 using std::to_string;
 
@@ -10,11 +12,12 @@ using std::to_string;
 #define DELAY 1000
 
 Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
+    : Level("combat", next), m_texture(nullptr), m_result(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
     m_last(0), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
 
+    env->events_manager->register_listener(this);
     m_texture = env->resources_manager->get_texture(image);
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
@@ -34,6 +37,9 @@ Combat::~Combat()
         delete m_text;
         m_text = nullptr;
     }
+
+    Environment *env = Environment::get_instance();
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -41,17 +47,36 @@ Combat::update_self(unsigned long elapsed)
 {
     Environment *env = Environment::get_instance();
 
-    if (m_characters.empty())
+    if (m_state == FINISHED_COMBAT)
+    {
+        return;
+    }
+    else if (m_characters.empty())
     {
         set_next("base");
-        finish();
-        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
+        m_result = env->resources_manager->get_texture("res/images/combat/you-lose.png");
+        m_state = FINISHED_COMBAT;
+
+        for (auto it : m_enemies)
+        {
+            it.second->set_active(false);
+            it.second->set_visible(false);
+        }
+
+        return;
     }
     else if (m_enemies.empty())
     {
         set_next("dungeon");
-        finish();
-        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
+        m_result = env->resources_manager->get_texture("res/images/combat/you-win.png");
+        m_state = FINISHED_COMBAT;
+
+        for (auto it : m_characters)
+        {
+            it.second->set_visible(false);
+        }
+
+        return;
     }
 
     if (not m_last or m_state == CHARACTER_ATTACK)
@@ -100,6 +125,13 @@ Combat::draw_self()
     if (m_state == SHOW_DAMAGE)
     {
         m_text->draw();
+    }
+    else if (m_state == FINISHED_COMBAT)
+    {
+        int x = ((env->canvas->w() - m_result->w()) / 2 / W) * env->canvas->w();
+        int y = ((env->canvas->h() - m_result->h()) / 2 / H) * env->canvas->h();
+
+        env->canvas->draw(m_result.get(), x, y);
     }
 }
 
@@ -235,6 +267,22 @@ Combat::update_attackers(Character* character)
     int new_cooldown = character->cooldown() * attacks_quantity;
 
     m_attackers.insert(pair<int, string>(new_cooldown, character->id()));
+}
+
+bool
+Combat::on_event(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED and m_state == FINISHED_COMBAT)
+    {
+        finish();
+
+        Environment *env = Environment::get_instance();
+        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
+
+        return true;
+    }
+
+    return false;
 }
 
 void
