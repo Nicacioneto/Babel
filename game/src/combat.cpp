@@ -12,8 +12,8 @@ using std::to_string;
 #define DELAY 1000
 
 Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_result(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
-    m_last(0), m_text(nullptr)
+    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
+    m_last(0), m_text(nullptr), m_enemy_turn(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -106,10 +106,12 @@ Combat::update_self(unsigned long elapsed)
     if (enemy)
     {
         enemy_attack(enemy);
+        m_enemy_turn = enemy;
     }
     else if (character)
     {
         m_state = CHARACTER_ATTACK;
+        m_enemy_turn = nullptr;
     }
 
     m_attackers.erase(m_attackers.begin());
@@ -132,6 +134,17 @@ Combat::draw_self()
         int y = ((env->canvas->h() - m_result->h()) / 2 / H) * env->canvas->h();
 
         env->canvas->draw(m_result.get(), x, y);
+    }
+    
+    if (m_enemy_turn)
+    {
+        double x = m_enemy_turn->x() - (5 * W / env->canvas->w());
+        double y = m_enemy_turn->y() - (5 * H / env->canvas->h());
+        double w = m_enemy_turn->w() + (10 * W / env->canvas->w());
+        double h = m_enemy_turn->h() + (10 * H / env->canvas->h());
+        
+        Rect rect { x, y, w, h };
+        env->canvas->fill(rect, Color::BLUE);
     }
 }
 
@@ -244,6 +257,7 @@ Combat::enemy_attack(Character* enemy)
         character->y() - m_text->h() - ((10 / H) * env->canvas->h()));
 
     env->sfx->play("res/sfx/uiTavern_Enforcer.ogg", 1);
+
 
     if (character->life() <= 0)
     {
