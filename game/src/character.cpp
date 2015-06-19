@@ -6,9 +6,11 @@
 #include <core/settings.h>
 #include <cmath>
 
-Character::Character(Object *parent, ObjectID id, const string& texture,
+using std::to_string;
+
+Character::Character(int slot, Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h, const string& name)
-    : Object(parent, id, x, y, w, h), m_texture(nullptr), m_settings(nullptr),
+    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), m_settings(nullptr),
         m_name(name), m_attacks_quantity(1)
 {
     Environment *env = Environment::get_instance();
@@ -22,7 +24,7 @@ Character::Character(Object *parent, ObjectID id, const string& texture,
         set_dimensions(m_texture->w(), m_texture->h());
     }
 
-    m_settings = env->resources_manager->get_settings("res/datas/characters.sav");
+    m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot) + "characters.sav");
     init();
 }
 
@@ -453,6 +455,6 @@ Character::write(const string& attr, const T& value)
     if (m_name != "Default")
     {
         m_settings->write<int>(m_name, attr, value);
-        m_settings->save("res/datas/characters.sav");
+        m_settings->save("res/datas/slot" + to_string(m_slot) + "characters.sav");
     }
 }

@@ -473,13 +473,12 @@ Dungeon::calculate_probability_combat()
     if (random < m_probability_combat)
     {
         Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/" +
-            to_string(m_slot) + "dungeon.sav");
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot) + "dungeon.sav");
         settings->write<int>("Dungeon", "x", m_x);
         settings->write<int>("Dungeon", "y", m_y);
         settings->write<int>("Dungeon", "direction", m_direction.front());
 
-        settings->save("res/datas/dungeon.sav");
+        settings->save("res/datas/slot" + to_string(m_slot) + "dungeon.sav");
         set_next("combat");
         finish();
     }

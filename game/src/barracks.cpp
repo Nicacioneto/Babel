@@ -389,7 +389,7 @@ Barracks::load_characters()
     int w = (222 / W) * env->canvas->w();
     int h = (270 / H) * env->canvas->h();
 
-    auto settings = env->resources_manager->get_settings("res/datas/" +
+    auto settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "characters.sav");
     auto sections = settings->sections();
 
@@ -397,7 +397,7 @@ Barracks::load_characters()
     {
         if (section.first != "Default")
         {
-            Character *character = new Character(this, section.first, "test_big.png",
+            Character *character = new Character(m_slot, this, section.first, "test_big.png",
                 x, y, w, h, section.first);
             m_characters[character->id()] = character;
         }
@@ -425,7 +425,7 @@ void
 Barracks::update_char_attributes(Character *c, string class_)
 {
     Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/" +
+    auto settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "levelup.sav");
     c->set_life(c->life() + settings->read<int>(class_, "life", 0));
     c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));

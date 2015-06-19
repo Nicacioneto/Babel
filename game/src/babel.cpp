@@ -16,6 +16,9 @@
 #include <util/frontend.h>
 #include <core/keyboardevent.h>
 #include <core/settings.h>
+#include <core/systemevent.h>
+
+using namespace std;
 
 Babel::Babel()
     : Game("tiamat_logo"), m_slot(0)
@@ -145,6 +148,39 @@ Babel::on_event(const KeyboardEvent& event)
         }
 
         settings->save(env->m_settings_path);
+    }
+
+    return false;
+}
+
+bool
+Babel::on_event(const SystemEvent& event)
+{
+    if (event.type() == SystemEvent::QUIT)
+    {
+        m_done = true;
+
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot) + "timers.sav");
+        map< string, map<string, string> > sections = settings->sections();
+
+        for (auto section : sections)
+        {
+            string name = section.first;
+            string time = section.second["time"];
+            string final_time = section.second["final_time"];
+
+            if (final_time != "0")
+            {
+                unsigned long ms = atol(time.c_str());
+
+                unsigned long elapsed = update_timestep();
+
+                settings->write<unsigned long>(name, "time", ms + elapsed);
+                settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
+            }
+        }
+        return true;
     }
 
     return false;

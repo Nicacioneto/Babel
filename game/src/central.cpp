@@ -192,7 +192,7 @@ Central::change_to_chat()
     Color color(170, 215, 190);
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "colony.sav");
+        to_string(m_slot) + "/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Central"]["welcome"];
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
@@ -216,7 +216,7 @@ Central::change_to_quests()
 
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "quests.sav");
+        to_string(m_slot) + "/quests.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -257,8 +257,8 @@ Central::change_to_bestiary()
     env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
     
     shared_ptr<Texture> texture;
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/beslot" +
-        to_string(m_slot) + "stiary.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/stiary.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -306,7 +306,7 @@ Central::change_to_timers()
 
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "timers.sav");
+        to_string(m_slot) + "/timers.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -329,14 +329,13 @@ Central::change_to_timers()
         {
             if(final_time != "0")
             {
-                int seconds = (atoi(time.c_str()) + m_last) / 1000;
-                int final_seconds = atoi(final_time.c_str()) / 1000;
+                unsigned long seconds = (atol(time.c_str()) + m_last) / 1000;
+                unsigned long final_seconds = atol(final_time.c_str()) / 1000;
                 
-                seconds = final_seconds - seconds;
-
-                if (seconds > 0)
+                if (seconds < final_seconds)
                 {
-                    int minutes = seconds / 60;
+                    seconds = final_seconds - seconds;
+                    unsigned long minutes = seconds / 60;
                     seconds %= 60;
                     
                     string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
@@ -346,13 +345,13 @@ Central::change_to_timers()
                 }
                 else
                 {
-                    settings->write<int>(name, "final_time", 0);
-                    settings->save("res/datas/slot" + to_string(m_slot) + "timers.sav");
+                    settings->write<unsigned long>(name, "final_time", 0);
+                    settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
+                    time = "Ok!";
                 }
             }
             else
             {
-
                 time = "Ok!";
             }
 

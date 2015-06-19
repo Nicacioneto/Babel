@@ -223,7 +223,7 @@ Hospital::change_to_chat()
     Color color(170, 215, 190);
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "colony.sav");
+        to_string(m_slot) + "/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
     
@@ -252,7 +252,7 @@ Hospital::change_to_items()
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "items.sav");
+        to_string(m_slot) + "/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -330,7 +330,7 @@ Hospital::change_to_research()
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "items.sav");
+        to_string(m_slot) + "/items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -395,7 +395,7 @@ Hospital::change_to_revive()
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "characters.sav");
+        to_string(m_slot) + "/characters.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;

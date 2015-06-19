@@ -181,7 +181,7 @@ Workshop::change_to_chat()
     Color color(170, 215, 190);
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "colony.sav");
+        to_string(m_slot) + "/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Workshop"]["welcome"];
     
@@ -214,7 +214,7 @@ Workshop::change_to_vehicle()
     env->canvas->draw("Qnt.", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "vehicles.sav");
+        to_string(m_slot) + "/vehicles.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;

@@ -11,7 +11,7 @@ class MouseButtonEvent;
 class Character : public Object, public Listener
 {
 public:
-    Character(Object *parent = nullptr, ObjectID id = "", const string& texture = "",
+    Character(int slot, Object *parent = nullptr, ObjectID id = "", const string& texture = "",
         double x = 0, double y = 0, double w = 0, double h = 0, const string& name = "Default");
     ~Character();
 
@@ -75,6 +75,7 @@ private:
     shared_ptr<Texture> m_texture;
     shared_ptr<Settings> m_settings;
 
+    int m_slot;
     string m_name;
     int m_attacks_quantity;
 
