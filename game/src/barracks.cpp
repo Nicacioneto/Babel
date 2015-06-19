@@ -2,6 +2,7 @@
 #include "character.h"
 #include "colony.h"
 #include <core/font.h>
+#include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
 
@@ -15,6 +16,8 @@ Barracks::Barracks(const string& next)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
+
+    env->events_manager->register_listener(this);
 
     Button *button = new Button(this, "left_arrow", path + "left_arrow.png",
         (60/W) * env->canvas->w(), (218/H) * env->canvas->h(),
@@ -81,6 +84,12 @@ Barracks::Barracks(const string& next)
     m_textures["isaac_skills"] = env->resources_manager->get_texture(path + "isaac_skills.png");
 
     load_characters();
+}
+
+Barracks::~Barracks()
+{
+    Environment *env = Environment::get_instance();
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -397,4 +406,22 @@ Barracks::update_char_attributes(Character *c, string class_)
     c->set_willpower(c->willpower() + settings->read<int>(class_, "willpower", 0));
     c->set_agility(c->agility() + settings->read<int>(class_, "agility", 0));
     c->set_perception(c->perception() + settings->read<int>(class_, "perception", 0));
+}
+
+bool
+Barracks::on_event(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::ESCAPE)
+    {
+        set_next("base");
+        finish();
+
+        Environment *env = Environment::get_instance();
+        env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
+
+        return true;
+    }
+
+    return false;
 }

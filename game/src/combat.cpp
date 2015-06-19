@@ -21,7 +21,7 @@ Combat::Combat(const string& next, const string& image)
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
-    font->set_size(25);
+    font->set_size(30);
 
     load_characters();
     load_enemies();
