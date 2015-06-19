@@ -28,6 +28,7 @@ private:
 
     void draw_self();
     void draw_character();
+    void draw_skills();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
     Character * current_char() const;

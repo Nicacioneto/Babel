@@ -82,6 +82,18 @@ Barracks::Barracks(const string& next)
     m_textures["armor"] = env->resources_manager->get_texture(path + "armor.png");
     m_textures["shield"] = env->resources_manager->get_texture(path + "shield.png");
     m_textures["isaac_skills"] = env->resources_manager->get_texture(path + "isaac_skills.png");
+    m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
+    m_textures["skill_p_locked"] = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
+    m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
+
+    for (int i = 1; i <= 20; ++i)
+    {
+        m_textures["skill_m_" + to_string(i)] = env->resources_manager->get_texture(path + "Skill_M_" + to_string(i) + ".png");
+
+        m_textures["skill_p_" + to_string(i)] = env->resources_manager->get_texture(path + "Skill_P_" + to_string(i) + ".png");
+
+        m_textures["skill_t_" + to_string(i)] = env->resources_manager->get_texture(path + "Skill_T_" + to_string(i) + ".png");
+    }
 
     load_characters();
 }
@@ -131,72 +143,7 @@ Barracks::draw_self()
     shared_ptr<Texture> texture;
     string path = "res/images/colony/barracks/";
 
-    int x = (130/W) * env->canvas->w();
-    y = (530/H) * env->canvas->h();
-    int w = (38/W) * env->canvas->w();
-    int h = (37/H) * env->canvas->h();
-
-    Character *character = current_char();
-    
-    for (int i = 1; i <= 4; ++i, y += h)
-    {
-        x = (130/W) * env->canvas->w();
-        for (int j = 1; j <= 5; ++j, x += w)
-        {
-            if ( (i - 1)*5 + j <= character->military())
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_M_" + to_string((i - 1)*5 + j) + ".png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-            else
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-        }
-    }
-
-    x = (420/W) * env->canvas->w();
-    y = (530/H) * env->canvas->h();
-
-    for (int i = 1; i <= 4; ++i, y += h)
-    {
-        x = (420/W) * env->canvas->w();
-        for (int j = 1; j <= 5; ++j, x += w)
-        {
-            if ( (i - 1)*5 + j <= character->psionic())
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_P_" + to_string((i - 1)*5 + j) + ".png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-            else
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-        }
-    }
-
-    x = (710/W) * env->canvas->w();
-    y = (530/H) * env->canvas->h();
-
-    for (int i = 1; i <= 4; ++i, y += h)
-    {
-        x = (710/W) * env->canvas->w();
-        for (int j = 1; j <= 5; ++j, x += w)
-        {
-            if ( (i - 1)*5 + j <= character->tech())
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_T_" + to_string((i - 1)*5 + j) + ".png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-            else
-            {
-                texture = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
-                env->canvas->draw(texture.get(), x, y);
-            }
-        }
-    }
+    draw_skills();
 }
 
 void
@@ -291,6 +238,73 @@ Barracks::draw_character()
         (y + 195)/H * env->canvas->h(), Color::WHITE);
     env->canvas->draw(to_string(character->max_mp()), (x + 183)/W * env->canvas->w(),
         (y + 225)/H * env->canvas->h(), Color::WHITE);
+}
+
+void
+Barracks::draw_skills()
+{
+    Environment *env = Environment::get_instance();
+
+    int x = (130/W) * env->canvas->w();
+    int y = (530/H) * env->canvas->h();
+    int w = (38/W) * env->canvas->w();
+    int h = (37/H) * env->canvas->h();
+
+    Character *character = current_char();
+    
+    for (int i = 1; i <= 4; ++i, y += h)
+    {
+        x = (130/W) * env->canvas->w();
+        for (int j = 1; j <= 5; ++j, x += w)
+        {
+            if ( (i - 1)*5 + j <= character->military())
+            {
+                env->canvas->draw(m_textures["skill_m_" + to_string((i - 1)*5 + j)].get(), x, y);
+            }
+            else
+            {
+                env->canvas->draw(m_textures["skill_m_locked"].get(), x, y);
+            }
+        }
+    }
+
+    x = (420/W) * env->canvas->w();
+    y = (530/H) * env->canvas->h();
+
+    for (int i = 1; i <= 4; ++i, y += h)
+    {
+        x = (420/W) * env->canvas->w();
+        for (int j = 1; j <= 5; ++j, x += w)
+        {
+            if ( (i - 1)*5 + j <= character->psionic())
+            {
+                env->canvas->draw(m_textures["skill_p_" + to_string((i - 1)*5 + j)].get(), x, y);
+            }
+            else
+            {
+                env->canvas->draw(m_textures["skill_p_locked"].get(), x, y);
+            }
+        }
+    }
+
+    x = (710/W) * env->canvas->w();
+    y = (530/H) * env->canvas->h();
+
+    for (int i = 1; i <= 4; ++i, y += h)
+    {
+        x = (710/W) * env->canvas->w();
+        for (int j = 1; j <= 5; ++j, x += w)
+        {
+            if ( (i - 1)*5 + j <= character->tech())
+            {
+                env->canvas->draw(m_textures["skill_t_" + to_string((i - 1)*5 + j)].get(), x, y);
+            }
+            else
+            {
+                env->canvas->draw(m_textures["skill_t_locked"].get(), x, y);
+            }
+        }
+    }
 }
 
 bool
