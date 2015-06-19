@@ -23,6 +23,8 @@ private:
 
     Screen m_screen;
 
+    unsigned long m_last;
+
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();
@@ -31,6 +33,7 @@ private:
     void change_to_quests();
     void change_to_bestiary();
     void change_to_timers();
+    void update_self(unsigned long elapsed);
 };
 
 #endif

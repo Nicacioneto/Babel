@@ -1,15 +1,23 @@
 [Printing: 3D Gun]
-time = 15:00
-icon =workshop
 
-[Reviving: Isaac]
-time = 15:00
-icon =research
+final_time = 120000
+icon =workshop
+time = 0
 
 [Researching: Laser Guns]
-time = 15:00
+
+final_time = 120000
 icon =hospital
+time = 2000
 
 [Reviving: Galileu]
-time = 15:00
+
+final_time =0
 icon =hospital
+time = 60000
+
+[Reviving: Isaac]
+
+final_time = 120000
+icon =research
+time = 1000

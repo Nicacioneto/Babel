@@ -7,8 +7,10 @@
 #define W 1024.0
 #define H 768.0
 
+using std::to_string;
+
 Central::Central(const string& next)
-    : Level("central", next), m_scenario(nullptr), m_screen(CHAT)
+    : Level("central", next), m_scenario(nullptr), m_screen(CHAT), m_last(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -20,6 +22,12 @@ Central::Central(const string& next)
     add_child(colony);
 
     create_buttons();
+}
+
+void
+Central::update_self(unsigned long elapsed)
+{
+    m_last = elapsed;
 }
 
 void
@@ -302,6 +310,7 @@ Central::change_to_timers()
     {
         string name = section.first;
         string time = section.second["time"];
+        string final_time = section.second["final_time"];
         string icon = section.second["icon"];
 
         if (icon.back() == '\r')
@@ -310,9 +319,39 @@ Central::change_to_timers()
             icon.pop_back();
         }
 
+
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not time.empty())
         {
+            if(final_time != "0")
+            {
+                int seconds = (atoi(time.c_str()) + m_last) / 1000;
+                int final_seconds = atoi(final_time.c_str()) / 1000;
+                
+                seconds = final_seconds - seconds;
+
+                if (seconds > 0)
+                {
+                    int minutes = seconds / 60;
+                    seconds %= 60;
+                    
+                    string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
+                    string min = minutes < 10 ? "0" + to_string(minutes) : to_string(minutes);
+                    
+                    time = min + ":" + sec;
+                }
+                else
+                {
+                    settings->write<int>(name, "final_time", 0);
+                    settings->save("res/datas/timers.sav");
+                }
+            }
+            else
+            {
+
+                time = "Ok!";
+            }
+
             env->canvas->draw(time, (855 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
         }
