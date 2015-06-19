@@ -2,6 +2,7 @@
 #define COMBAT_H
 
 #include "button.h"
+#include "character.h"
 #include <core/level.h>
 #include <map>
 
@@ -29,6 +30,7 @@ private:
     State m_state;
     unsigned long m_last;
     Text *m_text;
+    Character *m_enemy_turn;
 
     void update_self(unsigned long elapsed);
     void draw_self();
