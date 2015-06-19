@@ -72,10 +72,10 @@ public:
     void set_critical(int critical);
 
 private:
+    int m_slot;
     shared_ptr<Texture> m_texture;
     shared_ptr<Settings> m_settings;
 
-    int m_slot;
     string m_name;
     int m_attacks_quantity;
 

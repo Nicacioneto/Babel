@@ -390,7 +390,7 @@ Barracks::load_characters()
     int h = (270 / H) * env->canvas->h();
 
     auto settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "characters.sav");
+        to_string(m_slot) + "/characters.sav");
     auto sections = settings->sections();
 
     for (auto section : sections)
@@ -399,17 +399,12 @@ Barracks::load_characters()
         {
             Character *character = new Character(m_slot, this, section.first, "test_big.png",
                 x, y, w, h, section.first);
+            character->set_active(false);
+            character->set_visible(false);
+            character->add_observer(this);
+            add_child(character);
             m_characters[character->id()] = character;
         }
-    }
-
-    for (auto it : m_characters)
-    {
-        it.second->add_observer(this);
-        add_child(it.second);
-
-        it.second->set_active(false);
-        it.second->set_visible(false);
     }
 }
 
@@ -426,7 +421,7 @@ Barracks::update_char_attributes(Character *c, string class_)
 {
     Environment *env = Environment::get_instance();
     auto settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "levelup.sav");
+        to_string(m_slot) + "/levelup.sav");
     c->set_life(c->life() + settings->read<int>(class_, "life", 0));
     c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));
     c->set_mp(c->mp() + settings->read<int>(class_, "mp", 0));

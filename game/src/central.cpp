@@ -258,7 +258,7 @@ Central::change_to_bestiary()
     
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/stiary.sav");
+        to_string(m_slot) + "/bestiary.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
