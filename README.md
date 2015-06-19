@@ -26,7 +26,7 @@ git clone https://github.com/ije-tiamat/babel.git
 Installing the Engine:
 ```
 $ cd game/lib
-$ tar -vzxf ijengine-0.0.3.tar.gz
+$ tar -vzxf ijengine-0.0.5.tar.gz
 $ make
 $ sudo make install
 ```
