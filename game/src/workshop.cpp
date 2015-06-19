@@ -7,15 +7,17 @@
 #define W 1024.0
 #define H 768.0
 
-Workshop::Workshop(const string& next)
-    : Level("workshop", next), m_scenario(nullptr), m_screen(CHAT)
+using std::to_string;
+
+Workshop::Workshop(int slot, const string& next)
+    : Level("workshop", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/workshop/";
 
     m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
 
-    Colony *colony = new Colony(this, "workshop");
+    Colony *colony = new Colony(m_slot, this, "workshop");
     colony->add_observer(this);
     add_child(colony);
 
@@ -178,7 +180,8 @@ Workshop::change_to_chat()
 
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Workshop"]["welcome"];
     
@@ -210,7 +213,8 @@ Workshop::change_to_vehicle()
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
     env->canvas->draw("Qnt.", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/vehicles.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "vehicles.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;

@@ -15,16 +15,17 @@ class Texture;
 class Facilities : public Level
 {
 public:
-    Facilities(const string& next = "");
+    Facilities(int slot, const string& next = "");
 
 private:
     typedef enum { CHAT, MILITARY, PSIONIC, TECH } Screen;
 
+    int m_slot;
+    int m_mwaked, m_pwaked, m_twaked;
+    int m_matter_cost, m_energy_cost;
     Colony *m_colony;
     Screen m_screen;
     map<ObjectID, Button*> m_buttons;
-    int m_mwaked, m_pwaked, m_twaked;
-    int m_matter_cost, m_energy_cost;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

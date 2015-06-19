@@ -5,41 +5,44 @@
 #define W 1024.0
 #define H 768.0
 
-Colony::Colony(Object *parent, ObjectID id)
-    : Object(parent, id), m_right_bracket(nullptr), m_colony(nullptr), m_tower_img(nullptr),
-        m_planet_img(nullptr), m_left_bracket(nullptr), m_resources(nullptr),
-        m_center_bracket(nullptr), m_tower(nullptr), m_planet(nullptr),
-        m_data(0), m_matter(0), m_energy(0), m_settings(nullptr)
+using std::to_string;
+
+Colony::Colony(int slot, Object *parent, ObjectID id)
+    : Object(parent, id), m_slot(slot), m_data(0), m_matter(0), m_energy(0), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_right_bracket = env->resources_manager->get_texture(path + "right_bracket.png");
-    m_colony = env->resources_manager->get_texture(path + "colony.png");
-    m_tower_img = env->resources_manager->get_texture(path + "tower.png");
-    m_planet_img = env->resources_manager->get_texture(path + "planet.png");
-    m_left_bracket = env->resources_manager->get_texture(path + "left_bracket.png");
-    m_resources = env->resources_manager->get_texture(path + "resources.png");
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["colony"] = env->resources_manager->get_texture(path + "colony.png");
+    m_textures["tower_img"] = env->resources_manager->get_texture(path + "tower.png");
+    m_textures["planet_img"] = env->resources_manager->get_texture(path + "planet.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
+    m_textures["resources"] = env->resources_manager->get_texture(path + "resources.png");
 
-    m_center_bracket = new Button(this, "center_bracket", path + "center_bracket_button.png",
+    Button *button = new Button(this, "center_bracket", path + "center_bracket_button.png",
         (193 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
         (635 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
-    m_tower = new Button(this, "tower", path + "tower_button.png",
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "tower", path + "tower_button.png",
         (28 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
         (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
-    m_planet = new Button(this, "planet", path + "planet_button.png",
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "planet", path + "planet_button.png",
         (855 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
         (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
+    m_buttons[button->id()] = button;
 
-    m_center_bracket->add_observer(this);
-    m_tower->add_observer(this);
-    m_planet->add_observer(this);
+    for (auto b : m_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
 
-    add_child(m_center_bracket);
-    add_child(m_tower);
-    add_child(m_planet);
-
-    m_settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    path = "res/datas/slot" + to_string(m_slot) + "/colony.sav";
+    m_settings = env->resources_manager->get_settings(path);
     m_data = m_settings->read<int>("Colony", "data", 0);
     m_matter = m_settings->read<int>("Colony", "matter", 0);
     m_energy = m_settings->read<int>("Colony", "energy", 0);
@@ -50,17 +53,17 @@ Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
 
-    env->canvas->draw(m_right_bracket.get(), (275 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["right_bracket"].get(), (275 / W) * env->canvas->w(),
         (173 / H) * env->canvas->h());
-    env->canvas->draw(m_colony.get(), (193 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["colony"].get(), (193 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
-    env->canvas->draw(m_tower_img.get(), (28 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["tower_img"].get(), (28 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
-    env->canvas->draw(m_planet_img.get(), (855 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["planet_img"].get(), (855 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
-    env->canvas->draw(m_left_bracket.get(), (28 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["left_bracket"].get(), (28 / W) * env->canvas->w(),
         (175 / H) * env->canvas->h());
-    env->canvas->draw(m_resources.get(), (28 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["resources"].get(), (28 / W) * env->canvas->w(),
         (120 / H) * env->canvas->h());
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -70,9 +73,9 @@ Colony::draw_self()
     int x = 120;
     int y = (120 / H) * env->canvas->h();
 
-    env->canvas->draw(std::to_string(m_data), (x/W) * env->canvas->w(), y, color);
-    env->canvas->draw(std::to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
-    env->canvas->draw(std::to_string(m_energy), (x + 160*2)/W *env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_data), (x/W) * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_energy), (x + 160*2)/W *env->canvas->w(), y, color);
 }
 
 bool
@@ -144,5 +147,5 @@ template<typename T> void
 Colony::write(const string& attr, const T& value)
 {
     m_settings->write<int>("Colony", attr, value);
-    m_settings->save("res/datas/colony.sav");
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
 }

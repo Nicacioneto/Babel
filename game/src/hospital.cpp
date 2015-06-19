@@ -7,34 +7,38 @@
 #define W 1024.0
 #define H 768.0
 
-Hospital::Hospital(const string& next)
-    : Level("hospital", next), m_scenario(nullptr), m_reset(nullptr),
-        m_buy(nullptr), m_screen(CHAT)
+using std::to_string;
+
+Hospital::Hospital(int slot, const string& next)
+    : Level("hospital", next), m_slot(slot), m_scenario(nullptr), m_screen(CHAT)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
     m_scenario = env->resources_manager->get_texture(path + "hospital/chat_scenario.png");
 
-    m_reset = new Button(this, "reset", path + "hospital/reset.png",
+    Button *button = new Button(this, "reset", path + "hospital/reset.png",
         (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
         (57 / W) * env->canvas->w(), (52/2 / H) * env->canvas->h());
-    m_reset->set_visible(false);
-    m_reset->set_active(false);
+    button->set_visible(false);
+    button->set_active(false);
+    m_buttons[button->id()] = button;
 
-    m_buy = new Button(this, "buy", path + "hospital/buy.png",
+    button = new Button(this, "buy", path + "hospital/buy.png",
         (772 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
         (58 / W) * env->canvas->w(), (78/3 / H) * env->canvas->h());
-    m_buy->set_sprites(3);
-    m_buy->set_visible(false);
-    m_buy->set_active(false);
+    button->set_sprites(3);
+    button->set_visible(false);
+    button->set_active(false);
+    m_buttons[button->id()] = button;
 
-    m_reset->add_observer(this);
-    m_buy->add_observer(this);
-    add_child(m_reset);
-    add_child(m_buy);
+    for (auto b : m_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
     
-    Colony *colony = new Colony(this, "hospital");
+    Colony *colony = new Colony(m_slot, this, "hospital");
     colony->add_observer(this);
     add_child(colony);
 
@@ -87,7 +91,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "reset")
     {
-        m_buy->change_state(Button::IDLE);
+        m_buttons["buy"]->change_state(Button::IDLE);
     }
     else if (button->id() == "buy")
     {
@@ -111,11 +115,11 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         {
             m_screen = ITEMS;
             
-            m_reset->set_visible(true);
-            m_reset->set_active(true);
+            m_buttons["reset"]->set_visible(true);
+            m_buttons["reset"]->set_active(true);
 
-            m_buy->set_visible(true);
-            m_buy->set_active(true);
+            m_buttons["buy"]->set_visible(true);
+            m_buttons["buy"]->set_active(true);
         }
         else if (button->id() == "research")
         {
@@ -200,11 +204,11 @@ Hospital::change_buttons()
         }
     }
 
-    m_reset->set_visible(false);
-    m_reset->set_active(false);
+    m_buttons["reset"]->set_visible(false);
+    m_buttons["reset"]->set_active(false);
 
-    m_buy->set_visible(false);
-    m_buy->set_active(false);
+    m_buttons["buy"]->set_visible(false);
+    m_buttons["buy"]->set_active(false);
 }
 
 void
@@ -218,7 +222,8 @@ Hospital::change_to_chat()
 
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
     
@@ -246,7 +251,8 @@ Hospital::change_to_items()
         path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -323,7 +329,8 @@ Hospital::change_to_research()
         path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/items.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "items.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -387,8 +394,8 @@ Hospital::change_to_revive()
         path + "icons/matter_power.png");
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings(
-        "res/datas/characters.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "characters.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;

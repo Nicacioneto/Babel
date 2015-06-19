@@ -18,7 +18,7 @@ class Texture;
 class Dungeon : public Level, Listener
 {
 public:
-    Dungeon(int w = 1, int h = 1, int steps = 0, int probability_combat = 10);
+    Dungeon(int slot, int steps = 0, int probability_combat = 10);
     ~Dungeon();
 
     void move_backward();
@@ -44,7 +44,7 @@ private:
     void calculate_probability_combat();
 
     int m_x, m_y, m_w, m_h;
-    int m_steps, m_delta, m_probability_combat;
+    int m_slot, m_steps, m_delta, m_probability_combat;
     unsigned long m_last;
     Direction m_direction;
     State m_state;

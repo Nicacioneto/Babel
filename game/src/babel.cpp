@@ -18,7 +18,7 @@
 #include <core/settings.h>
 
 Babel::Babel()
-    : Game("tiamat_logo")
+    : Game("tiamat_logo"), m_slot(0)
 {
 }
 
@@ -29,7 +29,9 @@ Babel::~Babel()
 Level *
 Babel::load_level(const string& id)
 {
-    m_id = id;
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
+    m_slot = settings->read<int>("Slots", "slot", 0);
 
     if (id == "")
     {
@@ -53,35 +55,35 @@ Babel::load_level(const string& id)
     }
     else if (id == "base")
     {
-        return new Base();
+        return new Base(m_slot);
     }
     else if (id == "dungeon")
     {
-        return new Dungeon();
+        return new Dungeon(m_slot);
     }
     else if (id == "planet")
     {
-        return new Planet();
+        return new Planet(m_slot);
     }
     else if (id == "barracks")
     {
-        return new Barracks();
+        return new Barracks(m_slot);
     }
     else if (id == "facilities")
     {
-        return new Facilities();
+        return new Facilities(m_slot);
     }
     else if (id == "hospital")
     {
-        return new Hospital();
+        return new Hospital(m_slot);
     }
     else if (id == "workshop")
     {
-        return new Workshop();
+        return new Workshop(m_slot);
     }
     else if (id == "central")
     {
-        return new Central();
+        return new Central(m_slot);
     }
     else if (id == "gameover")
     {
@@ -89,9 +91,9 @@ Babel::load_level(const string& id)
     }
     else if (id == "combat")
     {
-        return new Combat();
+        return new Combat(m_slot);
     }
-    
+
     return load_frontend(id);
 }
 

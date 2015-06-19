@@ -10,13 +10,15 @@ class Texture;
 class Planet : public Level
 {
 public:
-    Planet(const string& next = "");
+    Planet(int slot, const string& next = "");
 
 private:
     typedef enum { IDLE, POPUP } State;
+
+    int m_slot;
+    State m_state;
     shared_ptr<Texture> m_texture, m_popup;
     map<ObjectID, Button*> m_buttons;
-    State m_state;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

@@ -11,14 +11,14 @@ using std::to_string;
 #define H 768.0
 #define DELAY 1000
 
-Combat::Combat(const string& next, const string& image)
-    : Level("combat", next), m_texture(nullptr), m_attacker(""), m_state(ENEMY_ATTACK),
-    m_last(0), m_text(nullptr), m_enemy_turn(nullptr)
+Combat::Combat(int slot, const string& next)
+    : Level("combat", next), m_slot(slot), m_attacker(""), m_state(ENEMY_ATTACK),
+        m_enemy_turn(nullptr), m_text(nullptr), m_last(0)
 {
     Environment *env = Environment::get_instance();
 
     env->events_manager->register_listener(this);
-    m_texture = env->resources_manager->get_texture(image);
+    m_texture = env->resources_manager->get_texture("res/images/combat/arena.png");
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
 

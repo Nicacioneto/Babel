@@ -13,11 +13,12 @@ class Texture;
 class Base : public Level
 {
 public:
-    Base(const string& next = "");
+    Base(int slot, const string& next = "");
 
 private:
+	int m_slot;
+
     shared_ptr<Texture> m_scenario;
-    
     map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);

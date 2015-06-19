@@ -11,8 +11,8 @@
 
 using std::to_string;
 
-Barracks::Barracks(const string& next)
-    : Level("barracks", next), m_settings(nullptr), m_character(0)
+Barracks::Barracks(int slot, const string& next)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
@@ -182,7 +182,7 @@ Barracks::draw_character()
     env->canvas->draw(m_textures["isaac_skills"].get(), (112 / W) * env->canvas->w(), (376 / H) * env->canvas->h());
 
     font->set_size(16);
-    int data = Colony().data();
+    int data = Colony(m_slot).data();
     env->canvas->draw(to_string(data), (500/W) * env->canvas->w(),
         (353/H) * env->canvas->h(), Color(170, 215, 190));
 
@@ -333,8 +333,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         Character *c = current_char();
         if (c->military() < 20)
         {
-            int data = Colony().data();
-            Colony().set_data(data - c->levelup_m());
+            int data = Colony(m_slot).data();
+            Colony(m_slot).set_data(data - c->levelup_m());
 
             int lvl = c->military();
             c->set_military(lvl + 1);
@@ -347,8 +347,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         Character *c = current_char();
         if (c->psionic() < 20)
         {
-            int data = Colony().data();
-            Colony().set_data(data - c->levelup_p());
+            int data = Colony(m_slot).data();
+            Colony(m_slot).set_data(data - c->levelup_p());
 
             int lvl = c->psionic();
             c->set_psionic(lvl + 1);
@@ -361,8 +361,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         Character *c = current_char();
         if (c->tech() < 20)
         {
-            int data = Colony().data();
-            Colony().set_data(data - c->levelup_t());
+            int data = Colony(m_slot).data();
+            Colony(m_slot).set_data(data - c->levelup_t());
 
             int lvl = c->tech();
             c->set_tech(lvl + 1);
@@ -389,7 +389,8 @@ Barracks::load_characters()
     int w = (222 / W) * env->canvas->w();
     int h = (270 / H) * env->canvas->h();
 
-    auto settings = env->resources_manager->get_settings("res/datas/characters.sav");
+    auto settings = env->resources_manager->get_settings("res/datas/" +
+        to_string(m_slot) + "characters.sav");
     auto sections = settings->sections();
 
     for (auto section : sections)
@@ -424,7 +425,8 @@ void
 Barracks::update_char_attributes(Character *c, string class_)
 {
     Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/levelup.sav");
+    auto settings = env->resources_manager->get_settings("res/datas/" +
+        to_string(m_slot) + "levelup.sav");
     c->set_life(c->life() + settings->read<int>(class_, "life", 0));
     c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));
     c->set_mp(c->mp() + settings->read<int>(class_, "mp", 0));

@@ -9,15 +9,15 @@
 
 using std::to_string;
 
-Central::Central(const string& next)
-    : Level("central", next), m_scenario(nullptr), m_screen(CHAT), m_last(0)
+Central::Central(int slot, const string& next)
+    : Level("central", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
     m_scenario = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
 
-    Colony *colony = new Colony(this, "central");
+    Colony *colony = new Colony(m_slot, this, "central");
     colony->add_observer(this);
     add_child(colony);
 
@@ -191,7 +191,8 @@ Central::change_to_chat()
     font->set_size(18);
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Central"]["welcome"];
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
@@ -214,7 +215,8 @@ Central::change_to_quests()
     env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
 
     shared_ptr<Texture> texture;
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/quests.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "quests.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -255,7 +257,8 @@ Central::change_to_bestiary()
     env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
     
     shared_ptr<Texture> texture;
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/bestiary.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/beslot" +
+        to_string(m_slot) + "stiary.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -302,7 +305,8 @@ Central::change_to_timers()
     env->canvas->draw("Time", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
 
     shared_ptr<Texture> texture;
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/timers.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "timers.sav");
     map< string, map<string, string> > sections = settings->sections();
 
     int y = 236;
@@ -343,7 +347,7 @@ Central::change_to_timers()
                 else
                 {
                     settings->write<int>(name, "final_time", 0);
-                    settings->save("res/datas/timers.sav");
+                    settings->save("res/datas/slot" + to_string(m_slot) + "timers.sav");
                 }
             }
             else

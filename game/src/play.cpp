@@ -67,27 +67,63 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "slot1")
     {
+        if (slot1 == 0)
+        {
+            #if defined(__unix__)
+                system("mkdir -p res/datas/slot1 && cp res/datas/def/* res/datas/slot1/");
+            #else
+                system("xcopy /I res\\datas\\def\\* res\\datas\\slot1");
+            #endif
+        }
+
         set_next("base");
+        settings->write<int>("Slots", "slot", 1);
         settings->write<int>("Slots", "slot1", 1);
         settings->write<int>("Slots", "slot2", slot2);
         settings->write<int>("Slots", "slot3", slot3);
     }
     else if (button->id() == "slot2")
     {
+        if (slot2 == 0)
+        {
+            #if defined(__unix__)
+                system("mkdir -p res/datas/slot2 && cp res/datas/def/* res/datas/slot2/");
+            #else
+                system("xcopy /I res\\datas\\def\\* res\\datas\\slot2");
+            #endif
+        }
+
         set_next("base");
+        settings->write<int>("Slots", "slot", 2);
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", 1);
         settings->write<int>("Slots", "slot3", slot3);
     }
     else if (button->id() == "slot3")
     {
+        if (slot3 == 0)
+        {
+            #if defined(__unix__)
+                system("mkdir -p res/datas/slot3 && cp res/datas/def/* res/datas/slot3/");
+            #else
+                system("xcopy /i res\\datas\\def\\* res\\datas\\slot3");
+            #endif
+        }
+
         set_next("base");
+        settings->write<int>("Slots", "slot", 3);
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", slot2);
         settings->write<int>("Slots", "slot3", 1);
     }
     else if (button->id() == "slot1_x")
     {
+        #if defined(__unix__)
+            system("rm -rf res/datas/slot1/");
+        #else
+            system("rd /s /q res\\datas\\slot1\\");
+        #endif
+
         set_next("play");
         settings->write<int>("Slots", "slot1", 0);
         settings->write<int>("Slots", "slot2", slot2);
@@ -95,6 +131,12 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "slot2_x")
     {
+        #if defined(__unix__)
+            system("rm -rf res/datas/slot2/");
+        #else
+            system("rd /s /q res\\datas\\slot2\\");
+        #endif
+
         set_next("play");
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", 0);
@@ -102,6 +144,12 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "slot3_x")
     {
+        #if defined(__unix__)
+            system("rm -rf res/datas/slot3/");
+        #else
+            system("rd /s /q res\\datas\\slot3\\");
+        #endif
+
         set_next("play");
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", slot2);

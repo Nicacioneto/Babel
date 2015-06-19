@@ -63,4 +63,4 @@ prog
 # Temp files
 *~
 *.ini
-game/res/files/volume.txt
+game/res/datas/slot*

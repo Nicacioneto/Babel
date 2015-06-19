@@ -5,15 +5,15 @@
 #define W 1024.0
 #define H 768.0
 
-Base::Base(const string& next)
-    : Level("base", next), m_scenario(nullptr)
+Base::Base(int slot, const string& next)
+    : Level("base", next), m_slot(slot), m_scenario(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
     m_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
 
-    Colony *colony = new Colony(this, "base");
+    Colony *colony = new Colony(m_slot, this, "base");
     colony->add_observer(this);
     add_child(colony);
 

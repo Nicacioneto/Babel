@@ -6,23 +6,23 @@
 #include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
+#include <ctime>
 #include <sstream>
 #include <vector>
-#include <ctime>
 
 #define PROBABILITY_STEPWISE 2;
 
-using std::endl;
-using std::stringstream;
 using std::vector;
+using std::to_string;
 
-Dungeon::Dungeon(int w, int h, int steps, int probability_combat)
-    : Level("", ""), m_w(w), m_h(h), m_steps(steps),
-        m_delta(0), m_probability_combat(probability_combat), m_last(0), m_state(WAITING)
+Dungeon::Dungeon(int slot, int steps, int probability_combat)
+    : Level("dungeon", ""), m_slot(slot), m_steps(steps), m_delta(0),
+        m_probability_combat(probability_combat), m_last(0), m_state(WAITING)
 {
     Environment *env = Environment::get_instance();
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" + 
+        to_string(m_slot) + "/dungeon.sav");
 
     m_x = settings->read<int>("Dungeon", "x", 0);
     m_y = settings->read<int>("Dungeon", "y", 0);
@@ -383,7 +383,7 @@ Dungeon::load_map()
 {
     string file = read_file("res/maps/map.txt");
 
-    stringstream ss;
+    std::stringstream ss;
     ss << file;
 
     vector<vector<int>> map;
@@ -454,7 +454,7 @@ Dungeon::load_tiles()
     
     for (int i = 0; i < MAXT; ++i)
     {
-        string img = "res/images/dungeon/" + std::to_string(i);
+        string img = "res/images/dungeon/" + to_string(i);
         try
         {
             m_tiles[i] = env->resources_manager->get_bitmap(img + ".png");
@@ -473,7 +473,8 @@ Dungeon::calculate_probability_combat()
     if (random < m_probability_combat)
     {
         Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/dungeon.sav");
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/" +
+            to_string(m_slot) + "dungeon.sav");
         settings->write<int>("Dungeon", "x", m_x);
         settings->write<int>("Dungeon", "y", m_y);
         settings->write<int>("Dungeon", "direction", m_direction.front());

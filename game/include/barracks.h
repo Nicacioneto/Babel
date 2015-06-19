@@ -16,15 +16,16 @@ class KeyboardEvent;
 class Barracks : public Level, public Listener
 {
 public:
-    Barracks(const string& next = "base");
+    Barracks(int slot, const string& next = "base");
     ~Barracks();
 
 private:
+    int m_slot, m_character;
+
+    shared_ptr<Settings> m_settings;
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<string, shared_ptr<Texture>> m_textures;
-    shared_ptr<Settings> m_settings;
-    int m_character;
 
     void draw_self();
     void draw_character();

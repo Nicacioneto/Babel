@@ -6,14 +6,14 @@ welcome = Welcome to Central
 [Colony]
 
 data =   2000
-energy = 1800
-matter = 1800
+energy = 2000
+matter = 2000
 
 [Facilities]
 
-military = 20
-psionic =   0
-tech =   0
+military = 0
+psionic = 0
+tech = 0
 welcome = Welcome to Facilities
 
 [Hospital]

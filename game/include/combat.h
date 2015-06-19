@@ -16,23 +16,25 @@ class Texture;
 class Combat : public Level, public Listener
 {
 public:
-    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE, FINISHED_COMBAT } State;
-    Combat(const string& next = "", const string& image = "res/images/combat/arena.png");
+    Combat(int slot, const string& next = "");
     ~Combat();
 
 private:
+    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE, FINISHED_COMBAT } State;
+
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_result;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, Character*> m_enemies;
-
-    string m_attacker;
     multimap<int, string> m_attackers;
 
+    int m_slot;
+    string m_attacker;
     State m_state;
-    unsigned long m_last;
-    Text *m_text;
     Character *m_enemy_turn;
+    Text *m_text;
+    unsigned long m_last;
+
 
     void update_self(unsigned long elapsed);
     void draw_self();

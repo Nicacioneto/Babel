@@ -14,17 +14,16 @@ class Texture;
 class Hospital : public Level
 {
 public:
-    Hospital(const string& next = "");
+    Hospital(int slot, const string& next = "");
 
 private:
     typedef enum { CHAT, ITEMS, RESEARCH, REVIVE } Screen;
+
+    int m_slot;    
     shared_ptr<Texture> m_scenario;
-    
-    Button *m_reset;
-    Button *m_buy;
+    Screen m_screen;
     map<ObjectID, Button*> m_buttons;
 
-    Screen m_screen;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

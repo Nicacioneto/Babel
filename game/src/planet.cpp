@@ -6,8 +6,8 @@
 #define W 1024.0
 #define H 768.0
 
-Planet::Planet(const string& next)
-    : Level("planet", next), m_state(IDLE)
+Planet::Planet(int slot, const string& next)
+    : Level("planet", next), m_slot(slot), m_state(IDLE)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/planet/";

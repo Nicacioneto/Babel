@@ -12,7 +12,7 @@
 class Colony : public Object
 {
 public:
-    Colony(Object *parent = nullptr, ObjectID id = "");
+    Colony(int slot, Object *parent = nullptr, ObjectID id = "");
 
     int data() const;
     int matter() const;
@@ -23,21 +23,10 @@ public:
     void set_energy(int energy);
 
 private:
-    shared_ptr<Texture> m_right_bracket;
-    shared_ptr<Texture> m_colony;
-    shared_ptr<Texture> m_tower_img;
-    shared_ptr<Texture> m_planet_img;
-    shared_ptr<Texture> m_left_bracket;
-    shared_ptr<Texture> m_resources;
+    int m_slot, m_data, m_matter, m_energy;
 
-    Button *m_center_bracket;
-    Button *m_tower;
-    Button *m_planet;
-
-    int m_data;
-    int m_matter;
-    int m_energy;
-
+    map<ObjectID, shared_ptr<Texture>> m_textures;
+    map<ObjectID, Button *> m_buttons;
     shared_ptr<Settings> m_settings;
 
     bool on_message(Object *sender, MessageID id, Parameters p);

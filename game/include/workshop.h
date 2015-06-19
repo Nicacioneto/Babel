@@ -14,14 +14,15 @@ class Texture;
 class Workshop : public Level
 {
 public:
-    Workshop(const string& next = "");
+    Workshop(int slot, const string& next = "");
 
 private:
     typedef enum { CHAT, DRONE, VEHICLE, ARSENAL } Screen;
-    shared_ptr<Texture> m_scenario;
     
-    map<ObjectID, Button*> m_buttons;
+    int m_slot;
     Screen m_screen;
+    shared_ptr<Texture> m_scenario;
+    map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

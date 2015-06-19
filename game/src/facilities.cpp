@@ -8,12 +8,14 @@
 #define W 1024.0
 #define H 768.0
 
-Facilities::Facilities(const string& next)
-    : Level("facilities", next), m_screen(CHAT),
+using std::to_string;
+
+Facilities::Facilities(int slot,const string& next)
+    : Level("facilities", next), m_slot(slot),
         m_mwaked(0), m_pwaked(0), m_twaked(0),
-        m_matter_cost(10), m_energy_cost(10)
+        m_matter_cost(10), m_energy_cost(10), m_screen(CHAT)
 {
-    m_colony = new Colony(this, "facilities");
+    m_colony = new Colony(m_slot, this, "facilities");
     m_colony->add_observer(this);
     add_child(m_colony);
 
@@ -86,9 +88,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/colony.sav");
         settings->write<int>("Facilities", "military", m_mwaked);
-        settings->save("res/datas/colony.sav");
+        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
     }
     else if (button->id() == "pwake")
     {
@@ -114,9 +117,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/colony.sav");
         settings->write<int>("Facilities", "psionic", m_pwaked);
-        settings->save("res/datas/colony.sav");
+        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
     }
     else if (button->id() == "twake")
     {
@@ -142,9 +146,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         m_colony->set_energy(energy);
 
         Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/colony.sav");
+        auto settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/colony.sav");
         settings->write<int>("Facilities", "tech", m_twaked);
-        settings->save("res/datas/colony.sav");
+        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
     }
     else if (button->id() != "facilities")
     {
@@ -273,7 +278,8 @@ Facilities::change_to_chat()
     font->set_size(18);
     Color color(170, 215, 190);
     
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
     map< string, map<string, string> > sections = settings->sections();
     string text = sections["Facilities"]["welcome"];
     env->canvas->draw(text, ((305+5) / W) * env->canvas->w(), (605 / H) * env->canvas->h(), color);
@@ -324,7 +330,8 @@ Facilities::change_to_military()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
     m_mwaked = settings->read<int>("Facilities", "military", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
@@ -430,7 +437,8 @@ Facilities::change_to_psionic()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
     m_pwaked = settings->read<int>("Facilities", "psionic", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
@@ -536,7 +544,8 @@ Facilities::change_to_tech()
         env->canvas->draw(Line(a, b), color);
     }
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/colony.sav");
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
     m_twaked = settings->read<int>("Facilities", "tech", 0);
 
     Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
