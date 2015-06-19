@@ -67,12 +67,12 @@ Colony::draw_self()
     font->set_size(18);
 
     Color color(170, 215, 190);
-    int x = (120 / W) * env->canvas->w();
+    int x = 120;
     int y = (120 / H) * env->canvas->h();
 
-    env->canvas->draw(std::to_string(m_data), x, y, color);
-    env->canvas->draw(std::to_string(m_matter), x + 170, y, color);
-    env->canvas->draw(std::to_string(m_energy), x + 160*2, y, color);
+    env->canvas->draw(std::to_string(m_data), (x/W) * env->canvas->w(), y, color);
+    env->canvas->draw(std::to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
+    env->canvas->draw(std::to_string(m_energy), (x + 160*2)/W *env->canvas->w(), y, color);
 }
 
 bool

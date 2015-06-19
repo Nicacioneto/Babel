@@ -17,37 +17,44 @@ Barracks::Barracks(const string& next)
     string path = "res/images/colony/barracks/";
 
     Button *button = new Button(this, "left_arrow", path + "left_arrow.png",
-        (60/W) * env->canvas->w(), (218/H) * env->canvas->h(), 26, 45);
+        (60/W) * env->canvas->w(), (218/H) * env->canvas->h(),
+        (26/W) * env->canvas->w(), (45/H) * env->canvas->h());
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "right_arrow", path + "right_arrow.png",
-        (362/W) * env->canvas->w(), (218/H) * env->canvas->h(), 26, 45);
+        (362/W) * env->canvas->w(), (218/H) * env->canvas->h(),
+        (26/W) * env->canvas->w(), (45/H) * env->canvas->h());
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "levelup_m", path + "levelup-m.png", (409/W) * env->canvas->w(),
-        (390/H) * env->canvas->h(), 60, 40);
+    button = new Button(this, "levelup_m", path + "levelup-m.png",
+        (409/W) * env->canvas->w(), (390/H) * env->canvas->h(),
+        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "levelup_p", path + "levelup-p.png", (485/W) * env->canvas->w(),
-        (390/H) * env->canvas->h(), 60, 40);
+    button = new Button(this, "levelup_p", path + "levelup-p.png",
+        (485/W) * env->canvas->w(), (390/H) * env->canvas->h(),
+        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "levelup_t", path + "levelup-t.png", (560/W) * env->canvas->w(),
-        (390/H) * env->canvas->h(), 60, 40);
+    button = new Button(this, "levelup_t", path + "levelup-t.png",
+        (560/W) * env->canvas->w(), (390/H) * env->canvas->h(),
+        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "equip_shelf", path + "equip_shelf.png", (690/W) * env->canvas->w(),
-        (322/H) * env->canvas->h(), 225, 122);
+    button = new Button(this, "equip_shelf", path + "equip_shelf.png",
+        (690/W) * env->canvas->w(), (322/H) * env->canvas->h(),
+        (225/W) * env->canvas->w(), (122/H) * env->canvas->h());
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "back", path + "back.png", (912/W) * env->canvas->w(),
-        (55/H) * env->canvas->h(), 67, 26);
+    button = new Button(this, "back", path + "back.png",
+        (912/W) * env->canvas->w(), (55/H) * env->canvas->h(),
+        (67/W) * env->canvas->w(), (26/H) * env->canvas->h());
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
