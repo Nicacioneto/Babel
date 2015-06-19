@@ -131,26 +131,33 @@ Barracks::draw_self()
     shared_ptr<Texture> texture;
     string path = "res/images/colony/barracks/";
 
-    int x = 130;
+    int x = (130/W) * env->canvas->w();
     y = (530/H) * env->canvas->h();
+    int w = (38/W) * env->canvas->w();
+    int h = (37/H) * env->canvas->h();
 
-    for (int i = 1; i <= 5; ++i, x += 38)
+    Character *character = current_char();
+    
+    for (int i = 1; i <= 4; ++i, y += w)
     {
-        texture = env->resources_manager->get_texture(path + "Skill_M_" + to_string(i) + ".png");
-        env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), y);
-    }
-
-    for (int i = 0, x = 130; i < 5; ++i, x += 38)
-    {
-        for (int j = 0, y = 567; j < 3; ++j, y += 37)
+        for (int j = 1, temp_x = x; j <= 5; ++j, temp_x += h)
         {
-            texture = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
-            env->canvas->draw(texture.get(), (x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+            if ( (i - 1)*5 + j <= character->military())
+            {
+                texture = env->resources_manager->get_texture(path + "Skill_M_" + to_string((i - 1)*5 + j) + ".png");
+                env->canvas->draw(texture.get(), (temp_x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+            }
+            else
+            {
+                texture = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
+                env->canvas->draw(texture.get(), (temp_x/W) * env->canvas->w(), (y/H) * env->canvas->h());
+            }
         }
     }
 
     x = 420;
-
+    y = (530/H) * env->canvas->h();
+    
     for (int i = 1; i <= 5; ++i, x += 38)
     {
         texture = env->resources_manager->get_texture(path + "Skill_P_" + to_string(i) + ".png");
