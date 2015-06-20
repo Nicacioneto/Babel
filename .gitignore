@@ -55,6 +55,7 @@
 *.ps
 *.eps
 *.pdf
+*.synctex.gz
 
 # Binaries dir
 bin/
