@@ -175,18 +175,9 @@ As diversas ações que o jogador poderá fazer na Base, como Imprimir (construi
 Enquanto as ações demoram uma quantidade X de Tempo para ser realizadas, o jogador é incentivado a passar este tempo na Exploração Vertical, essa mecânica aumenta a dinamicidade entre as mecânicas de Exploração Vertical e Exploração Horizontal.
 
 \subsection{Mecânicas do Jogo}
-Esta sessão apresentará todas as mecânicas existentes no jogo, com detalhes sobre as explorações horizontal e vertical, Base, Combates, Eventos e Relógio.
 
 \subsubsection{Exploração Vertical}
-A Exploração Vertical consiste na exploração da Torre. Que se vai dar em um formato clássico de Dungeon Crawl, a vista em primeira pessoa e a imersão dada contribui para a experiência de exploração e incerteza, já que a Torre terá corredores labirintíticos.
-
-Quando o jogador mostra interesse em explorar a Torre, ele deve antes escolher uma equipe que consiste em 4 Heróis e 1 Drone. Depois de selecionado a equipe e o andar que se deseja explorar, as mecânicas da Exploração Vertical começam a agir.
-
-\begin{enumerate}
-  \item \textbf{Movimentação}: A Movimentação dentro da Torre é medida por meio de quadrados que compõem o mapa do andar da Torre. Porém, entre um quadrado e outro existem algumas coisas que podem impedir a movimentação da equipe para aquela dada direção;
-  \item \textbf{Eventos}: Os Eventos são conflitos que aparecem ao jogador, e que devem ser resolvidos para que o jogador consiga progredir no jogo. Eles são conflitos que aparecem, propondo um desafio, e são dadas opções ao jogador para que ele possa resolver o dado desafio. Os Eventos podem ser de tipos diferentes, que são: Combates, que é quando inimigos aparecem para o jogador em algum ponto específico da exploração da torre, nesse caso esses inimigos devem ser derrotados pela equipe. Objetos, podem aparecer durante a exploração para que o jogador. Portas, são pontos de divisão do andar da torre, podem servir para separar corredores e salas, por exemplo, podem ser secretas ou inacessíveis também até certo momento da exploração, até que algum inimigo seja derrotado, por exemplo.
-\end{enumerate}
-\newpage
+O Jogador explora a Torre por meio de uma equipe composta de 4 heróis e um Drone, a visão do jogo na exploração vertical é em primeira pessoa. Dentro da torre o jogador terá a opção de cumprir quests, interagir com eventos dinâmicos, participar de combates diretos com inimigos e chefes e realizar a progressão da história de acordo com o nível de exploração alcansado.
 
 \begin{figure}[!htp]
 \centering
@@ -195,14 +186,34 @@ Quando o jogador mostra interesse em explorar a Torre, ele deve antes escolher u
 \label{Exploração Vertical - Exemplo de Dungeon Crawl}
 \end{figure}
 
-\subsubsection{Exploração Horizontal}
-A Exploração Horizontal vem como suporte para a mecânica de Exploração Vertical, que é por onde a maioria da experiência do jogo será passada. É a exploração do planeta, que tem como principal função ser uma fonte de recursos brutos que serão necessários para a construção e manutenção da sua base de operações, enfatizando o senso de necessidade e sobrevivência da espécie.
+\paragraph{Movimentação} \mbox{}\\
+A movimentação dos personagens na torre se dá através de um grid quadriculado no qual o mapa é projetado, o valor da movimentação é padronizado e contabilizado em unidades, sendo assim um quadrado neste grid corresponde a uma unidade de movimento, essa mecânica é adotada para que a movimentação dentro do labirinto seja mais fluída e precisa.
+
+\subparagraph{Eventos} \mbox{}\\
+Os Eventos são acontecimentos dinâmicos situados em pontos específicos da torre, e com resultados diferentes de acordo com a forma como o jogador escolhe interagir com esses eventos. Alguns são permanentes, permitindo que o jogador volte sempre para interagir com aquele objeto/personagem/situação e outros acontecem apenas uma vez.
+
+Os Eventos poderão ser completados de diversas formas, entre eles:
 
 \begin{enumerate}
-  \item \textbf{Espaço}: A Exploração Horizontal se dá na superfície do planeta colonizado, na região que circunda a misteriosa Torre. Os recursos serão extraídos dos locais próximos.
-  \item \textbf{Locais}: Estes locais estarão posicionados em uma malha virtual abstrata, posicionadas nos vértices desta mesma malha. A cada local explorado, é revelado no mapa do planeta todos os locais que ligam aquele local na malha, aumentando as possibilidades e locais de exploração.
-  \item \textbf{Resolução e recompensas}: Todo local de exploração terá algum desafio para ser resolvido e em caso de sucesso o jogador ganhará recursos que poderão ser usados para evolução de sua base. Os desafios podem variar e cabe ao jogador formar a melhor estratégia e mandar a melhor equipe de acordo com as necessidades para cumprir esses objetivos.
+  \item \textbf{Combate}: Será dada a opção de resolver o conflito por meio de Combate. Utilizando as mecânicas apresentadas de Combate.
+  \item \textbf{Valor MPT}: Será dada também a opção de os eventos e conflitos serem resolvidos por meio do Valor MPT do grupo ou de algum indivíduo.
+  \item \textbf{Carregar/Ser alguém específico}: Será dada a opção de certos conflitos serem resolvidas por meio de na sua equipe ter algum membro específico de uma classe, ou um item carregado (como uma chave ou relativo a missão).
+  \item \textbf{Portas}:
+  \begin{itemize}
+    \item As portas servirão para dividir espaços dentro da Torre, servindo como divisória entre corredores e salas, por exemplo.
+    \item Portas secretas, estas serão invisíveis ao jogador, até que certa ação seja cumprida, seja a derrota de um inimigo específico, a interação entre um objeto dentro da torre como uma alavanca ou a simples necessidade de o jogador estar no quadrado adjacente á porta secreta para esta aparecer.
+    \end{itemize}
 \end{enumerate}
+
+\paragraph{Encontros} \mbox{}\\
+Encontros são divididos entre dois tipos, aleatórios e obrigatórios, os encontros de combate obrigatórios estão citados dentro da lista de eventos e se comportam como tal, já os encontros aleatórios se dão através de uma fórmula fixa padrão, podendo ser alterada em algumas ocasiões para se obter resultados específicos.
+
+A fórmula é 10\% de chance de encontro + 2\% por unidade de movimento, aumentando progressivamente a chance de conflito a cada unidade de movimento percorrida(a cada passo). No entanto esse número é resetado após cada combate, voltando para seu valor inicial de 10\%, caso o jogador fuja do combate ao invés de ir até o fim o valor não é resetado e cai apenas para a metade do valor total do momento do início do combate, logo se o jogador foge de um encontro que se deu aos 40\% de chance, ele volta ao mapa com sua porcentagem reduzida a 20\%.
+
+\newpage
+
+\subsubsection{Exploração Horizontal}
+A exploração horizontal se dá através de uma lista de quests a serem completadas nos pontos de interesse já conhecidos e de novos pontos de interesse a ser descobertos. Exigindo que o jogador escolha entre a segurança e estabilidade de gerenciar/administrar pontos de interesse já conhecidos(sistema de quests/eventos) ou que o jogador arrisque a segurança da equipe, recursos e tempo na descoberta de novos pontos de interesse.
 
 \begin{figure}[!htp]
 \centering
@@ -211,26 +222,47 @@ A Exploração Horizontal vem como suporte para a mecânica de Exploração Vert
 \label{Exemplo de Exploração Horizontal}
 \end{figure}
 
-\subsection{Base Building}
-Além da exploração da torre e do planeta o jogo também deve conter uma base principal, essa é a base onde o jogador evolui seus personagens, atributos, construções e tecnologias, tudo é evoluído a partir do que é ganho nas explorações vertical e horizontal. Ao todo são sete tipos de construções que existirão na base.
+\paragraph{Espaço} \mbox{}\\
+A Exploração Horizontal se dá na superfície do planeta.
+\paragraph{Locais} \mbox{}\\
+Os pontos de interesse são pré estabelecidos, tendo alguns fixos(para fins de balanceamento de progressão do jogador).
 
-\begin{enumerate}
-  \item \textbf{Fundição/Fábrica}: Criação de equipamentos e drones;
-  \item \textbf{Clínica Genética}: Cura de personagens feridos em uma dada exploração e dá upgrade nos atributos passivos dos personagens, como defesa, vida e quantidade de dano;
-  \item \textbf{Quartel General}: Atualização das unidades militares;
-  \item \textbf{Laboratório}: Atualização das unidades tecnológicas;
-  \item \textbf{Centro de Inteligência}: Atualização das unidades psiônicas;
-  \item \textbf{Centro de Pesquisa}: Pesquisa de novos itens;
-  \item \textbf{Centro de Comando}: Selecionar missões e contratar novos personagens.
-\end{enumerate}
-\newpage
+Estes locais estarão posicionados em uma malha virtual abstrata, posicionadas nos vértices desta mesma malha. A cada local explorado, é revelado no mapa do planeta todos os locais que ligam aquele local na malha, aumentando as possibilidades e locais de exploração.
+
+No total serão 15 pontos de interesse, cada um com no mínimo um evento e entre 1 e 5 quests, o número de quests por ponto de interesse será definido de acordo com a nossa capacidade de implementação de conteúdo e com a possível relevância daquele ponto de interesse.
+
+\paragraph{Resolução} \mbox{}\\
+Cada ponto de interesse contará com desafios próprios para que seja considerado um lugar explorado, majoritariamente a resolução desses conflitos vai se dar de forma simples de comparação de valores, cada local inexplorado vai contar com valores X de M, P e T fixos e invisíveis para o jogador. Esses valores deverão ser igualados ou superados pela equipe exploradora para que a missão seja considerada um sucesso e o ponto de interesse seja revelado. Existem nuances no entanto em relação a essa resolução e 3 condições distintas de vitória e derrota, baseadas em quantos valores a equipe de exploração tem iguais ou mais elevados que os valores propostos pelo desafio.
+
+Condições de vitória e derrota:
+\begin{itemize}
+  \item \textbf{3 valores iguais ou superiores} - Nem os personagens nem os veículos sofrem danos, metade dos recursos de matéria e energia investidos na missão são retornados ao jogador, a zona desconhecida se torna um ponto de interesse.
+  \item \textbf{2 valores iguais ou superiores} - Os personagens/veículo sofrem dano de 10\% de hp e todos os recursos utilizados na exploração são gastos, a zona desconhecida se torna um ponto de interesse.
+  \item \textbf{1 valor igual ou superior} - Metade dos personagens envolvidos na exploração morrem, o veículo é reduzido a 50\% de sua durabilidade(a questão de durabilidade ainda vai ser discutida no entanto, devido a quantidade de conteúdos com prioridade na lista de implementação) todos os recursos são gastos, a zona desconhecida permanecerá desconhecida.
+  \item \textbf{0 valores iguais ou superiores} - Todos seus personagens morrem, o veículo é perdido, todos os recursos são gastos e a zona permanece desconhecida.
+\end{itemize}
+
+\subsection{Colônia}
 
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.3]{res/base_building.png}
-\caption{Exemplo de Base Building}
+\caption{Exemplo de Colônia}
 \label{Exemplo de Base Building}
 \end{figure}
+
+\subsubsection{Recursos}
+
+O jogo contará com 3 recursos distintos para realizar a progressão da base e dos personagens, sendo eles Data, Matéria e Energia.
+
+\subsubsection{Estrutura}
+\subsubsection{Pesquisas}
+\subsubsection{NPCs}
+
+\subsection{Combate}
+
+\newpage
+
 
 \section{Esquema de controle e interface com o usuário}
 
