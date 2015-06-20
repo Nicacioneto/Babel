@@ -10,34 +10,13 @@
 using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
-    : Level("hospital", next), m_slot(slot), m_scenario(nullptr), m_screen(CHAT)
+    : Level("hospital", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
 {
     Environment *env = Environment::get_instance();
-    string path = "res/images/colony/";
+    string path = "res/images/colony/hospital/";
 
-    m_scenario = env->resources_manager->get_texture(path + "hospital/chat_scenario.png");
+    m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
 
-    Button *button = new Button(this, "reset", path + "hospital/reset.png",
-        (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
-        (57 / W) * env->canvas->w(), (52/2 / H) * env->canvas->h());
-    button->set_visible(false);
-    button->set_active(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "buy", path + "hospital/buy.png",
-        (772 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
-        (58 / W) * env->canvas->w(), (78/3 / H) * env->canvas->h());
-    button->set_sprites(3);
-    button->set_visible(false);
-    button->set_active(false);
-    m_buttons[button->id()] = button;
-
-    for (auto b : m_buttons)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
-    
     Colony *colony = new Colony(m_slot, this, "hospital");
     colony->add_observer(this);
     add_child(colony);
@@ -100,16 +79,15 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() != "hospital")
     {
         Environment *env = Environment::get_instance();
-        string path = "res/images/colony/";
+        string path = "res/images/colony/hospital/";
 
-        m_scenario = env->resources_manager->get_texture(path + "hospital/scenario.png");
+        m_scenario = env->resources_manager->get_texture(path + "scenario.png");
         change_buttons();
 
         if (button->id() == "chat")
         {
             m_screen = CHAT;
-            m_scenario = env->resources_manager->get_texture(path +
-                "hospital/chat_scenario.png");
+            m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
         }
         else if (button->id() == "items")
         {
@@ -183,6 +161,23 @@ Hospital::create_buttons()
         x, (635 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->set_text("Revive");
+
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "reset", path + "hospital/reset.png",
+        (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
+        (57 / W) * env->canvas->w(), (52/2 / H) * env->canvas->h());
+    button->set_visible(false);
+    button->set_active(false);
+
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "buy", path + "hospital/buy.png",
+        (772 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
+        (58 / W) * env->canvas->w(), (78/3 / H) * env->canvas->h());
+    button->set_sprites(3);
+    button->set_visible(false);
+    button->set_active(false);
 
     m_buttons[button->id()] = button;
 
