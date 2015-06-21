@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Workshop
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef WORKSHOP_H
 #define WORKSHOP_H
 

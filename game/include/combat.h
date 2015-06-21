@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Combat
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef COMBAT_H
 #define COMBAT_H
 

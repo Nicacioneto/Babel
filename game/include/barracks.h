@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Barracks
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef BARRACKS_H
 #define BARRACKS_H
 

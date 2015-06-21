@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Base
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef BASE_H
 #define BASE_H
 

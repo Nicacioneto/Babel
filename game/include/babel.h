@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Babel game
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef BABEL_H
 #define BABEL_H
 

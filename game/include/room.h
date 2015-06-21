@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Room
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef ROOM_H
 #define ROOM_H
 

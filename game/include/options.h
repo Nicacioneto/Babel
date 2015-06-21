@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Options
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef OPTIONS_H
 #define OPTIONS_H
 

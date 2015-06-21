@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Game over
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef GAMEOVER_H
 #define GAMEOVER_H
 

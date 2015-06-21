@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Button
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef BUTTON_H
 #define BUTTON_H
 

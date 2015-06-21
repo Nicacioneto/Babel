@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Mapping
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef MAPPING_H
 #define MAPPING_H
 

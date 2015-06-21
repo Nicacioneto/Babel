@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Credits
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef CREDITS_H
 #define CREDITS_H
 

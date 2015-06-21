@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Direction
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef DIRECTION_H
 #define DIRECTION_H
 

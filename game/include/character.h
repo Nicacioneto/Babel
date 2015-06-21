@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Character
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef CHARACTER_H
 #define CHARACTER_H
 

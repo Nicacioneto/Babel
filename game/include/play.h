@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Play
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef PLAY_H
 #define PLAY_H
 

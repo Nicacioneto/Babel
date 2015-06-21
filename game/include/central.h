@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Central
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef CENTRAL_H
 #define CENTRAL_H
 

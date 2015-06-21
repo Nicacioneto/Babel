@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Planet
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef PLANET_H
 #define PLANET_H
 

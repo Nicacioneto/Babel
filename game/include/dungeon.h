@@ -1,3 +1,10 @@
+/*
+ * Class that represents the Dungeon
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #ifndef DUNGEON_H
 #define DUNGEON_H
 
