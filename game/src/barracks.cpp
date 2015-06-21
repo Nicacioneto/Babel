@@ -96,6 +96,8 @@ Barracks::Barracks(int slot, const string& next)
     }
 
     load_characters();
+    Character *character = current_char();
+    character->set_visible(true);
 }
 
 Barracks::~Barracks()
@@ -150,7 +152,6 @@ void
 Barracks::draw_character()
 {
     Character *character = current_char();
-    character->set_visible(true);
 
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
@@ -312,6 +313,9 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 {
     Button *button = dynamic_cast<Button *>(sender);
 
+    Character *character = current_char();
+    character->set_visible(false);
+
     if (id != Button::clickedID or not button)
     {
         return false;
@@ -376,6 +380,9 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         finish();
     }
 
+    character = current_char();
+    character->set_visible(true);
+    
     return true;
 }
 
