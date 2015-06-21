@@ -6,6 +6,7 @@
 #define W 1024.0
 #define H 768.0
 
+
 Planet::Planet(int slot, const string& next)
     : Level("planet", next), m_slot(slot), m_state(IDLE)
 {
@@ -38,6 +39,8 @@ Planet::draw_self()
         env->canvas->set_blend_mode(Canvas::NONE);
         
         env->canvas->draw(m_popup.get(), x, y);
+
+        env->canvas->draw(m_text, x + (10/W) * env->canvas->w(), y + m_popup->h()/2);
     }
 }
 
@@ -56,20 +59,40 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         set_next("base");
         finish();
     }
-    else if (button->id() == "jungle")
+    else if (button->id() == "trunda")
     {
+        m_text = "Start misson in Trunda";
         enable_popup(true);
     }
-    else if (button->id() == "mountain")
+    else if (button->id() == "jungle")
     {
+        m_text = "Start misson in Jungle";
         enable_popup(true);
     }
     else if (button->id() == "sea")
     {
+        m_text = "Start misson in Sea";
         enable_popup(true);
     }
     else if (button->id() == "dunes")
     {
+        m_text = "Start misson in Dunes";
+        enable_popup(true);
+    }
+
+    else if (button->id() == "taiga")
+    {
+        m_text = "Start misson in Taiga";
+        enable_popup(true);
+    }
+    else if (button->id() == "lake")
+    {
+        m_text = "Start misson in Lake";
+        enable_popup(true);
+    }
+    else if (button->id() == "swamp")
+    {
+        m_text = "Start misson in Swamp";
         enable_popup(true);
     }
     else if (button->id() == "x")
@@ -109,37 +132,37 @@ Planet::load_buttons()
     font->set_size(22);
     string path = "res/images/planet/";
 
-    const int w = (140 / W) * env->canvas->w();
-    const int h = (60 / H) * env->canvas->h();
-
-    Button *button = new Button(this, "jungle", path + "button.png",
-        (200/W) * env->canvas->w(), (100/H) * env->canvas->h(), w, h);
-    button->set_sprites(2);
-    button->set_text("Jungle");
+    Button *button = new Button(this, "trunda", "", 0, 0,
+        (300/W) * env->canvas->w(), (290/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "mountain", path + "button.png",
-        (50/W) * env->canvas->w(), (100/H) * env->canvas->h(), w, h);
-    button->set_sprites(2);
-    button->set_text("Mountain");
+    button = new Button(this, "jungle", "", (390/W) * env->canvas->w(), 0,
+        (360/W) * env->canvas->w(), (235/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "sea", path + "button.png",
-        (400/W) * env->canvas->w(), (100/H) * env->canvas->h(), w, h);
-    button->set_sprites(2);
-    button->set_text("Sea");
+
+    button = new Button(this, "sea", "", (755/W) * env->canvas->w(), 0,
+        (265/W) * env->canvas->w(), (235/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "dunes", path + "button.png",
-        (800/W) * env->canvas->w(), (600/H) * env->canvas->h(), w, h);
-    button->set_sprites(2);
-    button->set_text("Dunes");
+    button = new Button(this, "dunes", "", (630/W) * env->canvas->w(), (270/H) * env->canvas->h(),
+        (394/W) * env->canvas->w(), (185/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "colony", path + "button.png",
-        (env->canvas->w() - w) / 2, (env->canvas->h() - h) / 2, w, h);
-    button->set_sprites(2);
-    button->set_text("Colony");
+    button = new Button(this, "taiga", "", (0/W) * env->canvas->w(), (410/H) * env->canvas->h(),
+        (310/W) * env->canvas->w(), (358/H) * env->canvas->h());
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "lake", "", (300/W) * env->canvas->w(), (500/H) * env->canvas->h(),
+        (300/W) * env->canvas->w(), (185/H) * env->canvas->h());
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "swamp", "", (600/W) * env->canvas->w(), (485/H) * env->canvas->h(),
+        (424/W) * env->canvas->w(), (283/H) * env->canvas->h());
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "colony", "",(405/W) * env->canvas->w(), (410/H) * env->canvas->h(),
+        (110/W) * env->canvas->w(), (80/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
     const int x = ((W / 2 - 25 ) / W) * env->canvas->w() + m_popup->w() / 2;

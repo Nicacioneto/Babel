@@ -16,6 +16,7 @@ private:
     typedef enum { IDLE, POPUP } State;
 
     int m_slot;
+    string m_text;
     State m_state;
     shared_ptr<Texture> m_texture, m_popup;
     map<ObjectID, Button*> m_buttons;
