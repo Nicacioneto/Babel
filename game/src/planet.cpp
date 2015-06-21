@@ -95,7 +95,6 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         m_text = "Dunes";
         enable_popup(true);
     }
-
     else if (button->id() == "taiga")
     {
         m_text = "Taiga";
@@ -160,7 +159,6 @@ Planet::load_buttons()
     button = new Button(this, "jungle", "", (390/W) * env->canvas->w(), 0,
         (360/W) * env->canvas->w(), (235/H) * env->canvas->h());
     m_buttons[button->id()] = button;
-
 
     button = new Button(this, "sea", "", (755/W) * env->canvas->w(), 0,
         (265/W) * env->canvas->w(), (235/H) * env->canvas->h());

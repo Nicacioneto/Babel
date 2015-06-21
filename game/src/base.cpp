@@ -20,7 +20,7 @@ Base::Base(int slot, const string& next)
     string path = "res/images/colony/";
     m_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
 
-    Colony *colony = new Colony(m_slot, this, "base");
+    Colony *colony = new Colony(slot, this, "base");
     colony->add_observer(this);
     add_child(colony);
 

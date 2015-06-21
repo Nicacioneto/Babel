@@ -24,7 +24,7 @@ Central::Central(int slot, const string& next)
     string path = "res/images/colony/";
     m_scenario = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
 
-    Colony *colony = new Colony(m_slot, this, "central");
+    Colony *colony = new Colony(slot, this, "central");
     colony->add_observer(this);
     add_child(colony);
 
@@ -331,7 +331,6 @@ Central::change_to_timers()
             icon.pop_back();
         }
 
-
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not elapsed_time.empty())
         {
@@ -368,6 +367,7 @@ Central::change_to_timers()
             env->canvas->draw(elapsed_time, (855 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
         }
+
         if (not icon.empty())
         {
             texture = env->resources_manager->get_texture(path + "icons/" + icon + ".png");

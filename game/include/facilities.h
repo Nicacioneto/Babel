@@ -28,7 +28,6 @@ private:
     typedef enum { CHAT, MILITARY, PSIONIC, TECH } Screen;
 
     int m_slot;
-    int m_mwaked, m_pwaked, m_twaked;
     int m_matter_cost, m_energy_cost;
     Colony *m_colony;
     Screen m_screen;

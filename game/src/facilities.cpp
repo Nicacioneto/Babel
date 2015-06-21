@@ -18,10 +18,10 @@
 using std::to_string;
 
 Facilities::Facilities(int slot, const string& next)
-    : Level("facilities", next), m_slot(slot), m_mwaked(0), m_pwaked(0),
-    m_twaked(0), m_matter_cost(10), m_energy_cost(10), m_screen(CHAT)
+    : Level("facilities", next), m_slot(slot), m_matter_cost(10),
+        m_energy_cost(10), m_screen(CHAT)
 {
-    m_colony = new Colony(m_slot, this, "facilities");
+    m_colony = new Colony(slot, this, "facilities");
     m_colony->add_observer(this);
     add_child(m_colony);
 
@@ -74,15 +74,16 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
     {
         int matter = m_colony->matter();
         int energy = m_colony->energy();
+        int mwaked = m_colony->mwaked();
 
         if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
 
-        if (++m_mwaked > 100)
+        if (++mwaked > 100)
         {
-            m_mwaked = 100;
+            mwaked = 100;
         }
         else
         {
@@ -92,26 +93,22 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
 
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
-
-        Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/colony.sav");
-        settings->write<int>("Facilities", "military", m_mwaked);
-        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+        m_colony->set_mwaked(mwaked);
     }
     else if (button->id() == "pwake")
     {
         int matter = m_colony->matter();
         int energy = m_colony->energy();
+        int pwaked = m_colony->pwaked();
 
         if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
 
-        if (++m_pwaked > 100)
+        if (++pwaked > 100)
         {
-            m_pwaked = 100;
+            pwaked = 100;
         }
         else
         {
@@ -121,26 +118,22 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
 
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
-
-        Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/colony.sav");
-        settings->write<int>("Facilities", "psionic", m_pwaked);
-        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+        m_colony->set_pwaked(pwaked);
     }
     else if (button->id() == "twake")
     {
         int matter = m_colony->matter();
         int energy = m_colony->energy();
+        int twaked = m_colony->twaked();
 
         if (matter < m_matter_cost || energy < m_energy_cost)
         {
             return true;
         }
 
-        if (++m_twaked > 100)
+        if (++twaked > 100)
         {
-            m_twaked = 100;
+            twaked = 100;
         }
         else
         {
@@ -150,12 +143,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
 
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
-
-        Environment *env = Environment::get_instance();
-        auto settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/colony.sav");
-        settings->write<int>("Facilities", "tech", m_twaked);
-        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+        m_colony->set_twaked(twaked);
     }
     else if (button->id() != "facilities")
     {
@@ -312,11 +300,12 @@ Facilities::change_to_military()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+    int mwaked = m_colony->mwaked();
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
-        if (m_mwaked / 19 >= i)
+        if (mwaked / 19 >= i)
         {
             red = "";
         }
@@ -341,7 +330,6 @@ Facilities::change_to_military()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    m_mwaked = settings->read<int>("Facilities", "military", 0);
 
     Rect rect(333 * scale_w, 222 * scale_h,
         25 * scale_w, 416 * scale_h);
@@ -351,17 +339,17 @@ Facilities::change_to_military()
     env->canvas->draw(texture.get(), 308 * scale_w, 628 * scale_h);
 
     int x = 340;
-    int y = (629 - 4 * m_mwaked);
+    int y = (629 - 4 * mwaked);
 
     rect = Rect(x * scale_w, y * scale_h,
-        10 * scale_w, 4 * (m_mwaked+2) * scale_h);
+        10 * scale_w, 4 * (mwaked+2) * scale_h);
     env->canvas->fill(rect, Color(206, 178, 46));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-m.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_mwaked), 294 * scale_w, (y + 1) * scale_h, color);
+    env->canvas->draw(std::to_string(mwaked), 294 * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -418,11 +406,12 @@ Facilities::change_to_psionic()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+    int pwaked = m_colony->pwaked();
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
-        if (m_pwaked / 19 >= i)
+        if (pwaked / 19 >= i)
         {
             red = "";
         }
@@ -447,7 +436,6 @@ Facilities::change_to_psionic()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    m_pwaked = settings->read<int>("Facilities", "psionic", 0);
 
     Rect rect(333 * scale_w, 222 * scale_h, 25 * scale_w, 416 * scale_h);
     env->canvas->draw(rect, color);
@@ -456,16 +444,16 @@ Facilities::change_to_psionic()
     env->canvas->draw(texture.get(), 308 * scale_w, 628 * scale_h);
 
     int x = 340;
-    int y = (629 - 4 * m_pwaked);
+    int y = (629 - 4 * pwaked);
 
-    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4*(m_pwaked+2) * scale_h);
+    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4*(pwaked+2) * scale_h);
     env->canvas->fill(rect, Color(146, 61, 133));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-p.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_pwaked), (290+4) * scale_w,
+    env->canvas->draw(std::to_string(pwaked), (290+4) * scale_w,
         (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
@@ -523,11 +511,12 @@ Facilities::change_to_tech()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+    int twaked = m_colony->twaked();
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
-        if (m_twaked / 19 >= i)
+        if (twaked / 19 >= i)
         {
             red = "";
         }
@@ -552,7 +541,6 @@ Facilities::change_to_tech()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    m_twaked = settings->read<int>("Facilities", "tech", 0);
 
     Rect rect(333 * scale_w, (222 / H) * env->canvas->h(), 25 * scale_w,
         (416 / H) * env->canvas->h());
@@ -562,16 +550,16 @@ Facilities::change_to_tech()
     env->canvas->draw(texture.get(), 308 * scale_w, (628 / H) * env->canvas->h());
 
     int x = 340;
-    int y = (629 - 4 * m_twaked);
+    int y = (629 - 4 * twaked);
 
-    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4 * (m_twaked+2) * scale_h);
+    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4 * (twaked+2) * scale_h);
     env->canvas->fill(rect, Color(79, 194, 193));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-t.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_twaked), (290+4) * scale_w, (y + 1) * scale_h, color);
+    env->canvas->draw(std::to_string(twaked), (290+4) * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 

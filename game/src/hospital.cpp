@@ -24,7 +24,7 @@ Hospital::Hospital(int slot, const string& next)
 
     m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
 
-    Colony *colony = new Colony(m_slot, this, "hospital");
+    Colony *colony = new Colony(slot, this, "hospital");
     colony->add_observer(this);
     add_child(colony);
 

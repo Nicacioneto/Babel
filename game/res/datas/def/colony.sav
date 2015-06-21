@@ -8,12 +8,12 @@ welcome = Welcome to Central
 data =   2000
 energy = 2000
 matter = 2000
-
-[Facilities]
-
 military = 0
 psionic = 0
 tech = 0
+
+[Facilities]
+
 welcome = Welcome to Facilities
 
 [Hospital]

@@ -24,13 +24,20 @@ public:
     int data() const;
     int matter() const;
     int energy() const;
+    int mwaked() const;
+    int pwaked() const;
+    int twaked() const;
 
     void set_data(int data);
     void set_matter(int matter);
     void set_energy(int energy);
+    void set_mwaked(int mwaked);
+    void set_pwaked(int pwaked);
+    void set_twaked(int twaked);
 
 private:
     int m_slot, m_data, m_matter, m_energy;
+    int m_mwaked, m_pwaked, m_twaked;
 
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button *> m_buttons;

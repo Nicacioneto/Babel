@@ -201,7 +201,7 @@ Barracks::draw_character()
 
     font->set_size(16);
     int data = Colony(m_slot).data();
-    env->canvas->draw(to_string(data), 50 * scale_w, 3 * scale_h, Color(170, 215, 190));
+    env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
 
     x = 112;
     int y = 87;

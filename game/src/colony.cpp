@@ -53,6 +53,9 @@ Colony::Colony(int slot, Object *parent, ObjectID id)
     m_data = m_settings->read<int>("Colony", "data", 0);
     m_matter = m_settings->read<int>("Colony", "matter", 0);
     m_energy = m_settings->read<int>("Colony", "energy", 0);
+    m_mwaked = m_settings->read<int>("Colony", "military", 0);
+    m_pwaked = m_settings->read<int>("Colony", "psionic", 0);
+    m_twaked = m_settings->read<int>("Colony", "tech", 0);
 }
 
 void
@@ -82,7 +85,10 @@ Colony::draw_self()
 
     env->canvas->draw(to_string(m_data), (x/W) * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_energy), (x + 160*2)/W *env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_energy), (x + 160*2)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_mwaked), (x + 650)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_pwaked), (x + 705)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_twaked), (x + 755)/W * env->canvas->w(), y, color);
 }
 
 bool
@@ -129,6 +135,24 @@ Colony::energy() const
     return m_energy;
 }
 
+int
+Colony::mwaked() const
+{
+    return m_mwaked;
+}
+
+int
+Colony::pwaked() const
+{
+    return m_pwaked;
+}
+
+int
+Colony::twaked() const
+{
+    return m_twaked;
+}
+
 void
 Colony::set_data(int data)
 {
@@ -148,6 +172,27 @@ Colony::set_energy(int energy)
 {
     m_energy = energy;
     write<int>("energy", energy);
+}
+
+void
+Colony::set_mwaked(int mwaked)
+{
+    m_mwaked = mwaked;
+    write<int>("military", mwaked);
+}
+
+void
+Colony::set_pwaked(int pwaked)
+{
+    m_pwaked = pwaked;
+    write<int>("psionic", pwaked);
+}
+
+void
+Colony::set_twaked(int twaked)
+{
+    m_twaked = twaked;
+    write<int>("tech", twaked);
 }
 
 template<typename T> void

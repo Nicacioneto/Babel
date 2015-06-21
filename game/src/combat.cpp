@@ -102,7 +102,6 @@ Combat::update_self(unsigned long elapsed)
     }
 
     m_last = elapsed;
-    
     m_attacker = m_attackers.begin()->second;
     
     Character *enemy = (m_enemies.find(m_attacker) != m_enemies.end() ?
@@ -217,8 +216,8 @@ Combat::load_characters()
     for (auto it : m_characters)
     {
         it.second->add_observer(this);
-        add_child(it.second);
         it.second->set_active(false);
+        add_child(it.second);
 
         m_attackers.insert(pair<int, string>(it.second->cooldown(), it.second->id()));
     }
