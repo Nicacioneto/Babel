@@ -10,7 +10,7 @@
 using std::to_string;
 
 Planet::Planet(int slot, const string& next)
-    : Level("planet", next), m_slot(slot), m_state(IDLE)
+    : Level("planet", next), m_slot(slot), m_state(IDLE), m_last(0)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/planet/";
@@ -19,6 +19,12 @@ Planet::Planet(int slot, const string& next)
     m_popup = env->resources_manager->get_texture(path + "popup.png");
 
     load_buttons();
+}
+
+void
+Planet::update_self(unsigned long elapsed)
+{
+    m_last = elapsed;
 }
 
 void
@@ -210,7 +216,8 @@ Planet::start_mission()
         to_string(m_slot) + "/timers.sav");
 
     settings->write<unsigned long>(m_text, "final_time", 60000);
-    settings->write<unsigned long>(m_text, "time", 0);
+    settings->write<unsigned long>(m_text, "start_time", m_last);
+    settings->write<unsigned long>(m_text, "elapsed_time", 0);
     settings->write<string>(m_text, "icon", "workshop");
 
     settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");

@@ -14,8 +14,10 @@
 #define H_BUTTON_BACK 60
 #define SPACING 65
 
+using std::to_string;
+
 Play::Play(const string& next, const string& texture)
-    : Level("play", next), m_texture(nullptr), m_logo(nullptr)
+    : Level("play", next), m_last(0), m_texture(nullptr), m_logo(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -29,6 +31,12 @@ Play::Play(const string& next, const string& texture)
     set_position(((W - 115) / W * env->canvas->w()) / 2, 192 / H * env->canvas->h());
 
     slots();
+}
+
+void
+Play::update_self(unsigned long elapsed)
+{
+    m_last = elapsed;
 }
 
 void
@@ -65,6 +73,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     int slot2 = settings->read<int>("Slots", "slot2", 0);
     int slot3 = settings->read<int>("Slots", "slot3", 0);
 
+    int slot = 0;
     if (button->id() == "slot1")
     {
         if (slot1 == 0)
@@ -81,6 +90,8 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot1", 1);
         settings->write<int>("Slots", "slot2", slot2);
         settings->write<int>("Slots", "slot3", slot3);
+
+        slot = 1;
     }
     else if (button->id() == "slot2")
     {
@@ -98,6 +109,8 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", 1);
         settings->write<int>("Slots", "slot3", slot3);
+
+        slot = 2;
     }
     else if (button->id() == "slot3")
     {
@@ -115,6 +128,8 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot1", slot1);
         settings->write<int>("Slots", "slot2", slot2);
         settings->write<int>("Slots", "slot3", 1);
+
+        slot = 3;
     }
     else if (button->id() == "slot1_x")
     {
@@ -158,6 +173,19 @@ Play::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "back")
     {
         set_next("menu");
+    }
+
+    if (slot)
+    {
+        shared_ptr<Settings> settings_timers = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(slot) + "/timers.sav");
+        map< string, map<string, string> > sections = settings_timers->sections();
+
+        for (auto section : sections)
+        {
+            settings_timers->write<unsigned long>(section.first, "start_time", m_last);
+        }
+        settings_timers->save("res/datas/slot" + to_string(slot) + "/timers.sav");
     }
 
     settings->save(env->m_settings_path);

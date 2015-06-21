@@ -313,49 +313,52 @@ Central::change_to_timers()
     for (auto section : sections)
     {
         string name = section.first;
-        string time = section.second["time"];
+        string start_time = section.second["start_time"];
+        string elapsed_time = section.second["elapsed_time"];
         string final_time = section.second["final_time"];
         string icon = section.second["icon"];
 
         if (icon.back() == '\r')
         {
-            time.pop_back();
+            elapsed_time.pop_back();
             icon.pop_back();
         }
 
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
-        if (not time.empty())
+        if (not elapsed_time.empty())
         {
             if(final_time != "0")
             {
-                unsigned long seconds = (atol(time.c_str()) + m_last) / 1000;
-                unsigned long final_seconds = atol(final_time.c_str()) / 1000;
+                unsigned long seconds = (atol(elapsed_time.c_str()) + m_last);
+                unsigned long start_seconds = atol(start_time.c_str());
+                unsigned long final_seconds = atol(final_time.c_str());
                 
-                if (seconds < final_seconds)
+                if (seconds < final_seconds + start_seconds)
                 {
-                    seconds = final_seconds - seconds;
+                    seconds = final_seconds - (seconds - start_seconds);
+                    seconds /= 1000;
                     unsigned long minutes = seconds / 60;
                     seconds %= 60;
                     
                     string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
                     string min = minutes < 10 ? "0" + to_string(minutes) : to_string(minutes);
                     
-                    time = min + ":" + sec;
+                    elapsed_time = min + ":" + sec;
                 }
                 else
                 {
                     settings->write<unsigned long>(name, "final_time", 0);
                     settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
-                    time = "Ok!";
+                    elapsed_time = "Ok!";
                 }
             }
             else
             {
-                time = "Ok!";
+                elapsed_time = "Ok!";
             }
 
-            env->canvas->draw(time, (855 / W) * env->canvas->w(),
+            env->canvas->draw(elapsed_time, (855 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
         }
         if (not icon.empty())

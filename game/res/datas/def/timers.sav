@@ -1,24 +1,32 @@
 
 [Printing: 3D Gun]
 
+elapsed_time=0
 final_time=60000
 icon=workshop
-time=0
+start_time=0
+
 
 [Researching: Laser Guns]
 
+elapsed_time=0
 final_time=30000
 icon=hospital
-time=0
+start_time=0
+
 
 [Reviving: Galileu]
 
+elapsed_time=0
 final_time=90000
 icon=hospital
-time=0
+start_time=0
+
 
 [Reviving: Isaac]
 
+elapsed_time=0
 final_time=120000
 icon=research
-time=0
+start_time=0
+
