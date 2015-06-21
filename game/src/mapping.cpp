@@ -1,3 +1,10 @@
+/*
+ * Mapping class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "mapping.h"
 #include <core/environment.h>
 #include <core/bitmap.h>

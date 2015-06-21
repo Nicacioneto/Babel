@@ -1,5 +1,5 @@
 /*
- * GameOver class implementation.
+ * Game over class implementation.
  *
  * Author: Tiamat
  * Date: 10/05/2015

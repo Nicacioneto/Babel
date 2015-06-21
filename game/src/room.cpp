@@ -1,3 +1,10 @@
+/*
+ * Room class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "room.h"
 
 Room::Room(int north, int east, int south, int west, int roof, int floor)

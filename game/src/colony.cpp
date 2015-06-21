@@ -1,3 +1,10 @@
+/*
+ * Colony class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "colony.h"
 #include <core/font.h>
 #include <core/settings.h>

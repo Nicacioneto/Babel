@@ -1,3 +1,10 @@
+/*
+ * Barracks class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "barracks.h"
 #include "character.h"
 #include "colony.h"

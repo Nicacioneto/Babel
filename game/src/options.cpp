@@ -1,3 +1,10 @@
+/*
+ * Options class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "file.h"
 #include "options.h"
 #include <algorithm>

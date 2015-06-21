@@ -1,3 +1,10 @@
+/*
+ * Dungeon class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "dungeon.h"
 #include "file.h"
 #include "mapping.h"

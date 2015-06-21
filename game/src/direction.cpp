@@ -1,3 +1,10 @@
+/*
+ * Direction class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "direction.h"
 
 static const pair<int, int> m_vectors[]

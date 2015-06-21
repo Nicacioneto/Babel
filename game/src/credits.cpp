@@ -1,3 +1,10 @@
+/*
+ * Credits class implementation
+ *
+ * Author: Tiamat
+ * Date: 21/06/2015
+ * License: LGPL. No copyright.
+ */
 #include "credits.h"
 #include <core/font.h>
 #include <core/image.h>
