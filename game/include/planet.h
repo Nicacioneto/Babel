@@ -25,6 +25,7 @@ private:
     bool on_message(Object *sender, MessageID id, Parameters p);
     void enable_popup(bool popup);
     void load_buttons();
+    void start_mission();
 };
 
 #endif

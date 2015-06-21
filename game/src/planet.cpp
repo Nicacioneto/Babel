@@ -2,10 +2,12 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
+#include <core/settings.h>
 
 #define W 1024.0
 #define H 768.0
 
+using std::to_string;
 
 Planet::Planet(int slot, const string& next)
     : Level("planet", next), m_slot(slot), m_state(IDLE)
@@ -40,7 +42,7 @@ Planet::draw_self()
         
         env->canvas->draw(m_popup.get(), x, y);
 
-        env->canvas->draw(m_text, x + (10/W) * env->canvas->w(), y + m_popup->h()/2);
+        env->canvas->draw("Start misson in " + m_text, x + (10/W) * env->canvas->w(), y + m_popup->h()/2);
     }
 }
 
@@ -61,42 +63,47 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "trunda")
     {
-        m_text = "Start misson in Trunda";
+        m_text = "Trunda";
         enable_popup(true);
     }
     else if (button->id() == "jungle")
     {
-        m_text = "Start misson in Jungle";
+        m_text = "Jungle";
         enable_popup(true);
     }
     else if (button->id() == "sea")
     {
-        m_text = "Start misson in Sea";
+        m_text = "Sea";
         enable_popup(true);
     }
     else if (button->id() == "dunes")
     {
-        m_text = "Start misson in Dunes";
+        m_text = "Dunes";
         enable_popup(true);
     }
 
     else if (button->id() == "taiga")
     {
-        m_text = "Start misson in Taiga";
+        m_text = "Taiga";
         enable_popup(true);
     }
     else if (button->id() == "lake")
     {
-        m_text = "Start misson in Lake";
+        m_text = "Lake";
         enable_popup(true);
     }
     else if (button->id() == "swamp")
     {
-        m_text = "Start misson in Swamp";
+        m_text = "Swamp";
         enable_popup(true);
     }
     else if (button->id() == "x")
     {
+        enable_popup(false);
+    }
+    else if (button->id() == "confirm")
+    {
+        start_mission();
         enable_popup(false);
     }
 
@@ -108,7 +115,7 @@ Planet::enable_popup(bool popup)
 {
     for (auto button : m_buttons)
     {
-        if (button.first == "x")
+        if (button.first == "x" || button.first == "confirm")
         {
             button.second->set_active(popup);
             button.second->set_visible(popup);
@@ -165,12 +172,24 @@ Planet::load_buttons()
         (110/W) * env->canvas->w(), (80/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    const int x = ((W / 2 - 25 ) / W) * env->canvas->w() + m_popup->w() / 2;
-    const int y = ((H / 2 + 12 ) / H) * env->canvas->h() - m_popup->h() / 2;
+    int x = ((W / 2 - 25 ) / W) * env->canvas->w() + m_popup->w() / 2;
+    int y = ((H / 2 + 12 ) / H) * env->canvas->h() - m_popup->h() / 2;
 
     button = new Button(this, "x", path + "x.png", x, y,
         (13/W) * env->canvas->w(), (18/H) * env->canvas->w());
     button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    const int w = (140 / W) * env->canvas->w();
+    const int h = (60 / H) * env->canvas->h();
+
+    x = (env->canvas->w() - w) / 2;
+    y = (env->canvas->h() + m_popup->h()) / 2 - (h + (10 / H) * env->canvas->h() );
+
+    button = new Button(this, "confirm", path + "button.png", x , y, w, h);
+    button->set_text("Confirm");
     button->set_active(false);
     button->set_visible(false);
     m_buttons[button->id()] = button;
@@ -180,4 +199,19 @@ Planet::load_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
+}
+
+void
+Planet::start_mission()
+{
+    Environment *env = Environment::get_instance();
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/timers.sav");
+
+    settings->write<unsigned long>(m_text, "final_time", 60000);
+    settings->write<unsigned long>(m_text, "time", 0);
+    settings->write<string>(m_text, "icon", "workshop");
+
+    settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
 }
