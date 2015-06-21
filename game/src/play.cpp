@@ -177,8 +177,8 @@ Play::on_message(Object *sender, MessageID id, Parameters)
 
     if (slot)
     {
-        shared_ptr<Settings> settings_timers = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(slot) + "/timers.sav");
+        string path = "res/datas/slot" + to_string(slot) + "/timers.sav";
+        shared_ptr<Settings> settings_timers = env->resources_manager->get_settings(path);
         map< string, map<string, string> > sections = settings_timers->sections();
 
         for (auto section : sections)

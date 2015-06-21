@@ -24,7 +24,8 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
         set_dimensions(m_texture->w(), m_texture->h());
     }
 
-    m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot) + "/characters.sav");
+    m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot)
+        + "/characters.sav");
     init();
 }
 

@@ -14,11 +14,12 @@ Options::Options(const string& next)
 {
     Environment *env = Environment::get_instance();
 
-    m_textures["background"] = env->resources_manager->get_texture("res/images/menu/init-screen.png");
-    m_textures["logo"] = env->resources_manager->get_texture("res/images/menu/babel-logo.png");
-    m_textures["soundvideo"] = env->resources_manager->get_texture("res/images/menu/sound-video.png");
-    m_textures["volume"] = env->resources_manager->get_texture("res/images/menu/volume.png");
-    m_textures["arrow"] = env->resources_manager->get_texture("res/images/menu/arrow.png");
+    string path = "res/images/menu/";
+    m_textures["background"] = env->resources_manager->get_texture(path + "init-screen.png");
+    m_textures["logo"] = env->resources_manager->get_texture(path + "babel-logo.png");
+    m_textures["soundvideo"] = env->resources_manager->get_texture(path + "sound-video.png");
+    m_textures["volume"] = env->resources_manager->get_texture(path + "volume.png");
+    m_textures["arrow"] = env->resources_manager->get_texture(path + "arrow.png");
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);

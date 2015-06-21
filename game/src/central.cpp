@@ -328,7 +328,7 @@ Central::change_to_timers()
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not elapsed_time.empty())
         {
-            if(final_time != "0")
+            if (final_time != "0")
             {
                 unsigned long seconds = (atol(elapsed_time.c_str()) + m_last);
                 unsigned long start_seconds = atol(start_time.c_str());

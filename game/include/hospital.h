@@ -19,7 +19,7 @@ public:
 private:
     typedef enum { CHAT, ITEMS, RESEARCH, REVIVE } Screen;
 
-    int m_slot;    
+    int m_slot;
     Screen m_screen;
     shared_ptr<Texture> m_scenario;
     map<ObjectID, Button*> m_buttons;

@@ -193,16 +193,18 @@ Combat::load_characters()
     
     int y = (620 / H) * env->canvas->h();
 
-    Character *character = new Character(m_slot, this, "albert", "albert.png", (29 / W) * env->canvas->w(), y);
+    double scale_w = env->canvas->w() / W;
+
+    Character *character = new Character(m_slot, this, "albert", "albert.png", 29 * scale_w, y);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "booker", "booker.png", (276 / W) * env->canvas->w(), y);
+    character = new Character(m_slot, this, "booker", "booker.png", 276 * scale_w, y);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "isaac", "isaac.png", (525 / W) * env->canvas->w(), y);
+    character = new Character(m_slot, this, "isaac", "isaac.png", 525 * scale_w, y);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "newton", "newton.png", (773 / W) * env->canvas->w(), y);
+    character = new Character(m_slot, this, "newton", "newton.png", 773 * scale_w, y);
     m_characters[character->id()] = character;
 
     for (auto it : m_characters)
@@ -220,19 +222,22 @@ Combat::load_enemies()
 {
     Environment *env = Environment::get_instance();
 
-    int w = (200 / W) * env->canvas->w();
-    int h = (300 / H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int w = 200 * scale_w;
+    int h = 300 * scale_h;
 
     Character *enemy = new Character(m_slot, this, "timber1", "timber.png", 0, 0, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber2", "timber.png", (250 / W) * env->canvas->w(), 0, w, h);
+    enemy = new Character(m_slot, this, "timber2", "timber.png", 250 * scale_w, 0, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber3", "timber.png", (550 / W) * env->canvas->w(), 0, w, h);
+    enemy = new Character(m_slot, this, "timber3", "timber.png", 550 * scale_w, 0, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber4", "timber.png", (800 / W) * env->canvas->w(), 0, w, h);
+    enemy = new Character(m_slot, this, "timber4", "timber.png", 800 * scale_w, 0, w, h);
     m_enemies[enemy->id()] = enemy;
 
     for (auto it : m_enemies)

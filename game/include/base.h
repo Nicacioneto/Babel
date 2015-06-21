@@ -16,7 +16,7 @@ public:
     Base(int slot, const string& next = "");
 
 private:
-	int m_slot;
+    int m_slot;
 
     shared_ptr<Texture> m_scenario;
     map<ObjectID, Button*> m_buttons;

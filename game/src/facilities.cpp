@@ -10,10 +10,9 @@
 
 using std::to_string;
 
-Facilities::Facilities(int slot,const string& next)
-    : Level("facilities", next), m_slot(slot),
-        m_mwaked(0), m_pwaked(0), m_twaked(0),
-        m_matter_cost(10), m_energy_cost(10), m_screen(CHAT)
+Facilities::Facilities(int slot, const string& next)
+    : Level("facilities", next), m_slot(slot), m_mwaked(0), m_pwaked(0),
+    m_twaked(0), m_matter_cost(10), m_energy_cost(10), m_screen(CHAT)
 {
     m_colony = new Colony(m_slot, this, "facilities");
     m_colony->add_observer(this);
@@ -304,6 +303,9 @@ Facilities::change_to_military()
 
     shared_ptr<Texture> texture;
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
@@ -313,20 +315,20 @@ Facilities::change_to_military()
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (384 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 384 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (462 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 462 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "pistol.png");
-        env->canvas->draw(texture.get(), (540 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 540 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "sniper.png");
-        env->canvas->draw(texture.get(), (618 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 618 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (696 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 696 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (774 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 774 * scale_w, (y+25) * scale_h);
 
-        Point a((360 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
-        Point b((851 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
+        Point a(360 * scale_w, (y-14+25) * scale_h);
+        Point b(851 * scale_w, (y-14+25) * scale_h);
         env->canvas->draw(Line(a, b), color);
     }
 
@@ -334,27 +336,25 @@ Facilities::change_to_military()
         to_string(m_slot) + "/colony.sav");
     m_mwaked = settings->read<int>("Facilities", "military", 0);
 
-    Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
-        (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
+    Rect rect(333 * scale_w, 222 * scale_h,
+        25 * scale_w, 416 * scale_h);
     env->canvas->draw(rect, color);
 
     texture = env->resources_manager->get_texture(path + "wake-m.png");
-    env->canvas->draw(texture.get(), (308 / W) * env->canvas->w(), (628 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 308 * scale_w, 628 * scale_h);
 
     int x = 340;
     int y = (629 - 4 * m_mwaked);
 
-    rect = Rect((x / W) * env->canvas->w(), (y / H) * env->canvas->h(),
-        (10 / W) * env->canvas->w(), (4*(m_mwaked+2) / H) * env->canvas->h());
+    rect = Rect(x * scale_w, y * scale_h,
+        10 * scale_w, 4 * (m_mwaked+2) * scale_h);
     env->canvas->fill(rect, Color(206, 178, 46));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-m.png");
-    env->canvas->draw(texture.get(), (290 / W) * env->canvas->w(),
-        (y / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_mwaked), ((290+4) / W) * env->canvas->w(),
-        ((y + 1) / H) * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_mwaked), 294 * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -371,7 +371,7 @@ Facilities::change_to_military()
 
     Rect clip = Rect(0, y, 24, 20);
     texture = env->resources_manager->get_texture(path + "matter.png");
-    env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
+    env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
     if (m_colony->energy() >= m_energy_cost)
     {
@@ -386,12 +386,10 @@ Facilities::change_to_military()
 
     clip = Rect(0, y, 11, 18);
     texture = env->resources_manager->get_texture(path + "energy.png");
-    env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
+    env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
@@ -411,6 +409,9 @@ Facilities::change_to_psionic()
 
     shared_ptr<Texture> texture;
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
@@ -420,20 +421,20 @@ Facilities::change_to_psionic()
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (384 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 384 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (462 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 462 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "pistol.png");
-        env->canvas->draw(texture.get(), (540 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 540 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "sniper.png");
-        env->canvas->draw(texture.get(), (618 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 618 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (696 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 696 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (774 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 774 * scale_w, (y+25) * scale_h);
 
-        Point a((360 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
-        Point b((851 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
+        Point a(360 * scale_w, (y-14+25) * scale_h);
+        Point b(851 * scale_w, (y-14+25) * scale_h);
         env->canvas->draw(Line(a, b), color);
     }
 
@@ -441,27 +442,24 @@ Facilities::change_to_psionic()
         to_string(m_slot) + "/colony.sav");
     m_pwaked = settings->read<int>("Facilities", "psionic", 0);
 
-    Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
-        (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
+    Rect rect(333 * scale_w, 222 * scale_h, 25 * scale_w, 416 * scale_h);
     env->canvas->draw(rect, color);
 
     texture = env->resources_manager->get_texture(path + "wake-p.png");
-    env->canvas->draw(texture.get(), (308 / W) * env->canvas->w(), (628 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 308 * scale_w, 628 * scale_h);
 
     int x = 340;
     int y = (629 - 4 * m_pwaked);
 
-    rect = Rect((x / W) * env->canvas->w(), (y / H) * env->canvas->h(),
-        (10 / W) * env->canvas->w(), (4*(m_pwaked+2) / H) * env->canvas->h());
+    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4*(m_pwaked+2) * scale_h);
     env->canvas->fill(rect, Color(146, 61, 133));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-p.png");
-    env->canvas->draw(texture.get(), (290 / W) * env->canvas->w(),
-        (y / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_pwaked), ((290+4) / W) * env->canvas->w(),
-        ((y + 1) / H) * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_pwaked), (290+4) * scale_w,
+        (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -478,7 +476,7 @@ Facilities::change_to_psionic()
 
     Rect clip = Rect(0, y, 24, 20);
     texture = env->resources_manager->get_texture(path + "matter.png");
-    env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
+    env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
     if (m_colony->energy() >= m_energy_cost)
     {
@@ -493,12 +491,10 @@ Facilities::change_to_psionic()
 
     clip = Rect(0, y, 11, 18);
     texture = env->resources_manager->get_texture(path + "energy.png");
-    env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
+    env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
@@ -518,6 +514,9 @@ Facilities::change_to_tech()
 
     shared_ptr<Texture> texture;
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
         string red = "red_";
@@ -527,20 +526,20 @@ Facilities::change_to_tech()
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (384 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 384 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (462 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 462 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "pistol.png");
-        env->canvas->draw(texture.get(), (540 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 540 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "sniper.png");
-        env->canvas->draw(texture.get(), (618 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 618 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
-        env->canvas->draw(texture.get(), (696 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 696 * scale_w, (y+25) * scale_h);
         texture = env->resources_manager->get_texture(path + red + "shotgun.png");
-        env->canvas->draw(texture.get(), (774 / W) * env->canvas->w(), ((y+25) / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), 774 * scale_w, (y+25) * scale_h);
 
-        Point a((360 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
-        Point b((851 / W) * env->canvas->w(), ((y-14+25) / H) * env->canvas->h());
+        Point a(360 * scale_w, (y-14+25) * scale_h);
+        Point b(851 * scale_w, (y-14+25) * scale_h);
         env->canvas->draw(Line(a, b), color);
     }
 
@@ -548,27 +547,24 @@ Facilities::change_to_tech()
         to_string(m_slot) + "/colony.sav");
     m_twaked = settings->read<int>("Facilities", "tech", 0);
 
-    Rect rect((333 / W) * env->canvas->w(), (222 / H) * env->canvas->h(),
-        (25 / W) * env->canvas->w(), (416 / H) * env->canvas->h());
+    Rect rect(333 * scale_w, (222 / H) * env->canvas->h(), 25 * scale_w,
+        (416 / H) * env->canvas->h());
     env->canvas->draw(rect, color);
 
     texture = env->resources_manager->get_texture(path + "wake-t.png");
-    env->canvas->draw(texture.get(), (308 / W) * env->canvas->w(), (628 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 308 * scale_w, (628 / H) * env->canvas->h());
 
     int x = 340;
     int y = (629 - 4 * m_twaked);
 
-    rect = Rect((x / W) * env->canvas->w(), (y / H) * env->canvas->h(),
-        (10 / W) * env->canvas->w(), (4*(m_twaked+2) / H) * env->canvas->h());
+    rect = Rect(x * scale_w, y * scale_h, 10 * scale_w, 4 * (m_twaked+2) * scale_h);
     env->canvas->fill(rect, Color(79, 194, 193));
 
     y -= 13;
     texture = env->resources_manager->get_texture(path + "meter-t.png");
-    env->canvas->draw(texture.get(), (290 / W) * env->canvas->w(),
-        (y / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(m_twaked), ((290+4) / W) * env->canvas->w(),
-        ((y + 1) / H) * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_twaked), (290+4) * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -585,7 +581,7 @@ Facilities::change_to_tech()
 
     Rect clip = Rect(0, y, 24, 20);
     texture = env->resources_manager->get_texture(path + "matter.png");
-    env->canvas->draw(texture.get(), clip, 385/W * env->canvas->w(), 670/H * env->canvas->h(), 24, 20);
+    env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
     if (m_colony->energy() >= m_energy_cost)
     {
@@ -600,10 +596,10 @@ Facilities::change_to_tech()
 
     clip = Rect(0, y, 11, 18);
     texture = env->resources_manager->get_texture(path + "energy.png");
-    env->canvas->draw(texture.get(), clip, 478/W * env->canvas->w(), 670/H * env->canvas->h(), 11, 18);
+    env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510/W * env->canvas->w(),
-        670/H * env->canvas->h(), color);
+    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w,
+        670 * scale_h, color);
+    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w,
+        670 * scale_h, color);
 }

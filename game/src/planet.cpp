@@ -48,7 +48,8 @@ Planet::draw_self()
         
         env->canvas->draw(m_popup.get(), x, y);
 
-        env->canvas->draw("Start misson in " + m_text, x + (10/W) * env->canvas->w(), y + m_popup->h()/2);
+        env->canvas->draw("Start misson in " + m_text, x + (10/W) * env->canvas->w(),
+            y + m_popup->h()/2);
     }
 }
 
@@ -174,7 +175,7 @@ Planet::load_buttons()
         (424/W) * env->canvas->w(), (283/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "colony", "",(405/W) * env->canvas->w(), (410/H) * env->canvas->h(),
+    button = new Button(this, "colony", "", (405/W) * env->canvas->w(), (410/H) * env->canvas->h(),
         (110/W) * env->canvas->w(), (80/H) * env->canvas->h());
     m_buttons[button->id()] = button;
 
@@ -194,7 +195,7 @@ Planet::load_buttons()
     x = (env->canvas->w() - w) / 2;
     y = (env->canvas->h() + m_popup->h()) / 2 - (h + (10 / H) * env->canvas->h() );
 
-    button = new Button(this, "confirm", path + "button.png", x , y, w, h);
+    button = new Button(this, "confirm", path + "button.png", x, y, w, h);
     button->set_text("Confirm");
     button->set_active(false);
     button->set_visible(false);
