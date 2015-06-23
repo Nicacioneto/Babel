@@ -77,17 +77,17 @@ Colony::draw_self()
         (120 / H) * env->canvas->h());
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    font->set_size(18);
+    font->set_size(16);
 
     Color color(170, 215, 190);
     int x = 120;
-    int y = (120 / H) * env->canvas->h();
+    int y = (123 / H) * env->canvas->h();
 
     env->canvas->draw(to_string(m_data), (x/W) * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_energy), (x + 160*2)/W * env->canvas->w(), y, color);
 
-    font->set_size(16);
+    y -= 3;
     env->canvas->draw(to_string(m_mwaked), (x + 646)/W * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_pwaked), (x + 703)/W * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_twaked), (x + 753)/W * env->canvas->w(), y, color);
@@ -105,7 +105,7 @@ Colony::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "tower")
     {
-        notify("dungeon", "");
+        notify("tower", "");
     }
     else if (button->id() == "planet")
     {

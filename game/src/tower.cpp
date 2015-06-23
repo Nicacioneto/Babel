@@ -45,19 +45,27 @@ Tower::Tower(int slot, const string& next)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button =  new Button(this, "change_drone", path + "send_button.png",
+    Button *button =  new Button(this, "inspect_drone", path + "inspect.png",
+        512 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "change_drone", path + "change.png",
         545 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "change_team", path + "send_button.png",
-        885 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
-
-    button =  new Button(this, "send_drone", path + "send_button.png",
+    button = new Button(this, "send_drone", path + "send_button.png",
         300 * scale_w, 618 * scale_h, 300 * scale_w, 105 * scale_h);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "send_team", path + "send_button.png",
+    button = new Button(this, "inspect_team", path + "inspect.png",
+        850 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "change_team", path + "change.png",
+        885 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "send_team", path + "send_button.png",
         644 * scale_w, 618 * scale_h, 300 * scale_w, 105 * scale_h);
     m_buttons[button->id()] = button;
 
@@ -109,7 +117,7 @@ Tower::draw_self()
     env->canvas->draw("Select Floor", 60 * scale_w, 210 * scale_h, color);
     env->canvas->draw("Floor 2", 360 * scale_w, 204 * scale_h, color);
     env->canvas->draw("Quests", 360 * scale_w, 324 * scale_h, color);
-    env->canvas->draw("Hotile Activity", 360 * scale_w, 480 * scale_h, color);
+    env->canvas->draw("Hostile Activity", 360 * scale_w, 480 * scale_h, color);
     env->canvas->draw("Send Drone", 360 * scale_w, 626 * scale_h, color);
     env->canvas->draw("Send Team", 704 * scale_w, 626 * scale_h, color);
 
@@ -165,11 +173,34 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
-    else if (button->id() != "tower")
+    else if (button->id() == "inspect_drone")
     {
-        // Environment *env = Environment::get_instance();
-        // string path = "res/images/colony/tower/";
+        // TODO
     }
+    else if (button->id() == "change_drone")
+    {
+        // TODO
+    }
+    else if (button->id() == "send_drone")
+    {
+        // TODO
+    }
+    else if (button->id() == "inspect_team")
+    {
+        set_next("barracks");
+        finish();
+    }
+    else if (button->id() == "change_team")
+    {
+        // TODO
+    }
+    else if (button->id() == "send_team")
+    {
+        set_next("dungeon");
+        finish();
+    }
+
+
 
     return true;
 }

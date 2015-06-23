@@ -87,7 +87,7 @@ Dungeon::on_event(const KeyboardEvent& event)
                     turn_left();
                     return true;
                 case KeyboardEvent::ESCAPE:
-                    set_next("base");
+                    set_next("tower");
                     finish();
                     return true;
                 default:
