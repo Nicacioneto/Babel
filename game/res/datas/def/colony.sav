@@ -5,7 +5,7 @@ welcome = Welcome to Central
 
 [Colony]
 
-data =   2000
+data =   1000
 energy = 2000
 matter = 2000
 military = 0

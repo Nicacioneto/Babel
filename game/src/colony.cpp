@@ -22,8 +22,8 @@ Colony::Colony(int slot, Object *parent, ObjectID id)
     string path = "res/images/colony/";
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
     m_textures["colony"] = env->resources_manager->get_texture(path + "colony.png");
-    m_textures["tower_img"] = env->resources_manager->get_texture(path + "tower.png");
-    m_textures["planet_img"] = env->resources_manager->get_texture(path + "planet.png");
+    m_textures["tower"] = env->resources_manager->get_texture(path + "tower.png");
+    m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
     m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
     m_textures["resources"] = env->resources_manager->get_texture(path + "resources.png");
 
@@ -67,9 +67,9 @@ Colony::draw_self()
         (173 / H) * env->canvas->h());
     env->canvas->draw(m_textures["colony"].get(), (193 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["tower_img"].get(), (28 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["tower"].get(), (28 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["planet_img"].get(), (855 / W) * env->canvas->w(),
+    env->canvas->draw(m_textures["planet"].get(), (855 / W) * env->canvas->w(),
         (25 / H) * env->canvas->h());
     env->canvas->draw(m_textures["left_bracket"].get(), (28 / W) * env->canvas->w(),
         (175 / H) * env->canvas->h());
@@ -86,9 +86,11 @@ Colony::draw_self()
     env->canvas->draw(to_string(m_data), (x/W) * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
     env->canvas->draw(to_string(m_energy), (x + 160*2)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_mwaked), (x + 650)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_pwaked), (x + 705)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_twaked), (x + 755)/W * env->canvas->w(), y, color);
+
+    font->set_size(16);
+    env->canvas->draw(to_string(m_mwaked), (x + 646)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_pwaked), (x + 703)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_twaked), (x + 753)/W * env->canvas->w(), y, color);
 }
 
 bool
