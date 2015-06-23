@@ -28,10 +28,13 @@ Credits::Credits(const string& next, const string& image)
     env->canvas->set_font(font);
     font->set_size(22);
 
-    int x = (W - 140)/(W * 2) * env->canvas->w();
-    int y = (H - 140)/H * env->canvas->h();
-    int w = (140/W) * env->canvas->w();
-    int h = (60/H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = (W - 140)/2 * scale_w;
+    int y = (H - 140) * scale_h;
+    int w = 140 * scale_w;
+    int h = 60 * scale_h;
 
     m_back = new Button(this, "back", "res/images/menu/button.png", x, y, w, h);
     m_back->set_text("Back");
@@ -46,8 +49,11 @@ Credits::draw_self()
 {
     Environment *env = Environment::get_instance();
 
-    int x = 360/W * env->canvas->w();
-    int y = 193/H * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = 360 * scale_w;
+    int y = 193 * scale_h;
     
     env->canvas->clear();
     env->canvas->draw(m_texture.get());

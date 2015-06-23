@@ -41,9 +41,9 @@ void
 Central::draw_self()
 {
     Environment *env = Environment::get_instance();
-
     env->canvas->clear();
-    env->canvas->draw(m_scenario.get(), (275 / W) * env->canvas->w(), (173 / H) * env->canvas->h());
+
+    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
 
     switch (m_screen)
     {
@@ -128,19 +128,22 @@ Central::create_buttons()
     env->canvas->set_font(font);
     font->set_size(24);
 
-    const int x = (28 / W) * env->canvas->w();
-    const int w = (190 / W) * env->canvas->w();
-    const int h = (180/3 / H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = 28 * scale_w;
+    int w = 190 * scale_w;
+    int h = 180/3 * scale_h;
 
     Button *button =  new Button(this, "central", path + "central_button.png",
-        x, (218 / H) * env->canvas->h(), w, h);
+        x, 218 * scale_h, w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "chat", path + "colony_small_button.png",
-        x, (322 / H) * env->canvas->h(), w, h);
+        x, 322 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Chat");
     button->change_state(Button::ACTIVE);
@@ -148,21 +151,21 @@ Central::create_buttons()
     m_buttons[button->id()] = button;
 
     button = new Button(this, "quests", path + "colony_small_button.png",
-        x, (427 / H) * env->canvas->h(), w, h);
+        x, 427 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Quests");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "bestiary", path + "colony_small_button.png",
-        x, (531 / H) * env->canvas->h(), w, h);
+        x, 531 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Bestiary");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "timers", path + "colony_small_button.png",
-        x, (635 / H) * env->canvas->h(), w, h);
+        x, 635 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Timers");
 
@@ -197,15 +200,16 @@ Central::change_to_chat()
     env->canvas->set_font(font);
     font->set_size(18);
     Color color(170, 215, 190);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
     auto sections = settings->sections();
     string text = sections["Central"]["welcome"];
-    env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
-        (605 / H) * env->canvas->h(), color);
-    env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
-        (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
+    env->canvas->draw(text, (305 + 5) * scale_w, 605 * scale_h, color);
+    env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, 670 * scale_w, 116 * scale_h), color);
 }
 
 void
@@ -219,7 +223,10 @@ Central::change_to_quests()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
 
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -232,19 +239,17 @@ Central::change_to_quests()
         string name = section.first;
         string new_ = section.second["new"];
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(),
-            (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not new_.empty())
         {
-            env->canvas->draw("NEW", (690 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw("NEW", 690 * scale_w,
+                y * scale_h, color);
         }
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         Rect clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(),
-            (602 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w, (y+5) * scale_h,
+            602 * scale_w, 25 * scale_h);
 
         y += 64;
     }
@@ -261,7 +266,10 @@ Central::change_to_bestiary()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
     
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -279,19 +287,17 @@ Central::change_to_bestiary()
             icon.pop_back();
         }
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not icon.empty())
         {
             texture = env->resources_manager->get_texture(path + "icons/" + icon + ".png");
-            env->canvas->draw(texture.get(), (310 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h());
+            env->canvas->draw(texture.get(), 310 * scale_w, y * scale_h);
         }
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         Rect clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(),
-            (602 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 
         y += 64;
     }
@@ -308,8 +314,11 @@ Central::change_to_timers()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
-    env->canvas->draw("Time", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
+    env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -331,7 +340,7 @@ Central::change_to_timers()
             icon.pop_back();
         }
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not elapsed_time.empty())
         {
             if (final_time != "0")
@@ -364,22 +373,19 @@ Central::change_to_timers()
                 elapsed_time = "Ok!";
             }
 
-            env->canvas->draw(elapsed_time, (855 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(elapsed_time, 855 * scale_w, y * scale_h, color);
         }
 
         if (not icon.empty())
         {
             texture = env->resources_manager->get_texture(path + "icons/" + icon + ".png");
-            env->canvas->draw(texture.get(), (310 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h());
+            env->canvas->draw(texture.get(), 310 * scale_w, y * scale_h);
         }
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         Rect clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(),
-            (602 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 
         y += 64;
     }

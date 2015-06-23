@@ -55,7 +55,7 @@ Planet::draw_self()
         
         env->canvas->draw(m_popup.get(), x, y);
 
-        env->canvas->draw("Start misson in " + m_text, x + (10/W) * env->canvas->w(),
+        env->canvas->draw("Start misson in " + m_text, x + 10 * env->canvas->w() / W,
             y + m_popup->h()/2);
     }
 }
@@ -152,53 +152,55 @@ Planet::load_buttons()
     font->set_size(22);
     string path = "res/images/planet/";
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     Button *button = new Button(this, "trunda", "", 0, 0,
-        (300/W) * env->canvas->w(), (290/H) * env->canvas->h());
+        300 * scale_w, 290 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "jungle", "", (390/W) * env->canvas->w(), 0,
-        (360/W) * env->canvas->w(), (235/H) * env->canvas->h());
+    button = new Button(this, "jungle", "", 390 * scale_w, 0,
+        360 * scale_w, 235 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "sea", "", (755/W) * env->canvas->w(), 0,
-        (265/W) * env->canvas->w(), (235/H) * env->canvas->h());
+    button = new Button(this, "sea", "", 755 * scale_w, 0,
+        265 * scale_w, 235 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "dunes", "", (630/W) * env->canvas->w(), (270/H) * env->canvas->h(),
-        (394/W) * env->canvas->w(), (185/H) * env->canvas->h());
+    button = new Button(this, "dunes", "", 630 * scale_w, 270 * scale_h,
+        394 * scale_w, 185 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "taiga", "", (0/W) * env->canvas->w(), (410/H) * env->canvas->h(),
-        (310/W) * env->canvas->w(), (358/H) * env->canvas->h());
+    button = new Button(this, "taiga", "", 0 * scale_w, 410 * scale_h,
+        310 * scale_w, 358 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "lake", "", (300/W) * env->canvas->w(), (500/H) * env->canvas->h(),
-        (300/W) * env->canvas->w(), (185/H) * env->canvas->h());
+    button = new Button(this, "lake", "", 300 * scale_w, 500 * scale_h,
+        300 * scale_w, 185 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "swamp", "", (600/W) * env->canvas->w(), (485/H) * env->canvas->h(),
-        (424/W) * env->canvas->w(), (283/H) * env->canvas->h());
+    button = new Button(this, "swamp", "", 600 * scale_w, 485 * scale_h,
+        424 * scale_w, 283 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "colony", "", (405/W) * env->canvas->w(), (410/H) * env->canvas->h(),
-        (110/W) * env->canvas->w(), (80/H) * env->canvas->h());
+    button = new Button(this, "colony", "", 405 * scale_w, 410 * scale_h,
+        110 * scale_w, 80 * scale_h);
     m_buttons[button->id()] = button;
 
-    int x = ((W / 2 - 25 ) / W) * env->canvas->w() + m_popup->w() / 2;
-    int y = ((H / 2 + 12 ) / H) * env->canvas->h() - m_popup->h() / 2;
+    int x = (W / 2 - 25) * scale_w + m_popup->w() / 2;
+    int y = (H / 2 + 12) * scale_h - m_popup->h() / 2;
 
-    button = new Button(this, "x", path + "x.png", x, y,
-        (13/W) * env->canvas->w(), (18/H) * env->canvas->w());
+    button = new Button(this, "x", path + "x.png", x, y, 13 * scale_w, 18 * scale_h);
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
     m_buttons[button->id()] = button;
 
-    const int w = (140 / W) * env->canvas->w();
-    const int h = (60 / H) * env->canvas->h();
+    const int w = 140 * scale_w;
+    const int h = 60 * scale_h;
 
     x = (env->canvas->w() - w) / 2;
-    y = (env->canvas->h() + m_popup->h()) / 2 - (h + (10 / H) * env->canvas->h() );
+    y = (env->canvas->h() + m_popup->h()) / 2 - (h + 10 * scale_h);
 
     button = new Button(this, "confirm", path + "button.png", x, y, w, h);
     button->set_text("Confirm");

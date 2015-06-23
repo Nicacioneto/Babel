@@ -28,11 +28,14 @@ Menu::Menu(const string& next, const string& texture)
     env->canvas->set_font(font);
     font->set_size(22);
 
-    const int x_button = (188 / W) * env->canvas->w();
-    const int y_button = (H - 149) / H * env->canvas->h();
-    const int w_button = (140 / W) * env->canvas->w();
-    const int h_button = (60 / H) * env->canvas->h();
-    const int spacing = (170 / W) * env->canvas->w();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    const int x_button = 188 * scale_w;
+    const int y_button = (H - 149) * scale_h;
+    const int w_button = 140 * scale_w;
+    const int h_button = 60 * scale_h;
+    const int spacing = 170 * scale_w;
     
     m_play = new Button(this, "start", "res/images/menu/button.png",
         x_button, y_button, w_button, h_button);
@@ -69,7 +72,7 @@ Menu::draw_self()
 
     env->canvas->draw(m_texture.get());
     env->canvas->draw(m_logo.get(), (env->canvas->w() - m_logo->w())/2,
-        25 / H * env->canvas->h());
+        25 * env->canvas->h() / H);
 }
 
 bool

@@ -27,19 +27,19 @@ Colony::Colony(int slot, Object *parent, ObjectID id)
     m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
     m_textures["resources"] = env->resources_manager->get_texture(path + "resources.png");
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     Button *button = new Button(this, "center_bracket", path + "center_bracket_button.png",
-        (193 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
-        (635 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
+        193 * scale_w, 25 * scale_h, 635 * scale_w, 156/2 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "tower", path + "tower_button.png",
-        (28 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
-        (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
+        28 * scale_w, 25 * scale_h, 140 * scale_w, 156/2 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "planet", path + "planet_button.png",
-        (855 / W) * env->canvas->w(), (25 / H) * env->canvas->h(),
-        (140 / W) * env->canvas->w(), (156/2 / H) * env->canvas->h());
+        855 * scale_w, 25 * scale_h, 140 * scale_w, 156/2 * scale_h);
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
@@ -63,34 +63,31 @@ Colony::draw_self()
 {
     Environment *env = Environment::get_instance();
 
-    env->canvas->draw(m_textures["right_bracket"].get(), (275 / W) * env->canvas->w(),
-        (173 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["colony"].get(), (193 / W) * env->canvas->w(),
-        (25 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["tower"].get(), (28 / W) * env->canvas->w(),
-        (25 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["planet"].get(), (855 / W) * env->canvas->w(),
-        (25 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["left_bracket"].get(), (28 / W) * env->canvas->w(),
-        (175 / H) * env->canvas->h());
-    env->canvas->draw(m_textures["resources"].get(), (28 / W) * env->canvas->w(),
-        (120 / H) * env->canvas->h());
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["colony"].get(), 193 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["tower"].get(), 28 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["planet"].get(), 855 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
+    env->canvas->draw(m_textures["resources"].get(), 28 * scale_w, 120 * scale_h);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     font->set_size(16);
 
     Color color(170, 215, 190);
     int x = 120;
-    int y = (123 / H) * env->canvas->h();
+    int y = 123 * scale_h;
 
-    env->canvas->draw(to_string(m_data), (x/W) * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_matter), (x + 170)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_energy), (x + 160*2)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_data), x * scale_w, y, color);
+    env->canvas->draw(to_string(m_matter), (x + 170) * scale_w, y, color);
+    env->canvas->draw(to_string(m_energy), (x + 160*2) * scale_w, y, color);
 
     y -= 3;
-    env->canvas->draw(to_string(m_mwaked), (x + 646)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_pwaked), (x + 703)/W * env->canvas->w(), y, color);
-    env->canvas->draw(to_string(m_twaked), (x + 753)/W * env->canvas->w(), y, color);
+    env->canvas->draw(to_string(m_mwaked), (x + 646) * scale_w, y, color);
+    env->canvas->draw(to_string(m_pwaked), (x + 703) * scale_w, y, color);
+    env->canvas->draw(to_string(m_twaked), (x + 753) * scale_w, y, color);
 }
 
 bool

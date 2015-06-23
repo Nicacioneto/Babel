@@ -24,7 +24,7 @@ GameOver::GameOver(const string& next)
     font->set_style(Font::ITALIC);
     env->canvas->set_font(font);
     font->set_size(100);
-    set_position((150 / W) * env->canvas->w(), (H - 500) / H * env->canvas->h());
+    set_position(150 * env->canvas->w() / W, (H - 500) * env->canvas->h() / H);
 }
 
 GameOver::~GameOver()

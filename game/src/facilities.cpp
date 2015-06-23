@@ -182,19 +182,22 @@ Facilities::create_buttons()
     env->canvas->set_font(font);
     font->set_size(24);
 
-    const int x = (28 / W) * env->canvas->w();
-    const int w = (190 / W) * env->canvas->w();
-    const int h = (180/3 / H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = 28 * scale_w;
+    int w = 190 * scale_w;
+    int h = 180/3 * scale_h;
 
     Button *button =  new Button(this, "facilities", path + "facilities_button.png",
-        x, (218 / H) * env->canvas->h(), w, h);
+        x, 218 * scale_h, w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "chat", path + "colony_small_button.png",
-        x, (322 / H) * env->canvas->h(), w, h);
+        x, 322 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Chat");
     button->change_state(Button::ACTIVE);
@@ -202,40 +205,42 @@ Facilities::create_buttons()
     m_buttons[button->id()] = button;
 
     button = new Button(this, "military", path + "colony_small_button.png",
-        x, (427 / H) * env->canvas->h(), w, h);
+        x, 427 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Military");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "psionic", path + "colony_small_button.png",
-        x, (531 / H) * env->canvas->h(), w, h);
+        x, 531 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Psionic");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "tech", path + "colony_small_button.png",
-        x, (635 / H) * env->canvas->h(), w, h);
+        x, 635 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Technologic");
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "mwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
+    x = 315 * scale_w;
+    int y = 636 * scale_h;
+    w = 60 * scale_w;
+    h = 60 * scale_h;
+
+    button = new Button(this, "mwake", "", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "pwake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
+    button = new Button(this, "pwake", "", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "twake", "", (315/W) * env->canvas->w(), (636 / H) * env->canvas->h(),
-        60, 60);
+    button = new Button(this, "twake", "", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
@@ -271,14 +276,16 @@ Facilities::change_to_chat()
     env->canvas->set_font(font);
     font->set_size(18);
     Color color(170, 215, 190);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
     auto sections = settings->sections();
     string text = sections["Facilities"]["welcome"];
-    env->canvas->draw(text, ((305+5) / W) * env->canvas->w(), (605 / H) * env->canvas->h(), color);
-    env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
-        (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
+    env->canvas->draw(text, (305+5) * scale_w, 605 * scale_h, color);
+    env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, 670 * scale_w, 116 * scale_h), color);
 }
 
 void
@@ -331,8 +338,7 @@ Facilities::change_to_military()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
 
-    Rect rect(333 * scale_w, 222 * scale_h,
-        25 * scale_w, 416 * scale_h);
+    Rect rect(333 * scale_w, 222 * scale_h, 25 * scale_w, 416 * scale_h);
     env->canvas->draw(rect, color);
 
     texture = env->resources_manager->get_texture(path + "wake-m.png");
@@ -349,7 +355,7 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "meter-m.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(mwaked), 294 * scale_w, (y + 1) * scale_h, color);
+    env->canvas->draw(to_string(mwaked), 294 * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -383,8 +389,8 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
@@ -453,8 +459,7 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "meter-p.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(pwaked), (290+4) * scale_w,
-        (y + 1) * scale_h, color);
+    env->canvas->draw(to_string(pwaked), (290+4) * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -488,8 +493,8 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
@@ -542,12 +547,11 @@ Facilities::change_to_tech()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
 
-    Rect rect(333 * scale_w, (222 / H) * env->canvas->h(), 25 * scale_w,
-        (416 / H) * env->canvas->h());
+    Rect rect(333 * scale_w, 222 * scale_h, 25 * scale_w, 416 * scale_h);
     env->canvas->draw(rect, color);
 
     texture = env->resources_manager->get_texture(path + "wake-t.png");
-    env->canvas->draw(texture.get(), 308 * scale_w, (628 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 308 * scale_w, 628 * scale_h);
 
     int x = 340;
     int y = (629 - 4 * twaked);
@@ -559,7 +563,7 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "meter-t.png");
     env->canvas->draw(texture.get(), 290 * scale_w, y * scale_h);
 
-    env->canvas->draw(std::to_string(twaked), (290+4) * scale_w, (y + 1) * scale_h, color);
+    env->canvas->draw(to_string(twaked), (290+4) * scale_w, (y + 1) * scale_h, color);
 
     path = "res/images/colony/icons/";
 
@@ -593,8 +597,6 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(std::to_string(m_matter_cost), 425 * scale_w,
-        670 * scale_h, color);
-    env->canvas->draw(std::to_string(m_energy_cost), 510 * scale_w,
-        670 * scale_h, color);
+    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
 }

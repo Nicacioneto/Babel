@@ -26,45 +26,41 @@ Barracks::Barracks(int slot, const string& next)
 
     env->events_manager->register_listener(this);
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     Button *button = new Button(this, "left_arrow", path + "left_arrow.png",
-        (60/W) * env->canvas->w(), (218/H) * env->canvas->h(),
-        (26/W) * env->canvas->w(), (45/H) * env->canvas->h());
+        60 * scale_w, 218 * scale_h, 26 * scale_w, 45 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "right_arrow", path + "right_arrow.png",
-        (362/W) * env->canvas->w(), (218/H) * env->canvas->h(),
-        (26/W) * env->canvas->w(), (45/H) * env->canvas->h());
+        362 * scale_w, 218 * scale_h, 26 * scale_w, 45 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "levelup_m", path + "levelup-m.png",
-        (409/W) * env->canvas->w(), (390/H) * env->canvas->h(),
-        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
+        409 * scale_w, 390 * scale_h, 60 * scale_w, 40 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "levelup_p", path + "levelup-p.png",
-        (485/W) * env->canvas->w(), (390/H) * env->canvas->h(),
-        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
+        485 * scale_w, 390 * scale_h, 60 * scale_w, 40 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "levelup_t", path + "levelup-t.png",
-        (560/W) * env->canvas->w(), (390/H) * env->canvas->h(),
-        (60/W) * env->canvas->w(), (40/H) * env->canvas->h());
+        560 * scale_w, 390 * scale_h, 60 * scale_w, 40 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "equip_shelf", path + "equip_shelf.png",
-        (690/W) * env->canvas->w(), (322/H) * env->canvas->h(),
-        (225/W) * env->canvas->w(), (122/H) * env->canvas->h());
+        690 * scale_w, 322 * scale_h, 225 * scale_w, 122 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "back", path + "back.png",
-        (912/W) * env->canvas->w(), (55/H) * env->canvas->h(),
-        (67/W) * env->canvas->w(), (26/H) * env->canvas->h());
+        912 * scale_w, 55 * scale_h, 67 * scale_w, 26 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
@@ -129,6 +125,7 @@ Barracks::draw_self()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+
     env->canvas->draw("Inspect Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
 
     env->canvas->draw(m_textures["bracket"].get(), 30 * scale_w, 25 * scale_h);
@@ -259,16 +256,19 @@ Barracks::draw_skills()
 {
     Environment *env = Environment::get_instance();
 
-    int x = (130/W) * env->canvas->w();
-    int y = (530/H) * env->canvas->h();
-    int w = (38/W) * env->canvas->w();
-    int h = (37/H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = 130 * scale_w;
+    int y = 530 * scale_h;
+    int w = 38 * scale_w;
+    int h = 37 * scale_h;
 
     Character *character = current_char();
     
     for (int i = 1; i <= 4; ++i, y += h)
     {
-        x = (130/W) * env->canvas->w();
+        x = 130 * scale_w;
         for (int j = 1; j <= 5; ++j, x += w)
         {
             if ( (i - 1)*5 + j <= character->military())
@@ -282,12 +282,12 @@ Barracks::draw_skills()
         }
     }
 
-    x = (420/W) * env->canvas->w();
-    y = (530/H) * env->canvas->h();
+    x = 420 * scale_w;
+    y = 530 * scale_h;
 
     for (int i = 1; i <= 4; ++i, y += h)
     {
-        x = (420/W) * env->canvas->w();
+        x = 420 * scale_w;
         for (int j = 1; j <= 5; ++j, x += w)
         {
             if ( (i - 1)*5 + j <= character->psionic())
@@ -301,12 +301,12 @@ Barracks::draw_skills()
         }
     }
 
-    x = (710/W) * env->canvas->w();
-    y = (530/H) * env->canvas->h();
+    x = 710 * scale_w;
+    y = 530 * scale_h;
 
     for (int i = 1; i <= 4; ++i, y += h)
     {
-        x = (710/W) * env->canvas->w();
+        x = 710 * scale_w;
         for (int j = 1; j <= 5; ++j, x += w)
         {
             if ( (i - 1)*5 + j <= character->tech())
@@ -406,13 +406,16 @@ void
 Barracks::load_characters()
 {
     Environment *env = Environment::get_instance();
-    
-    int x = (112 / W) * env->canvas->w();
-    int y = (87 / H) * env->canvas->h();
-    int w = (222 / W) * env->canvas->w();
-    int h = (270 / H) * env->canvas->h();
 
-    auto settings = env->resources_manager->get_settings("res/datas/slot" +
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    int x = 112 * scale_w;
+    int y = 87 * scale_h;
+    int w = 222 * scale_w;
+    int h = 270 * scale_h;
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/characters.sav");
     auto sections = settings->sections();
 
@@ -443,8 +446,9 @@ void
 Barracks::update_char_attributes(Character *c, string class_)
 {
     Environment *env = Environment::get_instance();
-    auto settings = env->resources_manager->get_settings("res/datas/slot" +
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/levelup.sav");
+
     c->set_life(c->life() + settings->read<int>(class_, "life", 0));
     c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));
     c->set_mp(c->mp() + settings->read<int>(class_, "mp", 0));

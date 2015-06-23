@@ -33,7 +33,7 @@ Base::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), (275 / W) * env->canvas->w(), (173 / H) * env->canvas->h());
+    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
 }
 
 bool
@@ -66,36 +66,39 @@ Base::create_buttons()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
-    const int x = (28 / W) * env->canvas->w();
-    const int w = (190 / W) * env->canvas->w();
-    const int h = (180/3 / H) * env->canvas->h();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    const int x = 28 * scale_w;
+    const int w = 190 * scale_w;
+    const int h = 180/3 * scale_h;
 
     Button *button =  new Button(this, "barracks", path + "barracks_button.png",
-        x, (218 / H) * env->canvas->h(), w, h);
+        x, 218 * scale_h, w, h);
     button->set_sprites(3);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "facilities", path + "facilities_button.png",
-        x, (322 / H) * env->canvas->h(), w, h);
+        x, 322 * scale_h, w, h);
     button->set_sprites(3);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "hospital", path + "hospital_button.png",
-        x, (427 / H) * env->canvas->h(), w, h);
+        x, 427 * scale_h, w, h);
     button->set_sprites(3);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "workshop", path + "workshop_button.png",
-        x, (531 / H) * env->canvas->h(), w, h);
+        x, 531 * scale_h, w, h);
     button->set_sprites(3);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "central", path + "central_button.png",
-        x, (635 / H) * env->canvas->h(), w, h);
+        x, 635 * scale_h, w, h);
     button->set_sprites(3);
 
     m_buttons[button->id()] = button;

@@ -37,7 +37,7 @@ Hospital::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), (275 / W) * env->canvas->w(), (173 / H) * env->canvas->h());
+    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
 
     switch (m_screen)
     {
@@ -130,20 +130,23 @@ Hospital::create_buttons()
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(24);
-    
-    const int x = (28 / W) * env->canvas->w();
-    const int w = (190 / W) * env->canvas->w();
-    const int h = (180/3 / H) * env->canvas->h();
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    const int x = 28 * scale_w;
+    const int w = 190 * scale_w;
+    const int h = 180/3 * scale_h;
 
     Button *button =  new Button(this, "hospital", path + "hospital_button.png",
-        x, (218 / H) * env->canvas->h(), w, h);
+        x, 218 * scale_h, w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "chat", path + "colony_small_button.png",
-        x, (322 / H) * env->canvas->h(), w, h);
+        x, 322 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Chat");
     button->change_state(Button::ACTIVE);
@@ -151,37 +154,35 @@ Hospital::create_buttons()
     m_buttons[button->id()] = button;
 
     button = new Button(this, "items", path + "colony_small_button.png",
-        x, (427 / H) * env->canvas->h(), w, h);
+        x, 427 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Items");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "research", path + "colony_small_button.png",
-        x, (531 / H) * env->canvas->h(), w, h);
+        x, 531 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Research");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "revive", path + "colony_small_button.png",
-        x, (635 / H) * env->canvas->h(), w, h);
+        x, 635 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Revive");
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "reset", path + "hospital/reset.png",
-        (855 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
-        (57 / W) * env->canvas->w(), (52/2 / H) * env->canvas->h());
+        855 * scale_w, 693 * scale_h, 57 * scale_w, 52/2 * scale_h);
     button->set_visible(false);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
 
     button = new Button(this, "buy", path + "hospital/buy.png",
-        (772 / W) * env->canvas->w(), (693 / H) * env->canvas->h(),
-        (58 / W) * env->canvas->w(), (78/3 / H) * env->canvas->h());
+        772 * scale_w, 693 * scale_h, 58 * scale_w, 78/3 * scale_h);
     button->set_sprites(3);
     button->set_visible(false);
     button->set_active(false);
@@ -218,21 +219,21 @@ Hospital::change_to_chat()
 {
     Environment *env = Environment::get_instance();
 
+    Color color(170, 215, 190);
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(18);
 
-    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
     auto sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
     
-    env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
-        (605 / H) * env->canvas->h(), color);
-    env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
-        (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
+    env->canvas->draw(text, (305 + 5) * scale_w, 605 * scale_h, color);
+    env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h), color);
 }
 
 void
@@ -246,12 +247,15 @@ Hospital::change_to_items()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
-    env->canvas->draw("Qnt.", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
+    env->canvas->draw("Qnt.", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
         path + "icons/matter_power.png");
-    env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
@@ -274,43 +278,42 @@ Hospital::change_to_items()
             qnt_total.pop_back();
         }
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(matter + "/" + power, 690 * scale_w,
+                y * scale_h, color);
         }
         if (not qnt_earned.empty())
         {
-            env->canvas->draw(qnt_earned + "/" + qnt_total, (855 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(qnt_earned + "/" + qnt_total, 855 * scale_w,
+                y * scale_h, color);
         }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            (y / H) * env->canvas->h(),
-            (50 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            y * scale_h,
+            50 * scale_w, 25 * scale_h);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(),
-            (602 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            (y+5) * scale_h,
+            602 * scale_w, 25 * scale_h);
 
         y += 64;
     }
 
-    env->canvas->draw("TOTAL", (607 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
+    env->canvas->draw("TOTAL", 607 * scale_w, 633 * scale_h, color);
     font->set_size(16);
-    env->canvas->draw("800", (800 / W) * env->canvas->w(),
-        (633 / H) * env->canvas->h(), Color::RED);
-    env->canvas->draw("/", (837 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
-    env->canvas->draw("176", (855 / W) * env->canvas->w(), (633 / H) * env->canvas->h(), color);
-    env->canvas->draw("176", (855 / W) * env->canvas->w(), (660 / H) * env->canvas->h(), color);
-    env->canvas->draw("176", (800 / W) * env->canvas->w(), (660 / H) * env->canvas->h(), color);
-    env->canvas->draw("/", (837 / W) * env->canvas->w(), (660 / H) * env->canvas->h(), color);
-    env->canvas->draw("176", (855 / W) * env->canvas->w(), (660 / H) * env->canvas->h(), color);
+    env->canvas->draw("800", 800 * scale_w, 633 * scale_h, Color::RED);
+    env->canvas->draw("/", 837 * scale_w, 633 * scale_h, color);
+    env->canvas->draw("176", 855 * scale_w, 633 * scale_h, color);
+    env->canvas->draw("176", 855 * scale_w, 660 * scale_h, color);
+    env->canvas->draw("176", 800 * scale_w, 660 * scale_h, color);
+    env->canvas->draw("/", 837 * scale_w, 660 * scale_h, color);
+    env->canvas->draw("176", 855 * scale_w, 660 * scale_h, color);
 }
 
 void
@@ -324,12 +327,15 @@ Hospital::change_to_research()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
-    env->canvas->draw("Time", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
+    env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
         path + "icons/matter_power.png");
-    env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
@@ -350,28 +356,25 @@ Hospital::change_to_research()
             time.pop_back();
         }
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(matter + "/" + power, 690 * scale_w, y * scale_h, color);
         }
         if (not time.empty())
         {
-            env->canvas->draw(time, (855 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(time, 855 * scale_w, y * scale_h, color);
         }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            (y / H) * env->canvas->h(), (50 / W) * env->canvas->w(), (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            y * scale_h, 50 * scale_w, 25 * scale_h);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(), (602 / W) * env->canvas->w(),
-            (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 
         y += 64;
     }
@@ -388,13 +391,16 @@ Hospital::change_to_revive()
     env->canvas->set_font(font);
     font->set_size(18);
 
-    env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
-    env->canvas->draw("Class", (524 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
-    env->canvas->draw("Time", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
+    env->canvas->draw("Class", 524 * scale_w, 186 * scale_h, color);
+    env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
         path + "icons/matter_power.png");
-    env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
+    env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/characters.sav");
@@ -417,30 +423,28 @@ Hospital::change_to_revive()
             time.pop_back();
         }
 
-        env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
-        env->canvas->draw(class_, (524 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
+        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
+        env->canvas->draw(class_, 524 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(matter + "/" + power, 690 * scale_w,
+                y * scale_h, color);
         }
         if (not time.empty())
         {
-            env->canvas->draw(time, (855 / W) * env->canvas->w(),
-                (y / H) * env->canvas->h(), color);
+            env->canvas->draw(time, 855 * scale_w,
+                y * scale_h, color);
         }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
         Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            (y / H) * env->canvas->h(), (50 / W) * env->canvas->w(),
-            (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            y * scale_h, 50 * scale_w, 25 * scale_h);
 
         texture = env->resources_manager->get_texture(path + "big_list.png");
         clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, (310 / W) * env->canvas->w(),
-            ((y+5) / H) * env->canvas->h(), (602 / W) * env->canvas->w(),
-            (25 / H) * env->canvas->h());
+        env->canvas->draw(texture.get(), clip, 310 * scale_w,
+            (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 
         y += 64;
     }

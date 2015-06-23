@@ -32,25 +32,28 @@ Options::Options(const string& next)
     env->canvas->set_font(font);
     font->set_size(22);
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     Button *button = new Button(this, "up_volume", "",
-        (300/W) * env->canvas->w(), (371/H) * env->canvas->h(), 12, 12);
+        300 * scale_w, 371 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "down_volume", "",
-        (300/W) * env->canvas->w(), (384/H) * env->canvas->h(), 12, 12);
+        300 * scale_w, 384 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "up_resolution", "",
-        (652/W) * env->canvas->w(), (371/H) * env->canvas->h(), 12, 12);
+        652 * scale_w, 371 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "down_resolution", "",
-        (652/W) * env->canvas->w(), (384/H) * env->canvas->h(), 12, 12);
+        652 * scale_w, 384 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "back", "res/images/menu/button.png",
-        (442/W) * env->canvas->w(), (628/H) * env->canvas->h(),
-        (140/W) * env->canvas->w(), (60/H) * env->canvas->h());
+        442 * scale_w, 628 * scale_h,
+        140 * scale_w, 60 * scale_h);
     button->set_text("Back");
     m_buttons[button->id()] = button;
 
@@ -70,68 +73,53 @@ Options::draw_self()
     shared_ptr<Font> font = env->canvas->font();
     shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
     env->canvas->draw(m_textures["background"].get());
 
     int x = (env->canvas->w() - m_textures["logo"]->w())/2;
-    int y = 25/H * env->canvas->h();
+    int y = 25 * scale_h;
     int w, h;
     env->canvas->draw(m_textures["logo"].get(), x, y);
-
-    x = 189/W * env->canvas->w();
-    y = 321/H * env->canvas->h();
-    env->canvas->draw(m_textures["soundvideo"].get(), x, y);
-
-    x = 300/W * env->canvas->w();
-    y = (H - 20)/(H * 2) * env->canvas->h();
-    env->canvas->draw(m_textures["arrow"].get(), x, y);
-    
-    x = (W/2 + 140)/W * env->canvas->w();
-    env->canvas->draw(m_textures["arrow"].get(), x, y);
+    env->canvas->draw(m_textures["soundvideo"].get(), 189 * scale_w, 321 * scale_h);
+    env->canvas->draw(m_textures["arrow"].get(), 300 * scale_w, (H - 20)/2 * scale_h);
+    env->canvas->draw(m_textures["arrow"].get(), (W/2 + 140) * scale_w, (H - 20)/2 * scale_h);
 
     int i, volume = settings->read<int>("Game", "volume", 50)/10;
 
     for (i = 0; i < (10 - volume)*17; i+=17)
     {
-        x = (318 + i)/W * env->canvas->w();
-        y = (H - 15)/(H*2) * env->canvas->h();
-        h = 15/W * env->canvas->w();
-        w = h;
+        x = (318 + i) * scale_w;
+        y = (H - 15)/2 * scale_h;
+        w = 15 * scale_w;
+        h = 15 * scale_h;
         env->canvas->draw(m_textures["volume"].get(), Rect(0, 15, 15, 15), x, y, h, w);
     }
     for (int j = i; j < i + volume*17; j+=17)
     {
-        x = (318 + j)/W * env->canvas->w();
-        y = (H - 15)/(H*2) * env->canvas->h();
-        h = 15/W * env->canvas->w();
-        w = h;
+        x = (318 + j) * scale_w;
+        y = (H - 15)/2 * scale_h;
+        w = 15 * scale_w;
+        h = 15 * scale_h;
         env->canvas->draw(m_textures["volume"].get(), Rect(0, 0, 15, 15), x, y, w, h);
     }
 
-    x = 465/W * env->canvas->w();
-    y = 190/H * env->canvas->h();
-
     font->set_size(24);
-    set_position(x, y);
+    set_position(465 * scale_w, 190 * scale_h);
     env->canvas->draw("OPTIONS", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = 425/W * env->canvas->w();
-    y = (H - 65)/(H*2) * env->canvas->h();
-
     font->set_size(18);
-    set_position(x, y);
+    set_position(425 * scale_w, (H - 65)/2 * scale_h);
     env->canvas->draw("Volume", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 
-    x = (W/2 + 20)/W * env->canvas->w();
-    set_position(x, y);
+    set_position((W/2 + 20) * scale_w, (H - 65)/2 * scale_h);
     env->canvas->draw("Resolution", bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
-
-    x += 5;
-    y = 372/H * env->canvas->h();
 
     w = env->canvas->w();
     h = env->canvas->h();
     string text = std::to_string(w) + " x " + std::to_string(h) + " px";
-    set_position(x, y);
+    set_position((W/2 + 25) * scale_w, 372 * scale_h);
     env->canvas->draw(text, bounding_box().x(), bounding_box().y(), Color(170, 215, 190));
 }
 
