@@ -226,7 +226,7 @@ Hospital::change_to_chat()
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
     string text = sections["Hospital"]["welcome"];
     
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
@@ -255,7 +255,7 @@ Hospital::change_to_items()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)
@@ -333,7 +333,7 @@ Hospital::change_to_research()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)
@@ -398,7 +398,7 @@ Hospital::change_to_revive()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/characters.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)

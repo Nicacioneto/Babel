@@ -200,7 +200,7 @@ Central::change_to_chat()
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
     string text = sections["Central"]["welcome"];
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
         (605 / H) * env->canvas->h(), color);
@@ -224,7 +224,7 @@ Central::change_to_quests()
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/quests.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)
@@ -266,7 +266,7 @@ Central::change_to_bestiary()
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/bestiary.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)
@@ -314,7 +314,7 @@ Central::change_to_timers()
     shared_ptr<Texture> texture;
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/timers.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)

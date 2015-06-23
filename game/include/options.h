@@ -26,8 +26,8 @@ public:
     Options(const string& next = "menu");
 
 private:
-    map<string, shared_ptr<Texture>> m_textures;
-    map<string, Button *> m_buttons;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
+    map<ObjectID, Button *> m_buttons;
 
     vector<int> m_resolutions = {800, 1024};
 

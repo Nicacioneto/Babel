@@ -170,8 +170,8 @@ Babel::on_event(const SystemEvent& event)
         Environment *env = Environment::get_instance();
         
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/timers.sav");
-        map< string, map<string, string> > sections = settings->sections();
+            to_string(m_slot) + "/timers.sav");
+        auto sections = settings->sections();
 
         for (auto section : sections)
         {

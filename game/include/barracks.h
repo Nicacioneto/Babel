@@ -32,7 +32,7 @@ private:
     shared_ptr<Settings> m_settings;
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
-    map<string, shared_ptr<Texture>> m_textures;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
 
     void draw_self();
     void draw_character();

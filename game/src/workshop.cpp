@@ -189,7 +189,7 @@ Workshop::change_to_chat()
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/colony.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
     string text = sections["Workshop"]["welcome"];
     
     env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
@@ -222,7 +222,7 @@ Workshop::change_to_vehicle()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/vehicles.sav");
-    map< string, map<string, string> > sections = settings->sections();
+    auto sections = settings->sections();
 
     int y = 236;
     for (auto section : sections)
