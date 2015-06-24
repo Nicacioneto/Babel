@@ -67,7 +67,6 @@ Button::draw_self()
                 m_texture->size().second/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
-
     }
 
     if (m_text)

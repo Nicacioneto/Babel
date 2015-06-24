@@ -160,6 +160,87 @@ might_armor = 12
 mind_armor = 12
 critical = 2
 
+[Steve]
+military = 0
+psionic = 0
+tech = 1
+levelup_m = 36
+levelup_p = 38
+levelup_t = 40
+shield = 30
+max_shield = 30
+life = 120
+max_life = 100
+mp = 40
+max_mp = 20
+might = 5
+mind = 18
+resilience = 7
+willpower = 8
+agility = 4
+perception = 10
+might_attack = 70
+mind_attack = 70
+cooldown = 2
+defense = 42
+might_armor = 12
+mind_armor = 12
+critical = 2
+
+[Thor]
+military = 0
+psionic = 0
+tech = 1
+levelup_m = 36
+levelup_p = 38
+levelup_t = 40
+shield = 30
+max_shield = 30
+life = 120
+max_life = 100
+mp = 40
+max_mp = 20
+might = 5
+mind = 18
+resilience = 7
+willpower = 8
+agility = 4
+perception = 10
+might_attack = 70
+mind_attack = 70
+cooldown = 2
+defense = 42
+might_armor = 12
+mind_armor = 12
+critical = 2
+
+[Xavier]
+military = 0
+psionic = 0
+tech = 1
+levelup_m = 36
+levelup_p = 38
+levelup_t = 40
+shield = 30
+max_shield = 30
+life = 120
+max_life = 100
+mp = 40
+max_mp = 20
+might = 5
+mind = 18
+resilience = 7
+willpower = 8
+agility = 4
+perception = 10
+might_attack = 70
+mind_attack = 70
+cooldown = 2
+defense = 42
+might_armor = 12
+mind_armor = 12
+critical = 2
+
 [Default]
 military = 1
 psionic = 0

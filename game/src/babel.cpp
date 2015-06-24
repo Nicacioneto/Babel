@@ -19,6 +19,7 @@
 #include "options.h"
 #include "planet.h"
 #include "play.h"
+#include "squad.h"
 #include "tower.h"
 #include "workshop.h"
 #include <util/frontend.h>
@@ -108,7 +109,12 @@ Babel::load_level(const string& id)
     {
         return new Tower(m_slot);
     }
+    else if (id == "squad")
+    {
+        return new Squad(m_slot);
+    }
 
+    return new Squad(m_slot);
     return load_frontend(id);
 }
 
