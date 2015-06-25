@@ -277,6 +277,13 @@ Character::critical() const
 }
 
 void
+Character::set_texture(const string& id)
+{
+    Environment *env = Environment::get_instance();
+    m_texture = env->resources_manager->get_texture("res/images/characters/" + id);
+}
+
+void
 Character::set_attacks_quantity(int attacks_quantity)
 {
     m_attacks_quantity = attacks_quantity;

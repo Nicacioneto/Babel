@@ -19,7 +19,7 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
@@ -64,6 +64,27 @@ Barracks::Barracks(int slot, const string& next)
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
+    button = new Button(this, "rifle", path + "rifle.png",
+        112 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "armor", path + "armor.png",
+        194 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "shield", path + "shield.png",
+        278 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
     for (auto b : m_buttons)
     {
         b.second->add_observer(this);
@@ -88,16 +109,17 @@ Barracks::Barracks(int slot, const string& next)
     m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
     m_textures["skill_p_locked"] = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
     m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
+    m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "equip/Bracket.png");
+    m_textures["rifle_katana"] = env->resources_manager->get_texture(path +
+        "equip/Rifle_Katana.png");
 
     for (int i = 1; i <= 20; ++i)
     {
         string index = to_string(i);
         m_textures["skill_m_" + index] = env->resources_manager->get_texture(path + "Skill_M_" +
             index + ".png");
-
         m_textures["skill_p_" + index] = env->resources_manager->get_texture(path + "Skill_P_" +
             index + ".png");
-
         m_textures["skill_t_" + index] = env->resources_manager->get_texture(path + "Skill_T_" +
             index + ".png");
     }
@@ -119,6 +141,29 @@ Barracks::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    
+    env->canvas->draw(m_textures["bracket"].get(), 30 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["attributes"].get(), 402 * scale_w, 87 * scale_h);
+    env->canvas->draw(m_textures["stats"].get(), 690 * scale_w, 87 * scale_h);
+    draw_attributes();
+
+    switch (m_screen)
+    {
+        case INSPECT:
+            inspect_screen();
+            break;
+        case EQUIP:
+            equip_screen();
+            break;
+    }
+}
+
+void
+Barracks::inspect_screen()
+{
+    Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(16);
@@ -127,8 +172,6 @@ Barracks::draw_self()
     double scale_h = env->canvas->h() / H;
 
     env->canvas->draw("Inspect Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
-
-    env->canvas->draw(m_textures["bracket"].get(), 30 * scale_w, 25 * scale_h);
 
     int y = 470 * scale_h;
     env->canvas->draw(m_textures["bracket_m"].get(), 112 * scale_w, y);
@@ -140,59 +183,28 @@ Barracks::draw_self()
     env->canvas->draw(m_textures["psionic"].get(), 420 * scale_w, y);
     env->canvas->draw(m_textures["tech"].get(), 710 * scale_w, y);
 
-    y = 87 * scale_h;
-    env->canvas->draw(m_textures["attributes"].get(), 402 * scale_w, y);
-    env->canvas->draw(m_textures["stats"].get(), 690 * scale_w, y);
     env->canvas->draw(m_textures["levelup"].get(), 402 * scale_w, 322 * scale_h);
-
     env->canvas->draw(m_textures["equip"].get(), 690 * scale_w, 322 * scale_h);
     env->canvas->draw(m_textures["rifle"].get(), 702 * scale_w, 360 * scale_h);
     env->canvas->draw(m_textures["armor"].get(), 772 * scale_w, 360 * scale_h);
     env->canvas->draw(m_textures["shield"].get(), 847 * scale_w, 360 * scale_h);
 
     draw_character();
-
-    shared_ptr<Texture> texture;
-    string path = "res/images/colony/barracks/";
-
     draw_skills();
 }
 
 void
 Barracks::draw_character()
 {
-    Character *character = current_char();
-
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     Color color(170, 215, 190);
     
-    font->set_size(14);
-
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    int x = 606 * scale_w;
-    env->canvas->draw(to_string(character->might()), x, 120 * scale_h, color);
-    env->canvas->draw(to_string(character->mind()), x, 150 * scale_h, color);
-    env->canvas->draw(to_string(character->agility()), x, 180 * scale_h, color);
-    env->canvas->draw(to_string(character->willpower()), x, 210 * scale_h, color);
-    env->canvas->draw(to_string(character->resilience()), x, 240 * scale_h, color);
-    env->canvas->draw(to_string(character->perception()), x, 270 * scale_h, color);
-
-    font->set_size(12);
-    x = 780 * scale_w;
-    env->canvas->draw(to_string(character->might_attack()), x, 125 * scale_h, color);
-    env->canvas->draw(to_string(character->mind_attack()), x, 172 * scale_h, color);
-    env->canvas->draw(to_string(character->cooldown()), x, 219 * scale_h, color);
-    env->canvas->draw(to_string(character->defense()), x, 266 * scale_h, color);
-
-    x = 900 * scale_w;
-    env->canvas->draw(to_string(character->might_armor()), x, 125 * scale_h, color);
-    env->canvas->draw(to_string(character->mind_armor()), x, 172 * scale_h, color);
-    env->canvas->draw(to_string(character->critical()), x, 219 * scale_h, color);
-    env->canvas->draw(to_string(character->critical()), x, 266 * scale_h, color);
+    Character *character = current_char();
 
     env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
 
@@ -200,7 +212,7 @@ Barracks::draw_character()
     int data = Colony(m_slot).data();
     env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
 
-    x = 112;
+    int x = 112;
     int y = 87;
     font->set_size(18);
     m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
@@ -249,6 +261,43 @@ Barracks::draw_character()
         (y + 195) * scale_h, Color::WHITE);
     env->canvas->draw(to_string(character->max_mp()), (x + 183) * scale_w,
         (y + 225) * scale_h, Color::WHITE);
+}
+
+void
+Barracks::draw_attributes()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    Color color(170, 215, 190);
+    
+    font->set_size(14);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    Character *character = current_char();
+
+    int x = 606 * scale_w;
+    env->canvas->draw(to_string(character->might()), x, 120 * scale_h, color);
+    env->canvas->draw(to_string(character->mind()), x, 150 * scale_h, color);
+    env->canvas->draw(to_string(character->agility()), x, 180 * scale_h, color);
+    env->canvas->draw(to_string(character->willpower()), x, 210 * scale_h, color);
+    env->canvas->draw(to_string(character->resilience()), x, 240 * scale_h, color);
+    env->canvas->draw(to_string(character->perception()), x, 270 * scale_h, color);
+
+    font->set_size(12);
+    x = 780 * scale_w;
+    env->canvas->draw(to_string(character->might_attack()), x, 125 * scale_h, color);
+    env->canvas->draw(to_string(character->mind_attack()), x, 172 * scale_h, color);
+    env->canvas->draw(to_string(character->cooldown()), x, 219 * scale_h, color);
+    env->canvas->draw(to_string(character->defense()), x, 266 * scale_h, color);
+
+    x = 900 * scale_w;
+    env->canvas->draw(to_string(character->might_armor()), x, 125 * scale_h, color);
+    env->canvas->draw(to_string(character->mind_armor()), x, 172 * scale_h, color);
+    env->canvas->draw(to_string(character->critical()), x, 219 * scale_h, color);
+    env->canvas->draw(to_string(character->critical()), x, 266 * scale_h, color);
 }
 
 void
@@ -321,6 +370,22 @@ Barracks::draw_skills()
     }
 }
 
+void
+Barracks::equip_screen()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(16);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
+    env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
+    env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
+}
+
 bool
 Barracks::on_message(Object *sender, MessageID id, Parameters)
 {
@@ -390,14 +455,76 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             update_char_attributes(c, "T");
         }
     }
+    else if (button->id() == "equip_shelf")
+    {
+        m_screen = EQUIP;
+
+        Environment *env = Environment::get_instance();
+        double scale_w = env->canvas->w() / W;
+        double scale_h = env->canvas->h() / H;
+
+        m_buttons["left_arrow"]->set_position(57 * scale_w, 128 * scale_h);
+        m_buttons["right_arrow"]->set_position(360 * scale_w, 128 * scale_h);
+
+        m_buttons["rifle"]->set_active(true);
+        m_buttons["rifle"]->set_visible(true);
+        m_buttons["armor"]->set_active(true);
+        m_buttons["armor"]->set_visible(true);
+        m_buttons["shield"]->set_active(true);
+        m_buttons["shield"]->set_visible(true);
+
+        m_buttons["levelup_m"]->set_visible(false);
+        m_buttons["levelup_m"]->set_active(false);
+        m_buttons["levelup_p"]->set_visible(false);
+        m_buttons["levelup_p"]->set_active(false);
+        m_buttons["levelup_t"]->set_visible(false);
+        m_buttons["levelup_t"]->set_active(false);
+        m_buttons["equip_shelf"]->set_visible(false);
+        m_buttons["equip_shelf"]->set_active(false);
+
+        for (auto character : m_characters)
+        {
+            character.second->set_texture("booker.png");
+            character.second->set_h(123 * scale_h);
+        }
+    }
     else if (button->id() == "back")
     {
-        Environment *env = Environment::get_instance();
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/colony.sav");
-        string prev = settings->read<string>("Barracks", "prev", "base");
-        set_next(prev);
-        finish();
+        if (m_screen == EQUIP)
+        {
+            m_screen = INSPECT;
+
+            Environment *env = Environment::get_instance();
+            double scale_w = env->canvas->w() / W;
+            double scale_h = env->canvas->h() / H;
+
+            m_buttons["left_arrow"]->set_position(60 * scale_w, 218 * scale_h);
+            m_buttons["right_arrow"]->set_position(362 * scale_w, 218 * scale_h);
+
+            m_buttons["levelup_m"]->set_visible(true);
+            m_buttons["levelup_m"]->set_active(true);
+            m_buttons["levelup_p"]->set_visible(true);
+            m_buttons["levelup_p"]->set_active(true);
+            m_buttons["levelup_t"]->set_visible(true);
+            m_buttons["levelup_t"]->set_active(true);
+            m_buttons["equip_shelf"]->set_visible(true);
+            m_buttons["equip_shelf"]->set_active(true);
+
+            for (auto character : m_characters)
+            {
+                character.second->set_texture("test_big.png");
+                character.second->set_h(270 * scale_h);
+            }
+        }
+        else
+        {
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/colony.sav");
+            string prev = settings->read<string>("Barracks", "prev", "base");
+            set_next(prev);
+            finish();
+        }
     }
 
     character = current_char();

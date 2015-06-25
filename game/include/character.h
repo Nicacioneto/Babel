@@ -51,6 +51,8 @@ public:
     int mind_armor() const;
     int critical() const;
 
+    void set_texture(const string& id);
+
     void set_attacks_quantity(int attacks_quantity);
     void set_military(int military);
     void set_psionic(int psionic);

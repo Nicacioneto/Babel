@@ -27,14 +27,19 @@ public:
     ~Barracks();
 
 private:
+    typedef enum { INSPECT, EQUIP } Screen;
     int m_slot, m_character;
+    Screen m_screen;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
 
     void draw_self();
+    void inspect_screen();
+    void equip_screen();
     void draw_character();
+    void draw_attributes();
     void draw_skills();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
