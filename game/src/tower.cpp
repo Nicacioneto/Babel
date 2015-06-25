@@ -136,13 +136,8 @@ Tower::draw_self()
             y -= 34;
         }
 
-        string floor = "L";
-        if (i < 2)
-        {
-            floor = "2";
-        }
-
-        env->canvas->draw(m_textures["floor" + floor].get(), x * scale_w, y * scale_h);
+        string f = i < 2 ? "2" : "L";
+        env->canvas->draw(m_textures["floor" + f].get(), x * scale_w, y * scale_h);
     }
 
     font->set_size(16);
