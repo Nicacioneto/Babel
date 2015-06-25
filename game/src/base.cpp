@@ -8,6 +8,7 @@
 #include "base.h"
 #include "colony.h"
 #include <core/font.h>
+#include <core/settings.h>
 
 #define W 1024.0
 #define H 768.0
@@ -53,6 +54,15 @@ Base::on_message(Object *sender, MessageID id, Parameters)
     }
     else
     {
+        if (button->id() == "barracks")
+        {
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                std::to_string(m_slot) + "/colony.sav");
+            settings->write<string>("Barracks", "prev", "base");
+            settings->save("res/datas/slot" + std::to_string(m_slot) + "/colony.sav");
+        }
+
         set_next(button->id());
     }
     
