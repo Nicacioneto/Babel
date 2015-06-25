@@ -24,14 +24,17 @@ Button::Button(Object *parent, ObjectID id, const string& texture,
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
-    if (texture.empty())
-    {
-        set_visible(false);
-    }
-    else
-    {
-        m_texture = env->resources_manager->get_texture(texture);
-    }
+    m_texture = env->resources_manager->get_texture(texture);
+}
+
+Button::Button(Object *parent, ObjectID id, double x, double y, double w, double h, Color color)
+    : Object(parent, id, x, y, w, h), m_text(nullptr), m_texture(nullptr),
+        m_state(IDLE), m_sprites(2), m_color(color)
+{
+    Environment *env = Environment::get_instance();
+    env->events_manager->register_listener(this);
+
+    env->canvas->set_blend_mode(Canvas::BLEND);
 }
 
 Button::~Button()
@@ -40,6 +43,8 @@ Button::~Button()
     env->events_manager->unregister_listener(this);
 
     remove_text();
+
+    env->canvas->set_blend_mode(Canvas::NONE);
 }
 
 void
@@ -67,6 +72,10 @@ Button::draw_self()
                 m_texture->size().second/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
+    }
+    else
+    {
+        env->canvas->fill(bounding_box(), m_color);
     }
 
     if (m_text)

@@ -230,17 +230,17 @@ Facilities::create_buttons()
     w = 60 * scale_w;
     h = 60 * scale_h;
 
-    button = new Button(this, "mwake", "", x, y, w, h);
+    button = new Button(this, "mwake", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "pwake", "", x, y, w, h);
+    button = new Button(this, "pwake", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "twake", "", x, y, w, h);
+    button = new Button(this, "twake", x, y, w, h);
     button->set_active(false);
 
     m_buttons[button->id()] = button;

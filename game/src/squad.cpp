@@ -106,6 +106,18 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     {
         set_next("base");
         finish();
+        return true;
+    }
+
+    for (auto c : m_characters)
+    {
+        if (button->id() == c.first)
+        {
+            bool visible = (button->visible() + 1) % 2;
+            button->set_visible(visible);
+
+            return true;
+        }
     }
 
     return true;
@@ -143,10 +155,16 @@ Squad::load_characters()
         {
             Character *character = new Character(m_slot, this, section.first, "albert.png",
                 x + 249*j, y + 150*i, w * scale_w, h * scale_h, section.first);
+            character->set_active(false);
+
             character->add_observer(this);
             add_child(character);
             m_characters[character->id()] = character;
             
+            Button *button = new Button(this, section.first,
+            x + 249*j, y + 150*i, w * scale_w, h * scale_h, Color(0, 0, 0, 128));
+            m_buttons[button->id()] = button;
+
             ++j;
         }
     }
@@ -177,4 +195,3 @@ Squad::on_event(const KeyboardEvent& event)
 
     return false;
 }
-

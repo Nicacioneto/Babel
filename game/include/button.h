@@ -8,6 +8,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
+#include <core/color.h>
 #include <core/environment.h>
 #include <core/listener.h>
 #include <core/object.h>
@@ -28,6 +29,8 @@ public:
     
     Button(Object *parent = nullptr, ObjectID id = "", const string& texture = "",
         double x = 0, double y = 0, double w = 100, double h = 100);
+    Button(Object *parent, ObjectID id,
+        double x, double y, double w, double h, Color color = Color::TRANSPARENT);
 
     ~Button();
 
@@ -49,6 +52,7 @@ private:
     shared_ptr<Texture> m_texture;
     State m_state;
     int m_sprites;
+    Color m_color;
 
     void draw_self();
 };

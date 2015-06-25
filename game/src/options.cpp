@@ -35,19 +35,19 @@ Options::Options(const string& next)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button = new Button(this, "up_volume", "",
+    Button *button = new Button(this, "up_volume",
         300 * scale_w, 371 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "down_volume", "",
+    button = new Button(this, "down_volume",
         300 * scale_w, 384 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "up_resolution", "",
+    button = new Button(this, "up_resolution",
         652 * scale_w, 371 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "down_resolution", "",
+    button = new Button(this, "down_resolution",
         652 * scale_w, 384 * scale_h, 12 * scale_w, 12 * scale_h);
     m_buttons[button->id()] = button;
 

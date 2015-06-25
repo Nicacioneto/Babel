@@ -201,7 +201,5 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
         finish();
     }
 
-
-
     return true;
 }
