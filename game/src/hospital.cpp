@@ -410,6 +410,12 @@ Hospital::change_to_revive()
     for (auto section : sections)
     {
         string name = section.first;
+
+        if (name == "Default")
+        {
+            continue;
+        }
+
         string class_ = section.second["class"];
         string matter = section.second["matter"];
         string power = section.second["power"];
@@ -427,13 +433,11 @@ Hospital::change_to_revive()
         env->canvas->draw(class_, 524 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, 690 * scale_w,
-                y * scale_h, color);
+            env->canvas->draw(matter + "/" + power, 690 * scale_w, y * scale_h, color);
         }
         if (not time.empty())
         {
-            env->canvas->draw(time, 855 * scale_w,
-                y * scale_h, color);
+            env->canvas->draw(time, 855 * scale_w, y * scale_h, color);
         }
 
         texture = env->resources_manager->get_texture(path + "icons/health.png");
