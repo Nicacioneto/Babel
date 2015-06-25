@@ -29,7 +29,9 @@ public:
     ~Squad();
 
 private:
+    typedef enum { SQUAD, DRONE } Screen;
     int m_slot, m_character;
+    Screen m_screen;
 
     shared_ptr<Settings> m_settings;
     map<ObjectID, Button*> m_buttons;
@@ -40,7 +42,8 @@ private:
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
-    Character * current_char() const;
+    void draw_squad();
+    void draw_drone();
     bool on_event(const KeyboardEvent& event);
 };
 

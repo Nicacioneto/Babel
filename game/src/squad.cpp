@@ -20,10 +20,10 @@
 using std::to_string;
 
 Squad::Squad(int slot, const string& next)
-    : Level("Squad", next), m_slot(slot), m_character(0), m_settings(nullptr)
+    : Level("Squad", next), m_slot(slot), m_character(0), m_screen(SQUAD), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
-    string path = "res/images/tower/";
+    string path = "res/images/tower/squad/";
 
     env->events_manager->register_listener(this);
 
@@ -32,36 +32,35 @@ Squad::Squad(int slot, const string& next)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button =  new Button(this, "confirm_choice", path + "squad/confirm.png",
+    Button *button = new Button(this, "confirm_choice", path + "confirm.png",
         470 * scale_w, 622 * scale_h, 25 * scale_w, 25 * scale_h);
     button->set_sprites(2);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "reset_choice", path + "change.png",
+    button = new Button(this, "reset_choice", path + "change.png",
         530 * scale_w, 622 * scale_h, 25 * scale_w, 25 * scale_h);
     button->set_sprites(2);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "select_squad", path + "squad/select_squad.png",
+    button = new Button(this, "select_squad", path + "select_squad.png",
         300 * scale_w, 675 * scale_h, 100 * scale_w, 18 * scale_h);
     button->set_sprites(4);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "select_drone", path + "squad/select_drone.png",
+    button = new Button(this, "select_drone", path + "select_drone.png",
         465 * scale_w, 675 * scale_h, 100 * scale_w, 18 * scale_h);
     button->set_sprites(4);
     m_buttons[button->id()] = button;
 
-    button =  new Button(this, "confirm", path + "squad/select_confirm.png",
+    button = new Button(this, "confirm", path + "select_confirm.png",
         645 * scale_w, 675 * scale_h, 60 * scale_w, 18 * scale_h);
     button->set_sprites(4);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "back", path + "squad/back.png",
+    button = new Button(this, "back", path + "back.png",
         912 * scale_w, 55 * scale_h, 67 * scale_w, 26 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;
-
 
     for (auto b : m_buttons)
     {
@@ -87,16 +86,23 @@ Squad::draw_self()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
-
     Color color(70, 89, 79);
 
     string path = "res/images/colony/barracks/";
     shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "bracket.png");
     env->canvas->draw(texture.get(), 30 * scale_w, 25 * scale_h);
-    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
-    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
     env->canvas->draw("Confirm Choice", 345 * scale_w, 630 * scale_h, color);
     env->canvas->draw("Reset Choice", 565 * scale_w, 630 * scale_h, color);
+
+    switch (m_screen)
+    {
+        case SQUAD:
+            draw_squad();
+            break;
+        case DRONE:
+            draw_drone();
+            break;
+    }
 }
 
 bool
@@ -109,9 +115,37 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    if (button->id() == "select_drone")
+    if (button->id() == "select_squad")
     {
-        // m_screen = DRONE
+        m_screen = SQUAD;
+        button->change_state(Button::ACTIVE);
+
+        for (auto c : m_characters)
+        {
+            c.second->set_visible(true);
+            c.second->set_active(true);
+            m_buttons[c.first]->set_active(true);
+        }
+    }
+    else if (button->id() == "select_drone")
+    {
+        m_screen = DRONE;
+        button->change_state(Button::ACTIVE);
+
+        for (auto c : m_characters)
+        {
+            c.second->set_visible(false);
+            c.second->set_active(false);
+            m_buttons[c.first]->set_active(false);
+        }
+    }
+    else if (button->id() == "reset_choice")
+    {
+        for (auto c : m_characters)
+        {
+            m_buttons[c.first]->set_visible(true);
+            m_squad.clear();
+        }
     }
     else if (button->id() == "back")
     {
@@ -190,12 +224,31 @@ Squad::load_characters()
     }
 }
 
-Character *
-Squad::current_char() const
+void
+Squad::draw_squad()
 {
-    auto it = m_characters.begin();
-    for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
-    return it->second;
+    Environment *env = Environment::get_instance();
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    Color color(70, 89, 79);
+
+    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
+    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
+    
+}
+
+void
+Squad::draw_drone()
+{
+    Environment *env = Environment::get_instance();
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    Color color(70, 89, 79);
+
+    env->canvas->draw("Select Drone", 60 * scale_w, 50 * scale_h, color);
+    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
 }
 
 bool

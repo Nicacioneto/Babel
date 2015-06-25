@@ -33,8 +33,6 @@ Button::Button(Object *parent, ObjectID id, double x, double y, double w, double
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
-
-    env->canvas->set_blend_mode(Canvas::BLEND);
 }
 
 Button::~Button()
@@ -43,8 +41,6 @@ Button::~Button()
     env->events_manager->unregister_listener(this);
 
     remove_text();
-
-    env->canvas->set_blend_mode(Canvas::NONE);
 }
 
 void
@@ -75,7 +71,9 @@ Button::draw_self()
     }
     else
     {
+        env->canvas->set_blend_mode(Canvas::BLEND);
         env->canvas->fill(bounding_box(), m_color);
+        env->canvas->set_blend_mode(Canvas::NONE);
     }
 
     if (m_text)
