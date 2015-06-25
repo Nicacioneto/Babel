@@ -13,8 +13,10 @@
 #include <core/listener.h>
 #include <memory>
 #include <map>
+#include <vector>
 
 using std::map;
+using std::vector;
 
 class Texture;
 class Character;
@@ -33,6 +35,7 @@ private:
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
+    vector<ObjectID> m_squad;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

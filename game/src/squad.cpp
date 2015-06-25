@@ -8,6 +8,7 @@
 #include "squad.h"
 #include "character.h"
 #include "colony.h"
+#include <algorithm>
 #include <core/font.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
@@ -56,6 +57,12 @@ Squad::Squad(int slot, const string& next)
     button->set_sprites(4);
     m_buttons[button->id()] = button;
 
+    button = new Button(this, "back", path + "squad/back.png",
+        912 * scale_w, 55 * scale_h, 67 * scale_w, 26 * scale_h);
+    button->set_sprites(1);
+    m_buttons[button->id()] = button;
+
+
     for (auto b : m_buttons)
     {
         b.second->add_observer(this);
@@ -102,21 +109,34 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    if (button->id() == "back")
+    if (button->id() == "select_drone")
     {
-        set_next("base");
-        finish();
-        return true;
+        // m_screen = DRONE
     }
-
-    for (auto c : m_characters)
+    else if (button->id() == "back")
     {
-        if (button->id() == c.first)
+        set_next("tower");
+        finish();
+    }
+    else
+    {
+        for (auto c : m_characters)
         {
-            bool visible = (button->visible() + 1) % 2;
-            button->set_visible(visible);
+            if (button->id() == c.first)
+            {
+                if (button->visible() and m_squad.size() < 4) // not selected
+                {
+                    m_squad.push_back(c.first);
+                    button->set_visible(false);
+                }
+                else
+                {
+                    m_squad.erase(remove(m_squad.begin(), m_squad.end(), c.first), m_squad.end());
+                    button->set_visible(true);
+                }
 
-            return true;
+                break;
+            }
         }
     }
 
