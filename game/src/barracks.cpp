@@ -19,7 +19,7 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0), m_settings(nullptr)
+    : Level("barracks", next), m_slot(slot), m_character(0)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
@@ -392,7 +392,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "back")
     {
-        set_next("base");
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/colony.sav");
+        string prev = settings->read<string>("Barracks", "prev", "base");
+        set_next(prev);
         finish();
     }
 

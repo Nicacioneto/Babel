@@ -179,6 +179,11 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "inspect_team")
     {
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/colony.sav");
+        settings->write<string>("Barracks", "prev", "tower");
+        settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
         set_next("barracks");
         finish();
     }

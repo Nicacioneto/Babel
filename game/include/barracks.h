@@ -29,7 +29,6 @@ public:
 private:
     int m_slot, m_character;
 
-    shared_ptr<Settings> m_settings;
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
