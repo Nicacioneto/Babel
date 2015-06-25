@@ -28,19 +28,25 @@ public:
 
 private:
     typedef enum { INSPECT, EQUIP } Screen;
+    typedef enum { WEAPON, ARMOR, SHIELD } Equipment;
     int m_slot, m_character;
     Screen m_screen;
+    Equipment m_equip;
 
     map<ObjectID, Button*> m_buttons;
+    map<ObjectID, Button*> m_weapons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
 
+    void create_buttons();
+    void load_textures();
     void draw_self();
     void inspect_screen();
-    void equip_screen();
     void draw_character();
     void draw_attributes();
     void draw_skills();
+    void equip_screen();
+    void draw_equipments();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
     Character * current_char() const;
