@@ -35,6 +35,8 @@ private:
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Button*> m_weapons;
+    map<ObjectID, Button*> m_armor;
+    map<ObjectID, Button*> m_shield;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
 
@@ -46,7 +48,6 @@ private:
     void draw_attributes();
     void draw_skills();
     void equip_screen();
-    void draw_equipments();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
     Character * current_char() const;

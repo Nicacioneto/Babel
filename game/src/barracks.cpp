@@ -181,6 +181,48 @@ Barracks::create_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    button = new Button(this, "armor_light", path + "equip/armor_light.png", 148 * scale_w, y, w, h);
+    button->set_active(false);
+    button->set_visible(false);
+    button->set_sprites(3);
+    m_armor[button->id()] = button;
+
+    button = new Button(this, "armor_medium", path + "equip/armor_medium.png", 201 * scale_w, y, w, h);
+    button->set_active(false);
+    button->set_visible(false);
+    button->set_sprites(3);
+    m_armor[button->id()] = button;
+
+    button = new Button(this, "armor_heavy", path + "equip/armor_heavy.png", 254 * scale_w, y, w, h);
+    button->set_active(false);
+    button->set_visible(false);
+    button->set_sprites(3);
+    m_armor[button->id()] = button;
+
+    for (auto b : m_armor)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
+
+    button = new Button(this, "shield_shield", path + "equip/shield_shield.png", 148 * scale_w, y, w, h);
+    button->set_active(false);
+    button->set_visible(false);
+    button->set_sprites(3);
+    m_shield[button->id()] = button;
+
+    button = new Button(this, "shield_barrier", path + "equip/shield_barrier.png", 201 * scale_w, y, w, h);
+    button->set_active(false);
+    button->set_visible(false);
+    button->set_sprites(3);
+    m_shield[button->id()] = button;
+
+    for (auto b : m_shield)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
 }
 
 void
@@ -209,22 +251,6 @@ Barracks::load_textures()
     m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
     m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "equip/Bracket.png");
     m_textures["rifle_katana"] = env->resources_manager->get_texture(path + "equip/Rifle_Katana.png");
-    m_textures["weapon_rifle"] = env->resources_manager->get_texture(path + "equip/weapon_rifle.png");
-    m_textures["weapon_shotgun"] = env->resources_manager->get_texture(path + "equip/weapon_shotgun.png");
-    m_textures["weapon_pistol"] = env->resources_manager->get_texture(path + "equip/weapon_pistol.png");
-    m_textures["weapon_sniper"] = env->resources_manager->get_texture(path + "equip/weapon_sniper.png");
-    m_textures["weapon_melee"] = env->resources_manager->get_texture(path + "equip/weapon_melee.png");
-    m_textures["weapon_hand"] = env->resources_manager->get_texture(path + "equip/weapon_hand.png");
-    m_textures["weapon_nano"] = env->resources_manager->get_texture(path + "equip/weapon_nano.png");
-    m_textures["weapon_ui"] = env->resources_manager->get_texture(path + "equip/weapon_ui.png");
-    m_textures["weapon_psiblade"] = env->resources_manager->get_texture(path + "equip/weapon_psiblade.png");
-    m_textures["weapon_psiamp"] = env->resources_manager->get_texture(path + "equip/weapon_psiamp.png");
-    m_textures["weapon_psiwhip"] = env->resources_manager->get_texture(path + "equip/weapon_psiwhip.png");
-    m_textures["armor_light"] = env->resources_manager->get_texture(path + "equip/armor_light.png");
-    m_textures["armor_medium"] = env->resources_manager->get_texture(path + "equip/armor_medium.png");
-    m_textures["armor_heavy"] = env->resources_manager->get_texture(path + "equip/armor_heavy.png");
-    m_textures["shield_barrier"] = env->resources_manager->get_texture(path + "equip/shield_barrier.png");
-    m_textures["shield_shield"] = env->resources_manager->get_texture(path + "equip/shield_shield.png");
 
     for (int i = 1; i <= 20; ++i)
     {
@@ -495,27 +521,22 @@ Barracks::equip_screen()
     env->canvas->draw("IV", 763 * scale_w, 405 * scale_h, color);
     env->canvas->draw("V", 850 * scale_w, 405 * scale_h, color);
 
-    draw_equipments();
-}
+    for (auto b : m_weapons)
+    {
+        b.second->set_active(m_equip == WEAPON);
+        b.second->set_visible(m_equip == WEAPON);
+    }
 
-void
-Barracks::draw_equipments()
-{
-    if (m_equip == WEAPON)
+    for (auto b : m_armor)
     {
-        for (auto b : m_weapons)
-        {
-            b.second->set_active(true);
-            b.second->set_visible(true);
-        }
+        b.second->set_active(m_equip == ARMOR);
+        b.second->set_visible(m_equip == ARMOR);
     }
-    else if (m_equip == ARMOR)
+
+    for (auto b : m_shield)
     {
-        // TODO
-    }
-    else
-    {
-        // TODO
+        b.second->set_active(m_equip == SHIELD);
+        b.second->set_visible(m_equip == SHIELD);
     }
 }
 
@@ -619,6 +640,18 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             character.second->set_h(123 * scale_h);
         }
     }
+    else if (button->id() == "rifle")
+    {
+        m_equip = WEAPON;
+    }
+    else if (button->id() == "armor")
+    {
+        m_equip = ARMOR;
+    }
+    else if (button->id() == "shield")
+    {
+        m_equip = SHIELD;
+    }
     else if (button->id() == "back")
     {
         if (m_screen == EQUIP)
@@ -659,6 +692,16 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         m_buttons["shield"]->set_visible(true);
 
         for (auto b : m_weapons)
+        {
+            b.second->change_state(Button::IDLE);
+        }
+
+        for (auto b : m_armor)
+        {
+            b.second->change_state(Button::IDLE);
+        }
+
+        for (auto b : m_shield)
         {
             b.second->change_state(Button::IDLE);
         }
