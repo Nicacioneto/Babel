@@ -334,7 +334,7 @@ Central::change_to_timers()
             unsigned long seconds = mission->remainder();
             unsigned long minutes = seconds / 60;
             seconds %= 60;
-                
+
             string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
             string min = minutes < 10 ? "0" + to_string(minutes) : to_string(minutes);
             
@@ -349,7 +349,8 @@ Central::change_to_timers()
 
         if (mission->icon() != "")
         {
-            texture = env->resources_manager->get_texture(path + "icons/" + mission->icon() + ".png");
+            texture = env->resources_manager->get_texture(path + "icons/" +
+                mission->icon() + ".png");
             env->canvas->draw(texture.get(), 310 * scale_w, y * scale_h);
         }
 

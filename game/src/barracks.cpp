@@ -8,6 +8,7 @@
 #include "barracks.h"
 #include "character.h"
 #include "colony.h"
+#include <algorithm>
 #include <core/font.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
@@ -574,11 +575,20 @@ Barracks::draw_equipments()
     if (m_equip == WEAPON)
     {
         Color color(84, 107, 95);
+
+        // shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        //     to_string(m_slot) + "/equipments.sav");
+        // auto sections = settings->sections();
+        // string text = sections["Rifle"]["text"];
+
+        // replace(text.begin(), text.end(), ';', '\n');
+        // env->canvas->draw(text, 145 * scale_w, 384 * scale_h, color);
+
         env->canvas->draw("Assault Rifles have high fire rate, sending",
             145 * scale_h, 384 * scale_h, color);
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_h, (384+17) * scale_h, color);
-        
+
         env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
             500 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
         env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
@@ -594,7 +604,7 @@ Barracks::draw_equipments()
             670 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
         env->canvas->draw(m_textures["locked_blue"].get(), Rect(0, 0, 35, 35),
             840 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
-        
+
         env->canvas->draw(m_textures["rifle_orange"].get(), Rect(0, 0, 35, 35),
             500 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
         env->canvas->draw(m_textures["locked_orange"].get(), Rect(0, 0, 35, 35),
