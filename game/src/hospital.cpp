@@ -11,8 +11,6 @@
 #include <core/rect.h>
 #include <core/settings.h>
 #include <core/text.h>
-#include <iostream>
-using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -199,20 +197,20 @@ Hospital::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    x = (m_text->x() - 30) * scale_w;
+    x = m_text->x() - 30 * scale_w;
     
     button = new Button(this, "left_arrow", path + "left_arrow.png",
-        x, (env->canvas->h() - 100) * scale_h, 20 * scale_w, m_text->h());
+        x, m_text->y(), 20 * scale_w, m_text->h());
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
 
     m_buttons[button->id()] = button;
     
-    x = (m_text->x() + m_text->w() + 10) * scale_w;
+    x = m_text->x() + m_text->w() + 10 * scale_w;
 
     button = new Button(this, "right_arrow", path + "right_arrow.png",
-        x, (env->canvas->h() - 100) * scale_h, 20 * scale_w, m_text->h());
+        x, m_text->y(), 20 * scale_w, m_text->h());
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
@@ -553,7 +551,7 @@ Hospital::set_pages_text()
     Environment *env = Environment::get_instance();
     m_text = new Text(this, to_string(m_page) + "/" + to_string(m_max_pages), Color(170, 215, 190));
 
-    int x = (((env->canvas->w() + 275) - m_text->w()) / 2) * env->canvas->w() / W;
-    double y = (env->canvas->h() - 100) * env->canvas->h() / H;
+    double x = (env->canvas->w() - m_text->w()) / 2 + (275  * env->canvas->w() / W) / 2;
+    double y = env->canvas->h() - 100 * env->canvas->h() / H;
     m_text->set_position(x, y);
 }
