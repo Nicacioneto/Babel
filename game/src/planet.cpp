@@ -155,35 +155,34 @@ Planet::load_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button = new Button(this, "trunda", "", 0, 0,
-        300 * scale_w, 290 * scale_h);
+    Button *button = new Button(this, "trunda", 0, 0, 300 * scale_w, 290 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "jungle", "", 390 * scale_w, 0,
+    button = new Button(this, "jungle", 390 * scale_w, 0,
         360 * scale_w, 235 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "sea", "", 755 * scale_w, 0,
+    button = new Button(this, "sea", 755 * scale_w, 0,
         265 * scale_w, 235 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "dunes", "", 630 * scale_w, 270 * scale_h,
+    button = new Button(this, "dunes", 630 * scale_w, 270 * scale_h,
         394 * scale_w, 185 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "taiga", "", 0 * scale_w, 410 * scale_h,
+    button = new Button(this, "taiga", 0 * scale_w, 410 * scale_h,
         310 * scale_w, 358 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "lake", "", 300 * scale_w, 500 * scale_h,
+    button = new Button(this, "lake", 300 * scale_w, 500 * scale_h,
         300 * scale_w, 185 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "swamp", "", 600 * scale_w, 485 * scale_h,
+    button = new Button(this, "swamp", 600 * scale_w, 485 * scale_h,
         424 * scale_w, 283 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "colony", "", 405 * scale_w, 410 * scale_h,
+    button = new Button(this, "colony", 405 * scale_w, 410 * scale_h,
         110 * scale_w, 80 * scale_h);
     m_buttons[button->id()] = button;
 
