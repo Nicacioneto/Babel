@@ -17,8 +17,11 @@
 using std::vector;
 
 
-extern vector<Mission*> missions();
+extern vector<Mission *> missions();
+extern void create_threads(int slot);
+extern void kill_threads();
 
-extern void start_time(const string& name = "", unsigned long start = 0, const string& icon = "") throw (Exception);
+extern void start_time(const string& name = "", unsigned long start = 0,
+    const string& icon = "") throw (Exception);
 
 #endif

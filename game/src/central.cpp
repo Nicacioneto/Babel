@@ -324,7 +324,7 @@ Central::change_to_timers()
     shared_ptr<Texture> texture;
     int y = 236;
 
-    vector<Mission*> m = missions();
+    vector<Mission *> m = missions();
     for (auto mission : m)
     {
         env->canvas->draw(mission->name(), 360 * scale_w, y * scale_h, color);

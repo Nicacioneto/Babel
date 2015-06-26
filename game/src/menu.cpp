@@ -6,6 +6,7 @@
  * License: LGPL. No copyright.
  */
 #include "menu.h"
+#include "timer.h"
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
@@ -96,6 +97,10 @@ Menu::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "credits")
     {
         set_next("credits");
+    }
+    else if (button->id() == "exit")
+    {
+        kill_threads();
     }
 
     finish();

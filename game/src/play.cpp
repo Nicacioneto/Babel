@@ -6,6 +6,7 @@
  * License: LGPL. No copyright.
  */
 #include "play.h"
+#include "timer.h"
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
@@ -99,6 +100,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot3", slot3);
 
         slot = 1;
+        create_threads(slot);
     }
     else if (button->id() == "slot2")
     {
@@ -118,6 +120,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot3", slot3);
 
         slot = 2;
+        create_threads(slot);
     }
     else if (button->id() == "slot3")
     {
@@ -137,6 +140,7 @@ Play::on_message(Object *sender, MessageID id, Parameters)
         settings->write<int>("Slots", "slot3", 1);
 
         slot = 3;
+        create_threads(slot);
     }
     else if (button->id() == "slot1_x")
     {

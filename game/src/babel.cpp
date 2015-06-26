@@ -20,12 +20,13 @@
 #include "planet.h"
 #include "play.h"
 #include "squad.h"
+#include "timer.h"
 #include "tower.h"
 #include "workshop.h"
-#include <util/frontend.h>
 #include <core/keyboardevent.h>
 #include <core/settings.h>
 #include <core/systemevent.h>
+#include <util/frontend.h>
 
 using std::to_string;
 
@@ -177,30 +178,8 @@ Babel::on_event(const SystemEvent& event)
     {
         m_done = true;
 
-        Environment *env = Environment::get_instance();
-        
-        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/timers.sav");
-        auto sections = settings->sections();
+        kill_threads();
 
-        for (auto section : sections)
-        {
-            string name = section.first;
-            string elapsed_time = section.second["elapsed_time"];
-            string final_time = section.second["final_time"];
-            string start_time = section.second["start_time"];
-
-            if (final_time != "0")
-            {
-                unsigned long ms = atol(elapsed_time.c_str());
-                unsigned long start_ms = atol(start_time.c_str());
-
-                unsigned long elapsed = update_timestep();
-
-                settings->write<unsigned long>(name, "elapsed_time", ms + elapsed - start_ms);
-                settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
-            }
-        }
         return true;
     }
 
