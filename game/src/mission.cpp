@@ -7,8 +7,8 @@
  */
 #include "mission.h"
 
-Mission::Mission(const string& name, unsigned long remainder, const string& icon)
-    : m_name(name), m_remainder(remainder), m_icon(icon)
+Mission::Mission(const string& name, unsigned long remainder, const string& icon, int energy, int matter)
+    : m_name(name), m_remainder(remainder), m_icon(icon), m_energy(energy), m_matter(matter)
 {
 }
 
@@ -34,4 +34,16 @@ string
 Mission::icon()
 {
     return m_icon;
+}
+
+int
+Mission::energy()
+{
+    return m_energy;
+}
+
+int
+Mission::matter()
+{
+    return m_matter;
 }

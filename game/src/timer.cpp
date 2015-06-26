@@ -19,6 +19,24 @@ vector<SDL_Thread *> threads;
 bool kill = false;
 int m_slot = 0;
 
+void set_reward(Mission *mission)
+{
+    Environment *env = Environment::get_instance();
+    
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
+    int energy = settings->read<int>("Colony", "energy", 0);
+    int matter = settings->read<int>("Colony", "matter", 0);
+
+    energy += mission->energy();
+    matter += mission->matter();
+
+    settings->write<int>("Colony", "energy", energy);
+    settings->write<int>("Colony", "matter", matter);
+    
+    settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+}
+
 int monitoring_mission(void *ptr)
 {
     Mission *mission = (Mission *) ptr;
@@ -35,12 +53,14 @@ int monitoring_mission(void *ptr)
         SDL_Delay(1000);
     }
 
+    set_reward(mission);
+
     return 0;
 }
 
-void start_time(const string& name, unsigned long start, const string& icon) throw (Exception)
+void start_time(const string& name, unsigned long start, const string& icon, int energy, int matter) throw (Exception)
 {
-    Mission *mission = new Mission(name, start, icon);
+    Mission *mission = new Mission(name, start, icon, energy, matter);
 
     m_missions.push_back(mission);
     
@@ -68,7 +88,9 @@ void create_threads(int slot)
         string name = section.first;
         unsigned long remainder = atol(section.second["remainder"].c_str());
         string icon = section.second["icon"];
-        start_time(name, remainder, icon);
+        int energy = atoi(section.second["energy"].c_str());
+        int matter = atoi(section.second["matter"].c_str());
+        start_time(name, remainder, icon, energy, matter);
     }
 }
 
@@ -87,6 +109,8 @@ void kill_threads()
 
         settings->write<unsigned long>(name, "remainder", mission->remainder());
         settings->write<string>(name, "icon", mission->icon());
+        settings->write<int>(name, "energy", mission->energy());
+        settings->write<int>(name, "matter", mission->matter());
 
         settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
     }

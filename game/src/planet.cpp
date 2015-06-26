@@ -218,5 +218,5 @@ Planet::load_buttons()
 void
 Planet::start_mission()
 {
-    start_time(m_text, 30, "workshop");
+    start_time(m_text, 10, "workshop", 50, 50);
 }
