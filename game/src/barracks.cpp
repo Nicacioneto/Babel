@@ -251,6 +251,25 @@ Barracks::load_textures()
     m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
     m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "equip/Bracket.png");
     m_textures["rifle_katana"] = env->resources_manager->get_texture(path + "equip/Rifle_Katana.png");
+    m_textures["rifle_blue"] = env->resources_manager->get_texture(path + "equip/rifle_blue.png");
+    m_textures["rifle_green"] = env->resources_manager->get_texture(path + "equip/rifle_green.png");
+    m_textures["rifle_orange"] = env->resources_manager->get_texture(path + "equip/rifle_orange.png");
+    m_textures["rifle_white"] = env->resources_manager->get_texture(path + "equip/rifle_white.png");
+    m_textures["locked_blue"] = env->resources_manager->get_texture(path + "equip/locked_blue.png");
+    m_textures["locked_green"] = env->resources_manager->get_texture(path + "equip/locked_green.png");
+    m_textures["locked_orange"] = env->resources_manager->get_texture(path + "equip/locked_orange.png");
+    m_textures["locked_white"] = env->resources_manager->get_texture(path + "equip/locked_white.png");
+    m_textures["selector"] = env->resources_manager->get_texture(path + "equip/selector.png");
+    m_textures["status"] = env->resources_manager->get_texture(path + "equip/status.png");
+    m_textures["agility"] = env->resources_manager->get_texture(path + "equip/icon_agility.png");
+    m_textures["critical"] = env->resources_manager->get_texture(path + "equip/icon_critical.png");
+    m_textures["hitchance"] = env->resources_manager->get_texture(path + "equip/icon_hitchance.png");
+    m_textures["might"] = env->resources_manager->get_texture(path + "equip/icon_might.png");
+    m_textures["mind"] = env->resources_manager->get_texture(path + "equip/icon_mind.png");
+    m_textures["perception"] = env->resources_manager->get_texture(path + "equip/icon_perception.png");
+    m_textures["resilience"] = env->resources_manager->get_texture(path + "equip/icon_resilience.png");
+    m_textures["speed"] = env->resources_manager->get_texture(path + "equip/icon_speed.png");
+    m_textures["willpower"] = env->resources_manager->get_texture(path + "equip/icon_willpower.png");
 
     for (int i = 1; i <= 20; ++i)
     {
@@ -514,7 +533,6 @@ Barracks::equip_screen()
 
     env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
     env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
-    env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
     env->canvas->draw("I", 518 * scale_w, 405 * scale_h, color);
     env->canvas->draw("II", 600 * scale_w, 405 * scale_h, color);
     env->canvas->draw("III", 680 * scale_w, 405 * scale_h, color);
@@ -537,6 +555,88 @@ Barracks::equip_screen()
     {
         b.second->set_active(m_equip == SHIELD);
         b.second->set_visible(m_equip == SHIELD);
+    }
+
+    draw_equipments();
+}
+
+void
+Barracks::draw_equipments()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(16);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    if (m_equip == WEAPON)
+    {
+        Color color(84, 107, 95);
+        env->canvas->draw("Assault Rifles have high fire rate, sending",
+            145 * scale_h, 384 * scale_h, color);
+        env->canvas->draw("wave after wave of raining death.",
+            145 * scale_h, (384+17) * scale_h, color);
+        
+        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
+            500 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
+            585 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 35, 35, 35),
+            670 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["locked_green"].get(), Rect(0, 0, 35, 35),
+            755 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
+
+        env->canvas->draw(m_textures["locked_blue"].get(), Rect(0, 0, 35, 35),
+            585 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["rifle_blue"].get(), Rect(0, 35, 35, 35),
+            670 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["locked_blue"].get(), Rect(0, 0, 35, 35),
+            840 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
+        
+        env->canvas->draw(m_textures["rifle_orange"].get(), Rect(0, 0, 35, 35),
+            500 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["locked_orange"].get(), Rect(0, 0, 35, 35),
+            585 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["rifle_orange"].get(), Rect(0, 35, 35, 35),
+            840 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
+
+        env->canvas->draw(m_textures["locked_white"].get(), Rect(0, 0, 35, 35),
+            500 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["locked_white"].get(), Rect(0, 0, 35, 35),
+            755 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
+        env->canvas->draw(m_textures["rifle_white"].get(), Rect(0, 35, 35, 35),
+            840 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
+
+        Rect clip(0, 0, 50, 50);
+        env->canvas->draw(m_textures["selector"].get(), clip, (585-8) * scale_w, (437-8) * scale_h,
+            50 * scale_w, 50 * scale_h);
+        clip = Rect(0, 50, 50, 50);
+        env->canvas->draw(m_textures["selector"].get(), clip, (670-8) * scale_w, (437-8) * scale_h,
+            50 * scale_w, 50 * scale_h);
+
+        clip = Rect(0, 0, 298, 30);
+        env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
+            298 * scale_w, 30 * scale_h);
+
+        color = Color(170, 215, 190);
+        env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_h, 512 * scale_h, color);
+        env->canvas->draw("state-of-the art weapon, being", 211 * scale_h, (512+17) * scale_h, color);
+        env->canvas->draw("able to shoot a 10mm", 211 * scale_h, (512+17*2) * scale_h, color);
+        env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_h, (512+17*3) * scale_h, color);
+
+        font->set_size(24);
+        env->canvas->draw("Katana XM-11", 145 * scale_h, 477 * scale_h, color);
+        env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
+
+        font->set_size(16);
+        env->canvas->draw("+10", 150 * scale_h, 615 * scale_h, color);
+        env->canvas->draw("+10", 200 * scale_h, 615 * scale_h, color);
+        env->canvas->draw("%50", 250 * scale_h, 615 * scale_h, color);
+        env->canvas->draw(m_textures["might"].get(), 150 * scale_w, 640 * scale_h);
+        env->canvas->draw(m_textures["agility"].get(), 200 * scale_w, 640 * scale_h);
+        env->canvas->draw(m_textures["hitchance"].get(), 250 * scale_w, 640 * scale_h);
     }
 }
 
