@@ -10,6 +10,7 @@
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
 #include <core/settings.h>
+#include "timer.h"
 
 #define W 1024.0
 #define H 768.0
@@ -217,15 +218,5 @@ Planet::load_buttons()
 void
 Planet::start_mission()
 {
-    Environment *env = Environment::get_instance();
-
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/timers.sav");
-
-    settings->write<unsigned long>(m_text, "final_time", 60000);
-    settings->write<unsigned long>(m_text, "start_time", m_last);
-    settings->write<unsigned long>(m_text, "elapsed_time", 0);
-    settings->write<string>(m_text, "icon", "workshop");
-
-    settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
+    start_time(m_text, 5, "workshop");
 }

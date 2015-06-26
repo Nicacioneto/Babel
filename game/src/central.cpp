@@ -10,6 +10,7 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
+#include "timer.h"
 
 #define W 1024.0
 #define H 768.0
@@ -321,64 +322,34 @@ Central::change_to_timers()
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture;
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/timers.sav");
-    auto sections = settings->sections();
-
     int y = 236;
-    for (auto section : sections)
+
+    vector<Mission*> m = missions();
+    for (auto mission : m)
     {
-        string name = section.first;
-        string start_time = section.second["start_time"];
-        string elapsed_time = section.second["elapsed_time"];
-        string final_time = section.second["final_time"];
-        string icon = section.second["icon"];
-
-        if (icon.back() == '\r')
+        env->canvas->draw(mission->name(), 360 * scale_w, y * scale_h, color);
+        string str_remainder;
+        if (mission->remainder())
         {
-            elapsed_time.pop_back();
-            icon.pop_back();
-        }
-
-        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
-        if (not elapsed_time.empty())
-        {
-            if (final_time != "0")
-            {
-                unsigned long seconds = (atol(elapsed_time.c_str()) + m_last);
-                unsigned long start_seconds = atol(start_time.c_str());
-                unsigned long final_seconds = atol(final_time.c_str());
+            unsigned long seconds = mission->remainder();
+            unsigned long minutes = seconds / 60;
+            seconds %= 60;
                 
-                if (seconds < final_seconds + start_seconds)
-                {
-                    seconds = final_seconds - (seconds - start_seconds);
-                    seconds /= 1000;
-                    unsigned long minutes = seconds / 60;
-                    seconds %= 60;
-                    
-                    string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
-                    string min = minutes < 10 ? "0" + to_string(minutes) : to_string(minutes);
-                    
-                    elapsed_time = min + ":" + sec;
-                }
-                else
-                {
-                    settings->write<unsigned long>(name, "final_time", 0);
-                    settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
-                    elapsed_time = "Ok!";
-                }
-            }
-            else
-            {
-                elapsed_time = "Ok!";
-            }
-
-            env->canvas->draw(elapsed_time, 855 * scale_w, y * scale_h, color);
+            string sec = seconds < 10 ? "0" + to_string(seconds) : to_string(seconds);
+            string min = minutes < 10 ? "0" + to_string(minutes) : to_string(minutes);
+            
+            str_remainder = min + ":" + sec;
+        }
+        else
+        {
+            str_remainder = "Ok!";
         }
 
-        if (not icon.empty())
+        env->canvas->draw(str_remainder, 855 * scale_w, y * scale_h, color);
+
+        if (mission->icon() != "")
         {
-            texture = env->resources_manager->get_texture(path + "icons/" + icon + ".png");
+            texture = env->resources_manager->get_texture(path + "icons/" + mission->icon() + ".png");
             env->canvas->draw(texture.get(), 310 * scale_w, y * scale_h);
         }
 
