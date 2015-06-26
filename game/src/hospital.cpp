@@ -78,6 +78,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(id);
         finish();
+        return true;
     }
 
     Environment *env = Environment::get_instance();
