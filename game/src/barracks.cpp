@@ -45,12 +45,12 @@ Barracks::create_buttons()
     double scale_h = env->canvas->h() / H;
     string path = "res/images/colony/barracks/";
 
-    Button *button = new Button(this, "left_arrow", path + "left_arrow.png",
+    Button *button = new Button(this, "left_arrow", "res/images/colony/left_arrow.png",
         60 * scale_w, 218 * scale_h, 26 * scale_w, 45 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "right_arrow", path + "right_arrow.png",
+    button = new Button(this, "right_arrow", "res/images/colony/right_arrow.png",
         362 * scale_w, 218 * scale_h, 26 * scale_w, 45 * scale_h);
     button->set_sprites(1);
     m_buttons[button->id()] = button;

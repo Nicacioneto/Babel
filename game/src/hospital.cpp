@@ -10,14 +10,18 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
+#include <iostream>
+using namespace std;
 
 #define W 1024.0
 #define H 768.0
+#define BIG_LIST 7
 
 using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
-    : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen(CHAT), m_scenario(nullptr)
+    : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen(CHAT),
+    m_scenario(nullptr), m_page(1), m_max_pages(1)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/hospital/";
@@ -75,13 +79,28 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
-    else if (button->id() != "hospital")
+
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/hospital/";
+
+    m_scenario = env->resources_manager->get_texture(path + "scenario.png");
+
+    if (button->id() == "left_arrow")
     {
-        Environment *env = Environment::get_instance();
-        string path = "res/images/colony/hospital/";
-
-        m_scenario = env->resources_manager->get_texture(path + "scenario.png");
-
+        if (m_page > 1)
+        {
+            m_page--;
+        }
+    }
+    else if (button->id() == "right_arrow")
+    {
+        if (m_page < m_max_pages)
+        {
+            m_page++;
+        }
+    }
+    else if (m_items.find(button->id()) == m_items.end())
+    {
         if (button->id() == "chat")
         {
             m_screen = CHAT;
@@ -100,18 +119,16 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
             m_screen = REVIVE;
         }
 
-        if (m_items.find(button->id()) == m_items.end())
-        {
-            change_buttons();
-            button->change_state(Button::ACTIVE);
-        }
-        else
-        {
-            buy_item(button->id());
-        }
-
-        change_items();
+        m_page = 1;
+        change_buttons();
+        button->change_state(Button::ACTIVE);
     }
+    else
+    {
+        buy_item(button->id());
+    }
+
+    change_items();
 
     return true;
 }
@@ -137,6 +154,7 @@ Hospital::create_buttons()
         x, 218 * scale_h, w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
+    button->set_active(false);
 
     m_buttons[button->id()] = button;
 
@@ -166,6 +184,22 @@ Hospital::create_buttons()
         x, 635 * scale_h, w, h);
     button->set_sprites(3);
     button->set_text("Revive");
+
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "left_arrow", path + "left_arrow.png",
+        800 * scale_w, 700 * scale_h, 20 * scale_w, 20 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+
+    m_buttons[button->id()] = button;
+    
+    button = new Button(this, "right_arrow", path + "right_arrow.png",
+        900 * scale_w, 700 * scale_h, 20 * scale_w, 20 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
 
     m_buttons[button->id()] = button;
 
@@ -209,6 +243,12 @@ Hospital::create_items()
 void
 Hospital::change_buttons()
 {
+    m_buttons["left_arrow"]->set_active(m_screen != CHAT);
+    m_buttons["left_arrow"]->set_visible(m_screen != CHAT);
+
+    m_buttons["right_arrow"]->set_active(m_screen != CHAT);
+    m_buttons["right_arrow"]->set_visible(m_screen != CHAT);
+
     for (auto b : m_buttons)
     {
         if (b.first != "hospital")
@@ -330,16 +370,6 @@ Hospital::items_screen()
 
         y += 64;
     }
-
-    env->canvas->draw("TOTAL", 607 * scale_w, 633 * scale_h, color);
-    font->set_size(16);
-    env->canvas->draw("800", 800 * scale_w, 633 * scale_h, Color::RED);
-    env->canvas->draw("/", 837 * scale_w, 633 * scale_h, color);
-    env->canvas->draw("176", 855 * scale_w, 633 * scale_h, color);
-    env->canvas->draw("176", 855 * scale_w, 660 * scale_h, color);
-    env->canvas->draw("176", 800 * scale_w, 660 * scale_h, color);
-    env->canvas->draw("/", 837 * scale_w, 660 * scale_h, color);
-    env->canvas->draw("176", 855 * scale_w, 660 * scale_h, color);
 }
 
 void
@@ -425,9 +455,18 @@ Hospital::revive_screen()
         to_string(m_slot) + "/characters.sav");
     auto sections = settings->sections();
 
+    m_max_pages = (sections.size() / BIG_LIST) + (sections.size() % BIG_LIST != 0);
+
     int y = 236;
+    int i = -1;
     for (auto section : sections)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        {
+            continue;
+        }
+        
         string name = section.first;
 
         if (name == "Default")

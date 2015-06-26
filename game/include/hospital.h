@@ -31,6 +31,8 @@ private:
     Colony *m_colony;
     Screen m_screen;
     shared_ptr<Texture> m_scenario;
+    int m_page;
+    int m_max_pages;
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Button*> m_items;
 
