@@ -130,6 +130,10 @@ Combat::draw_self()
     env->canvas->clear();
     env->canvas->draw(m_texture.get());
 
+    env->canvas->set_blend_mode(Canvas::BLEND);
+    env->canvas->fill(Rect(0, 0, env->canvas->w(),  env->canvas->h()), Color(0, 0, 0, 128));
+    env->canvas->set_blend_mode(Canvas::NONE);
+
     if (m_state == SHOW_DAMAGE)
     {
         m_text->draw();
@@ -231,19 +235,32 @@ Combat::load_enemies()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    int w = 200 * scale_w;
-    int h = 300 * scale_h;
+    int w = 170 * scale_w;
+    int h = 265 * scale_h;
+    int i = 0;
 
-    Character *enemy = new Character(m_slot, this, "timber1", "timber.png", 0, 0, w, h);
+    Character *enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        58 * scale_w, 275 * scale_h, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber2", "timber.png", 250 * scale_w, 0, w, h);
+    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        194 * scale_w, 322 * scale_h, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber3", "timber.png", 550 * scale_w, 0, w, h);
+    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        330 * scale_w, 275 * scale_h, w, h);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "timber4", "timber.png", 800 * scale_w, 0, w, h);
+    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        530 * scale_w, 275 * scale_h, w, h);
+    m_enemies[enemy->id()] = enemy;
+
+    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        665 * scale_w, 322 * scale_h, w, h);
+    m_enemies[enemy->id()] = enemy;
+
+    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+        800 * scale_w, 275 * scale_h, w, h);
     m_enemies[enemy->id()] = enemy;
 
     for (auto it : m_enemies)
