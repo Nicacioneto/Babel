@@ -112,7 +112,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         }
     }
     else if (m_items.find(button->id()) == m_items.end())
-    {        
+    {
         if (button->id() == "chat")
         {
             m_screen = CHAT;
@@ -240,7 +240,7 @@ Hospital::create_items()
     double scale_h = env->canvas->h() / H;
     int y = 236;
 
-    for(auto s : sections)
+    for (auto s : sections)
     {
         Button *button = new Button(this, s.first, "res/images/colony/big_list.png",
             310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
@@ -356,10 +356,18 @@ Hospital::items_screen()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
     auto sections = settings->sections();
+    update_max_pages(sections.size());
 
     int y = 236;
+    int i = -1;
     for (auto section : sections)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        {
+            continue;
+        }
+
         string name = section.first;
         string matter = section.second["matter"];
         string energy = section.second["energy"];
@@ -412,10 +420,18 @@ Hospital::research_screen()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
     auto sections = settings->sections();
+    update_max_pages(sections.size());
 
     int y = 236;
+    int i = -1;
     for (auto section : sections)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        {
+            continue;
+        }
+
         string name = section.first;
         string matter = section.second["matter"];
         string energy = section.second["energy"];
@@ -470,7 +486,6 @@ Hospital::revive_screen()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/characters.sav");
     auto sections = settings->sections();
-
     update_max_pages(sections.size());
 
     int y = 236;

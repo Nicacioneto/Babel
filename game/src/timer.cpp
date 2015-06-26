@@ -58,7 +58,8 @@ int monitoring_mission(void *ptr)
     return 0;
 }
 
-void start_time(const string& name, unsigned long start, const string& icon, int energy, int matter) throw (Exception)
+void start_time(const string& name, unsigned long start, const string& icon,
+    int energy, int matter) throw (Exception)
 {
     Mission *mission = new Mission(name, start, icon, energy, matter);
 

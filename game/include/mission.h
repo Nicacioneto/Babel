@@ -15,7 +15,8 @@ using std::string;
 class Mission
 {
 public:
-    Mission(const string& name = "", unsigned long remainder = 0, const string& icon = "", int energy = 0, int matter = 0);
+    Mission(const string& name = "", unsigned long remainder = 0, const string& icon = "",
+        int energy = 0, int matter = 0);
     string name();
     unsigned long remainder();
     void set_remainder(unsigned long remainder);
