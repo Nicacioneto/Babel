@@ -1,41 +1,41 @@
 [Health Potion I]
-matter = 70
-power = 100
-qnt_earned = 10
-qnt_total = 20
-time = 15:00
+matter=70
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
 
 [Hyper-Metabolism]
-matter = 70
-power = 100
-qnt_earned = 13
-qnt_total = 20
-time = 15:00
+matter=70
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
 
 [Super-Metabolism]
-matter = 70
-power = 100
-qnt_earned = 14
-qnt_total = 15
-time = 15:00
+matter=70
+energy=100
+qnt_earned=0
+qnt_max=15
+time=15:00
 
 [Metabolism]
-matter = 70
-power = 100
-qnt_earned = 10
-qnt_total = 10
-time = 15:00
+matter=70
+energy=100
+qnt_earned=0
+qnt_max=10
+time=15:00
 
-[Power Potion]
-matter = 70
-power = 100
-qnt_earned = 13
-qnt_total = 20
-time = 15:00
+[energy Potion]
+matter=70
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
 
 [Health Potion II]
-matter = 90
-power = 100
-qnt_earned = 13
-qnt_total = 20
-time = 15:00
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00

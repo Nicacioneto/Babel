@@ -8,7 +8,6 @@
 #ifndef HOSPITAL_H
 #define HOSPITAL_H
 
-#include "button.h"
 #include "base.h"
 #include <core/level.h>
 #include <memory>
@@ -16,6 +15,8 @@
 
 using std::map;
 
+class Button;
+class Colony;
 class Texture;
 
 class Hospital : public Level
@@ -27,6 +28,7 @@ private:
     typedef enum { CHAT, ITEMS, RESEARCH, REVIVE } Screen;
 
     int m_slot;
+    Colony *m_colony;
     Screen m_screen;
     shared_ptr<Texture> m_scenario;
     map<ObjectID, Button*> m_buttons;
@@ -38,6 +40,7 @@ private:
     void create_items();
     void change_buttons();
     void change_items();
+    void buy_item(const ObjectID id);
     void chat_screen();
     void items_screen();
     void research_screen();

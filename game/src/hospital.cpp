@@ -17,16 +17,16 @@
 using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
-    : Level("hospital", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
+    : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen(CHAT), m_scenario(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/hospital/";
 
     m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
 
-    Colony *colony = new Colony(slot, this, "hospital");
-    colony->add_observer(this);
-    add_child(colony);
+    m_colony = new Colony(slot, this, "hospital");
+    m_colony->add_observer(this);
+    add_child(m_colony);
 
     create_buttons();
 }
@@ -104,6 +104,10 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         {
             change_buttons();
             button->change_state(Button::ACTIVE);
+        }
+        else
+        {
+            buy_item(button->id());
         }
 
         change_items();
@@ -228,6 +232,29 @@ Hospital::change_items()
 }
 
 void
+Hospital::buy_item(const ObjectID id)
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/items.sav");
+
+    int qnt_earned = settings->read<int>(id, "qnt_earned", 0);
+    int qnt_max = settings->read<int>(id, "qnt_max", 0);
+
+    int matter = m_colony->matter() - settings->read<int>(id, "matter", 0);
+    int energy = m_colony->energy() - settings->read<int>(id, "energy", 0);
+
+    if (matter >= 0 and energy >= 0 and qnt_earned < qnt_max)
+    {
+        m_colony->set_matter(matter);
+        m_colony->set_energy(energy);
+
+        settings->write<int>(id, "qnt_earned", ++qnt_earned);
+        settings->save("res/datas/slot" + to_string(m_slot) + "/items.sav");
+    }
+}
+
+void
 Hospital::chat_screen()
 {
     Environment *env = Environment::get_instance();
@@ -267,7 +294,7 @@ Hospital::items_screen()
     env->canvas->draw("Qnt.", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_power.png");
+        path + "icons/matter_energy.png");
     env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -279,27 +306,19 @@ Hospital::items_screen()
     {
         string name = section.first;
         string matter = section.second["matter"];
-        string power = section.second["power"];
+        string energy = section.second["energy"];
         string qnt_earned = section.second["qnt_earned"];
-        string qnt_total = section.second["qnt_total"];
-
-        if (matter.back() == '\r')
-        {
-            matter.pop_back();
-            power.pop_back();
-            qnt_earned.pop_back();
-            qnt_total.pop_back();
-        }
+        string qnt_max = section.second["qnt_max"];
 
         env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, 690 * scale_w,
+            env->canvas->draw(matter + "/" + energy, 690 * scale_w,
                 y * scale_h, color);
         }
         if (not qnt_earned.empty())
         {
-            env->canvas->draw(qnt_earned + "/" + qnt_total, 855 * scale_w,
+            env->canvas->draw(qnt_earned + "/" + qnt_max, 855 * scale_w,
                 y * scale_h, color);
         }
 
@@ -341,7 +360,7 @@ Hospital::research_screen()
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_power.png");
+        path + "icons/matter_energy.png");
     env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -353,20 +372,13 @@ Hospital::research_screen()
     {
         string name = section.first;
         string matter = section.second["matter"];
-        string power = section.second["power"];
+        string energy = section.second["energy"];
         string time = section.second["time"];
-
-        if (matter.back() == '\r')
-        {
-            matter.pop_back();
-            power.pop_back();
-            time.pop_back();
-        }
 
         env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, 690 * scale_w, y * scale_h, color);
+            env->canvas->draw(matter + "/" + energy, 690 * scale_w, y * scale_h, color);
         }
         if (not time.empty())
         {
@@ -406,7 +418,7 @@ Hospital::revive_screen()
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_power.png");
+        path + "icons/matter_energy.png");
     env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
@@ -425,22 +437,14 @@ Hospital::revive_screen()
 
         string class_ = section.second["class"];
         string matter = section.second["matter"];
-        string power = section.second["power"];
+        string energy = section.second["energy"];
         string time = section.second["time"];
-
-        if (matter.back() == '\r')
-        {
-            class_.pop_back();
-            matter.pop_back();
-            power.pop_back();
-            time.pop_back();
-        }
 
         env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         env->canvas->draw(class_, 524 * scale_w, y * scale_h, color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, 690 * scale_w, y * scale_h, color);
+            env->canvas->draw(matter + "/" + energy, 690 * scale_w, y * scale_h, color);
         }
         if (not time.empty())
         {

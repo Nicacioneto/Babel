@@ -283,11 +283,6 @@ Central::change_to_bestiary()
         string name = section.first;
         string icon = section.second["icon"];
 
-        if (icon.back() == '\r')
-        {
-            icon.pop_back();
-        }
-
         env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
         if (not icon.empty())
         {

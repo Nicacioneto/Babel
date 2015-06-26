@@ -216,7 +216,7 @@ Workshop::change_to_vehicle()
 
     env->canvas->draw("Name", (360 / W) * env->canvas->w(), (188 / H) * env->canvas->h(), color);
     shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_power.png");
+        path + "icons/matter_energy.png");
     env->canvas->draw(texture.get(), (690 / W) * env->canvas->w(), (188 / H) * env->canvas->h());
     env->canvas->draw("Qnt.", (855 / W) * env->canvas->w(), (186 / H) * env->canvas->h(), color);
 
@@ -229,20 +229,13 @@ Workshop::change_to_vehicle()
     {
         string name = section.first;
         string matter = section.second["matter"];
-        string power = section.second["power"];
+        string energy = section.second["energy"];
         string qnt = section.second["qnt"];
-
-        if (matter.back() == '\r')
-        {
-            matter.pop_back();
-            power.pop_back();
-            qnt.pop_back();
-        }
 
         env->canvas->draw(name, (360 / W) * env->canvas->w(), (y / H) * env->canvas->h(), color);
         if (not matter.empty())
         {
-            env->canvas->draw(matter + "/" + power, (690 / W) * env->canvas->w(),
+            env->canvas->draw(matter + "/" + energy, (690 / W) * env->canvas->w(),
                 (y / H) * env->canvas->h(), color);
         }
         if (not qnt.empty())
