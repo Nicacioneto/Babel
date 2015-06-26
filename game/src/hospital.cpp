@@ -10,6 +10,7 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
+#include <core/text.h>
 #include <iostream>
 using namespace std;
 
@@ -21,7 +22,7 @@ using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
     : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen(CHAT),
-    m_scenario(nullptr), m_page(1), m_max_pages(1)
+    m_scenario(nullptr), m_page(1), m_max_pages(1), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/hospital/";
@@ -32,6 +33,11 @@ Hospital::Hospital(int slot, const string& next)
     m_colony->add_observer(this);
     add_child(m_colony);
 
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
+
+    set_pages_text();
     create_buttons();
 }
 
@@ -42,6 +48,11 @@ Hospital::draw_self()
     env->canvas->clear();
 
     env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+
+    if (m_text and m_screen != CHAT)
+    {
+        m_text->draw();
+    }
 
     switch (m_screen)
     {
@@ -101,7 +112,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         }
     }
     else if (m_items.find(button->id()) == m_items.end())
-    {
+    {        
         if (button->id() == "chat")
         {
             m_screen = CHAT;
@@ -147,9 +158,9 @@ Hospital::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    const int x = 28 * scale_w;
-    const int w = 190 * scale_w;
-    const int h = 180/3 * scale_h;
+    int x = 28 * scale_w;
+    int w = 190 * scale_w;
+    int h = 180/3 * scale_h;
 
     Button *button =  new Button(this, "hospital", path + "hospital_button.png",
         x, 218 * scale_h, w, h);
@@ -188,16 +199,20 @@ Hospital::create_buttons()
 
     m_buttons[button->id()] = button;
 
+    x = (m_text->x() - 30) * scale_w;
+    
     button = new Button(this, "left_arrow", path + "left_arrow.png",
-        800 * scale_w, 700 * scale_h, 20 * scale_w, 20 * scale_h);
+        x, (env->canvas->h() - 100) * scale_h, 20 * scale_w, m_text->h());
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
 
     m_buttons[button->id()] = button;
     
+    x = (m_text->x() + m_text->w() + 10) * scale_w;
+
     button = new Button(this, "right_arrow", path + "right_arrow.png",
-        900 * scale_w, 700 * scale_h, 20 * scale_w, 20 * scale_h);
+        x, (env->canvas->h() - 100) * scale_h, 20 * scale_w, m_text->h());
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
@@ -456,7 +471,7 @@ Hospital::revive_screen()
         to_string(m_slot) + "/characters.sav");
     auto sections = settings->sections();
 
-    m_max_pages = (sections.size() / BIG_LIST) + (sections.size() % BIG_LIST != 0);
+    update_max_pages(sections.size());
 
     int y = 236;
     int i = -1;
@@ -503,4 +518,27 @@ Hospital::revive_screen()
 
         y += 64;
     }
+}
+
+void
+Hospital::update_max_pages(int sections)
+{
+    m_max_pages = (sections / BIG_LIST) + (sections % BIG_LIST != 0);
+    set_pages_text();
+}
+
+void
+Hospital::set_pages_text()
+{
+    if (m_text)
+    {
+        delete m_text;
+    }
+
+    Environment *env = Environment::get_instance();
+    m_text = new Text(this, to_string(m_page) + "/" + to_string(m_max_pages), Color(170, 215, 190));
+
+    int x = (((env->canvas->w() + 275) - m_text->w()) / 2) * env->canvas->w() / W;
+    double y = (env->canvas->h() - 100) * env->canvas->h() / H;
+    m_text->set_position(x, y);
 }

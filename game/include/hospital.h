@@ -18,6 +18,7 @@ using std::map;
 class Button;
 class Colony;
 class Texture;
+class Text;
 
 class Hospital : public Level
 {
@@ -33,6 +34,7 @@ private:
     shared_ptr<Texture> m_scenario;
     int m_page;
     int m_max_pages;
+    Text *m_text;
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Button*> m_items;
 
@@ -47,6 +49,8 @@ private:
     void items_screen();
     void research_screen();
     void revive_screen();
+    void update_max_pages(int sections);
+    void set_pages_text();
 };
 
 #endif
