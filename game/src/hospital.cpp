@@ -42,19 +42,19 @@ Hospital::draw_self()
     switch (m_screen)
     {
         case CHAT:
-            change_to_chat();
+            chat_screen();
             break;
 
         case ITEMS:
-            change_to_items();
+            items_screen();
             break;
 
         case RESEARCH:
-            change_to_research();
+            research_screen();
             break;
 
         case REVIVE:
-            change_to_revive();
+            revive_screen();
             break;
     }
 }
@@ -75,21 +75,12 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
-    else if (button->id() == "reset")
-    {
-        m_buttons["buy"]->change_state(Button::IDLE);
-    }
-    else if (button->id() == "buy")
-    {
-        button->change_state(Button::ACTIVE);
-    }
     else if (button->id() != "hospital")
     {
         Environment *env = Environment::get_instance();
         string path = "res/images/colony/hospital/";
 
         m_scenario = env->resources_manager->get_texture(path + "scenario.png");
-        change_buttons();
 
         if (button->id() == "chat")
         {
@@ -99,12 +90,6 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         else if (button->id() == "items")
         {
             m_screen = ITEMS;
-            
-            m_buttons["reset"]->set_visible(true);
-            m_buttons["reset"]->set_active(true);
-
-            m_buttons["buy"]->set_visible(true);
-            m_buttons["buy"]->set_active(true);
         }
         else if (button->id() == "research")
         {
@@ -115,7 +100,13 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
             m_screen = REVIVE;
         }
 
-        button->change_state(Button::ACTIVE);
+        if (m_items.find(button->id()) == m_items.end())
+        {
+            change_buttons();
+            button->change_state(Button::ACTIVE);
+        }
+
+        change_items();
     }
 
     return true;
@@ -174,25 +165,40 @@ Hospital::create_buttons()
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "reset", path + "hospital/reset.png",
-        855 * scale_w, 693 * scale_h, 57 * scale_w, 52/2 * scale_h);
-    button->set_visible(false);
-    button->set_active(false);
-
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "buy", path + "hospital/buy.png",
-        772 * scale_w, 693 * scale_h, 58 * scale_w, 78/3 * scale_h);
-    button->set_sprites(3);
-    button->set_visible(false);
-    button->set_active(false);
-
-    m_buttons[button->id()] = button;
-
     for (auto b : m_buttons)
     {
         b.second->add_observer(this);
         add_child(b.second);
+    }
+
+    create_items();
+}
+
+void
+Hospital::create_items()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/items.sav");
+    auto sections = settings->sections();
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    int y = 236;
+
+    for(auto s : sections)
+    {
+        Button *button = new Button(this, s.first, "res/images/colony/big_list.png",
+            310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
+        button->set_active(false);
+        button->set_visible(false);
+
+        m_items[button->id()] = button;
+
+        button->add_observer(this);
+        add_child(button);
+
+        y += 64;
     }
 }
 
@@ -206,16 +212,23 @@ Hospital::change_buttons()
             b.second->change_state(Button::IDLE);
         }
     }
-
-    m_buttons["reset"]->set_visible(false);
-    m_buttons["reset"]->set_active(false);
-
-    m_buttons["buy"]->set_visible(false);
-    m_buttons["buy"]->set_active(false);
 }
 
 void
-Hospital::change_to_chat()
+Hospital::change_items()
+{
+    bool visible = m_screen == ITEMS or m_screen == RESEARCH;
+    bool active = m_screen == ITEMS;
+
+    for (auto item : m_items)
+    {
+        item.second->set_active(active);
+        item.second->set_visible(visible);
+    }
+}
+
+void
+Hospital::chat_screen()
 {
     Environment *env = Environment::get_instance();
 
@@ -237,7 +250,7 @@ Hospital::change_to_chat()
 }
 
 void
-Hospital::change_to_items()
+Hospital::items_screen()
 {
     string path = "res/images/colony/";
     Color color(170, 215, 190);
@@ -296,12 +309,6 @@ Hospital::change_to_items()
             y * scale_h,
             50 * scale_w, 25 * scale_h);
 
-        texture = env->resources_manager->get_texture(path + "big_list.png");
-        clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, 310 * scale_w,
-            (y+5) * scale_h,
-            602 * scale_w, 25 * scale_h);
-
         y += 64;
     }
 
@@ -317,7 +324,7 @@ Hospital::change_to_items()
 }
 
 void
-Hospital::change_to_research()
+Hospital::research_screen()
 {
     string path = "res/images/colony/";
     Color color(170, 215, 190);
@@ -381,7 +388,7 @@ Hospital::change_to_research()
 }
 
 void
-Hospital::change_to_revive()
+Hospital::revive_screen()
 {
     string path = "res/images/colony/";
     Color color(170, 215, 190);

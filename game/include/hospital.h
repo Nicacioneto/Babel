@@ -30,16 +30,18 @@ private:
     Screen m_screen;
     shared_ptr<Texture> m_scenario;
     map<ObjectID, Button*> m_buttons;
-
+    map<ObjectID, Button*> m_items;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();
+    void create_items();
     void change_buttons();
-    void change_to_chat();
-    void change_to_items();
-    void change_to_research();
-    void change_to_revive();
+    void change_items();
+    void chat_screen();
+    void items_screen();
+    void research_screen();
+    void revive_screen();
 };
 
 #endif
