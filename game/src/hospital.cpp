@@ -7,19 +7,21 @@
  */
 #include "colony.h"
 #include "hospital.h"
+#include "item.h"
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
 #include <core/text.h>
+#include <cstdlib>
+#include <iostream>
 
 #define W 1024.0
 #define H 768.0
-#define BIG_LIST 7
 
 using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
-    : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen(CHAT),
+    : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen("chat"),
     m_scenario(nullptr), m_page(1), m_max_pages(1), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
@@ -37,6 +39,10 @@ Hospital::Hospital(int slot, const string& next)
 
     set_pages_text();
     create_buttons();
+
+    Item *item = new Item(m_slot, m_colony, this);
+    item->add_observer(this);
+    add_child(item);
 }
 
 void
@@ -47,34 +53,29 @@ Hospital::draw_self()
 
     env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
 
-    if (m_text and m_screen != CHAT)
+    if (m_text and m_screen != "chat")
     {
         m_text->draw();
     }
 
-    switch (m_screen)
-    {
-        case CHAT:
-            chat_screen();
-            break;
-
-        case ITEMS:
-            items_screen();
-            break;
-
-        case RESEARCH:
-            research_screen();
-            break;
-
-        case REVIVE:
-            revive_screen();
-            break;
-    }
+    if (m_screen == "chat")
+        chat_screen();
+    else if (m_screen == "research")
+        research_screen();
+    else if (m_screen == "revive")
+        revive_screen();
 }
 
 bool
-Hospital::on_message(Object *sender, MessageID id, Parameters)
+Hospital::on_message(Object *sender, MessageID id, Parameters p)
 {
+    if (id == "max_pages")
+    {
+        m_max_pages = atoi(p.c_str());
+        set_pages_text();
+        return true;
+    }
+
     Button *button = dynamic_cast<Button *>(sender);
 
     if (id != Button::clickedID or not button)
@@ -101,6 +102,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         {
             m_page--;
         }
+        notify(m_screen, to_string(m_page));
     }
     else if (button->id() == "right_arrow")
     {
@@ -108,37 +110,31 @@ Hospital::on_message(Object *sender, MessageID id, Parameters)
         {
             m_page++;
         }
+        notify(m_screen, to_string(m_page));
     }
-    else if (m_items.find(button->id()) == m_items.end())
+    else
     {
         if (button->id() == "chat")
         {
-            m_screen = CHAT;
             m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
         }
         else if (button->id() == "items")
         {
-            m_screen = ITEMS;
         }
         else if (button->id() == "research")
         {
-            m_screen = RESEARCH;
         }
         else if (button->id() == "revive")
         {
-            m_screen = REVIVE;
         }
 
+        m_screen = button->id();
+        notify(m_screen, "");
+        
         m_page = 1;
         change_buttons();
         button->change_state(Button::ACTIVE);
     }
-    else
-    {
-        buy_item(button->id());
-    }
-
-    change_items();
 
     return true;
 }
@@ -222,46 +218,16 @@ Hospital::create_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
-
-    create_items();
-}
-
-void
-Hospital::create_items()
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/items.sav");
-    auto sections = settings->sections();
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    int y = 236;
-
-    for (auto s : sections)
-    {
-        Button *button = new Button(this, s.first, "res/images/colony/big_list.png",
-            310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
-        button->set_active(false);
-        button->set_visible(false);
-
-        m_items[button->id()] = button;
-
-        button->add_observer(this);
-        add_child(button);
-
-        y += 64;
-    }
 }
 
 void
 Hospital::change_buttons()
 {
-    m_buttons["left_arrow"]->set_active(m_screen != CHAT);
-    m_buttons["left_arrow"]->set_visible(m_screen != CHAT);
+    m_buttons["left_arrow"]->set_active(m_screen != "chat");
+    m_buttons["left_arrow"]->set_visible(m_screen != "chat");
 
-    m_buttons["right_arrow"]->set_active(m_screen != CHAT);
-    m_buttons["right_arrow"]->set_visible(m_screen != CHAT);
+    m_buttons["right_arrow"]->set_active(m_screen != "chat");
+    m_buttons["right_arrow"]->set_visible(m_screen != "chat");
 
     for (auto b : m_buttons)
     {
@@ -269,42 +235,6 @@ Hospital::change_buttons()
         {
             b.second->change_state(Button::IDLE);
         }
-    }
-}
-
-void
-Hospital::change_items()
-{
-    bool visible = m_screen == ITEMS or m_screen == RESEARCH;
-    bool active = m_screen == ITEMS;
-
-    for (auto item : m_items)
-    {
-        item.second->set_active(active);
-        item.second->set_visible(visible);
-    }
-}
-
-void
-Hospital::buy_item(const ObjectID id)
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/items.sav");
-
-    int qnt_earned = settings->read<int>(id, "qnt_earned", 0);
-    int qnt_max = settings->read<int>(id, "qnt_max", 0);
-
-    int matter = m_colony->matter() - settings->read<int>(id, "matter", 0);
-    int energy = m_colony->energy() - settings->read<int>(id, "energy", 0);
-
-    if (matter >= 0 and energy >= 0 and qnt_earned < qnt_max)
-    {
-        m_colony->set_matter(matter);
-        m_colony->set_energy(energy);
-
-        settings->write<int>(id, "qnt_earned", ++qnt_earned);
-        settings->save("res/datas/slot" + to_string(m_slot) + "/items.sav");
     }
 }
 
@@ -328,70 +258,6 @@ Hospital::chat_screen()
     
     env->canvas->draw(text, (305 + 5) * scale_w, 605 * scale_h, color);
     env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h), color);
-}
-
-void
-Hospital::items_screen()
-{
-    string path = "res/images/colony/";
-    Color color(170, 215, 190);
-
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
-    env->canvas->draw("Qnt.", 855 * scale_w, 186 * scale_h, color);
-
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_energy.png");
-    env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
-
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/items.sav");
-    auto sections = settings->sections();
-    update_max_pages(sections.size());
-
-    int y = 236;
-    int i = -1;
-    for (auto section : sections)
-    {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
-        {
-            continue;
-        }
-
-        string name = section.first;
-        string matter = section.second["matter"];
-        string energy = section.second["energy"];
-        string qnt_earned = section.second["qnt_earned"];
-        string qnt_max = section.second["qnt_max"];
-
-        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
-        if (not matter.empty())
-        {
-            env->canvas->draw(matter + "/" + energy, 690 * scale_w,
-                y * scale_h, color);
-        }
-        if (not qnt_earned.empty())
-        {
-            env->canvas->draw(qnt_earned + "/" + qnt_max, 855 * scale_w,
-                y * scale_h, color);
-        }
-
-        texture = env->resources_manager->get_texture(path + "icons/health.png");
-        Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, 310 * scale_w,
-            y * scale_h,
-            50 * scale_w, 25 * scale_h);
-
-        y += 64;
-    }
 }
 
 void
@@ -425,7 +291,7 @@ Hospital::research_screen()
     for (auto section : sections)
     {
         i++;
-        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
             continue;
         }
@@ -491,7 +357,7 @@ Hospital::revive_screen()
     for (auto section : sections)
     {
         i++;
-        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
             continue;
         }
