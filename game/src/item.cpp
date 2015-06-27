@@ -131,7 +131,7 @@ Item::on_message(Object *sender, MessageID id, Parameters p)
         buy_item(button->id());
     }
 
-    return true;
+    return false;
 }
 
 void

@@ -8,6 +8,7 @@
 #include "colony.h"
 #include "hospital.h"
 #include "item.h"
+#include "research.h"
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
@@ -44,6 +45,11 @@ Hospital::Hospital(int slot, const string& next)
     item->add_observer(this);
     add_child(item);
     item->set_visible(false);
+
+    Research *research = new Research(m_slot, this);
+    research->add_observer(this);
+    add_child(research);
+    research->set_visible(false);
 }
 
 void
@@ -61,8 +67,6 @@ Hospital::draw_self()
 
     if (m_screen == "chat")
         chat_screen();
-    else if (m_screen == "research")
-        research_screen();
     else if (m_screen == "revive")
         revive_screen();
 }
@@ -118,15 +122,6 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
         if (button->id() == "chat")
         {
             m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
-        }
-        else if (button->id() == "items")
-        {
-        }
-        else if (button->id() == "research")
-        {
-        }
-        else if (button->id() == "revive")
-        {
         }
 
         m_screen = button->id();
