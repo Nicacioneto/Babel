@@ -22,7 +22,7 @@ using std::to_string;
 
 Item::Item(int slot, Colony *colony, Object *parent)
     : Object(parent), m_slot(slot), m_colony(colony), m_settings(nullptr),
-    m_page(1), m_max_pages(0), m_font(nullptr)
+        m_page(1), m_max_pages(0), m_font(nullptr)
 {
     parent->add_observer(this);
 
@@ -67,13 +67,11 @@ void
 Item::draw_items(double scale_w, double scale_h, Color color)
 {
     Environment *env = Environment::get_instance();
-    int y = 236;
-    int i = -1;
-    
+
+    int y = 236, i = 0;
     for (auto section : m_settings->sections())
     {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        if (i++ < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
             change_button_state(m_buttons[section.first], false);
             continue;

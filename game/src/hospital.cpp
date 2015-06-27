@@ -66,9 +66,13 @@ Hospital::draw_self()
     }
 
     if (m_screen == "chat")
+    {
         chat_screen();
+    }
     else if (m_screen == "revive")
+    {
         revive_screen();
+    }
 }
 
 bool
@@ -283,12 +287,10 @@ Hospital::revive_screen()
     auto sections = settings->sections();
     update_max_pages(sections.size());
 
-    int y = 236;
-    int i = -1;
+    int y = 236, i = 0;
     for (auto section : sections)
     {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        if (i++ < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
             continue;
         }

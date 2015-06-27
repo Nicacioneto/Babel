@@ -283,12 +283,10 @@ Central::change_to_quests()
     auto sections = settings->sections();
     update_max_pages(sections.size());
     
-    int y = 236;
-    int i = -1;
+    int y = 236, i = 0;
     for (auto section : sections)
     {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        if (i++ < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
         {
             continue;
         }
@@ -334,12 +332,10 @@ Central::change_to_bestiary()
     auto sections = settings->sections();
     update_max_pages(sections.size());
 
-    int y = 236;
-    int i = -1;
+    int y = 236, i = 0;
     for (auto section : sections)
     {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        if (i++ < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
         {
             continue;
         }
@@ -384,12 +380,10 @@ Central::change_to_timers()
     vector<Mission *> m = missions();
     update_max_pages(m.size());
     
-    int y = 236;
-    int i = -1;
+    int y = 236, i = 0;
     for (auto mission : m)
     {
-        i++;
-        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        if (i++ < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
             continue;
         }
