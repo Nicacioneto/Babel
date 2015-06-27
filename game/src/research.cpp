@@ -69,9 +69,13 @@ Research::draw_self()
 
 		env->canvas->draw(m_textures["health"].get(), Rect(0, 25, 50, 50/2),
 		    310 * scale_w, y * scale_h, 50 * scale_w, 25 * scale_h);
-
 		env->canvas->draw(m_textures["big_list"].get(), Rect(0, 0, 602, 50/2),
 		    310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
+
+		env->canvas->draw(section.first, 360 * scale_w, y * scale_h, color);
+		env->canvas->draw(section.second["matter"] + "/" + section.second["energy"],
+		    690 * scale_w, y * scale_h, color);
+		env->canvas->draw(section.second["time"], 855 * scale_w, y * scale_h, color);
 
 		y += 64;
 	}
