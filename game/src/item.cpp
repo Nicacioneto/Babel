@@ -21,7 +21,7 @@ using std::to_string;
 #define H 768.0
 
 Item::Item(int slot, Colony *colony, Object *parent)
-    : Object(parent), m_slot(slot), m_colony(colony), m_visible(false), m_settings(nullptr),
+    : Object(parent), m_slot(slot), m_colony(colony), m_settings(nullptr),
     m_page(1), m_max_pages(0), m_font(nullptr)
 {
     parent->add_observer(this);
@@ -49,43 +49,50 @@ Item::Item(int slot, Colony *colony, Object *parent)
 void
 Item::draw_self()
 {
-    if (m_visible)
+    Environment *env = Environment::get_instance();
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    m_font->set_size(18);
+
+    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
+    env->canvas->draw("Qnt.", 855 * scale_w, 186 * scale_h, color);
+    env->canvas->draw(m_textures["matter_energy"].get(), 690 * scale_w, 188 * scale_h);
+
+    draw_items(scale_w, scale_h, color);
+}
+
+void
+Item::draw_items(double scale_w, double scale_h, Color color)
+{
+    Environment *env = Environment::get_instance();
+    int y = 236;
+    int i = -1;
+    
+    for (auto section : m_settings->sections())
     {
-
-        Environment *env = Environment::get_instance();
-        Color color(170, 215, 190);
-        double scale_w = env->canvas->w() / W;
-        double scale_h = env->canvas->h() / H;
-
-        m_font->set_size(18);
-
-        env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
-        env->canvas->draw("Qnt.", 855 * scale_w, 186 * scale_h, color);
-        env->canvas->draw(m_textures["matter_energy"].get(), 690 * scale_w, 188 * scale_h);
-
-        int y = 236;
-        int i = -1;
-        for (auto section : m_settings->sections())
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
         {
-            i++;
-            if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
-            {
-                continue;
-            }
-
-            string qnt_earned = m_settings->read<string>(section.first, "qnt_earned", "");
-
-            env->canvas->draw(section.first, 360 * scale_w, y * scale_h, color);
-            env->canvas->draw(section.second["matter"] + "/" + section.second["energy"],
-                690 * scale_w, y * scale_h, color);
-            env->canvas->draw(qnt_earned + "/" + section.second["qnt_max"],
-                855 * scale_w, y * scale_h, color);
-
-            env->canvas->draw(m_textures["health"].get(), Rect(0, 25, 50, 50/2),
-                310 * scale_w, y * scale_h, 50 * scale_w, 25 * scale_h);
-
-            y += 64;
+            change_button_state(m_buttons[section.first], false);
+            continue;
         }
+
+        change_button_state(m_buttons[section.first], true, y);
+
+        string qnt_earned = m_settings->read<string>(section.first, "qnt_earned", "");
+
+        env->canvas->draw(section.first, 360 * scale_w, y * scale_h, color);
+        env->canvas->draw(section.second["matter"] + "/" + section.second["energy"],
+            690 * scale_w, y * scale_h, color);
+        env->canvas->draw(qnt_earned + "/" + section.second["qnt_max"],
+            855 * scale_w, y * scale_h, color);
+
+        env->canvas->draw(m_textures["health"].get(), Rect(0, 25, 50, 50/2),
+            310 * scale_w, y * scale_h, 50 * scale_w, 25 * scale_h);
+
+        y += 64;
     }
 }
 
@@ -106,11 +113,10 @@ Item::on_message(Object *sender, MessageID id, Parameters p)
 
     if (hospital)
     {
-        m_visible = id == "items";
-
-        change_buttons(id != "chat", m_visible);
+        set_visible(id == "items");
+        change_buttons(id != "chat", visible());
         
-        if (m_visible)
+        if (visible())
         {
             notify("max_pages", to_string(m_max_pages));
             
@@ -145,8 +151,6 @@ Item::create_buttons()
     {
         Button *button = new Button(this, s.first, "res/images/colony/big_list.png",
             310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
-        button->set_active(m_visible);
-        button->set_visible(m_visible);
 
         m_buttons[button->id()] = button;
 
@@ -164,6 +168,19 @@ Item::change_buttons(bool visible, bool active)
     {
         button.second->set_active(active);
         button.second->set_visible(visible);
+    }
+}
+
+void
+Item::change_button_state(Button *button, bool state, int y)
+{
+    button->set_visible(state);
+    button->set_active(state);
+
+    if (state)
+    {
+        Environment *env = Environment::get_instance();
+        button->set_y((y+5) * env->canvas->h() / H);
     }
 }
 

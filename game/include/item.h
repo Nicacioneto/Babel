@@ -8,7 +8,6 @@
 #ifndef ITEM_H
 #define ITEM_H
 
-#include <core/listener.h>
 #include <core/object.h>
 #include <map>
 
@@ -19,7 +18,7 @@ class Texture;
 class Colony;
 class Font;
 
-class Item : public Object, public Listener
+class Item : public Object
 {
 public:
     Item(int slot, Colony *colony, Object *parent = nullptr);
@@ -27,7 +26,6 @@ public:
 private:
     int m_slot;
     Colony *m_colony;
-    bool m_visible;
     shared_ptr<Settings> m_settings;
     int m_page;
     int m_max_pages;
@@ -37,9 +35,11 @@ private:
     map<ObjectID, shared_ptr<Texture>> m_textures;
 
     void draw_self();
+    void draw_items(double scale_w, double scale_h, Color color);
     bool on_message(Object *sender, MessageID id, Parameters p);
     void create_buttons();
     void change_buttons(bool visible = false, bool active = false);
+    void change_button_state(Button *button, bool state, int y = 0);
     void buy_item(const ObjectID id);
 };
 

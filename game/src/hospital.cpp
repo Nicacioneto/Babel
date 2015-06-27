@@ -43,6 +43,7 @@ Hospital::Hospital(int slot, const string& next)
     Item *item = new Item(m_slot, m_colony, this);
     item->add_observer(this);
     add_child(item);
+    item->set_visible(false);
 }
 
 void
