@@ -30,6 +30,9 @@ private:
 
     unsigned long m_last;
     shared_ptr<Texture> m_scenario;
+    int m_page;
+    int m_max_pages;
+    Text *m_text;
     map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
@@ -41,6 +44,8 @@ private:
     void change_to_bestiary();
     void change_to_timers();
     void update_self(unsigned long elapsed);
+    void update_max_pages(int sections);
+    void set_pages_text();
 };
 
 #endif
