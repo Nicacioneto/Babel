@@ -113,28 +113,27 @@ Central::on_message(Object *sender, MessageID id, Parameters)
     else
     {
         m_page = 1;
-    }
 
-    if (button->id() == "chat")
-    {
-        m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
-        m_screen = CHAT;
+        if (button->id() == "chat")
+        {
+            m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
+            m_screen = CHAT;
+        }
+        else if (button->id() == "quests")
+        {
+            m_screen = QUESTS;
+        }
+        else if (button->id() == "bestiary")
+        {
+            m_screen = BESTIARY;
+        }
+        else if (button->id() == "timers")
+        {
+            m_screen = TIMERS;
+        }
+        change_buttons();
+        button->change_state(Button::ACTIVE);
     }
-    else if (button->id() == "quests")
-    {
-        m_screen = QUESTS;
-    }
-    else if (button->id() == "bestiary")
-    {
-        m_screen = BESTIARY;
-    }
-    else if (button->id() == "timers")
-    {
-        m_screen = TIMERS;
-    }
-
-    change_buttons();
-    button->change_state(Button::ACTIVE);
 
     return true;
 }
@@ -432,6 +431,8 @@ void
 Central::update_max_pages(int sections)
 {
     m_max_pages = (sections / BIG_LIST) + (sections % BIG_LIST != 0);
+    m_max_pages = m_max_pages == 0 ? 1 : m_max_pages;
+    
     set_pages_text();
 }
 
