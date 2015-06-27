@@ -14,11 +14,13 @@
 
 #define W 1024.0
 #define H 768.0
+#define BIG_LIST 7
 
 using std::to_string;
 
 Central::Central(int slot, const string& next)
-    : Level("central", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
+    : Level("central", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr),
+    m_page(1), m_max_pages(1), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -29,6 +31,7 @@ Central::Central(int slot, const string& next)
     colony->add_observer(this);
     add_child(colony);
 
+    set_pages_text();
     create_buttons();
 }
 
@@ -45,6 +48,11 @@ Central::draw_self()
     env->canvas->clear();
 
     env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+
+    if (m_text and m_screen != CHAT)
+    {
+        m_text->draw();
+    }
 
     switch (m_screen)
     {
@@ -81,40 +89,52 @@ Central::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(id);
         finish();
+        return true;
     }
-    else if (button->id() != "central")
-    {
-        Environment *env = Environment::get_instance();
-        string path = "res/images/colony/";
-        change_buttons();
 
-        if (button->id() == "chat")
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/central/";
+
+    m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
+    if (button->id() == "left_arrow")
+    {
+        if (m_page > 1)
         {
-            m_screen = CHAT;
-            m_scenario = env->resources_manager->get_texture(
-                path + "central/central_chat_scenario.png");
+            m_page--;
         }
-        else if (button->id() == "quests")
-        {
-            m_screen = QUESTS;
-            m_scenario = env->resources_manager->get_texture(
-                path + "central/central_scenario.png");
-        }
-        else if (button->id() == "bestiary")
-        {
-            m_screen = BESTIARY;
-            m_scenario = env->resources_manager->get_texture(
-                path + "central/central_scenario.png");
-        }
-        else if (button->id() == "timers")
-        {
-            m_screen = TIMERS;
-            m_scenario = env->resources_manager->get_texture(
-                path + "central/central_scenario.png");
-        }
-        
-        button->change_state(Button::ACTIVE);
     }
+    else if (button->id() == "right_arrow")
+    {
+        if (m_page < m_max_pages)
+        {
+            m_page++;
+        }
+    }
+    else
+    {
+        m_page = 1;
+    }
+
+    if (button->id() == "chat")
+    {
+        m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
+        m_screen = CHAT;
+    }
+    else if (button->id() == "quests")
+    {
+        m_screen = QUESTS;
+    }
+    else if (button->id() == "bestiary")
+    {
+        m_screen = BESTIARY;
+    }
+    else if (button->id() == "timers")
+    {
+        m_screen = TIMERS;
+    }
+
+    change_buttons();
+    button->change_state(Button::ACTIVE);
 
     return true;
 }
@@ -172,6 +192,26 @@ Central::create_buttons()
 
     m_buttons[button->id()] = button;
 
+    x = m_text->x() - 30 * scale_w;
+
+    button = new Button(this, "left_arrow", path + "left_arrow.png",
+        x, m_text->y(), 20 * scale_w, m_text->h());
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+
+    m_buttons[button->id()] = button;
+    
+    x = m_text->x() + m_text->w() + 10 * scale_w;
+
+    button = new Button(this, "right_arrow", path + "right_arrow.png",
+        x, m_text->y(), 20 * scale_w, m_text->h());
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+
+    m_buttons[button->id()] = button;
+
     for (auto b : m_buttons)
     {
         auto id = b.first;
@@ -183,6 +223,12 @@ Central::create_buttons()
 void
 Central::change_buttons()
 {
+    m_buttons["left_arrow"]->set_active(m_screen != CHAT);
+    m_buttons["left_arrow"]->set_visible(m_screen != CHAT);
+
+    m_buttons["right_arrow"]->set_active(m_screen != CHAT);
+    m_buttons["right_arrow"]->set_visible(m_screen != CHAT);
+
     for (auto b : m_buttons)
     {
         if (b.first != "central")
@@ -233,10 +279,18 @@ Central::change_to_quests()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/quests.sav");
     auto sections = settings->sections();
-
+    update_max_pages(sections.size());
+    
     int y = 236;
+    int i = -1;
     for (auto section : sections)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        {
+            continue;
+        }
+
         string name = section.first;
         string new_ = section.second["new"];
 
@@ -276,10 +330,17 @@ Central::change_to_bestiary()
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/bestiary.sav");
     auto sections = settings->sections();
+    update_max_pages(sections.size());
 
     int y = 236;
+    int i = -1;
     for (auto section : sections)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        {
+            continue;
+        }
         string name = section.first;
         string icon = section.second["icon"];
 
@@ -317,11 +378,19 @@ Central::change_to_timers()
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
 
     shared_ptr<Texture> texture;
-    int y = 236;
 
     vector<Mission *> m = missions();
+    update_max_pages(m.size());
+    
+    int y = 236;
+    int i = -1;
     for (auto mission : m)
     {
+        i++;
+        if (i < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        {
+            continue;
+        }
         env->canvas->draw(mission->name(), 360 * scale_w, y * scale_h, color);
         string str_remainder;
         if (mission->remainder())
@@ -356,4 +425,28 @@ Central::change_to_timers()
 
         y += 64;
     }
+}
+
+
+void
+Central::update_max_pages(int sections)
+{
+    m_max_pages = (sections / BIG_LIST) + (sections % BIG_LIST != 0);
+    set_pages_text();
+}
+
+void
+Central::set_pages_text()
+{
+    if (m_text)
+    {
+        delete m_text;
+    }
+
+    Environment *env = Environment::get_instance();
+    m_text = new Text(this, to_string(m_page) + "/" + to_string(m_max_pages), Color(170, 215, 190));
+
+    double x = (env->canvas->w() - m_text->w()) / 2 + (275  * env->canvas->w() / W) / 2;
+    double y = env->canvas->h() - 100 * env->canvas->h() / H;
+    m_text->set_position(x, y);
 }
