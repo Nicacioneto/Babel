@@ -1,12 +1,12 @@
 /*
- * Class that represents the Research
+ * Class that represents the Revive
  *
  * Author: Tiamat
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
-#ifndef RESEARCH_H
-#define RESEARCH_H
+#ifndef REVIVE_H
+#define REVIVE_H
 
 #include <core/object.h>
 #include <map>
@@ -16,10 +16,10 @@ using std::map;
 class Texture;
 class Font;
 
-class Research : public Object
+class Revive : public Object
 {
 public:
-    Research(int slot, Object *parent = nullptr);
+    Revive(int slot, Object *parent = nullptr);
 
 private:
     int m_slot;

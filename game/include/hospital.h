@@ -42,8 +42,6 @@ private:
     void create_buttons();
     void change_buttons();
     void chat_screen();
-    void revive_screen();
-    void update_max_pages(int sections);
     void set_pages_text();
 };
 

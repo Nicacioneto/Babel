@@ -8,6 +8,7 @@
 #include "colony.h"
 #include "hospital.h"
 #include "item.h"
+#include "revive.h"
 #include "research.h"
 #include <core/font.h>
 #include <core/rect.h>
@@ -46,6 +47,11 @@ Hospital::Hospital(int slot, const string& next)
     research->add_observer(this);
     add_child(research);
     research->set_visible(false);
+
+    Revive *revive = new Revive(m_slot, this);
+    revive->add_observer(this);
+    add_child(revive);
+    revive->set_visible(false);
 }
 
 void
@@ -65,10 +71,10 @@ Hospital::draw_self()
     {
         chat_screen();
     }
-    else if (m_screen == "revive")
-    {
-        revive_screen();
-    }
+    // else if (m_screen == "revive")
+    // {
+    //     revive_screen();
+    // }
 }
 
 bool
@@ -254,85 +260,6 @@ Hospital::chat_screen()
     
     env->canvas->draw(text, (305 + 5) * scale_w, 605 * scale_h, color);
     env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h), color);
-}
-
-void
-Hospital::revive_screen()
-{
-    string path = "res/images/colony/";
-    Color color(170, 215, 190);
-
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
-    env->canvas->draw("Class", 524 * scale_w, 186 * scale_h, color);
-    env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
-
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(
-        path + "icons/matter_energy.png");
-    env->canvas->draw(texture.get(), 690 * scale_w, 188 * scale_h);
-
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/characters.sav");
-    auto sections = settings->sections();
-    update_max_pages(sections.size());
-
-    int y = 236, i = -1;
-    for (auto section : sections)
-    {
-        if (++i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
-        {
-            continue;
-        }
-        
-        string name = section.first;
-
-        if (name == "Default")
-        {
-            continue;
-        }
-
-        string class_ = section.second["class"];
-        string matter = section.second["matter"];
-        string energy = section.second["energy"];
-        string time = section.second["time"];
-
-        env->canvas->draw(name, 360 * scale_w, y * scale_h, color);
-        env->canvas->draw(class_, 524 * scale_w, y * scale_h, color);
-        if (not matter.empty())
-        {
-            env->canvas->draw(matter + "/" + energy, 690 * scale_w, y * scale_h, color);
-        }
-        if (not time.empty())
-        {
-            env->canvas->draw(time, 855 * scale_w, y * scale_h, color);
-        }
-
-        texture = env->resources_manager->get_texture(path + "icons/health.png");
-        Rect clip = Rect(0, 25, 50, 50/2);
-        env->canvas->draw(texture.get(), clip, 310 * scale_w,
-            y * scale_h, 50 * scale_w, 25 * scale_h);
-
-        texture = env->resources_manager->get_texture(path + "big_list.png");
-        clip = Rect(0, 0, 602, 75/3);
-        env->canvas->draw(texture.get(), clip, 310 * scale_w,
-            (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
-
-        y += 64;
-    }
-}
-
-void
-Hospital::update_max_pages(int sections)
-{
-    m_max_pages = (sections / BIG_LIST) + (sections % BIG_LIST != 0);
-    set_pages_text();
 }
 
 void
