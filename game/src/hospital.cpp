@@ -34,10 +34,6 @@ Hospital::Hospital(int slot, const string& next)
     m_colony->add_observer(this);
     add_child(m_colony);
 
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-
     set_pages_text();
     create_buttons();
 
@@ -128,10 +124,10 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
             m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
         }
 
+        m_page = 1;
         m_screen = button->id();
         notify(m_screen, "");
         
-        m_page = 1;
         change_buttons();
         button->change_state(Button::ACTIVE);
     }
@@ -287,10 +283,10 @@ Hospital::revive_screen()
     auto sections = settings->sections();
     update_max_pages(sections.size());
 
-    int y = 236, i = 0;
+    int y = 236, i = -1;
     for (auto section : sections)
     {
-        if (i++ < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        if (++i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
         {
             continue;
         }
@@ -348,6 +344,10 @@ Hospital::set_pages_text()
     }
 
     Environment *env = Environment::get_instance();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
     m_text = new Text(this, to_string(m_page) + "/" + to_string(m_max_pages), Color(170, 215, 190));
 
     double x = (env->canvas->w() - m_text->w()) / 2 + (275  * env->canvas->w() / W) / 2;

@@ -59,7 +59,7 @@ Research::draw_self()
     int y = 236, i = 0;
     for (auto section : m_settings->sections())
     {
-        if (i++ < (m_page - 1) * BIG_LIST or i >= BIG_LIST * m_page)
+        if (++i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
         {
             continue;
         }
@@ -96,6 +96,10 @@ Research::on_message(Object *sender, MessageID id, Parameters p)
         if (p.size())
         {
             m_page = atoi(p.c_str());
+        }
+        else
+        {
+            m_page = 1;
         }
     }
 
