@@ -121,14 +121,17 @@ Central::on_message(Object *sender, MessageID id, Parameters)
         }
         else if (button->id() == "quests")
         {
+            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = QUESTS;
         }
         else if (button->id() == "bestiary")
         {
+            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = BESTIARY;
         }
         else if (button->id() == "timers")
         {
+            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = TIMERS;
         }
         change_buttons();
