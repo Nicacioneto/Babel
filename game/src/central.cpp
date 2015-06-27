@@ -95,7 +95,6 @@ Central::on_message(Object *sender, MessageID id, Parameters)
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/central/";
 
-    m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
     if (button->id() == "left_arrow")
     {
         if (m_page > 1)
@@ -113,6 +112,7 @@ Central::on_message(Object *sender, MessageID id, Parameters)
     else
     {
         m_page = 1;
+        m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
 
         if (button->id() == "chat")
         {
@@ -121,19 +121,17 @@ Central::on_message(Object *sender, MessageID id, Parameters)
         }
         else if (button->id() == "quests")
         {
-            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = QUESTS;
         }
         else if (button->id() == "bestiary")
         {
-            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = BESTIARY;
         }
         else if (button->id() == "timers")
         {
-            m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
             m_screen = TIMERS;
         }
+
         change_buttons();
         button->change_state(Button::ACTIVE);
     }
