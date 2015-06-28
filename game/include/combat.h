@@ -31,6 +31,7 @@ private:
 
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_result;
+    shared_ptr<Texture> m_attacker_icon;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, Character*> m_enemies;
     multimap<int, string> m_attackers;

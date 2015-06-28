@@ -156,6 +156,20 @@ Combat::draw_self()
         Rect rect { x, y, w, h };
         env->canvas->fill(rect, Color::BLUE);
     }
+
+    double x = 30 * env->canvas->w() / W;
+    auto it = m_attackers.begin();
+    for (int i = 1; i <= 12; ++i)
+    {
+        string attacker = it->second;
+
+        m_attacker_icon = env->resources_manager->get_texture("res/images/combat/" + attacker + ".png");
+
+        env->canvas->draw(m_attacker_icon.get(), x, 25 * env->canvas->h() / H);
+
+        x += 82 * env->canvas->w() / W;
+        ++it;
+    }
 }
 
 bool
@@ -223,7 +237,14 @@ Combat::load_characters()
         it.second->set_active(false);
         add_child(it.second);
 
-        m_attackers.insert(pair<int, string>(it.second->cooldown(), it.second->id()));
+        for (int i = 1; i <= 12; ++i)
+        {
+            it.second->set_attacks_quantity(i);
+
+            int new_cooldown = it.second->cooldown() * i;
+
+            m_attackers.insert(pair<int, string>(new_cooldown, it.second->id()));
+        }
     }
 }
 
@@ -268,7 +289,14 @@ Combat::load_enemies()
         it.second->add_observer(this);
         add_child(it.second);
 
-        m_attackers.insert(pair<int, string>(it.second->cooldown(), it.second->id()));
+        for (int i = 1; i <= 12; ++i)
+        {
+            it.second->set_attacks_quantity(i);
+
+            int new_cooldown = it.second->cooldown() * i;
+
+            m_attackers.insert(pair<int, string>(new_cooldown, it.second->id()));
+        }
     }
 }
 
