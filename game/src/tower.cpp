@@ -101,6 +101,8 @@ Tower::draw_self()
 
     // Send team
     env->canvas->draw(m_textures["drone2"].get(), 680 * scale_w, 680 * scale_h);
+    env->canvas->draw(Line(Point(724 * scale_w, 683 * scale_h),
+        Point(724 * scale_w, 712 * scale_h)), color);
     env->canvas->draw(m_textures["char1"].get(), 734 * scale_w, 680 * scale_h);
     env->canvas->draw(m_textures["char2"].get(), 780 * scale_w, 680 * scale_h);
     env->canvas->draw(m_textures["char3"].get(), 826 * scale_w, 680 * scale_h);
@@ -136,7 +138,7 @@ Tower::draw_self()
             y -= 34;
         }
 
-        string f = i < 2 ? "2" : "L";
+        string f = i < 2 ? to_string(i+1) : "L";
         env->canvas->draw(m_textures["floor" + f].get(), x * scale_w, y * scale_h);
     }
 

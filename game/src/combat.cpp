@@ -163,7 +163,8 @@ Combat::draw_self()
     {
         string attacker = it->second;
 
-        m_attacker_icon = env->resources_manager->get_texture("res/images/combat/" + attacker + ".png");
+        m_attacker_icon = env->resources_manager->get_texture("res/images/combat/" +
+            attacker + ".png");
 
         env->canvas->draw(m_attacker_icon.get(), x, 25 * env->canvas->h() / H);
 

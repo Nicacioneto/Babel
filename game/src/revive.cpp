@@ -57,10 +57,10 @@ Revive::draw_self()
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
     env->canvas->draw(m_textures["matter_energy"].get(), 690 * scale_w, 188 * scale_h);
 
-    int y = 236, i = -1;
+    int y = 236, i = 0;
     for (auto section : m_settings->sections())
     {
-        if (++i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page or section.first == "Default")
+        if (i++ < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page or section.first == "Default")
         {
             continue;
         }
