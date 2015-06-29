@@ -119,6 +119,8 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
     {
         start_mission();
         enable_popup(false);
+        set_next("central");
+        finish();
     }
 
     return true;
@@ -218,5 +220,5 @@ Planet::load_buttons()
 void
 Planet::start_mission()
 {
-    start_time(m_text, 10, "workshop", 50, 50);
+    start_time(m_text, 20, "workshop", 50, 50);
 }
