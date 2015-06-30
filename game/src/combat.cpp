@@ -203,7 +203,7 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 
         for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
         {
-            if(it->second == id)
+            if (it->second == id)
             {
                 m_attackers.erase(it);
             }
@@ -332,7 +332,7 @@ Combat::enemy_attack(Character* enemy)
 
         for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
         {
-            if(it->second == character->id())
+            if (it->second == character->id())
             {
                 m_attackers.erase(it);
             }

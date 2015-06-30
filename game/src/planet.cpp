@@ -119,8 +119,6 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
     {
         start_mission();
         enable_popup(false);
-        set_next("central");
-        finish();
     }
 
     return true;
