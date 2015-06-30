@@ -200,6 +200,15 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
         remove_child(enemy);
 
         m_enemies.erase(id);
+
+        for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
+        {
+            if(it->second == id)
+            {
+                m_attackers.erase(it);
+            }
+        }
+
         delete enemy;
     }
 
@@ -320,7 +329,17 @@ Combat::enemy_attack(Character* enemy)
         remove_child(character);
 
         m_characters.erase(character->id());
+
+        for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
+        {
+            if(it->second == character->id())
+            {
+                m_attackers.erase(it);
+            }
+        }
+        
         delete character;
+
     }
 
     update_attackers(enemy);
