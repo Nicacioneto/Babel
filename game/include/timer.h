@@ -9,8 +9,8 @@
 #define TIMER_H
 
 #include <core/exception.h>
-#include <SDL_thread.h>
-#include <SDL_timer.h>
+#include <SDL2/SDL_thread.h>
+#include <SDL2/SDL_timer.h>
 #include <vector>
 #include "mission.h"
 
