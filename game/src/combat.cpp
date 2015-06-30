@@ -119,8 +119,6 @@ Combat::update_self(unsigned long elapsed)
         m_state = CHARACTER_ATTACK;
         m_enemy_turn = nullptr;
     }
-
-    m_attackers.erase(m_attackers.begin());
 }
 
 void
@@ -336,6 +334,8 @@ Combat::update_attackers(Character* character)
     character->set_attacks_quantity(attacks_quantity);
 
     int new_cooldown = character->cooldown() * attacks_quantity;
+    
+    m_attackers.erase(m_attackers.begin());
 
     m_attackers.insert(pair<int, string>(new_cooldown, character->id()));
 }
