@@ -41,6 +41,7 @@ private:
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void change_screen();
     void reset_choice();
     void confirm_squad();
     void load_squad();

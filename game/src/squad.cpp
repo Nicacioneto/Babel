@@ -121,12 +121,16 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     if (button->id() == "select_squad")
     {
         m_screen = SQUAD;
+        change_screen();
+        
         m_buttons["select_drone"]->change_state(Button::IDLE);
         button->change_state(Button::ACTIVE);
     }
     else if (button->id() == "select_drone")
     {
         m_screen = DRONE;
+        change_screen();
+
         m_buttons["select_squad"]->change_state(Button::IDLE);
         button->change_state(Button::ACTIVE);
     }
@@ -140,6 +144,11 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "reset_choice")
     {
         reset_choice();
+    }
+    else if (button->id() == "confirm")
+    {
+        set_next("dungeon");
+        finish();
     }
     else if (button->id() == "back")
     {
@@ -172,6 +181,19 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
 }
 
 void
+Squad::change_screen()
+{
+    for (auto c : m_characters)
+    {
+        c.second->set_visible(m_screen == SQUAD);
+        m_buttons[c.first]->set_visible(m_screen == SQUAD);
+        m_buttons[c.first]->set_active(m_screen == SQUAD);
+    }
+
+    load_squad();
+}
+
+void
 Squad::reset_choice()
 {
     for (auto c : m_characters)
@@ -179,6 +201,8 @@ Squad::reset_choice()
         m_buttons[c.first]->set_visible(true);
         m_squad.clear();
     }
+
+    load_squad();
 }
 
 void
