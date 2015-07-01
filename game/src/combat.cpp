@@ -28,7 +28,6 @@ Combat::Combat(int slot, const string& next)
 
     env->events_manager->register_listener(this);
     m_texture = env->resources_manager->get_texture("res/images/combat/arena.png");
-    m_actions = env->resources_manager->get_texture("res/images/combat/actions.png");
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
 
@@ -174,10 +173,6 @@ Combat::draw_self()
         
         Rect rect { x, y, w, h };
         env->canvas->fill(rect, Color::BLUE);
-    }
-    else
-    {
-        env->canvas->draw(m_actions.get(), 278 * env->canvas->w() / W, 620 * env->canvas->h() / H);
     }
 
     double x = 30 * env->canvas->w() / W;
