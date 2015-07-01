@@ -41,6 +41,7 @@ private:
     map<ObjectID, Button*> m_weapons;
     map<ObjectID, Button*> m_armor;
     map<ObjectID, Button*> m_shield;
+    map<ObjectID, Button*> m_equip_lvl;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
 

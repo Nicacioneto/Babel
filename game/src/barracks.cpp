@@ -225,6 +225,23 @@ Barracks::create_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    int x = 500;
+    y = 437;
+    w = 35 * scale_w;
+    h = 35 * scale_h;
+    for (int i = 0; i < 5; ++i, x += 85)
+    {
+        y = 437;
+        for (int j = 0; j < 4; ++j, y += 56)
+        {
+            button = new Button(this, to_string(i) + to_string(j), x * scale_w, y * scale_h, w, h);
+            button->set_visible(false);
+            m_equip_lvl[button->id()] = button;
+            button->add_observer(this);
+            add_child(button);
+        }
+    }
 }
 
 void
