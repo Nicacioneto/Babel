@@ -115,34 +115,34 @@ Action::create_buttons()
     int x = 304, y = 630;
 
     Button *button = new Button(this, "attack", path + "attack.png",
-        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        x * scale_w, y * scale_h, 46 * scale_w, 123 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "defense", path + "defense.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        (x-10) * scale_w, (y + 60) * scale_h, 58 * scale_w, 123 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     x += 71;
     button = new Button(this, "skill", path + "skill.png",
-        375 * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        375 * scale_w, y * scale_h, 30 * scale_w, 123 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "rest", path + "rest.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        x * scale_w, (y + 60) * scale_h, 31 * scale_w, 123 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     x += 71;
     button = new Button(this, "item", path + "item.png",
-        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        x * scale_w, y * scale_h, 30 * scale_w, 123 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "run", path + "run.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+        x * scale_w, (y + 60) * scale_h, 26 * scale_w, 129 / 3 * scale_h);
     button->set_sprites(3);
     m_buttons[button->id()] = button;
 
