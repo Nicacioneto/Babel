@@ -50,7 +50,7 @@ private:
     void update_self(unsigned long elapsed);
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters Parameters);
-    void load_characters();
+    void load_team();
     void load_enemies();
     void enemy_attack(Character* enemy);
     void update_attackers(Character* character);

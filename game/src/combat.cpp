@@ -10,6 +10,7 @@
 #include "character.h"
 #include <core/font.h>
 #include <core/rect.h>
+#include <core/settings.h>
 #include <core/text.h>
 #include <core/keyboardevent.h>
 
@@ -35,7 +36,7 @@ Combat::Combat(int slot, const string& next)
     env->canvas->set_font(font);
     font->set_size(30);
 
-    load_characters();
+    load_team();
     load_enemies();
 
     m_action = new Action(m_slot, this);
@@ -243,23 +244,22 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 }
 
 void
-Combat::load_characters()
+Combat::load_team()
 {
-    Character *character = new Character(m_slot, this, "albert", "albert.png", 0, 0);
-    character->set_active(false);
-    m_characters[character->id()] = character;
+    Environment *env = Environment::get_instance();
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+    auto heros = settings->sections()["Squad"];
 
-    character = new Character(m_slot, this, "booker", "booker.png", 0, 0);
-    character->set_active(false);
-    m_characters[character->id()] = character;
-
-    character = new Character(m_slot, this, "isaac", "isaac.png", 0, 0);
-    character->set_active(false);
-    m_characters[character->id()] = character;
-
-    character = new Character(m_slot, this, "newton", "newton.png", 0, 0);
-    character->set_active(false);
-    m_characters[character->id()] = character;
+    for (auto h : heros)
+    {
+        if (h.second == "")
+        {
+            break;
+        }
+        Character *character = new Character(m_slot, this, h.second, h.second + ".png", 0, 0);
+        m_characters[character->id()] = character;
+    }
 
     set_initial_position();
 
