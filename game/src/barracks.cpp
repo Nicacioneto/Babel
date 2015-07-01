@@ -934,6 +934,19 @@ Barracks::on_event(const KeyboardEvent& event)
 
         return true;
     }
+    else if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::RIGHT)
+    {
+        m_character = (m_character + 1) % m_characters.size();
+    }
+    else if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::LEFT)
+    {
+        if (--m_character < 0)
+        {
+            m_character = m_characters.size() - 1;
+        }
+    }
 
     return false;
 }
