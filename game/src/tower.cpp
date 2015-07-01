@@ -158,7 +158,8 @@ bool
 Tower::on_message(Object *sender, MessageID id, Parameters)
 {
     Button *button = dynamic_cast<Button *>(sender);
-
+    Environment *env = Environment::get_instance();
+    
     if (id != Button::clickedID or not button)
     {
         Colony *colony = dynamic_cast<Colony *>(sender);
@@ -176,7 +177,6 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "inspect_team")
     {
-        Environment *env = Environment::get_instance();
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
             to_string(m_slot) + "/colony.sav");
         settings->write<string>("Barracks", "prev", "tower");
@@ -199,7 +199,19 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "send_team")
     {
-        set_next("dungeon");
+        string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+        shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+
+        string hero1 = settings->read<string>("Squad", "hero1", "");
+
+        if (hero1 != "")
+        {
+            set_next("dungeon");
+        }
+        else
+        {
+            set_next("squad");
+        }
         finish();
     }
 
