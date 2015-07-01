@@ -68,6 +68,8 @@ Squad::Squad(int slot, const string& next)
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    load_squad();
 }
 
 Squad::~Squad()
@@ -192,7 +194,31 @@ Squad::confirm_squad()
         settings->write<string>("Squad", "hero" + to_string(i++), id);
     }
 
+    for (int j = i; j <= 4; ++j)
+    {
+        settings->write<string>("Squad", "hero" + to_string(j), "");
+    }
+
     settings->save(path);
+}
+
+void
+Squad::load_squad()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+
+    auto heros = settings->sections()["Squad"];
+
+    for (auto h : heros)
+    {
+        if (h.second != "")
+        {
+            m_buttons[h.second]->set_visible(false);
+            m_squad.push_back(h.second);
+        }
+    }
 }
 
 void
