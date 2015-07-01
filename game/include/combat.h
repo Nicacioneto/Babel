@@ -16,6 +16,7 @@
 
 using std::multimap;
 
+class Action;
 class Character;
 class Text;
 class Texture;
@@ -33,7 +34,6 @@ private:
     shared_ptr<Texture> m_actions;
     shared_ptr<Texture> m_result;
     shared_ptr<Texture> m_attacker_icon;
-    map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, Character*> m_enemies;
     multimap<int, string> m_attackers;
@@ -42,6 +42,7 @@ private:
     string m_attacker;
     State m_state;
     Character *m_enemy_turn;
+    Action *m_action;
     Text *m_text;
     unsigned long m_last;
 
@@ -57,7 +58,6 @@ private:
     bool on_event(const KeyboardEvent& event);
     void set_attacker_position(Character *character);
     void set_initial_position();
-    void create_buttons();
 };
 
 #endif

@@ -5,6 +5,7 @@
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
+#include "action.h"
 #include "combat.h"
 #include "character.h"
 #include <core/font.h>
@@ -34,9 +35,13 @@ Combat::Combat(int slot, const string& next)
     env->canvas->set_font(font);
     font->set_size(30);
 
-    create_buttons();
     load_characters();
     load_enemies();
+
+    m_action = new Action(m_slot, this);
+    m_action->add_observer(this);
+    add_child(m_action);
+    m_action->set_visible(false);
 }
 
 Combat::~Combat()
@@ -113,24 +118,16 @@ Combat::update_self(unsigned long elapsed)
 
     if (enemy)
     {
-        for (auto character : m_characters)
-        {
-            character.second->set_active(true);
-            character.second->set_visible(true);
-        }
+        m_action->set_visible(false);
+
         set_initial_position();
         
-        for (auto button : m_buttons)
-        {
-            button.second->set_visible(false);
-            button.second->set_active(false);
-        }
-
         enemy_attack(enemy);
         m_enemy_turn = enemy;
     }
     else if (character)
     {
+        m_action->set_visible(true);
         for (auto character : m_characters)
         {
             character.second->set_active(false);
@@ -138,12 +135,6 @@ Combat::update_self(unsigned long elapsed)
         }
 
         set_attacker_position(character);
-
-        for (auto button : m_buttons)
-        {
-            button.second->set_visible(true);
-            button.second->set_active(true);
-        }
 
         m_state = CHARACTER_ATTACK;
         m_enemy_turn = nullptr;
@@ -249,68 +240,6 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     update_attackers(attacker);
 
     return true;
-}
-
-void
-Combat::create_buttons()
-{
-    Environment *env = Environment::get_instance();
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    string path = "res/images/combat/icon_";
-
-
-    int x = 304, y = 630;
-
-    Button *button = new Button(this, "attack", path + "attack.png",
-        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "defense", path + "defense.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    x += 71;
-    button = new Button(this, "skill", path + "skill.png",
-        375 * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "rest", path + "rest.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    x += 71;
-    button = new Button(this, "item", path + "item.png",
-        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "run", path + "run.png",
-        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
-    button->set_sprites(3);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    for (auto b : m_buttons)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
 }
 
 void
@@ -496,6 +425,8 @@ Combat::set_initial_position()
     {
         character.second->set_position(x * scale_w, y);
         x += delta + 222;
+        character.second->set_active(true);
+        character.second->set_visible(true);
     }
 }
 
