@@ -41,6 +41,8 @@ private:
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void reset_choice();
+    void confirm_squad();
     void load_characters();
     void draw_squad();
     void draw_drone();

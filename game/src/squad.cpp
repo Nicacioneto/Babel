@@ -45,6 +45,7 @@ Squad::Squad(int slot, const string& next)
     button = new Button(this, "select_squad", path + "select_squad.png",
         300 * scale_w, 675 * scale_h, 100 * scale_w, 18 * scale_h);
     button->set_sprites(4);
+    button->change_state(Button::ACTIVE);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "select_drone", path + "select_drone.png",
@@ -118,34 +119,25 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     if (button->id() == "select_squad")
     {
         m_screen = SQUAD;
+        m_buttons["select_drone"]->change_state(Button::IDLE);
         button->change_state(Button::ACTIVE);
-
-        for (auto c : m_characters)
-        {
-            c.second->set_visible(true);
-            c.second->set_active(true);
-            m_buttons[c.first]->set_active(true);
-        }
     }
     else if (button->id() == "select_drone")
     {
         m_screen = DRONE;
+        m_buttons["select_squad"]->change_state(Button::IDLE);
         button->change_state(Button::ACTIVE);
-
-        for (auto c : m_characters)
+    }
+    else if (button->id() == "confirm_choice")
+    {
+        if (m_screen == SQUAD)
         {
-            c.second->set_visible(false);
-            c.second->set_active(false);
-            m_buttons[c.first]->set_active(false);
+            confirm_squad();
         }
     }
     else if (button->id() == "reset_choice")
     {
-        for (auto c : m_characters)
-        {
-            m_buttons[c.first]->set_visible(true);
-            m_squad.clear();
-        }
+        reset_choice();
     }
     else if (button->id() == "back")
     {
@@ -175,6 +167,32 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     }
 
     return true;
+}
+
+void
+Squad::reset_choice()
+{
+    for (auto c : m_characters)
+    {
+        m_buttons[c.first]->set_visible(true);
+        m_squad.clear();
+    }
+}
+
+void
+Squad::confirm_squad()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+
+    int i = 1;
+    for (auto id : m_squad)
+    {
+        settings->write<string>("Squad", "hero" + to_string(i++), id);
+    }
+
+    settings->save(path);
 }
 
 void
@@ -208,15 +226,18 @@ Squad::load_characters()
         if (section.first != "Default")
         {
             Character *character = new Character(m_slot, this, section.first, "albert.png",
-                x + 249*j, y + 150*i, w * scale_w, h * scale_h, section.first);
+                (x + 249*j) * scale_w, (y + 150*i) * scale_h,
+                w * scale_w, h * scale_h, section.first);
             character->set_active(false);
 
             character->add_observer(this);
             add_child(character);
+            character->set_active(false);
             m_characters[character->id()] = character;
-            
-            Button *button = new Button(this, section.first,
-            x + 249*j, y + 150*i, w * scale_w, h * scale_h, Color(0, 0, 0, 128));
+
+            Button *button = new Button(this, section.first, (x + 249*j) * scale_w,
+                (y + 150*i) * scale_h, w * scale_w, h * scale_h, Color(0, 0, 0, 128));
+
             m_buttons[button->id()] = button;
 
             ++j;
