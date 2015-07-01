@@ -29,9 +29,13 @@ public:
 private:
     typedef enum { INSPECT, EQUIP } Screen;
     typedef enum { WEAPON, ARMOR, SHIELD } Equipment;
+    typedef enum { RIFLE, SHOTGUN, PISTOL, SNIPER, MELEE, HAND, NANO,
+        UI, PSIBLADE, PSIAMP, PSIWHIP } Weapon;
+
     int m_slot, m_character;
     Screen m_screen;
     Equipment m_equip;
+    Weapon m_weapon;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Button*> m_weapons;
@@ -51,6 +55,8 @@ private:
     void draw_equipments();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
+    void hide_buttons();
+    void change_buttons();
     Character * current_char() const;
     void update_char_attributes(Character *c, string class_);
     bool on_event(const KeyboardEvent& event);

@@ -20,7 +20,8 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT), m_equip(WEAPON)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT), m_equip(WEAPON),
+        m_weapon(RIFLE)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -674,22 +675,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     Character *c = current_char();
     c->set_visible(false);
 
-    for (auto b : m_buttons)
-    {
-        if (b.first != "back" and
-            b.first != "left_arrow" and
-            b.first != "right_arrow")
-        {
-            b.second->set_active(false);
-            b.second->set_visible(false);
-        }
-    }
-
-    for (auto b : m_weapons)
-    {
-        b.second->set_active(false);
-        b.second->set_visible(false);
-    }
+    hide_buttons();
 
     if (button->id() == "left_arrow")
     {
@@ -803,46 +789,14 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         }
     }
 
+    change_buttons();
+    current_char()->set_visible(true);
+
     if (m_screen == EQUIP)
     {
-        m_buttons["rifle"]->set_active(true);
-        m_buttons["rifle"]->set_visible(true);
-        m_buttons["armor"]->set_active(true);
-        m_buttons["armor"]->set_visible(true);
-        m_buttons["shield"]->set_active(true);
-        m_buttons["shield"]->set_visible(true);
-
-        for (auto b : m_weapons)
-        {
-            b.second->change_state(Button::IDLE);
-        }
-
-        for (auto b : m_armor)
-        {
-            b.second->change_state(Button::IDLE);
-        }
-
-        for (auto b : m_shield)
-        {
-            b.second->change_state(Button::IDLE);
-        }
-
         button->change_state(Button::ACTIVE);
     }
-    else
-    {
-        m_buttons["levelup_m"]->set_visible(true);
-        m_buttons["levelup_m"]->set_active(true);
-        m_buttons["levelup_p"]->set_visible(true);
-        m_buttons["levelup_p"]->set_active(true);
-        m_buttons["levelup_t"]->set_visible(true);
-        m_buttons["levelup_t"]->set_active(true);
-        m_buttons["equip_shelf"]->set_visible(true);
-        m_buttons["equip_shelf"]->set_active(true);
-    }
 
-    current_char()->set_visible(true);
-    
     return true;
 }
 
@@ -875,6 +829,67 @@ Barracks::load_characters()
             add_child(character);
             m_characters[character->id()] = character;
         }
+    }
+}
+
+void
+Barracks::hide_buttons()
+{
+    for (auto b : m_buttons)
+    {
+        if (b.first != "back" and
+            b.first != "left_arrow" and
+            b.first != "right_arrow")
+        {
+            b.second->set_active(false);
+            b.second->set_visible(false);
+        }
+    }
+
+    for (auto b : m_weapons)
+    {
+        b.second->set_active(false);
+        b.second->set_visible(false);
+    }
+}
+
+void
+Barracks::change_buttons()
+{
+    m_buttons["levelup_m"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_m"]->set_active(m_screen == INSPECT);
+    m_buttons["levelup_p"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_p"]->set_active(m_screen == INSPECT);
+    m_buttons["levelup_t"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_t"]->set_active(m_screen == INSPECT);
+    m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
+    m_buttons["equip_shelf"]->set_active(m_screen == INSPECT);
+
+    m_buttons["rifle"]->set_active(m_screen == EQUIP);
+    m_buttons["rifle"]->set_visible(m_screen == EQUIP);
+    m_buttons["armor"]->set_active(m_screen == EQUIP);
+    m_buttons["armor"]->set_visible(m_screen == EQUIP);
+    m_buttons["shield"]->set_active(m_screen == EQUIP);
+    m_buttons["shield"]->set_visible(m_screen == EQUIP);
+
+    for (auto b : m_buttons)
+    {
+        b.second->change_state(Button::IDLE);
+    }
+
+    for (auto b : m_weapons)
+    {
+        b.second->change_state(Button::IDLE);
+    }
+
+    for (auto b : m_armor)
+    {
+        b.second->change_state(Button::IDLE);
+    }
+
+    for (auto b : m_shield)
+    {
+        b.second->change_state(Button::IDLE);
     }
 }
 
