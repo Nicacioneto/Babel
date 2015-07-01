@@ -25,7 +25,7 @@ might_armor = 12
 mind_armor = 12
 critical = 5
 
-[Brooker]
+[Booker]
 military = 1
 psionic = 0
 tech = 0

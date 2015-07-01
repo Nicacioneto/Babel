@@ -276,7 +276,7 @@ Squad::load_characters()
 
         if (section.first != "Default")
         {
-            Character *character = new Character(m_slot, this, section.first, "albert.png",
+            Character *character = new Character(m_slot, this, section.first, "Albert.png",
                 (x + 249*j) * scale_w, (y + 150*i) * scale_h,
                 w * scale_w, h * scale_h, section.first);
             character->set_active(false);

@@ -760,7 +760,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
         for (auto character : m_characters)
         {
-            character.second->set_texture("booker.png");
+            character.second->set_texture("Booker.png");
             character.second->set_h(123 * scale_h);
         }
     }
