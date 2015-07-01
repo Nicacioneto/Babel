@@ -246,15 +246,19 @@ void
 Combat::load_characters()
 {
     Character *character = new Character(m_slot, this, "albert", "albert.png", 0, 0);
+    character->set_active(false);
     m_characters[character->id()] = character;
 
     character = new Character(m_slot, this, "booker", "booker.png", 0, 0);
+    character->set_active(false);
     m_characters[character->id()] = character;
 
     character = new Character(m_slot, this, "isaac", "isaac.png", 0, 0);
+    character->set_active(false);
     m_characters[character->id()] = character;
 
     character = new Character(m_slot, this, "newton", "newton.png", 0, 0);
+    character->set_active(false);
     m_characters[character->id()] = character;
 
     set_initial_position();
@@ -425,7 +429,6 @@ Combat::set_initial_position()
     {
         character.second->set_position(x * scale_w, y);
         x += delta + 222;
-        character.second->set_active(true);
         character.second->set_visible(true);
     }
 }
@@ -440,6 +443,5 @@ Combat::set_attacker_position(Character *character)
 
     character->set_position(x, y);
 
-    character->set_active(true);
     character->set_visible(true);
 }

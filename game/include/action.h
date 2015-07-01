@@ -23,17 +23,18 @@ public:
     Action(int slot, Object *parent = nullptr);
 
 private:
+    typedef enum { MILITARY, PSIONIC, TECH, NONE } State;
+
     int m_slot;
-    // shared_ptr<Font> m_font;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, shared_ptr<Texture>> m_textures;
+    State m_mpt;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void create_buttons();
-    // void change_buttons(bool visible = false, bool active = false);
-    // void change_button_state(Button *button, bool state, int y = 0);
+    void change_buttons();
 };
 
 #endif
