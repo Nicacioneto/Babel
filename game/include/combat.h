@@ -53,6 +53,8 @@ private:
     void update_attackers(Character* character);
     void set_text(const string& str, const Color& color);
     bool on_event(const KeyboardEvent& event);
+    void set_attacker_position(Character *character);
+    void set_initial_position();
 };
 
 #endif

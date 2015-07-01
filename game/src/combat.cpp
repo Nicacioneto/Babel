@@ -111,11 +111,25 @@ Combat::update_self(unsigned long elapsed)
 
     if (enemy)
     {
+        for (auto character : m_characters)
+        {
+            character.second->set_active(true);
+            character.second->set_visible(true);
+        }
+        set_initial_position();
         enemy_attack(enemy);
         m_enemy_turn = enemy;
     }
     else if (character)
     {
+        for (auto character : m_characters)
+        {
+            character.second->set_active(false);
+            character.second->set_visible(false);
+        }
+
+        set_attacker_position(character);
+
         m_state = CHARACTER_ATTACK;
         m_enemy_turn = nullptr;
     }
@@ -221,23 +235,19 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
 void
 Combat::load_characters()
 {
-    Environment *env = Environment::get_instance();
-    
-    int y = (620 / H) * env->canvas->h();
-
-    double scale_w = env->canvas->w() / W;
-
-    Character *character = new Character(m_slot, this, "albert", "albert.png", 29 * scale_w, y);
+    Character *character = new Character(m_slot, this, "albert", "albert.png", 0, 0);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "booker", "booker.png", 276 * scale_w, y);
+    character = new Character(m_slot, this, "booker", "booker.png", 0, 0);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "isaac", "isaac.png", 525 * scale_w, y);
+    character = new Character(m_slot, this, "isaac", "isaac.png", 0, 0);
     m_characters[character->id()] = character;
 
-    character = new Character(m_slot, this, "newton", "newton.png", 773 * scale_w, y);
+    character = new Character(m_slot, this, "newton", "newton.png", 0, 0);
     m_characters[character->id()] = character;
+
+    set_initial_position();
 
     for (auto it : m_characters)
     {
@@ -385,4 +395,39 @@ Combat::set_text(const string& str, const Color& color)
     }
 
     m_text = new Text(this, str, color);
+}
+
+void
+Combat::set_initial_position()
+{
+    Environment *env = Environment::get_instance();
+
+    int character_quantity = m_characters.size();
+
+    int delta = (W - character_quantity * 222) / (character_quantity + 1);
+
+    int x = delta;
+    int y = (620 / H) * env->canvas->h();
+
+    double scale_w = env->canvas->w() / W;
+
+    for (auto character : m_characters)
+    {
+        character.second->set_position(x * scale_w, y);
+        x += delta + 222;
+    }
+}
+
+void
+Combat::set_attacker_position(Character *character)
+{
+    Environment *env = Environment::get_instance();
+
+    int x = (27 / W) * env->canvas->w();
+    int y = (620 / H) * env->canvas->h();
+
+    character->set_position(x, y);
+
+    character->set_active(true);
+    character->set_visible(true);
 }
