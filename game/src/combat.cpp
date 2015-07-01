@@ -26,6 +26,7 @@ Combat::Combat(int slot, const string& next)
 
     env->events_manager->register_listener(this);
     m_texture = env->resources_manager->get_texture("res/images/combat/arena.png");
+    m_actions = env->resources_manager->get_texture("res/images/combat/actions.png");
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
 
@@ -33,6 +34,7 @@ Combat::Combat(int slot, const string& next)
     env->canvas->set_font(font);
     font->set_size(30);
 
+    create_buttons();
     load_characters();
     load_enemies();
 }
@@ -117,6 +119,13 @@ Combat::update_self(unsigned long elapsed)
             character.second->set_visible(true);
         }
         set_initial_position();
+        
+        for (auto button : m_buttons)
+        {
+            button.second->set_visible(false);
+            button.second->set_active(false);
+        }
+
         enemy_attack(enemy);
         m_enemy_turn = enemy;
     }
@@ -129,6 +138,12 @@ Combat::update_self(unsigned long elapsed)
         }
 
         set_attacker_position(character);
+
+        for (auto button : m_buttons)
+        {
+            button.second->set_visible(true);
+            button.second->set_active(true);
+        }
 
         m_state = CHARACTER_ATTACK;
         m_enemy_turn = nullptr;
@@ -167,6 +182,10 @@ Combat::draw_self()
         
         Rect rect { x, y, w, h };
         env->canvas->fill(rect, Color::BLUE);
+    }
+    else
+    {
+        env->canvas->draw(m_actions.get(), 278 * env->canvas->w() / W, 620 * env->canvas->h() / H);
     }
 
     double x = 30 * env->canvas->w() / W;
@@ -230,6 +249,68 @@ Combat::on_message(Object *sender, MessageID id, Parameters)
     update_attackers(attacker);
 
     return true;
+}
+
+void
+Combat::create_buttons()
+{
+    Environment *env = Environment::get_instance();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    string path = "res/images/combat/icon_";
+
+
+    int x = 304, y = 630;
+
+    Button *button = new Button(this, "attack", path + "attack.png",
+        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "defense", path + "defense.png",
+        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    x += 71;
+    button = new Button(this, "skill", path + "skill.png",
+        375 * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "rest", path + "rest.png",
+        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    x += 71;
+    button = new Button(this, "item", path + "item.png",
+        x * scale_w, y * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "run", path + "run.png",
+        x * scale_w, (y + 60) * scale_h, 46 * scale_w, 126 / 3 * scale_h);
+    button->set_sprites(3);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    for (auto b : m_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
 }
 
 void
@@ -423,7 +504,7 @@ Combat::set_attacker_position(Character *character)
 {
     Environment *env = Environment::get_instance();
 
-    int x = (27 / W) * env->canvas->w();
+    int x = (30 / W) * env->canvas->w();
     int y = (620 / H) * env->canvas->h();
 
     character->set_position(x, y);
