@@ -199,7 +199,6 @@ Squad::reset_choice()
     for (auto c : m_characters)
     {
         m_buttons[c.first]->set_visible(true);
-        m_squad.clear();
     }
 
     load_squad();
@@ -229,6 +228,8 @@ Squad::confirm_squad()
 void
 Squad::load_squad()
 {
+    m_squad.clear();
+    
     Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
