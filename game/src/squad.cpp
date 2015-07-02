@@ -13,6 +13,8 @@
 #include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
+#include <iostream>
+using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -147,8 +149,16 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "confirm")
     {
-        set_next("dungeon");
-        finish();
+        Environment *env = Environment::get_instance();
+        string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+        shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+        
+        string hero1 = settings->read<string>("Squad", "hero1", "");
+        if (hero1 != "")
+        {
+            set_next("dungeon");
+            finish();
+        }
     }
     else if (button->id() == "back")
     {
