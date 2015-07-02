@@ -16,11 +16,13 @@ using std::shared_ptr;
 
 class Button;
 class Texture;
+class Character;
 
 class Action : public Object
 {
 public:
     Action(int slot, Object *parent = nullptr);
+    void set_current_character(Character *character);
 
 private:
     typedef enum { MILITARY, PSIONIC, TECH } SkillState;
@@ -32,6 +34,7 @@ private:
     map<ObjectID, shared_ptr<Texture>> m_textures;
     SkillState m_mpt;
     ActionState m_state;
+    Character *m_character;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
@@ -40,6 +43,7 @@ private:
     void draw_attack();
     void draw_skill();
     void draw_confirm_box(string icon);
+    void load_textures();
 };
 
 #endif

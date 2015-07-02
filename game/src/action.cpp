@@ -5,8 +5,9 @@
  * Date: 01/07/2015
  * License: LGPL. No copyright.
  */
-#include "button.h"
 #include "action.h"
+#include "button.h"
+#include "character.h"
 #include <core/rect.h>
 #include <core/texture.h>
 
@@ -19,25 +20,7 @@ Action::Action(int slot, Object *parent)
     : Object(parent), m_slot(slot), m_mpt(MILITARY)
 {
     parent->add_observer(this);
-
-    Environment *env = Environment::get_instance();
-    string path = "res/images/combat/";
-
-    m_textures["bracket"] = env->resources_manager->get_texture(path + "actions.png");
-
-    m_textures["military"] = env->resources_manager->get_texture(path + "military.png");
-    m_textures["psionic"] = env->resources_manager->get_texture(path + "psionic.png");
-    m_textures["tech"] = env->resources_manager->get_texture(path + "tech.png");
-    m_textures["bracket_m"] = env->resources_manager->get_texture(path +
-        "bracket_m.png");
-    m_textures["bracket_p"] = env->resources_manager->get_texture(path +
-        "bracket_p.png");
-    m_textures["bracket_t"] = env->resources_manager->get_texture(path + "bracket_t.png");
-    m_textures["action_shelf"] = env->resources_manager->get_texture(path + "action_shelf.png");
-    m_textures["icon_defense"] = env->resources_manager->get_texture(path + "icon_defense.png");
-    m_textures["icon_rest"] = env->resources_manager->get_texture(path + "icon_rest.png");
-    m_textures["icon_run"] = env->resources_manager->get_texture(path + "icon_run.png");
-
+    load_textures();
     create_buttons();
 }
 
@@ -257,22 +240,46 @@ Action::draw_skill()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
+    int x, y, w, h;
+    x = 530 * scale_w;
+    y = 582 * scale_h;
+    w = 38 * scale_w;
+    h = 37 * scale_h;
+    string skill = "skill";
+
     switch (m_mpt)
     {
         case MILITARY:
             env->canvas->draw(m_textures["bracket_m"].get(), 528 * scale_w, 522 * scale_h);
             env->canvas->draw(m_textures["military"].get(), 548 * scale_w, 532 * scale_h);
+            skill += "_m_";
             break;
         case PSIONIC:
             env->canvas->draw(m_textures["bracket_p"].get(), 528 * scale_w, 522 * scale_h);
             env->canvas->draw(m_textures["psionic"].get(), 548 * scale_w, 532 * scale_h);
+            skill += "_p_";
             break;
         case TECH:
             env->canvas->draw(m_textures["bracket_t"].get(), 528 * scale_w, 522 * scale_h);
             env->canvas->draw(m_textures["tech"].get(), 548 * scale_w, 532 * scale_h);
+            skill += "_t_";
             break;
-        default:
-            break;
+    }
+
+    for (int i = 1; i <= 4; ++i, y += h)
+    {
+        x = 546 * scale_w;
+        for (int j = 1; j <= 5; ++j, x += w)
+        {
+            if ((i - 1)*5 + j <= m_character->military())
+            {
+                env->canvas->draw(m_textures[skill + to_string((i - 1)*5 + j)].get(), x, y);
+            }
+            else
+            {
+                env->canvas->draw(m_textures[skill + "locked"].get(), x, y);
+            }
+        }
     }
 }
 
@@ -286,4 +293,49 @@ Action::draw_confirm_box(string icon)
     env->canvas->draw(m_textures["action_shelf"].get(), 528 * scale_w, 620 * scale_h);
     env->canvas->draw(m_textures["icon_" + icon].get(), Rect(0, 40, 58, 40), 620 * scale_w,
         634 * scale_h, 58 * scale_w, 40 * scale_h);
+}
+
+void
+Action::set_current_character(Character *character)
+{
+    m_character = character;
+}
+
+void
+Action::load_textures()
+{
+    Environment *env = Environment::get_instance();
+
+    string path = "res/images/combat/";
+
+    m_textures["bracket"] = env->resources_manager->get_texture(path + "actions.png");
+
+    m_textures["military"] = env->resources_manager->get_texture(path + "military.png");
+    m_textures["psionic"] = env->resources_manager->get_texture(path + "psionic.png");
+    m_textures["tech"] = env->resources_manager->get_texture(path + "tech.png");
+    m_textures["bracket_m"] = env->resources_manager->get_texture(path +
+        "bracket_m.png");
+    m_textures["bracket_p"] = env->resources_manager->get_texture(path +
+        "bracket_p.png");
+    m_textures["bracket_t"] = env->resources_manager->get_texture(path + "bracket_t.png");
+    m_textures["action_shelf"] = env->resources_manager->get_texture(path + "action_shelf.png");
+    m_textures["icon_defense"] = env->resources_manager->get_texture(path + "icon_defense.png");
+    m_textures["icon_rest"] = env->resources_manager->get_texture(path + "icon_rest.png");
+    m_textures["icon_run"] = env->resources_manager->get_texture(path + "icon_run.png");
+
+    path = "res/images/colony/barracks/";
+    m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
+    m_textures["skill_p_locked"] = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
+    m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
+
+    for (int i = 1; i <= 20; ++i)
+    {
+        string index = to_string(i);
+        m_textures["skill_m_" + index] = env->resources_manager->get_texture(path + "Skill_M_" +
+            index + ".png");
+        m_textures["skill_p_" + index] = env->resources_manager->get_texture(path + "Skill_P_" +
+            index + ".png");
+        m_textures["skill_t_" + index] = env->resources_manager->get_texture(path + "Skill_T_" +
+            index + ".png");
+    }
 }

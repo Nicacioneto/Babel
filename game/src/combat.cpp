@@ -128,6 +128,8 @@ Combat::update_self(unsigned long elapsed)
     else if (character)
     {
         m_action->set_visible(true);
+        m_action->set_current_character(character);
+
         for (auto character : m_characters)
         {
             character.second->set_active(false);
@@ -193,7 +195,9 @@ Combat::draw_self()
 
         if (i > 1)
         {
-            Rect rect { x, 25 * env->canvas->h() / H, (double)m_attacker_icon->w(), (double)m_attacker_icon->h() };
+            double w = m_attacker_icon->w();
+            double h= m_attacker_icon->h();
+            Rect rect { x, 25 * env->canvas->h() / H, w, h };
 
             env->canvas->set_blend_mode(Canvas::BLEND);
             env->canvas->fill(rect, Color(0, 0, 0, 128));
