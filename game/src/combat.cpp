@@ -186,6 +186,14 @@ Combat::draw_self()
 
         env->canvas->draw(m_attacker_icon.get(), x, 25 * env->canvas->h() / H);
 
+        if (i > 1)
+        {
+            Rect rect { x, 25 * env->canvas->h() / H, (double)m_attacker_icon.get()->w(), (double)m_attacker_icon.get()->h() };
+
+            env->canvas->set_blend_mode(Canvas::BLEND);
+            env->canvas->fill(rect, Color(0, 0, 0, 128));
+            env->canvas->set_blend_mode(Canvas::NONE);
+        }
         x += 82 * env->canvas->w() / W;
         ++it;
     }
