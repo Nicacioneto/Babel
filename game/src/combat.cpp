@@ -179,7 +179,12 @@ Combat::draw_self()
     auto it = m_attackers.begin();
     for (int i = 1; i <= 12; ++i)
     {
-        string attacker = it->second;
+        string attacker = "character_mini";
+
+        if (m_enemies.find(it->second) != m_enemies.end())
+        {
+            attacker = "technopus_mini";
+        }
 
         m_attacker_icon = env->resources_manager->get_texture("res/images/combat/" +
             attacker + ".png");

@@ -26,6 +26,7 @@ public:
 
     int receive_damage(Character *character);
 
+    Type type() const;
     int attacks_quantity() const;
     int military() const;
     int psionic() const;

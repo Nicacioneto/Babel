@@ -125,6 +125,12 @@ Character::receive_damage(Character *attacker)
     return d;
 }
 
+Character::Type
+Character::type() const
+{
+    return m_type;
+}
+
 int
 Character::attacks_quantity() const
 {
