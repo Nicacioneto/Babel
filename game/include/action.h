@@ -23,18 +23,23 @@ public:
     Action(int slot, Object *parent = nullptr);
 
 private:
-    typedef enum { MILITARY, PSIONIC, TECH, NONE } State;
+    typedef enum { MILITARY, PSIONIC, TECH } SkillState;
+    typedef enum { ATTACK, SKILL, ITEM, DEFENSE, REST, RUN, NONE } ActionState;
 
     int m_slot;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, shared_ptr<Texture>> m_textures;
-    State m_mpt;
+    SkillState m_mpt;
+    ActionState m_state;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void create_buttons();
     void change_buttons();
+    void draw_attack();
+    void draw_skill();
+    void draw_confirm_box(string icon);
 };
 
 #endif
