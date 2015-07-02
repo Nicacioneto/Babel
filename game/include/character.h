@@ -18,8 +18,10 @@ class MouseButtonEvent;
 class Character : public Object, public Listener
 {
 public:
+    typedef enum { HERO, ENEMY } Type;
+
     Character(int slot, Object *parent = nullptr, ObjectID id = "", const string& texture = "",
-        double x = 0, double y = 0, double w = 0, double h = 0, const string& name = "Default");
+        double x = 0, double y = 0, double w = 0, double h = 0, Type type = HERO);
     ~Character();
 
     int receive_damage(Character *character);
@@ -86,6 +88,7 @@ private:
     shared_ptr<Settings> m_settings;
 
     string m_name;
+    Type m_type;
     int m_attacks_quantity;
 
     int m_military;

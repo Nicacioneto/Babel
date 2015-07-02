@@ -278,7 +278,7 @@ Squad::load_characters()
         {
             Character *character = new Character(m_slot, this, section.first, "Albert.png",
                 (x + 249*j) * scale_w, (y + 150*i) * scale_h,
-                w * scale_w, h * scale_h, section.first);
+                w * scale_w, h * scale_h);
             character->set_active(false);
 
             character->add_observer(this);

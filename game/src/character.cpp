@@ -16,9 +16,9 @@
 using std::to_string;
 
 Character::Character(int slot, Object *parent, ObjectID id, const string& texture,
-    double x, double y, double w, double h, const string& name)
+    double x, double y, double w, double h, Type type)
     : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), m_settings(nullptr),
-        m_name(name), m_attacks_quantity(0)
+        m_name(id), m_type(type), m_attacks_quantity(0)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -29,6 +29,11 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
     if (not w and not h)
     {
         set_dimensions(m_texture->w(), m_texture->h());
+    }
+
+    if (m_type != HERO)
+    {
+        m_name = "Default";
     }
 
     m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot)

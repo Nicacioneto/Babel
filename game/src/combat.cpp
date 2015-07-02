@@ -188,7 +188,7 @@ Combat::draw_self()
 
         if (i > 1)
         {
-            Rect rect { x, 25 * env->canvas->h() / H, (double)m_attacker_icon.get()->w(), (double)m_attacker_icon.get()->h() };
+            Rect rect { x, 25 * env->canvas->h() / H, (double)m_attacker_icon->w(), (double)m_attacker_icon->h() };
 
             env->canvas->set_blend_mode(Canvas::BLEND);
             env->canvas->fill(rect, Color(0, 0, 0, 128));
@@ -260,7 +260,7 @@ Combat::load_team()
         {
             break;
         }
-        Character *character = new Character(m_slot, this, h.second, h.second + ".png", 0, 0);
+        Character *character = new Character(m_slot, this, h.second, h.second + ".png");
         m_characters[character->id()] = character;
     }
 
@@ -296,27 +296,27 @@ Combat::load_enemies()
     int i = 0;
 
     Character *enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        58 * scale_w, 275 * scale_h, w, h);
+        58 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        194 * scale_w, 322 * scale_h, w, h);
+        194 * scale_w, 322 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        330 * scale_w, 275 * scale_h, w, h);
+        330 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        530 * scale_w, 275 * scale_h, w, h);
+        530 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        665 * scale_w, 322 * scale_h, w, h);
+        665 * scale_w, 322 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        800 * scale_w, 275 * scale_h, w, h);
+        800 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     for (auto it : m_enemies)
