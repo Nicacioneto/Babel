@@ -18,12 +18,26 @@
 using std::to_string;
 
 Tower::Tower(int slot, const string& next)
-    : Level("tower", next), m_slot(slot)
+    : Level("tower", next), m_slot(slot), m_actual_floor(1), m_unlocked_floors(1)
 {
     Colony *colony = new Colony(slot, this, "tower");
     colony->add_observer(this);
     add_child(colony);
 
+    Environment *env = Environment::get_instance();
+    m_settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/tower.sav");
+
+    m_actual_floor = m_settings->read<int>("Tower", "actual_floor", 1);
+    m_unlocked_floors = m_settings->read<int>("Tower", "unlocked_floors", 1);
+
+    load_texture();
+    create_buttons();
+}
+
+void
+Tower::load_texture()
+{
     Environment *env = Environment::get_instance();
     string path = "res/images/tower/";
 
@@ -35,13 +49,16 @@ Tower::Tower(int slot, const string& next)
     m_textures["colony"] = env->resources_manager->get_texture(path + "colony_headline.png");
     m_textures["drone1"] = env->resources_manager->get_texture(path + "drone1.png");
     m_textures["drone2"] = env->resources_manager->get_texture(path + "drone2.png");
-    m_textures["floor1"] = env->resources_manager->get_texture(path + "floor1.png");
-    m_textures["floor2"] = env->resources_manager->get_texture(path + "floor2.png");
-    m_textures["floorL"] = env->resources_manager->get_texture(path + "floorL.png");
     m_textures["hostile"] = env->resources_manager->get_texture(path + "hostile.png");
     m_textures["quest"] = env->resources_manager->get_texture(path + "quest.png");
     m_textures["squad"] = env->resources_manager->get_texture(path + "squad.png");
+}
 
+void
+Tower::create_buttons()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/images/tower/";
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
@@ -74,6 +91,31 @@ Tower::Tower(int slot, const string& next)
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    // Select floor
+    int x, y = 638 + 34;
+    for (int i = 1; i <= 15; ++i)
+    {
+        if (i % 2)
+        {
+            x = 134;
+            y -= 34;
+        }
+        else
+        {
+            x = 90;
+            y -= 20;
+        }
+
+        string f = i > m_unlocked_floors ? "L" : to_string(i);
+        button = new Button(this, "floor" + to_string(i), path + "floor" + f + ".png",
+            x * scale_w, y * scale_h, 35 * scale_w, 35 * scale_h);
+        button->set_sprites(1);
+        button->set_active(f != "L");
+        m_floors[button->id()] = button;
+        button->add_observer(this);
+        add_child(button);
+    }
 }
 
 void
@@ -92,7 +134,6 @@ Tower::draw_self()
 
     // env->canvas->draw(m_textures["babel"].get(), 193 * scale_w, 25 * scale_h);
 
-    env->canvas->draw(m_textures["floor2"].get(), 308 * scale_w, 200 * scale_h);
     env->canvas->draw(m_textures["quest"].get(), 308 * scale_w, 317 * scale_h);
     env->canvas->draw(m_textures["hostile"].get(), 308 * scale_w, 478 * scale_h);
     env->canvas->draw(m_textures["drone2"].get(), 312 * scale_w, 626 * scale_h);
@@ -117,34 +158,16 @@ Tower::draw_self()
     env->canvas->draw(Line(a, b), Color(89, 112, 100));
 
     env->canvas->draw("Select Floor", 60 * scale_w, 210 * scale_h, color);
-    env->canvas->draw("Floor 2", 360 * scale_w, 204 * scale_h, color);
+    env->canvas->draw("Floor " + to_string(m_actual_floor), 360 * scale_w, 204 * scale_h, color);
     env->canvas->draw("Quests", 360 * scale_w, 324 * scale_h, color);
     env->canvas->draw("Hostile Activity", 360 * scale_w, 480 * scale_h, color);
     env->canvas->draw("Send Drone", 360 * scale_w, 626 * scale_h, color);
     env->canvas->draw("Send Team", 704 * scale_w, 626 * scale_h, color);
 
-    // Select floor
-    int x, y = 638 + 34;
-    for (int i = 0; i < 15; ++i)
-    {
-        if (i % 2)
-        {
-            x = 90;
-            y -= 20;
-        }
-        else
-        {
-            x = 134;
-            y -= 34;
-        }
-
-        string f = i < 2 ? to_string(i+1) : "L";
-        env->canvas->draw(m_textures["floor" + f].get(), x * scale_w, y * scale_h);
-    }
-
     font->set_size(16);
-    env->canvas->draw("One does not go into Floor 2.", 360 * scale_w, 250 * scale_h, color);
-    env->canvas->draw("Find the missing artifact located at Floor 2",
+    env->canvas->draw("One does not go into Floor " + to_string(m_actual_floor),
+        360 * scale_w, 250 * scale_h, color);
+    env->canvas->draw("Find the missing artifact located at Floor " + to_string(m_actual_floor),
         360 * scale_w, 370 * scale_h, color);
     env->canvas->draw("Kill 10 Nano Ghouls", 360 * scale_w, 390 * scale_h, color);
     env->canvas->draw("Nano Ghouls", 360 * scale_w, 512 * scale_h, color);
@@ -204,14 +227,7 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
 
         string hero1 = settings->read<string>("Squad", "hero1", "");
 
-        if (hero1 != "")
-        {
-            set_next("dungeon");
-        }
-        else
-        {
-            set_next("squad");
-        }
+        hero1.empty() ? set_next("squad") : set_next("dungeon");
         finish();
     }
 
