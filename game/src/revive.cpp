@@ -27,8 +27,6 @@ Revive::Revive(int slot, Object *parent)
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
-    m_textures["matter_energy"] = env->resources_manager->get_texture(path +
-        "icons/matter_energy.png");
     m_textures["health"] = env->resources_manager->get_texture(path + "/icons/health.png");
     m_textures["big_list"] = env->resources_manager->get_texture(path + "big_list.png");
 
@@ -52,14 +50,17 @@ Revive::draw_self()
 
     m_font->set_size(18);
 
-    env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
-    env->canvas->draw("Class", 524 * scale_w, 186 * scale_h, color);
-    env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
-    env->canvas->draw(m_textures["matter_energy"].get(), 690 * scale_w, 188 * scale_h);
+    env->canvas->draw("Name", 360 * scale_w, 186* scale_h, color);
+    env->canvas->draw("M", 510 * scale_w, 186 * scale_h, color);
+    env->canvas->draw("P", 613 * scale_w, 186 * scale_h, color);
+    env->canvas->draw("T", 713 * scale_w, 186 * scale_h, color);
+    env->canvas->draw("HP", 833 * scale_w, 186 * scale_h, color);
 
     int y = 236, i = 0;
     for (auto section : m_settings->sections())
     {
+        color = Color(170, 215, 190);
+
         if (i++ < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page or section.first == "Default")
         {
             continue;
@@ -71,16 +72,16 @@ Revive::draw_self()
             310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 
         env->canvas->draw(section.first, 360 * scale_w, y * scale_h, color);
-        env->canvas->draw(section.second["matter"], 524 * scale_w, y * scale_h, color);
-        if (not section.second["matter"].empty())
+        env->canvas->draw(section.second["military"], 510 * scale_w, y * scale_h, color);
+        env->canvas->draw(section.second["psionic"], 610 * scale_w, y * scale_h, color);
+        env->canvas->draw(section.second["tech"], 710 * scale_w, y * scale_h, color);
+
+        string life = section.second["life"], max_life = section.second["max_life"];
+        if (life == " 0")
         {
-            env->canvas->draw(section.second["matter"] + "/" + section.second["energy"],
-                690 * scale_w, y * scale_h, color);
+            color = Color(159, 6, 6);
         }
-        if (not section.second["time"].empty())
-        {
-            env->canvas->draw(section.second["time"], 855 * scale_w, y * scale_h, color);
-        }
+        env->canvas->draw(life + "/" + max_life, 810 * scale_w, y * scale_h, color);
 
         y += 64;
     }
