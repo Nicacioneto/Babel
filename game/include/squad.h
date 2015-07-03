@@ -18,6 +18,7 @@ using std::map;
 using std::vector;
 
 class Character;
+class Drone;
 class KeyboardEvent;
 class Team;
 class Texture;
@@ -37,6 +38,7 @@ private:
     map<ObjectID, Button*> m_buttons;
     shared_ptr<Texture> m_bracket;
     Team *m_team;
+    Drone *m_drone;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

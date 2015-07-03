@@ -1,12 +1,12 @@
 /*
- * Class that represents the Team
+ * Class that represents the Drone
  *
  * Author: Tiamat
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
-#ifndef TEAM_H
-#define TEAM_H
+#ifndef DRONE_H
+#define DRONE_H
 
 #include <core/object.h>
 #include <map>
@@ -20,31 +20,30 @@ class Button;
 class Character;
 class Font;
 class Settings;
+class Texture;
 
-class Team : public Object
+class Drone : public Object
 {
 public:
-    Team(int slot, Object *parent = nullptr);
+    Drone(int slot, Object *parent = nullptr);
 
     void confirm();
-    void reset();
+    void load_drones();
     void change_buttons(bool state);
-    unsigned int size();
     
 private:
     int m_slot;
     shared_ptr<Settings> m_settings;
     shared_ptr<Font> m_font;
+    shared_ptr<Texture> m_background;
 
     map<ObjectID, Button*> m_buttons;
-    map<ObjectID, Character*> m_characters;
-    vector<ObjectID> m_team;
+    string m_drone;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
-    void load_characters();
-    void load_team();
     void create_buttons();
+    void change_buttons(string id);
 };
 
 #endif

@@ -261,9 +261,9 @@ Combat::load_team()
     Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-    auto heros = settings->sections()["Squad"];
+    auto heroes = settings->sections()["Squad"];
 
-    for (auto h : heros)
+    for (auto h : heroes)
     {
         if (h.second == "")
         {

@@ -7,6 +7,7 @@
  */
 #include "character.h"
 #include "colony.h"
+#include "drone.h"
 #include "squad.h"
 #include "team.h"
 #include <algorithm>
@@ -22,7 +23,7 @@ using std::to_string;
 
 Squad::Squad(int slot, const string& next)
     : Level("Squad", next), m_slot(slot), m_screen(TEAM), m_settings(nullptr),
-        m_bracket(nullptr), m_team(nullptr)
+        m_bracket(nullptr), m_team(nullptr), m_drone(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/tower/squad/";
@@ -36,7 +37,6 @@ Squad::Squad(int slot, const string& next)
 
     Button *button = new Button(this, "confirm_choice", path + "confirm.png",
         470 * scale_w, 622 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "reset_choice", path + "change.png",
@@ -76,6 +76,12 @@ Squad::Squad(int slot, const string& next)
     add_child(m_team);
 
     confirm_state();
+
+    m_drone = new Drone(m_slot, this);
+    m_drone->add_observer(this);
+    add_child(m_drone);
+
+    change_screen();
 }
 
 Squad::~Squad()
@@ -101,16 +107,6 @@ Squad::draw_self()
     env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
     env->canvas->draw("Confirm Choice", 345 * scale_w, 630 * scale_h, color);
     env->canvas->draw("Reset Choice", 565 * scale_w, 630 * scale_h, color);
-
-    switch (m_screen)
-    {
-        case TEAM:
-            // draw_squad();
-            break;
-        case DRONE:
-            draw_drone();
-            break;
-    }
 }
 
 bool
@@ -141,12 +137,12 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "confirm_choice")
     {
-        m_team->confirm();
+        m_screen == TEAM ? m_team->confirm() : m_drone->confirm();
         confirm_state();
     }
     else if (button->id() == "reset_choice")
     {
-        m_team->reset();
+        m_screen == TEAM ? m_team->reset() : m_drone->load_drones();
     }
     else if (button->id() == "confirm")
     {
@@ -175,19 +171,9 @@ Squad::change_screen()
 {
     m_team->set_visible(m_screen == TEAM);
     m_team->change_buttons(m_screen == TEAM);
-}
 
-void
-Squad::draw_drone()
-{
-    Environment *env = Environment::get_instance();
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    Color color(70, 89, 79);
-
-    env->canvas->draw("Select Drone", 60 * scale_w, 50 * scale_h, color);
-    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
+    m_drone->set_visible(m_screen == DRONE);
+    m_drone->change_buttons(m_screen == DRONE);
 }
 
 bool

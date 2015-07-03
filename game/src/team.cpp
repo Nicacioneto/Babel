@@ -12,7 +12,6 @@
 #include <core/font.h>
 #include <core/rect.h>
 #include <core/settings.h>
-#include <core/texture.h>
 
 #define W 1024.0
 #define H 768.0
@@ -27,7 +26,7 @@ Team::Team(int slot, Object *parent)
     m_settings = env->resources_manager->get_settings(path);
 
     load_characters();
-    load_squad();
+    load_team();
 }
 
 void
@@ -126,13 +125,13 @@ Team::load_characters()
 }
 
 void
-Team::load_squad()
+Team::load_team()
 {
     m_team.clear();
     
-    auto heros = m_settings->sections()["Squad"];
+    auto heroes = m_settings->sections()["Squad"];
 
-    for (auto h : heros)
+    for (auto h : heroes)
     {
         if (h.second != "")
         {
@@ -167,7 +166,7 @@ Team::reset()
         m_buttons[c.first]->set_visible(true);
     }
 
-    load_squad();
+    load_team();
 }
 
 void
@@ -179,7 +178,7 @@ Team::change_buttons(bool state)
         b.second->set_active(state);
     }
 
-    load_squad();
+    load_team();
 }
 
 unsigned int
