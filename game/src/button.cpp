@@ -15,6 +15,7 @@
 #include <cstdio>
 
 MessageID Button::clickedID = "clicked()";
+MessageID Button::houverID = "houver()";
 
 Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
@@ -126,6 +127,7 @@ Button::on_event(const MouseMotionEvent& event)
         }
 
         m_state = ON_HOVER;
+        notify(houverID, "");
     }
     else
     {
@@ -182,4 +184,10 @@ Button::set_texture(const string& texture)
 {
     Environment *env = Environment::get_instance();
     m_texture = env->resources_manager->get_texture(texture);
+}
+
+Button::State
+Button::state()
+{
+    return m_state;
 }

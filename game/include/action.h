@@ -32,6 +32,7 @@ private:
     int m_slot;
     int m_page;
     int m_max_pages;
+    string m_hover_button = "";
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, shared_ptr<Texture>> m_textures;
@@ -51,6 +52,8 @@ private:
     void draw_item();
     void change_button_state(Button *button, bool state, int y = 0);
     void active_buttons(ActionState state);
+    void clicked_event(Button *button);
+    void hover_event(Button *button);
 };
 
 #endif

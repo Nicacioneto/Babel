@@ -38,6 +38,7 @@ public:
     bool on_event(const MouseMotionEvent& event);
     void set_text(const string& str, const Color& color = Color(170, 215, 190));
     void remove_text();
+    State state();
     Text* text();
 
     void set_sprites(const int num);
@@ -46,6 +47,7 @@ public:
     void set_texture(const string& texture);
 
     static ActionID clickedID;
+    static ActionID houverID;
 
 private:
     Text *m_text;

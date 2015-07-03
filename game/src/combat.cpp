@@ -305,27 +305,27 @@ Combat::load_enemies()
     int i = 0;
 
     Character *enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        58 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
+        58 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        194 * scale_w, 322 * scale_h, w, h, Character::ENEMY);
+        194 * scale_w, 247 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        330 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
+        330 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        530 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
+        530 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        665 * scale_w, 322 * scale_h, w, h, Character::ENEMY);
+        665 * scale_w, 247 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
-        800 * scale_w, 275 * scale_h, w, h, Character::ENEMY);
+        800 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
     for (auto it : m_enemies)
