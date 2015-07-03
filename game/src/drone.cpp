@@ -55,8 +55,16 @@ Drone::on_message(Object *sender, MessageID id, Parameters)
 	    return false;
 	}
 
-	change_buttons(button->id());
-	m_drone = button->id();
+	if (button->state() != Button::ACTIVE)
+	{
+		m_drone = button->id();
+	}
+	else
+	{
+		m_drone = "";
+	}
+	
+	change_buttons(m_drone);
 
 	return false;
 }
