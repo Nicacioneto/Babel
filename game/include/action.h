@@ -9,6 +9,7 @@
 #define ACTION_H
 
 #include <core/object.h>
+#include <core/settings.h>
 #include <map>
 
 using std::map;
@@ -29,12 +30,15 @@ private:
     typedef enum { ATTACK, SKILL, ITEM, DEFENSE, REST, RUN, NONE } ActionState;
 
     int m_slot;
+    int m_page;
+    int m_max_pages;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, shared_ptr<Texture>> m_textures;
     SkillState m_mpt;
     ActionState m_state;
     Character *m_character;
+    shared_ptr<Settings> m_settings;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
@@ -44,6 +48,9 @@ private:
     void draw_skill();
     void draw_confirm_box(string icon);
     void load_textures();
+    void draw_item();
+    void change_button_state(Button *button, bool state, int y = 0);
+    void active_buttons(ActionState state);
 };
 
 #endif

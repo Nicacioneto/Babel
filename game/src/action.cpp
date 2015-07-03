@@ -8,6 +8,7 @@
 #include "action.h"
 #include "button.h"
 #include "character.h"
+#include <core/font.h>
 #include <core/rect.h>
 #include <core/texture.h>
 
@@ -15,9 +16,10 @@ using std::to_string;
 
 #define W 1024.0
 #define H 768.0
+#define ITEMS_PER_PAGE 5
 
 Action::Action(int slot, Object *parent)
-    : Object(parent), m_slot(slot), m_mpt(MILITARY)
+    : Object(parent), m_slot(slot), m_page(1), m_max_pages(0), m_mpt(MILITARY)
 {
     parent->add_observer(this);
     load_textures();
@@ -41,6 +43,7 @@ Action::draw_self()
             draw_skill();
             break;
         case ITEM:
+            draw_item();
             break;
         case DEFENSE:
             draw_confirm_box("defense");
@@ -92,11 +95,11 @@ Action::on_message(Object *sender, MessageID id, Parameters)
         m_state = RUN;
     }
 
-    m_buttons["left_arrow"]->set_visible(m_state == SKILL);
-    m_buttons["left_arrow"]->set_active(m_state == SKILL);
+    m_buttons["left_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["left_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
 
-    m_buttons["right_arrow"]->set_visible(m_state == SKILL);
-    m_buttons["right_arrow"]->set_active(m_state == SKILL);
+    m_buttons["right_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["right_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
 
     bool confirm = m_state == DEFENSE or m_state == REST or m_state == RUN;
     m_buttons["confirm"]->set_visible(confirm);
@@ -106,22 +109,39 @@ Action::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        int pos = m_mpt - 1;
-        pos = pos < 0 ? 2 : pos;
-        m_mpt = static_cast<SkillState>(pos);
+        if (m_state == SKILL)
+        {
+            int pos = m_mpt - 1;
+            pos = pos < 0 ? 2 : pos;
+            m_mpt = static_cast<SkillState>(pos);
+        }
+        else
+        {
+            if (m_page > 1)
+            {
+                m_page--;
+            }
+        }
     }
     else if (button->id() == "right_arrow")
     {
-        int pos = (m_mpt + 1) % 3;
-        m_mpt = static_cast<SkillState>(pos);
+        if (m_state == SKILL)
+        {
+            int pos = (m_mpt + 1) % 3;
+            m_mpt = static_cast<SkillState>(pos);
+        }
+        else
+        {
+            if (m_page < m_max_pages)
+            {
+                m_page++;
+            }
+        }
     }
-    else
-    {
-        change_buttons();
-    }
+    
+    change_buttons();
 
-
-    button->change_state(Button::ACTIVE);
+    active_buttons(m_state);
 
     return true;
 }
@@ -212,6 +232,30 @@ Action::create_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    m_settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/items.sav");
+
+    auto sections = m_settings->sections();
+    
+    m_max_pages = (sections.size() / ITEMS_PER_PAGE) +
+        (sections.size() % ITEMS_PER_PAGE != 0);
+
+    y = 580;
+
+    for (auto s : sections)
+    {
+        Button *button = new Button(this, s.first,
+            545 * scale_w, y * scale_h, 195 * scale_w, 25 * scale_h);
+        button->set_visible(false);
+        button->set_active(false);
+        m_buttons[button->id()] = button;
+
+        button->add_observer(this);
+        add_child(button);
+
+        y += 30;
+    }
 }
 
 void
@@ -219,8 +263,18 @@ Action::change_buttons()
 {
     for (auto b : m_buttons)
     {
-        if (b.first != "left_arrow" and
-            b.first != "right_arrow")
+        bool active = m_state == ATTACK and b.first == "attack";
+        active = active or (m_state == SKILL and b.first == "skill");
+        active = active or (m_state == ITEM and b.first == "item");
+        active = active or (m_state == DEFENSE and b.first == "defense");
+        active = active or (m_state == REST and b.first == "rest");
+        active = active or (m_state == RUN and b.first == "run");
+
+        if (active)
+        {
+            b.second->change_state(Button::ACTIVE);
+        }
+        else
         {
             b.second->change_state(Button::IDLE);
         }
@@ -228,9 +282,9 @@ Action::change_buttons()
 }
 
 void
-Action::draw_attack()
+Action::set_current_character(Character *character)
 {
-
+    m_character = character;
 }
 
 void
@@ -284,6 +338,50 @@ Action::draw_skill()
 }
 
 void
+Action::draw_item()
+{
+    Environment *env = Environment::get_instance();
+
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    font->set_size(14);
+    env->canvas->set_font(font);
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["item_shelf"].get(), 528 * scale_w, 522 * scale_h);
+
+    int y = 580, i = 0;
+    for (auto section : m_settings->sections())
+    {
+        if (++i < (m_page - 1) * ITEMS_PER_PAGE or i > ITEMS_PER_PAGE * m_page)
+        {
+            change_button_state(m_buttons[section.first], false);
+            continue;
+        }
+
+        change_button_state(m_buttons[section.first], true, y);
+
+        string qnt_earned = m_settings->read<string>(section.first, "qnt_earned", "");
+
+        Color color(170, 215, 190);
+
+        env->canvas->draw(m_textures["research"].get(),
+            540 * scale_w, y * scale_h, 50 * scale_w, 25 * scale_h);
+
+        env->canvas->draw(section.first, 590 * scale_w, (y+5) * scale_h, color);
+        env->canvas->draw(qnt_earned + "/" + section.second["qnt_max"],
+            710 * scale_w, (y+5) * scale_h, color);
+
+        y += 30;
+    }
+
+    // TODO not work
+    font->set_size(18);
+    env->canvas->set_font(font);
+}
+
+void
 Action::draw_confirm_box(string icon)
 {
     Environment *env = Environment::get_instance();
@@ -293,12 +391,6 @@ Action::draw_confirm_box(string icon)
     env->canvas->draw(m_textures["action_shelf"].get(), 528 * scale_w, 620 * scale_h);
     env->canvas->draw(m_textures["icon_" + icon].get(), Rect(0, 40, 58, 40), 620 * scale_w,
         634 * scale_h, 58 * scale_w, 40 * scale_h);
-}
-
-void
-Action::set_current_character(Character *character)
-{
-    m_character = character;
 }
 
 void
@@ -322,6 +414,7 @@ Action::load_textures()
     m_textures["icon_defense"] = env->resources_manager->get_texture(path + "icon_defense.png");
     m_textures["icon_rest"] = env->resources_manager->get_texture(path + "icon_rest.png");
     m_textures["icon_run"] = env->resources_manager->get_texture(path + "icon_run.png");
+    m_textures["item_shelf"] = env->resources_manager->get_texture(path + "item_shelf.png");
 
     path = "res/images/colony/barracks/";
     m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
@@ -337,5 +430,34 @@ Action::load_textures()
             index + ".png");
         m_textures["skill_t_" + index] = env->resources_manager->get_texture(path + "Skill_T_" +
             index + ".png");
+    }
+
+    path = "res/images/colony/icons/";
+    m_textures["research"] = env->resources_manager->get_texture(path + "research.png");
+
+}
+
+void
+Action::change_button_state(Button *button, bool state, int y)
+{
+    button->set_visible(state);
+    button->set_active(state);
+
+    if (state)
+    {
+        Environment *env = Environment::get_instance();
+        button->set_y((y+5) * env->canvas->h() / H);
+    }
+}
+
+void
+Action::active_buttons(ActionState state)
+{
+
+    for (auto s : m_settings->sections())
+    {
+        bool active = m_buttons[s.first]->visible();
+        m_buttons[s.first]->set_active(state == ITEM and active);
+        m_buttons[s.first]->set_visible(state == ITEM and active);
     }
 }
