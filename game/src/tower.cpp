@@ -230,6 +230,10 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
         hero1.empty() ? set_next("squad") : set_next("dungeon");
         finish();
     }
+    else if (button->id().find("floor") != string::npos)
+    {
+        m_actual_floor = atoi(button->id().substr(5).c_str());
+    }
 
     return true;
 }
