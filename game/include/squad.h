@@ -43,6 +43,7 @@ private:
     void draw_drone();
     bool on_event(const KeyboardEvent& event);
     void change_screen();
+    void confirm_state();
 };
 
 #endif

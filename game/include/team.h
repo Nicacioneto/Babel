@@ -30,6 +30,7 @@ public:
     void confirm();
     void reset();
     void change_buttons(bool state);
+    unsigned int size();
     
 private:
     int m_slot;
@@ -38,7 +39,7 @@ private:
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
-    vector<ObjectID> m_squad;
+    vector<ObjectID> m_team;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

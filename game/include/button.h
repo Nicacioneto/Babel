@@ -25,7 +25,7 @@ class MouseMotionEvent;
 class Button : public Object, public Listener
 {
 public:
-    typedef enum { IDLE, ON_HOVER, ACTIVE } State;
+    typedef enum { IDLE, ON_HOVER, ACTIVE, INACTIVE } State;
     
     Button(Object *parent = nullptr, ObjectID id = "", const string& texture = "",
         double x = 0, double y = 0, double w = 100, double h = 100);

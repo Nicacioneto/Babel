@@ -56,14 +56,14 @@ Team::on_message(Object *sender, MessageID id, Parameters)
 	{
 	    if (button->id() == c.first)
 	    {
-	        if (button->visible() and m_squad.size() < 4) // not selected
+	        if (button->visible() and m_team.size() < 4) // not selected
 	        {
-	            m_squad.push_back(c.first);
+	            m_team.push_back(c.first);
 	            button->set_visible(false);
 	        }
 	        else
 	        {
-	            m_squad.erase(remove(m_squad.begin(), m_squad.end(), c.first), m_squad.end());
+	            m_team.erase(remove(m_team.begin(), m_team.end(), c.first), m_team.end());
 	            button->set_visible(true);
 	        }
 
@@ -128,7 +128,7 @@ Team::load_characters()
 void
 Team::load_squad()
 {
-    m_squad.clear();
+    m_team.clear();
     
     auto heros = m_settings->sections()["Squad"];
 
@@ -137,7 +137,7 @@ Team::load_squad()
         if (h.second != "")
         {
             m_buttons[h.second]->set_visible(false);
-            m_squad.push_back(h.second);
+            m_team.push_back(h.second);
         }
     }
 }
@@ -146,7 +146,7 @@ void
 Team::confirm()
 {
     int i = 1;
-    for (auto id : m_squad)
+    for (auto id : m_team)
     {
         m_settings->write<string>("Squad", "hero" + to_string(i++), id);
     }
@@ -180,4 +180,10 @@ Team::change_buttons(bool state)
     }
 
     load_squad();
+}
+
+unsigned int
+Team::size()
+{
+    return m_team.size();
 }

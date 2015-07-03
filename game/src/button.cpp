@@ -68,6 +68,12 @@ Button::draw_self()
                 m_texture->size().second/m_sprites);
             env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
         }
+        else if (m_state == INACTIVE)
+        {
+            Rect clip = Rect(0, 3 * m_texture->size().second/m_sprites, m_texture->size().first,
+                m_texture->size().second/m_sprites);
+            env->canvas->draw(m_texture.get(), clip, x(), y(), w(), h());
+        }
     }
     else
     {
@@ -168,6 +174,7 @@ void
 Button::change_state(State to)
 {
     m_state = to;
+    set_active(m_state != INACTIVE);
 }
 
 void

@@ -74,6 +74,8 @@ Squad::Squad(int slot, const string& next)
     m_team = new Team(m_slot, this);
     m_team->add_observer(this);
     add_child(m_team);
+
+    confirm_state();
 }
 
 Squad::~Squad()
@@ -140,6 +142,7 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "confirm_choice")
     {
         m_team->confirm();
+        confirm_state();
     }
     else if (button->id() == "reset_choice")
     {
@@ -203,4 +206,17 @@ Squad::on_event(const KeyboardEvent& event)
     }
 
     return false;
+}
+
+void
+Squad::confirm_state()
+{
+    if (not m_team->size())
+    {
+        m_buttons["confirm"]->change_state(Button::INACTIVE);
+    }
+    else
+    {
+        m_buttons["confirm"]->change_state(Button::IDLE);
+    }
 }
