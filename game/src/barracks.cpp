@@ -250,7 +250,7 @@ Barracks::load_textures()
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/barracks/";
 
-    m_textures["card_big"] = env->resources_manager->get_texture(path + "card_big.png");
+    m_textures["card_big"] = env->resources_manager->get_texture("res/images/characters/card_big.png");
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
     m_textures["bracket_military"] = env->resources_manager->get_texture(path + "bracket-m.png");
     m_textures["bracket_pisionic"] = env->resources_manager->get_texture(path + "bracket-p.png");

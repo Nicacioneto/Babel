@@ -17,9 +17,9 @@
 using std::to_string;
 
 Team::Team(int slot, Object *parent)
-	: Object(parent), m_slot(slot), m_settings(nullptr)
+    : Object(parent), m_slot(slot), m_settings(nullptr)
 {
-	Environment *env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     m_settings = env->resources_manager->get_settings(path);
 
@@ -30,45 +30,45 @@ Team::Team(int slot, Object *parent)
 void
 Team::draw_self()
 {
-	Environment *env = Environment::get_instance();
+    Environment *env = Environment::get_instance();
 
-	double scale_w = env->canvas->w() / W;
-	double scale_h = env->canvas->h() / H;
-	Color color(70, 89, 79);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    Color color(70, 89, 79);
 
-	env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
+    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
 }
 
 bool
 Team::on_message(Object *sender, MessageID id, Parameters)
 {
-	Button *button = dynamic_cast<Button *>(sender);
+    Button *button = dynamic_cast<Button *>(sender);
 
-	if (id != Button::clickedID or not button)
-	{
-	    return false;
-	}
+    if (id != Button::clickedID or not button)
+    {
+        return false;
+    }
 
-	for (auto c : m_characters)
-	{
-	    if (button->id() == c.first)
-	    {
-	        if (button->visible() and m_team.size() < 4) // not selected
-	        {
-	            m_team.push_back(c.first);
-	            button->set_visible(false);
-	        }
-	        else
-	        {
-	            m_team.erase(remove(m_team.begin(), m_team.end(), c.first), m_team.end());
-	            button->set_visible(true);
-	        }
+    for (auto c : m_characters)
+    {
+        if (button->id() == c.first)
+        {
+            if (button->visible() and m_team.size() < 4) // not selected
+            {
+                m_team.push_back(c.first);
+                button->set_visible(false);
+            }
+            else
+            {
+                m_team.erase(remove(m_team.begin(), m_team.end(), c.first), m_team.end());
+                button->set_visible(true);
+            }
 
-	        break;
-	    }
-	}
+            break;
+        }
+    }
 
-	return true;
+    return true;
 }
 
 void
