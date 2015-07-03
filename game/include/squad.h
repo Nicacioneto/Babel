@@ -11,16 +11,16 @@
 #include "button.h"
 #include <core/level.h>
 #include <core/listener.h>
-#include <memory>
 #include <map>
 #include <vector>
 
 using std::map;
 using std::vector;
 
-class Texture;
 class Character;
 class KeyboardEvent;
+class Team;
+class Texture;
 
 class Squad : public Level, public Listener
 {
@@ -29,26 +29,20 @@ public:
     ~Squad();
 
 private:
-    typedef enum { SQUAD, DRONE } Screen;
-    int m_slot, m_character;
+    typedef enum { TEAM, DRONE } Screen;
+    int m_slot;
     Screen m_screen;
 
     shared_ptr<Settings> m_settings;
     map<ObjectID, Button*> m_buttons;
-    map<ObjectID, Character*> m_characters;
-    map<ObjectID, shared_ptr<Texture>> m_textures;
-    vector<ObjectID> m_squad;
+    shared_ptr<Texture> m_bracket;
+    Team *m_team;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
-    void change_screen();
-    void reset_choice();
-    void confirm_squad();
-    void load_squad();
-    void load_characters();
-    void draw_squad();
     void draw_drone();
     bool on_event(const KeyboardEvent& event);
+    void change_screen();
 };
 
 #endif

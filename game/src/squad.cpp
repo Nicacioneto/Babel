@@ -5,16 +5,15 @@
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
-#include "squad.h"
 #include "character.h"
 #include "colony.h"
+#include "squad.h"
+#include "team.h"
 #include <algorithm>
 #include <core/font.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
-#include <iostream>
-using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -22,14 +21,15 @@ using namespace std;
 using std::to_string;
 
 Squad::Squad(int slot, const string& next)
-    : Level("Squad", next), m_slot(slot), m_character(0), m_screen(SQUAD), m_settings(nullptr)
+    : Level("Squad", next), m_slot(slot), m_screen(TEAM), m_settings(nullptr),
+        m_bracket(nullptr), m_team(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/tower/squad/";
 
     env->events_manager->register_listener(this);
 
-    load_characters();
+    m_bracket = env->resources_manager->get_texture("res/images/colony/barracks/bracket.png");
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
@@ -71,7 +71,9 @@ Squad::Squad(int slot, const string& next)
         add_child(b.second);
     }
 
-    load_squad();
+    m_team = new Team(m_slot, this);
+    m_team->add_observer(this);
+    add_child(m_team);
 }
 
 Squad::~Squad()
@@ -93,16 +95,15 @@ Squad::draw_self()
     double scale_h = env->canvas->h() / H;
     Color color(70, 89, 79);
 
-    string path = "res/images/colony/barracks/";
-    shared_ptr<Texture> texture = env->resources_manager->get_texture(path + "bracket.png");
-    env->canvas->draw(texture.get(), 30 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_bracket.get(), 30 * scale_w, 25 * scale_h);
+    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
     env->canvas->draw("Confirm Choice", 345 * scale_w, 630 * scale_h, color);
     env->canvas->draw("Reset Choice", 565 * scale_w, 630 * scale_h, color);
 
     switch (m_screen)
     {
-        case SQUAD:
-            draw_squad();
+        case TEAM:
+            // draw_squad();
             break;
         case DRONE:
             draw_drone();
@@ -122,7 +123,7 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "select_squad")
     {
-        m_screen = SQUAD;
+        m_screen = TEAM;
         change_screen();
         
         m_buttons["select_drone"]->change_state(Button::IDLE);
@@ -138,14 +139,11 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "confirm_choice")
     {
-        if (m_screen == SQUAD)
-        {
-            confirm_squad();
-        }
+        m_team->confirm();
     }
     else if (button->id() == "reset_choice")
     {
-        reset_choice();
+        m_team->reset();
     }
     else if (button->id() == "confirm")
     {
@@ -165,27 +163,6 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         set_next("tower");
         finish();
     }
-    else
-    {
-        for (auto c : m_characters)
-        {
-            if (button->id() == c.first)
-            {
-                if (button->visible() and m_squad.size() < 4) // not selected
-                {
-                    m_squad.push_back(c.first);
-                    button->set_visible(false);
-                }
-                else
-                {
-                    m_squad.erase(remove(m_squad.begin(), m_squad.end(), c.first), m_squad.end());
-                    button->set_visible(true);
-                }
-
-                break;
-            }
-        }
-    }
 
     return true;
 }
@@ -193,131 +170,8 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
 void
 Squad::change_screen()
 {
-    for (auto c : m_characters)
-    {
-        c.second->set_visible(m_screen == SQUAD);
-        m_buttons[c.first]->set_visible(m_screen == SQUAD);
-        m_buttons[c.first]->set_active(m_screen == SQUAD);
-    }
-
-    load_squad();
-}
-
-void
-Squad::reset_choice()
-{
-    for (auto c : m_characters)
-    {
-        m_buttons[c.first]->set_visible(true);
-    }
-
-    load_squad();
-}
-
-void
-Squad::confirm_squad()
-{
-    Environment *env = Environment::get_instance();
-    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
-    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-
-    int i = 1;
-    for (auto id : m_squad)
-    {
-        settings->write<string>("Squad", "hero" + to_string(i++), id);
-    }
-
-    for (int j = i; j <= 4; ++j)
-    {
-        settings->write<string>("Squad", "hero" + to_string(j), "");
-    }
-
-    settings->save(path);
-}
-
-void
-Squad::load_squad()
-{
-    m_squad.clear();
-    
-    Environment *env = Environment::get_instance();
-    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
-    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-
-    auto heros = settings->sections()["Squad"];
-
-    for (auto h : heros)
-    {
-        if (h.second != "")
-        {
-            m_buttons[h.second]->set_visible(false);
-            m_squad.push_back(h.second);
-        }
-    }
-}
-
-void
-Squad::load_characters()
-{
-    Environment *env = Environment::get_instance();
-
-    string path = "res/images/colony/squad/";
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/characters.sav");
-    auto sections = settings->sections();
-
-    int x = 155, y = 175, w = 222, h = 123;
-    int i = 0, j = 0;
-    for (auto section : sections)
-    {
-        if (j > 2)
-        {
-            ++i; j = 0;
-        }
-
-        if (i > 2)
-        {
-            break;
-        }
-
-        if (section.first != "Default")
-        {
-            Character *character = new Character(m_slot, this, section.first, "Albert.png",
-                (x + 249*j) * scale_w, (y + 150*i) * scale_h,
-                w * scale_w, h * scale_h);
-            character->set_active(false);
-
-            character->add_observer(this);
-            add_child(character);
-            character->set_active(false);
-            m_characters[character->id()] = character;
-
-            Button *button = new Button(this, section.first, (x + 249*j) * scale_w,
-                (y + 150*i) * scale_h, w * scale_w, h * scale_h, Color(0, 0, 0, 128));
-
-            m_buttons[button->id()] = button;
-
-            ++j;
-        }
-    }
-}
-
-void
-Squad::draw_squad()
-{
-    Environment *env = Environment::get_instance();
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    Color color(70, 89, 79);
-
-    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
-    env->canvas->draw("Click to add/remove", 60 * scale_w, 80 * scale_h, color);
-    
+    m_team->set_visible(m_screen == TEAM);
+    m_team->change_buttons(m_screen == TEAM);
 }
 
 void
