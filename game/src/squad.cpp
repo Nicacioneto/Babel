@@ -160,7 +160,7 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         string hero1 = settings->read<string>("Squad", "hero1", "");
         if (hero1 != "")
         {
-            set_next("tower");
+            set_next("dungeon");
             finish();
         }
     }

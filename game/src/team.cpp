@@ -37,21 +37,28 @@ Team::draw_self()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
-    Color color(70, 89, 79);
 
-    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
+    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, Color(70, 89, 79));
 
-    int y = 175;
-    for (int i = 0; i < 3; ++i)
+    int x = 155, y = 175;
+    int i = 0, j = 0;
+    for (auto character : m_characters)
     {
-        int x = 155;
-        for (int j = 0; j < 3; ++j)
+        if (j > 2)
         {
-            env->canvas->draw(m_bracket.get(), x * scale_w, y * scale_h);
-            x += 249;
+            ++i;
+            j = 0;
         }
 
-        y += 150; 
+        if (i > 2)
+        {
+            break;
+        }
+
+        env->canvas->draw(m_bracket.get(), (x + 249*j) * scale_w, (y + 150*i) * scale_h);
+        env->canvas->draw(character.first, (x + 133 + 249*j) * scale_w,
+            (y + 3 + 150*i) * scale_h, Color(170, 215, 190));
+        ++j;
     }
 }
 
@@ -99,11 +106,10 @@ Team::load_characters()
 
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/characters.sav");
-    auto sections = settings->sections();
 
     int x = 155, y = 175, w = 222, h = 123;
     int i = 0, j = 0;
-    for (auto section : sections)
+    for (auto section : settings->sections())
     {
         if (j > 2)
         {
