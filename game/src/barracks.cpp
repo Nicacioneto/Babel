@@ -838,7 +838,7 @@ Barracks::load_characters()
     {
         if (section.first != "Default")
         {
-            Character *character = new Character(m_slot, this, section.first, "test_big.png",
+            Character *character = new Character(m_slot, this, section.first, "Albert_big.png",
                 x, y, w, h);
             character->set_active(false);
             character->set_visible(false);

@@ -21,8 +21,8 @@
 
 using std::to_string;
 
-Squad::Squad(int slot, const string& next)
-    : Level("Squad", next), m_slot(slot), m_screen(TEAM), m_settings(nullptr),
+Squad::Squad(int slot, Screen screen, const string& next)
+    : Level("Squad", next), m_slot(slot), m_screen(screen), m_settings(nullptr),
         m_bracket(nullptr), m_team(nullptr), m_drone(nullptr)
 {
     Environment *env = Environment::get_instance();
@@ -47,12 +47,19 @@ Squad::Squad(int slot, const string& next)
     button = new Button(this, "select_squad", path + "select_squad.png",
         300 * scale_w, 675 * scale_h, 100 * scale_w, 18 * scale_h);
     button->set_sprites(4);
-    button->change_state(Button::ACTIVE);
+    if (m_screen == TEAM)
+    {
+        button->change_state(Button::ACTIVE);
+    }
     m_buttons[button->id()] = button;
 
     button = new Button(this, "select_drone", path + "select_drone.png",
         465 * scale_w, 675 * scale_h, 100 * scale_w, 18 * scale_h);
     button->set_sprites(4);
+    if (m_screen == DRONE)
+    {
+        button->change_state(Button::ACTIVE);
+    }
     m_buttons[button->id()] = button;
 
     button = new Button(this, "confirm", path + "select_confirm.png",
@@ -153,7 +160,7 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         string hero1 = settings->read<string>("Squad", "hero1", "");
         if (hero1 != "")
         {
-            set_next("dungeon");
+            set_next("tower");
             finish();
         }
     }

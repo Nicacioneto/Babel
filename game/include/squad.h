@@ -26,11 +26,12 @@ class Texture;
 class Squad : public Level, public Listener
 {
 public:
-    Squad(int slot, const string& next = "base");
+    typedef enum { TEAM, DRONE } Screen;
+
+    Squad(int slot, Screen screen = TEAM, const string& next = "base");
     ~Squad();
 
 private:
-    typedef enum { TEAM, DRONE } Screen;
     int m_slot;
     Screen m_screen;
 

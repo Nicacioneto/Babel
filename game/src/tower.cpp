@@ -196,7 +196,8 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "inspect_drone")
     {
-        // TODO
+        set_next("drone");
+        finish();
     }
     else if (button->id() == "inspect_team")
     {
@@ -209,7 +210,8 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "change_drone")
     {
-        // TODO
+        set_next("drone");
+        finish();
     }
     else if (button->id() == "change_team")
     {

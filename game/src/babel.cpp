@@ -11,6 +11,7 @@
 #include "central.h"
 #include "combat.h"
 #include "credits.h"
+#include "drone.h"
 #include "dungeon.h"
 #include "facilities.h"
 #include "gameover.h"
@@ -113,6 +114,10 @@ Babel::load_level(const string& id)
     else if (id == "squad")
     {
         return new Squad(m_slot);
+    }
+    else if (id == "drone")
+    {
+        return new Squad(m_slot, Squad::DRONE);
     }
 
     return load_frontend(id);
