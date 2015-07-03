@@ -19,6 +19,7 @@ using std::vector;
 class Button;
 class Character;
 class Settings;
+class Texture;
 
 class Team : public Object
 {
@@ -37,6 +38,7 @@ private:
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     vector<ObjectID> m_team;
+    shared_ptr<Texture> m_bracket;
 
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

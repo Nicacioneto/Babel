@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <core/color.h>
 #include <core/settings.h>
+#include <core/texture.h>
 
 #define W 1024.0
 #define H 768.0
@@ -17,11 +18,13 @@
 using std::to_string;
 
 Team::Team(int slot, Object *parent)
-    : Object(parent), m_slot(slot), m_settings(nullptr)
+    : Object(parent), m_slot(slot), m_settings(nullptr), m_bracket(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     m_settings = env->resources_manager->get_settings(path);
+
+    m_bracket = env->resources_manager->get_texture("res/images/characters/card_small.png");
 
     load_characters();
     load_team();
@@ -37,6 +40,19 @@ Team::draw_self()
     Color color(70, 89, 79);
 
     env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, color);
+
+    int y = 175;
+    for (int i = 0; i < 3; ++i)
+    {
+        int x = 155;
+        for (int j = 0; j < 3; ++j)
+        {
+            env->canvas->draw(m_bracket.get(), x * scale_w, y * scale_h);
+            x += 249;
+        }
+
+        y += 150; 
+    }
 }
 
 bool
@@ -91,7 +107,8 @@ Team::load_characters()
     {
         if (j > 2)
         {
-            ++i; j = 0;
+            ++i;
+            j = 0;
         }
 
         if (i > 2)
@@ -101,7 +118,7 @@ Team::load_characters()
 
         if (section.first != "Default")
         {
-            Character *character = new Character(m_slot, this, section.first, "Albert.png",
+            Character *character = new Character(m_slot, this, section.first, "Albert_small.png",
                 (x + 249*j) * scale_w, (y + 150*i) * scale_h,
                 w * scale_w, h * scale_h);
             character->set_active(false);
