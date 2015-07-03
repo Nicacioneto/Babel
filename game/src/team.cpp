@@ -9,8 +9,6 @@
 #include "team.h"
 #include <algorithm>
 #include <core/color.h>
-#include <core/font.h>
-#include <core/rect.h>
 #include <core/settings.h>
 
 #define W 1024.0
@@ -19,7 +17,7 @@
 using std::to_string;
 
 Team::Team(int slot, Object *parent)
-	: Object(parent), m_slot(slot), m_settings(nullptr), m_font(nullptr)
+	: Object(parent), m_slot(slot), m_settings(nullptr)
 {
 	Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";

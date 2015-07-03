@@ -39,10 +39,15 @@ Drone::draw_self()
 
 	double scale_w = env->canvas->w() / W;
 	double scale_h = env->canvas->h() / H;
-	Color color(70, 89, 79);
 
-	env->canvas->draw("Select Drone", 60 * scale_w, 50 * scale_h, color);
+	env->canvas->draw("Select Drone", 60 * scale_w, 50 * scale_h, Color(70, 89, 79));
+	
+	shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+	env->canvas->set_font(font);
+	font->set_size(24);
+	
 	env->canvas->draw(m_background.get(), 277 * scale_w, 174 * scale_h);
+	env->canvas->draw("DRONE", 360 * scale_w, 210 * scale_h, Color(170, 215, 190));
 }
 
 bool

@@ -18,7 +18,6 @@ using std::vector;
 
 class Button;
 class Character;
-class Font;
 class Settings;
 
 class Team : public Object
@@ -34,7 +33,6 @@ public:
 private:
     int m_slot;
     shared_ptr<Settings> m_settings;
-    shared_ptr<Font> m_font;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
