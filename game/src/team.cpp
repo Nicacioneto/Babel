@@ -9,8 +9,13 @@
 #include "team.h"
 #include <algorithm>
 #include <core/color.h>
+#include <core/font.h>
 #include <core/settings.h>
+#include <core/text.h>
 #include <core/texture.h>
+#include <core/rect.h>
+#include <iostream>
+using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -28,6 +33,7 @@ Team::Team(int slot, Object *parent)
 
     load_characters();
     load_team();
+    load_texts();
 }
 
 void
@@ -42,7 +48,7 @@ Team::draw_self()
 
     int x = 155, y = 175;
     int i = 0, j = 0;
-    for (auto character : m_characters)
+    for (auto c : m_characters)
     {
         if (j > 2)
         {
@@ -56,10 +62,37 @@ Team::draw_self()
         }
 
         env->canvas->draw(m_bracket.get(), (x + 249*j) * scale_w, (y + 150*i) * scale_h);
-        env->canvas->draw(character.first, (x + 133 + 249*j) * scale_w,
+        env->canvas->draw(c.first, (x + 133 + 249*j) * scale_w,
             (y + 3 + 150*i) * scale_h, Color(170, 215, 190));
+
+        draw_attributes(x, y, i, j, c.first);
+        
         ++j;
     }
+
+}
+
+void
+Team::draw_attributes(int x, int y, int i, int j, string id)
+{
+    Environment *env = Environment::get_instance();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    Rect box_shield((x + 172 + 249*j) * scale_w, (y + 32 + 150*i) * scale_h,
+        40 * scale_w, 21 * scale_h);
+    double w_shield = m_texts[id + "_shield"]->w() + m_texts[id + "_max_shield"]->w();
+    double x_shield = (box_shield.w() - w_shield)/2 + box_shield.x();
+    double y_shield = (box_shield.h() - m_texts[id + "_shield"]->h())/2 + box_shield.y();
+    double x_max_shield = x_shield + m_texts[id + "_shield"]->w();
+    double y_max_shield = y_shield + m_texts[id + "_shield"]->h() -
+        m_texts[id + "_max_shield"]->h();
+
+    m_texts[id + "_shield"]->set_position(x_shield, y_shield);
+    m_texts[id + "_max_shield"]->set_position(x_max_shield, y_max_shield);
+    
+    m_texts[id + "_shield"]->draw();
+    m_texts[id + "_max_shield"]->draw();
 }
 
 bool
@@ -159,6 +192,26 @@ Team::load_team()
             m_buttons[h.second]->set_visible(false);
             m_team.push_back(h.second);
         }
+    }
+}
+
+void
+Team::load_texts()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+
+    for (auto c : m_characters)
+    {
+        string shield = to_string(c.second->shield());
+        string max_shield = to_string(c.second->max_shield());
+
+        font->set_size(11);
+        m_texts[c.first + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
+
+        font->set_size(8);
+        m_texts[c.first + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
     }
 }
 
