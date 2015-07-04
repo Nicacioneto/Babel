@@ -14,8 +14,6 @@
 #include <core/text.h>
 #include <core/texture.h>
 #include <core/rect.h>
-#include <iostream>
-using namespace std;
 
 #define W 1024.0
 #define H 768.0
@@ -79,20 +77,35 @@ Team::draw_attributes(int x, int y, int i, int j, string id)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Rect box_shield((x + 172 + 249*j) * scale_w, (y + 32 + 150*i) * scale_h,
+    Rect box((x + 172 + 249*j) * scale_w, (y + 32 + 150*i) * scale_h,
         40 * scale_w, 21 * scale_h);
     double w_shield = m_texts[id + "_shield"]->w() + m_texts[id + "_max_shield"]->w();
-    double x_shield = (box_shield.w() - w_shield)/2 + box_shield.x();
-    double y_shield = (box_shield.h() - m_texts[id + "_shield"]->h())/2 + box_shield.y();
+    double x_shield = (box.w() - w_shield)/2 + box.x();
+    double y_shield = (box.h() - m_texts[id + "_shield"]->h())/2 + box.y();
     double x_max_shield = x_shield + m_texts[id + "_shield"]->w();
     double y_max_shield = y_shield + m_texts[id + "_shield"]->h() -
         m_texts[id + "_max_shield"]->h();
 
     m_texts[id + "_shield"]->set_position(x_shield, y_shield);
     m_texts[id + "_max_shield"]->set_position(x_max_shield, y_max_shield);
-    
     m_texts[id + "_shield"]->draw();
     m_texts[id + "_max_shield"]->draw();
+
+    box.set_y(y + 59 + 150*i);
+    double w_life = m_texts[id + "_life"]->w() + m_texts[id + "_max_life"]->w();
+    double x_life = (box.w() - w_life)/2 + box.x();
+    double y_life = (box.h() - m_texts[id + "_life"]->h())/2 + box.y();
+    double x_max_life = x_life + m_texts[id + "_life"]->w();
+    double y_max_life = y_life + m_texts[id + "_life"]->h() -
+        m_texts[id + "_max_life"]->h();
+
+    m_texts[id + "_life"]->set_position(x_life, y_life);
+    m_texts[id + "_max_life"]->set_position(x_max_life, y_max_life);
+    m_texts[id + "_life"]->draw();
+    m_texts[id + "_max_life"]->draw();
+
+    box.set_y(y + 86 + 150*i);
+    //TODO mp
 }
 
 bool
@@ -206,12 +219,16 @@ Team::load_texts()
     {
         string shield = to_string(c.second->shield());
         string max_shield = to_string(c.second->max_shield());
+        string life = to_string(c.second->life());
+        string max_life = to_string(c.second->max_life());
 
-        font->set_size(11);
+        font->set_size(10);
         m_texts[c.first + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
+        m_texts[c.first + "_life"] = new Text(this, life + "/", Color(170, 215, 190));
 
-        font->set_size(8);
+        font->set_size(7);
         m_texts[c.first + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
+        m_texts[c.first + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
     }
 }
 
