@@ -137,35 +137,6 @@ Action::create_buttons()
     button->set_visible(false);
     m_buttons[button->id()] = button;
 
-    path = "res/images/combat/examine_";
-
-    button = new Button(this, "examine_item", path + "item.png",
-        710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "examine_military", path + "military.png",
-        710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "examine_psionic", path + "psionic.png",
-        710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "examine_tech", path + "tech.png",
-        710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
-    button->set_active(false);
-    button->set_visible(false);
-
     path = "res/images/colony/";
 
     button = new Button(this, "left_arrow", path + "left_arrow.png",
@@ -431,18 +402,6 @@ Action::active_buttons(ActionState state)
         m_buttons[s.first]->set_active(state == ITEM and active);
         m_buttons[s.first]->set_visible(state == ITEM and active);
     }
-
-    m_buttons["examine_item"]->set_active(state == ITEM);
-    m_buttons["examine_item"]->set_visible(state == ITEM);
-
-    m_buttons["examine_military"]->set_active(state == SKILL and m_mpt == MILITARY);
-    m_buttons["examine_military"]->set_visible(state == SKILL and m_mpt == MILITARY);
-
-    m_buttons["examine_psionic"]->set_active(state == SKILL and m_mpt == PSIONIC);
-    m_buttons["examine_psionic"]->set_visible(state == SKILL and m_mpt == PSIONIC);
-
-    m_buttons["examine_tech"]->set_active(state == SKILL and m_mpt == TECH);
-    m_buttons["examine_tech"]->set_visible(state == SKILL and m_mpt == TECH);
 }
 
 void
