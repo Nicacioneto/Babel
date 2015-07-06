@@ -52,17 +52,6 @@ Central::draw_self()
     if (m_text and m_screen != CHAT and m_max_pages > 1)
     {
         m_text->draw();
-        m_buttons["left_arrow"]->set_active(true);
-        m_buttons["left_arrow"]->set_visible(true);
-        m_buttons["right_arrow"]->set_active(true);
-        m_buttons["right_arrow"]->set_visible(true);
-    }
-    else
-    {
-        m_buttons["left_arrow"]->set_active(false);
-        m_buttons["left_arrow"]->set_visible(false);
-        m_buttons["right_arrow"]->set_active(false);
-        m_buttons["right_arrow"]->set_visible(false);
     }
 
     switch (m_screen)
@@ -108,16 +97,16 @@ Central::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        if (m_page > 1)
+        if (--m_page < 1)
         {
-            m_page--;
+            m_page = m_max_pages;
         }
     }
     else if (button->id() == "right_arrow")
     {
-        if (m_page < m_max_pages)
+        if (++m_page > m_max_pages)
         {
-            m_page++;
+            m_page = 1;
         }
     }
     else
@@ -234,11 +223,11 @@ Central::create_buttons()
 void
 Central::change_buttons()
 {
-    m_buttons["left_arrow"]->set_active(m_screen != CHAT);
-    m_buttons["left_arrow"]->set_visible(m_screen != CHAT);
+    m_buttons["left_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
+    m_buttons["left_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
 
-    m_buttons["right_arrow"]->set_active(m_screen != CHAT);
-    m_buttons["right_arrow"]->set_visible(m_screen != CHAT);
+    m_buttons["right_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
+    m_buttons["right_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
 
     for (auto b : m_buttons)
     {

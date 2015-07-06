@@ -65,17 +65,6 @@ Hospital::draw_self()
     if (m_text and m_screen != "chat" and m_max_pages > 1)
     {
         m_text->draw();
-        m_buttons["left_arrow"]->set_active(true);
-        m_buttons["left_arrow"]->set_visible(true);
-        m_buttons["right_arrow"]->set_active(true);
-        m_buttons["right_arrow"]->set_visible(true);
-    }
-    else
-    {
-        m_buttons["left_arrow"]->set_active(false);
-        m_buttons["left_arrow"]->set_visible(false);
-        m_buttons["right_arrow"]->set_active(false);
-        m_buttons["right_arrow"]->set_visible(false);
     }
 
     if (m_screen == "chat")
@@ -120,17 +109,17 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
 
     if (button->id() == "left_arrow")
     {
-        if (m_page > 1)
+        if (--m_page < 1)
         {
-            m_page--;
+            m_page = m_max_pages;
         }
         notify(m_screen, to_string(m_page));
     }
     else if (button->id() == "right_arrow")
     {
-        if (m_page < m_max_pages)
+        if (++m_page > m_max_pages)
         {
-            m_page++;
+            m_page = 1;
         }
         notify(m_screen, to_string(m_page));
     }
@@ -236,11 +225,11 @@ Hospital::create_buttons()
 void
 Hospital::change_buttons()
 {
-    m_buttons["left_arrow"]->set_active(m_screen != "chat");
-    m_buttons["left_arrow"]->set_visible(m_screen != "chat");
+    m_buttons["left_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
+    m_buttons["left_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
 
-    m_buttons["right_arrow"]->set_active(m_screen != "chat");
-    m_buttons["right_arrow"]->set_visible(m_screen != "chat");
+    m_buttons["right_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
+    m_buttons["right_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
 
     for (auto b : m_buttons)
     {
