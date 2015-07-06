@@ -21,19 +21,20 @@ public:
 
 private:
     typedef enum { IDLE, POPUP } State;
+    typedef string PlaceID;
 
     int m_slot;
-    string m_text;
+    PlaceID m_place;
     State m_state;
     unsigned long m_last;
-    shared_ptr<Texture> m_texture, m_popup;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
     void update_self(unsigned long elapsed);
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void enable_popup(bool popup);
-    void load_buttons();
+    void create_buttons();
     void start_mission();
 };
 
