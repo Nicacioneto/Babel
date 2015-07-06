@@ -146,30 +146,21 @@ Babel::load_frontend(const string& id)
 bool
 Babel::on_event(const KeyboardEvent& event)
 {
-    if (event.state() == KeyboardEvent::PRESSED
-        and event.key() == KeyboardEvent::ESCAPE)
+    if (event.state() == KeyboardEvent::PRESSED and
+        event.key() == KeyboardEvent::ESCAPE)
     {
         m_level->set_next("menu");
         m_level->finish();
         Environment *env = Environment::get_instance();
         env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
     }
-    else if (event.state() == KeyboardEvent::PRESSED
-        and event.key() == KeyboardEvent::F11)
+    else if (event.state() == KeyboardEvent::PRESSED and
+        event.key() == KeyboardEvent::F11)
     {
         shared_ptr<Settings> settings = env->resources_manager->get_settings(env->m_settings_path);
 
-        if (env->video->fullscreen())
-        {
-            env->video->set_fullscreen(false);
-            settings->write<bool>("Game", "fullscreen", false);
-        }
-        else
-        {
-            env->video->set_fullscreen(true);
-            settings->write<bool>("Game", "fullscreen", true);
-        }
-
+        env->video->set_fullscreen((env->video->fullscreen() + 1) % 2);
+        settings->write<bool>("Game", "fullscreen", env->video->fullscreen());
         settings->save(env->m_settings_path);
     }
 
@@ -182,7 +173,6 @@ Babel::on_event(const SystemEvent& event)
     if (event.type() == SystemEvent::QUIT)
     {
         m_done = true;
-
         kill_threads();
 
         return true;
