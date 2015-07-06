@@ -30,16 +30,16 @@ Colony::Colony(int slot, Object *parent, ObjectID id)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button = new Button(this, "center_bracket", path + "center_bracket_button.png",
-        193 * scale_w, 25 * scale_h, 635 * scale_w, 156/2 * scale_h);
+    Button *button = new Button(this, "tower", path + "tower_button.png",
+        28 * scale_w, 25 * scale_h, 220 * scale_w, 154/2 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "tower", path + "tower_button.png",
-        28 * scale_w, 25 * scale_h, 140 * scale_w, 156/2 * scale_h);
+    button = new Button(this, "center_bracket", path + "center_bracket_button.png",
+        277 * scale_w, 25 * scale_h, 467 * scale_w, 154/2 * scale_h);
     m_buttons[button->id()] = button;
 
     button = new Button(this, "planet", path + "planet_button.png",
-        855 * scale_w, 25 * scale_h, 140 * scale_w, 156/2 * scale_h);
+        770 * scale_w, 25 * scale_h, 223 * scale_w, 154/2 * scale_h);
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
@@ -67,9 +67,9 @@ Colony::draw_self()
     double scale_h = env->canvas->h() / H;
 
     env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
-    env->canvas->draw(m_textures["colony"].get(), 193 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["colony"].get(), 277 * scale_w, 25 * scale_h);
     env->canvas->draw(m_textures["tower"].get(), 28 * scale_w, 25 * scale_h);
-    env->canvas->draw(m_textures["planet"].get(), 855 * scale_w, 25 * scale_h);
+    env->canvas->draw(m_textures["planet"].get(), 770 * scale_w, 25 * scale_h);
     env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
     env->canvas->draw(m_textures["resources"].get(), 28 * scale_w, 120 * scale_h);
 
