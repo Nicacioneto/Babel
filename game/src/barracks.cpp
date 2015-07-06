@@ -251,6 +251,7 @@ Barracks::load_textures()
     string path = "res/images/colony/barracks/";
 
     m_textures["card_big"] = env->resources_manager->get_texture("res/images/characters/card_big.png");
+    m_textures["card_small"] = env->resources_manager->get_texture("res/images/characters/card_small.png");
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
     m_textures["bracket_military"] = env->resources_manager->get_texture(path + "bracket-m.png");
     m_textures["bracket_pisionic"] = env->resources_manager->get_texture(path + "bracket-p.png");
@@ -369,6 +370,7 @@ Barracks::draw_character()
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
+    font->set_size(16);
     Color color(170, 215, 190);
     
     double scale_w = env->canvas->w() / W;
@@ -376,61 +378,81 @@ Barracks::draw_character()
 
     Character *character = current_char();
 
-    env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
+    if (m_screen == INSPECT)
+    {
+        env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
 
-    font->set_size(16);
-    int data = Colony(m_slot).data();
-    env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
+        int data = Colony(m_slot).data();
+        env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
 
-    int x = 112;
-    int y = 87;
-    font->set_size(18);
-    m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
-    m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
-    m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
-    env->canvas->draw(m_textures["card_big"].get(), x * scale_w, y * scale_h);
-    env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 5) * scale_h, color);
+        int x = 112;
+        int y = 87;
+        font->set_size(18);
+        m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
+        m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
+        m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
+        env->canvas->draw(m_textures["card_big"].get(), x * scale_w, y * scale_h);
+        env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
 
-    font->set_style(Font::BOLD);
-    env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
-        (y + 38) * scale_h, Color(208, 179, 43));
-    env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
-        (y + 70) * scale_h, Color(166, 69, 151));
-    env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
-        (y + 100) * scale_h, Color(78, 191, 190));
+        font->set_style(Font::BOLD);
+        env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
+            (y + 38) * scale_h, Color(208, 179, 43));
+        env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
+            (y + 70) * scale_h, Color(166, 69, 151));
+        env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
+            (y + 100) * scale_h, Color(78, 191, 190));
 
-    font->set_size(14);
-    font->set_style(Font::NORMAL);
+        font->set_size(14);
+        font->set_style(Font::NORMAL);
 
-    // number of digits
-    char buffer_length[100];
-    sprintf(buffer_length, "%d\n", character->shield());
-    string sf = buffer_length;
+        // number of digits
+        char buffer_length[100];
+        sprintf(buffer_length, "%d\n", character->shield());
+        string sf = buffer_length;
 
-    env->canvas->draw(to_string(character->shield()),
-        (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 162) * scale_h, Color::WHITE);
+        env->canvas->draw(to_string(character->shield()),
+            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 162) * scale_h, Color::WHITE);
 
-    sprintf(buffer_length, "%d\n", character->life());
-    sf = buffer_length;
-    env->canvas->draw(to_string(character->life()),
-        (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 191) * scale_h, Color::WHITE);
+        sprintf(buffer_length, "%d\n", character->life());
+        sf = buffer_length;
+        env->canvas->draw(to_string(character->life()),
+            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 191) * scale_h, Color::WHITE);
 
-    sprintf(buffer_length, "%d\n", character->mp());
-    sf = buffer_length;
-    env->canvas->draw(to_string(character->mp()),
-        (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 220) * scale_h, Color::WHITE);
+        sprintf(buffer_length, "%d\n", character->mp());
+        sf = buffer_length;
+        env->canvas->draw(to_string(character->mp()),
+            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 220) * scale_h, Color::WHITE);
 
-    env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 166) * scale_h, Color::WHITE);
-    env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 195) * scale_h, Color::WHITE);
-    env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 225) * scale_h, Color::WHITE);
+        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 166) * scale_h, Color::WHITE);
+        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 195) * scale_h, Color::WHITE);
+        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 225) * scale_h, Color::WHITE);
 
-    font->set_size(10);
-    env->canvas->draw(to_string(character->max_shield()), (x + 183) * scale_w,
-        (y + 166) * scale_h, Color::WHITE);
-    env->canvas->draw(to_string(character->max_life()), (x + 183) * scale_w,
-        (y + 195) * scale_h, Color::WHITE);
-    env->canvas->draw(to_string(character->max_mp()), (x + 183) * scale_w,
-        (y + 225) * scale_h, Color::WHITE);
+        font->set_size(10);
+        env->canvas->draw(to_string(character->max_shield()), (x + 183) * scale_w,
+            (y + 166) * scale_h, Color::WHITE);
+        env->canvas->draw(to_string(character->max_life()), (x + 183) * scale_w,
+            (y + 195) * scale_h, Color::WHITE);
+        env->canvas->draw(to_string(character->max_mp()), (x + 183) * scale_w,
+            (y + 225) * scale_h, Color::WHITE);
+    }
+    else if (m_screen == EQUIP)
+    {
+        int x = 112;
+        int y = 87;
+        font->set_size(18);
+        env->canvas->draw(m_textures["card_small"].get(), x * scale_w, y * scale_h);
+        env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
+
+        font->set_style(Font::BOLD);
+        env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
+            (y + 31) * scale_h, Color(208, 179, 43));
+        env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
+            (y + 58) * scale_h, Color(166, 69, 151));
+        env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
+            (y + 86) * scale_h, Color(78, 191, 190));
+
+        font->set_style(Font::NORMAL);
+    }
 }
 
 void
@@ -552,6 +574,8 @@ Barracks::equip_screen()
     double scale_h = env->canvas->h() / H;
 
     Color color(170, 215, 190);
+
+    draw_character();
 
     env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
     env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
@@ -760,7 +784,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
         for (auto character : m_characters)
         {
-            character.second->set_texture("Booker.png");
+            character.second->set_texture(character.first + "_small.png");
             character.second->set_h(123 * scale_h);
         }
     }
@@ -791,7 +815,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
             for (auto character : m_characters)
             {
-                character.second->set_texture("Albert_big.png");
+                character.second->set_texture(character.first + "_big.png");
                 character.second->set_h(270 * scale_h);
             }
         }
@@ -836,10 +860,10 @@ Barracks::load_characters()
 
     for (auto section : sections)
     {
-        if (section.first != "Default")
+        string name = section.first;
+        if (name != "Default")
         {
-            Character *character = new Character(m_slot, this, section.first, "Albert_big.png",
-                x, y, w, h);
+            Character *character = new Character(m_slot, this, name, name + "_big.png", x, y, w, h);
             character->set_active(false);
             character->set_visible(false);
             character->add_observer(this);
@@ -940,6 +964,8 @@ Barracks::update_char_attributes(Character *c, string class_)
 bool
 Barracks::on_event(const KeyboardEvent& event)
 {
+    current_char()->set_visible(false);
+
     if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::ESCAPE)
     {
@@ -964,6 +990,8 @@ Barracks::on_event(const KeyboardEvent& event)
             m_character = m_characters.size() - 1;
         }
     }
+
+    current_char()->set_visible(true);
 
     return false;
 }

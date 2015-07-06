@@ -106,33 +106,6 @@ might_armor = 12
 mind_armor = 12
 critical = 2
 
-[Michael]
-military = 0
-psionic = 0
-tech = 1
-levelup_m = 36
-levelup_p = 38
-levelup_t = 40
-shield = 30
-max_shield = 30
-life = 100
-max_life = 100
-mp = 50
-max_mp = 20
-might = 7
-mind = 12
-resilience = 7
-willpower = 7
-agility = 6
-perception = 10
-might_attack = 70
-mind_attack = 70
-cooldown = 2
-defense = 42
-might_armor = 12
-mind_armor = 12
-critical = 2
-
 [Newton]
 military = 0
 psionic = 0
@@ -160,7 +133,34 @@ might_armor = 12
 mind_armor = 12
 critical = 2
 
-[Steve]
+[Ram]
+military = 0
+psionic = 0
+tech = 1
+levelup_m = 36
+levelup_p = 38
+levelup_t = 40
+shield = 30
+max_shield = 30
+life = 100
+max_life = 100
+mp = 50
+max_mp = 20
+might = 7
+mind = 12
+resilience = 7
+willpower = 7
+agility = 6
+perception = 10
+might_attack = 70
+mind_attack = 70
+cooldown = 2
+defense = 42
+might_armor = 12
+mind_armor = 12
+critical = 2
+
+[Samus]
 military = 0
 psionic = 0
 tech = 1
@@ -187,7 +187,7 @@ might_armor = 12
 mind_armor = 12
 critical = 2
 
-[Thor]
+[Trojan]
 military = 0
 psionic = 0
 tech = 1
@@ -214,7 +214,7 @@ might_armor = 12
 mind_armor = 12
 critical = 2
 
-[Xavier]
+[Wraith]
 military = 0
 psionic = 0
 tech = 1
