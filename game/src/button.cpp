@@ -15,7 +15,7 @@
 #include <cstdio>
 
 MessageID Button::clickedID = "clicked()";
-MessageID Button::houverID = "houver()";
+MessageID Button::hoverID = "hover()";
 
 Button::Button(Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h)
@@ -127,7 +127,7 @@ Button::on_event(const MouseMotionEvent& event)
         }
 
         m_state = ON_HOVER;
-        notify(houverID, "");
+        notify(hoverID, "");
     }
     else
     {

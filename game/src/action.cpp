@@ -73,11 +73,10 @@ Action::on_message(Object *sender, MessageID id, Parameters)
     {
         clicked_event(button);
     }
-    else if (id == Button::houverID)
+    else if (id == Button::hoverID)
     {
         hover_event(button);
     }
-
 
     return true;
 }
@@ -89,7 +88,6 @@ Action::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
     string path = "res/images/combat/icon_";
-
 
     int x = 294, y = 630;
     double w = 58 * scale_w;
@@ -129,54 +127,41 @@ Action::create_buttons()
 
     button = new Button(this, "confirm", "res/images/tower/squad/confirm.png",
         600 * scale_w, 684 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
-    m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     button = new Button(this, "reject", "res/images/combat/reject.png",
         672 * scale_w, 684 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
-    m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     path = "res/images/combat/examine_";
 
     button = new Button(this, "examine_item", path + "item.png",
         710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
     m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     button = new Button(this, "examine_military", path + "military.png",
         710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
     m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     button = new Button(this, "examine_psionic", path + "psionic.png",
         710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
     m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     button = new Button(this, "examine_tech", path + "tech.png",
         710 * scale_w, 540 * scale_h, 25 * scale_w, 25 * scale_h);
-    button->set_sprites(2);
     m_buttons[button->id()] = button;
     button->set_active(false);
     button->set_visible(false);
@@ -188,7 +173,6 @@ Action::create_buttons()
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     button = new Button(this, "right_arrow", path + "right_arrow.png",
@@ -196,7 +180,6 @@ Action::create_buttons()
     button->set_sprites(1);
     button->set_active(false);
     button->set_visible(false);
-
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
@@ -383,7 +366,6 @@ Action::load_textures()
     string path = "res/images/combat/";
 
     m_textures["bracket"] = env->resources_manager->get_texture(path + "actions.png");
-
     m_textures["military"] = env->resources_manager->get_texture(path + "military.png");
     m_textures["psionic"] = env->resources_manager->get_texture(path + "psionic.png");
     m_textures["tech"] = env->resources_manager->get_texture(path + "tech.png");
@@ -479,75 +461,74 @@ void
 Action::clicked_event(Button *button)
 {
     if (button->id() == "attack")
-        {
-            m_state = ATTACK;
-        }
-        else if (button->id() == "skill")
-        {
-            m_state = SKILL;
-        }
-        else if (button->id() == "item")
-        {
-            m_state = ITEM;
-        }
-        else if (button->id() == "defense")
-        {
-            m_state = DEFENSE;
-        }
-        else if (button->id() == "rest")
-        {
-            m_state = REST;
-        }
-        else if (button->id() == "run")
-        {
-            m_state = RUN;
-        }
+    {
+        m_state = ATTACK;
+    }
+    else if (button->id() == "skill")
+    {
+        m_state = SKILL;
+    }
+    else if (button->id() == "item")
+    {
+        m_state = ITEM;
+    }
+    else if (button->id() == "defense")
+    {
+        m_state = DEFENSE;
+    }
+    else if (button->id() == "rest")
+    {
+        m_state = REST;
+    }
+    else if (button->id() == "run")
+    {
+        m_state = RUN;
+    }
 
-        m_buttons["left_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
-        m_buttons["left_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
+    m_buttons["left_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["left_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
 
-        m_buttons["right_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
-        m_buttons["right_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
+    m_buttons["right_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["right_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
 
-        bool confirm = m_state == DEFENSE or m_state == REST or m_state == RUN;
-        m_buttons["confirm"]->set_visible(confirm);
-        m_buttons["confirm"]->set_active(confirm);
-        m_buttons["reject"]->set_visible(confirm);
-        m_buttons["reject"]->set_active(confirm);
+    bool confirm = m_state == DEFENSE or m_state == REST or m_state == RUN;
+    m_buttons["confirm"]->set_visible(confirm);
+    m_buttons["confirm"]->set_active(confirm);
+    m_buttons["reject"]->set_visible(confirm);
+    m_buttons["reject"]->set_active(confirm);
 
-        if (button->id() == "left_arrow")
+    if (button->id() == "left_arrow")
+    {
+        if (m_state == SKILL)
         {
-            if (m_state == SKILL)
-            {
-                int pos = m_mpt - 1;
-                pos = pos < 0 ? 2 : pos;
-                m_mpt = static_cast<SkillState>(pos);
-            }
-            else
-            {
-                if (m_page > 1)
-                {
-                    m_page--;
-                }
-            }
+            int pos = m_mpt - 1;
+            pos = pos < 0 ? 2 : pos;
+            m_mpt = static_cast<SkillState>(pos);
         }
-        else if (button->id() == "right_arrow")
+        else
         {
-            if (m_state == SKILL)
+            if (m_page > 1)
             {
-                int pos = (m_mpt + 1) % 3;
-                m_mpt = static_cast<SkillState>(pos);
-            }
-            else
-            {
-                if (m_page < m_max_pages)
-                {
-                    m_page++;
-                }
+                m_page--;
             }
         }
-        
-        change_buttons();
+    }
+    else if (button->id() == "right_arrow")
+    {
+        if (m_state == SKILL)
+        {
+            int pos = (m_mpt + 1) % 3;
+            m_mpt = static_cast<SkillState>(pos);
+        }
+        else
+        {
+            if (m_page < m_max_pages)
+            {
+                m_page++;
+            }
+        }
+    }
 
-        active_buttons(m_state);
+    change_buttons();
+    active_buttons(m_state);
 }

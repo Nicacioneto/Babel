@@ -47,7 +47,7 @@ public:
     void set_texture(const string& texture);
 
     static ActionID clickedID;
-    static ActionID houverID;
+    static ActionID hoverID;
 
 private:
     Text *m_text;
