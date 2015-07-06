@@ -49,9 +49,20 @@ Central::draw_self()
 
     env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
 
-    if (m_text and m_screen != CHAT)
+    if (m_text and m_screen != CHAT and m_max_pages > 1)
     {
         m_text->draw();
+        m_buttons["left_arrow"]->set_active(true);
+        m_buttons["left_arrow"]->set_visible(true);
+        m_buttons["right_arrow"]->set_active(true);
+        m_buttons["right_arrow"]->set_visible(true);
+    }
+    else
+    {
+        m_buttons["left_arrow"]->set_active(false);
+        m_buttons["left_arrow"]->set_visible(false);
+        m_buttons["right_arrow"]->set_active(false);
+        m_buttons["right_arrow"]->set_visible(false);
     }
 
     switch (m_screen)
