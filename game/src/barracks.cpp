@@ -396,9 +396,9 @@ Barracks::draw_character()
 
         font->set_style(Font::BOLD);
         env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
-            (y + 38) * scale_h, Color(208, 179, 43));
+            (y + 37) * scale_h, Color(208, 179, 43));
         env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
-            (y + 70) * scale_h, Color(166, 69, 151));
+            (y + 69) * scale_h, Color(166, 69, 151));
         env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
             (y + 100) * scale_h, Color(78, 191, 190));
 
