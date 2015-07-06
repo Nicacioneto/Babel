@@ -740,6 +740,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             int lvl = c->military();
             c->set_military(lvl + 1);
 
+            if (c->military() % 5 == 0)
+            {
+                c->set_levelup_m(c->levelup_m() + 20);
+            }
+
             update_char_attributes(c, "M");
         }
     }
@@ -754,6 +759,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             int lvl = c->psionic();
             c->set_psionic(lvl + 1);
 
+            if (c->psionic() % 5 == 0)
+            {
+                c->set_levelup_p(c->levelup_p() + 20);
+            }
+
             update_char_attributes(c, "P");
         }
     }
@@ -767,6 +777,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
             int lvl = c->tech();
             c->set_tech(lvl + 1);
+
+            if (c->tech() % 5 == 0)
+            {
+                c->set_levelup_t(c->levelup_t() + 20);
+            }
 
             update_char_attributes(c, "T");
         }

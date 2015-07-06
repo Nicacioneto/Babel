@@ -62,9 +62,9 @@ Tower::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button =  new Button(this, "inspect_drone", path + "inspect.png",
+    Button *button = new Button(this, "inspect_drone", path + "inspect.png",
         512 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
-    m_buttons[button->id()] = button;
+    // m_buttons[button->id()] = button;
 
     button = new Button(this, "change_drone", path + "change.png",
         545 * scale_w, 626 * scale_h, 25 * scale_w, 25 * scale_h);
