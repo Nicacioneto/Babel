@@ -475,6 +475,8 @@ Combat::character_message(MessageID id)
         m_state = SHOW_DAMAGE;
         update_attackers(attacker);
         m_action->set_state(Action::NONE);
+        m_action->change_buttons();
+        m_action->set_visible(false);
     }
     current_action.first = "";
     current_action.second = "";
@@ -493,7 +495,7 @@ Combat::action_message(MessageID id, Parameters p)
         update_attackers(attacker);
         m_action->set_state(Action::NONE);
     }
-    if (current_action.first == "run")
+    else if (current_action.first == "run")
     {
 
         for (auto it = m_characters.begin(); it != m_characters.end(); ++it)
@@ -505,5 +507,34 @@ Combat::action_message(MessageID id, Parameters p)
         }
         m_action->set_state(Action::NONE);
         m_action->set_visible(false);
+    }
+    else if (current_action.first == "item")
+    {
+        Environment *env = Environment::get_instance();
+        shared_ptr<Settings> items = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/items.sav");
+
+        string attribute = items->read<string>(current_action.second, "attribute", "");
+        
+        double value = items->read<double>(current_action.second, "value", 0);
+
+        Character *attacker = m_characters[m_attacker];
+
+        printf("%s\n", attribute.c_str());
+
+        if (attribute == "life")
+        {
+            value += attacker->life();
+            attacker->set_life(value);
+        }
+        else if (attribute == "might_attack")
+        {
+            value += attacker->might_attack();
+            attacker->set_might_attack(value);
+        }
+
+        m_action->set_state(Action::NONE);
+        update_attackers(attacker);
+        m_state = EXECUTE;
     }
 }

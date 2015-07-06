@@ -26,6 +26,7 @@ public:
     Action(int slot, Object *parent = nullptr);
     void set_current_character(Character *character);
     void set_state(ActionState state);
+    void change_buttons();
 
 private:
     typedef enum { MILITARY, PSIONIC, TECH } SkillState;
@@ -48,7 +49,6 @@ private:
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void create_buttons();
-    void change_buttons();
     void draw_attack();
     void draw_skill();
     void draw_confirm_box(string icon);

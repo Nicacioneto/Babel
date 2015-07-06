@@ -1,4 +1,6 @@
 [Health Potion I]
+attribute=life
+value=50
 matter=70
 energy=100
 qnt_earned=0
@@ -6,6 +8,8 @@ qnt_max=20
 time=15:00
 
 [Hyper-Metabolism]
+attribute=life
+value=50
 matter=70
 energy=100
 qnt_earned=0
@@ -13,6 +17,8 @@ qnt_max=20
 time=15:00
 
 [Super-Metabolism]
+attribute=life
+value=50
 matter=70
 energy=100
 qnt_earned=0
@@ -20,6 +26,8 @@ qnt_max=15
 time=15:00
 
 [Metabolism]
+attribute=might_attack
+value=50
 matter=70
 energy=100
 qnt_earned=0
@@ -27,6 +35,8 @@ qnt_max=10
 time=15:00
 
 [Energy Potion]
+attribute=life
+value=50
 matter=70
 energy=100
 qnt_earned=0
@@ -34,6 +44,8 @@ qnt_max=20
 time=15:00
 
 [Health Potion II]
+attribute=life
+value=50
 matter=90
 energy=100
 qnt_earned=0
