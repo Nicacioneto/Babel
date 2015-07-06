@@ -71,7 +71,6 @@ Action::on_message(Object *sender, MessageID id, Parameters)
 
     if (id == Button::clickedID)
     {
-        printf("%s\n", button->id().c_str());
         clicked_event(button);
     }
     else if (id == Button::hoverID)
@@ -97,34 +96,40 @@ Action::create_buttons()
     Button *button = new Button(this, "attack", path + "attack.png",
         x * scale_w, y * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
 
     button = new Button(this, "defense", path + "defense.png",
         x * scale_w, (y + 60) * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
 
     x += 71;
     button = new Button(this, "skill", path + "skill.png",
         x * scale_w, y * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
 
     button = new Button(this, "rest", path + "rest.png",
         x * scale_w, (y + 60) * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
 
     x += 71;
     button = new Button(this, "item", path + "item.png",
         x * scale_w, y * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
 
     button = new Button(this, "run", path + "run.png",
         x * scale_w, (y + 60) * scale_h, w, h);
     button->set_sprites(3);
-    m_buttons[button->id()] = button;
+    m_action_buttons[button->id()] = button;
+
+    for (auto b : m_action_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
 
     button = new Button(this, "confirm", "res/images/tower/squad/confirm.png",
         600 * scale_w, 684 * scale_h, 25 * scale_w, 25 * scale_h);
@@ -191,10 +196,10 @@ Action::create_buttons()
 
     path = "res/images/colony/barracks/";
 
-    for (int i = 1; i <= 4; ++i, y += h)
+    for (int i = 0; i < 4; ++i, y += h)
     {
         x = 546 * scale_w;
-        for (int j = 1; j <= 5; ++j, x += w)
+        for (int j = 0; j < 5; ++j, x += w)
         {
             for (int k = 0; k < 3; ++k)
             {
@@ -212,10 +217,10 @@ Action::create_buttons()
                         break;
                 }
 
-                skill += to_string((i - 1) * 4 + j);
+                skill += to_string(i * 5 + (j+1));
 
                 Button *button = new Button(this, skill, path + skill + ".png",
-                    x, y, w, h);
+                    x, y, 35 * scale_w, 35 * scale_h);
                 button->set_visible(false);
                 button->set_active(false);
                 button->set_sprites(1);
@@ -231,7 +236,7 @@ Action::create_buttons()
 void
 Action::change_buttons()
 {
-    for (auto b : m_buttons)
+    for (auto b : m_action_buttons)
     {
         bool active = m_state == ATTACK and b.first == "attack";
         active = active or (m_state == SKILL and b.first == "skill");

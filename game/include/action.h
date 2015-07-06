@@ -35,6 +35,7 @@ private:
     string m_hover_button = "";
 
     map<ObjectID, Button*> m_buttons;
+    map<ObjectID, Button*> m_action_buttons;
     map<ObjectID, Button*> m_skill_buttons;
     map<ObjectID, Button*> m_items_buttons;
     map<ObjectID, shared_ptr<Texture>> m_textures;
