@@ -400,7 +400,7 @@ Central::change_to_timers()
         }
         else
         {
-            str_remainder = "Ok!";
+            str_remainder = "OK";
         }
 
         env->canvas->draw(str_remainder, 855 * scale_w, y * scale_h, color);

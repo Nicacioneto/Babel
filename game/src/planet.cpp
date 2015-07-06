@@ -18,7 +18,7 @@
 using std::to_string;
 
 Planet::Planet(int slot, const string& next)
-    : Level("planet", next), m_slot(slot), m_state(IDLE), m_last(0)
+    : Level("planet", next), m_slot(slot), m_state(IDLE), m_last(0), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/planet/";
@@ -26,6 +26,9 @@ Planet::Planet(int slot, const string& next)
     m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
     m_textures["popup"] = env->resources_manager->get_texture(path + "popup.png");
     m_textures["place"] = env->resources_manager->get_texture(path + "place.png");
+
+    m_settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/planet.sav");
 
     create_buttons();
 }
@@ -147,9 +150,11 @@ Planet::draw_self()
         env->canvas->draw("None", 490 * scale_w, 625 * scale_h, color);
         env->canvas->draw("High", 573 * scale_w, 625 * scale_h, color);
 
-        auto settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/planet.sav");
-        string time = settings->read<string>(m_place, "time", "0:00");
+        string time = m_settings->read<string>(m_place, "time", "0:00");
+        if (time.front() == '0')
+        {
+            time = time.substr(1);
+        }
         env->canvas->draw(time, 600 * scale_w, 250 * scale_h, color);
     }
 }
@@ -240,5 +245,8 @@ Planet::enable_popup(bool popup)
 void
 Planet::start_mission()
 {
-    start_time(m_place, 20, "workshop", 50, 50);
+    string time = m_settings->read<string>(m_place, "time", "00:00");
+    unsigned long min = atol(time.substr(0, 2).c_str()) * 60;
+    unsigned long seg = atol(time.substr(3).c_str());
+    start_time(m_place, min + seg, "workshop", 50, 50);
 }

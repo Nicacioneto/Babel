@@ -1,21 +1,20 @@
 [Tundra]
-time=1:00
+time=01:00
 
 [Jungle]
-time=1:10
+time=01:10
 
 [Sea]
-time=1:20
+time=01:20
 
 [Dunes]
-time=1:30
+time=01:30
 
 [Taiga]
-time=1:40
+time=01:40
 
 [Lake]
-time=1:50
+time=01:50
 
 [Swamp]
-time=1:60
-
+time=01:60

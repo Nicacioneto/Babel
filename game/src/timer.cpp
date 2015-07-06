@@ -13,7 +13,6 @@
 using std::vector;
 using std::to_string;
 
-
 vector<Mission *> m_missions;
 vector<SDL_Thread *> threads;
 bool kill = false;
@@ -62,10 +61,9 @@ void start_time(const string& name, unsigned long start, const string& icon,
     int energy, int matter) throw (Exception)
 {
     Mission *mission = new Mission(name, start, icon, energy, matter);
-
     m_missions.push_back(mission);
     
-    SDL_Thread * thread = SDL_CreateThread(monitoring_mission, "monitoring mission",
+    SDL_Thread *thread = SDL_CreateThread(monitoring_mission, "monitoring mission",
         m_missions[m_missions.size() - 1]);
     threads.push_back(thread);
 }
@@ -105,7 +103,6 @@ void kill_threads()
 
     for (auto mission : m_missions)
     {
-
         string name = mission->name();
 
         settings->write<unsigned long>(name, "remainder", mission->remainder());

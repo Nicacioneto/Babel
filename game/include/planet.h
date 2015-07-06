@@ -27,6 +27,8 @@ private:
     PlaceID m_place;
     State m_state;
     unsigned long m_last;
+    shared_ptr<Settings> m_settings;
+
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
