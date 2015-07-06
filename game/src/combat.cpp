@@ -42,6 +42,9 @@ Combat::Combat(int slot, const string& next)
     m_action->add_observer(this);
     add_child(m_action);
     m_action->set_visible(false);
+
+    current_action.first = "";
+    current_action.second = "";
 }
 
 Combat::~Combat()
@@ -98,11 +101,11 @@ Combat::update_self(unsigned long elapsed)
         m_last = elapsed;
         return;
     }
-    else if (elapsed - m_last < DELAY)
+    else if (elapsed - m_last < DELAY and m_state != EXECUTE)
     {
         return;
     }
-    else if (elapsed - m_last < DELAY * 2)
+    else if (elapsed - m_last < DELAY * 2 and m_state != EXECUTE)
     {
         m_state = ENEMY_ATTACK;
         return;
@@ -209,48 +212,19 @@ Combat::draw_self()
 }
 
 bool
-Combat::on_message(Object *sender, MessageID id, Parameters)
+Combat::on_message(Object *sender, MessageID id, Parameters p)
 {
     Character *character = dynamic_cast<Character *>(sender);
+    Action *action = dynamic_cast<Action *>(sender);
 
-    if (not character or m_state != CHARACTER_ATTACK)
+    if (character and m_state == CHARACTER_ATTACK)
     {
-        return false;
+        character_message(id);
     }
-
-    Character *attacker = m_characters[m_attacker];
-    Character *enemy = m_enemies[id];
-
-    Environment *env = Environment::get_instance();
-
-    int damage = enemy->receive_damage(attacker);
-    set_text("-" + to_string(damage), Color::RED);
-    
-    m_text->set_position(enemy->x() + enemy->w() / 2 - m_text->w() / 2,
-        enemy->y() + enemy->h() + ((10 / H) * env->canvas->h()));
-
-    env->sfx->play("res/sfx/uiTavern_Ghost2.ogg", 1);
-
-    if (enemy->life() <= 0)
+    else if (action)
     {
-        enemy->remove_observer(this);
-        remove_child(enemy);
-
-        m_enemies.erase(id);
-
-        for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
-        {
-            if (it->second == id)
-            {
-                m_attackers.erase(it);
-            }
-        }
-
-        delete enemy;
+        action_message(id, p);
     }
-
-    m_state = SHOW_DAMAGE;
-    update_attackers(attacker);
 
     return true;
 }
@@ -269,7 +243,7 @@ Combat::load_team()
         {
             break;
         }
-        Character *character = new Character(m_slot, this, h.second, h.second + ".png");
+        Character *character = new Character(m_slot, this, h.second, "Albert.png");
         m_characters[character->id()] = character;
     }
 
@@ -456,4 +430,80 @@ Combat::set_attacker_position(Character *character)
     character->set_position(x, y);
 
     character->set_visible(true);
+}
+
+void
+Combat::character_message(MessageID id)
+{
+    if (current_action.first.empty())
+    {
+        return;
+    }
+
+    if (current_action.first == "attack")
+    {
+        Character *attacker = m_characters[m_attacker];
+        Character *enemy = m_enemies[id];
+
+        Environment *env = Environment::get_instance();
+
+        int damage = enemy->receive_damage(attacker);
+        set_text("-" + to_string(damage), Color::RED);
+        
+        m_text->set_position(enemy->x() + enemy->w() / 2 - m_text->w() / 2,
+            enemy->y() + enemy->h() + ((10 / H) * env->canvas->h()));
+
+        env->sfx->play("res/sfx/uiTavern_Ghost2.ogg", 1);
+
+        if (enemy->life() <= 0)
+        {
+            enemy->remove_observer(this);
+            remove_child(enemy);
+
+            m_enemies.erase(id);
+
+            for (auto it = m_attackers.begin(); it != m_attackers.end(); ++it)
+            {
+                if (it->second == id)
+                {
+                    m_attackers.erase(it);
+                }
+            }
+
+            delete enemy;
+        }
+        m_state = SHOW_DAMAGE;
+        update_attackers(attacker);
+        m_action->set_state(Action::NONE);
+    }
+    current_action.first = "";
+    current_action.second = "";
+}
+
+void
+Combat::action_message(MessageID id, Parameters p)
+{
+    current_action.first = id;
+    current_action.second = p;
+
+    if (current_action.first == "rest")
+    {
+        Character *attacker = m_characters[m_attacker];
+        m_state = EXECUTE;
+        update_attackers(attacker);
+        m_action->set_state(Action::NONE);
+    }
+    if (current_action.first == "run")
+    {
+
+        for (auto it = m_characters.begin(); it != m_characters.end(); ++it)
+        {
+            Character *character = it->second;
+            character->remove_observer(this);
+            remove_child(character);
+            m_characters.erase(character->id());
+        }
+        m_action->set_state(Action::NONE);
+        m_action->set_visible(false);
+    }
 }

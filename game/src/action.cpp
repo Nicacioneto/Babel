@@ -77,7 +77,6 @@ Action::on_message(Object *sender, MessageID id, Parameters)
     {
         hover_event(button);
     }
-
     return true;
 }
 
@@ -489,9 +488,12 @@ Action::hover_event(Button *button)
 void
 Action::clicked_event(Button *button)
 {
+    string state = "";
+    string action = "";
     if (button->id() == "attack")
     {
         m_state = ATTACK;
+        state = button->id();
     }
     else if (button->id() == "skill")
     {
@@ -513,18 +515,43 @@ Action::clicked_event(Button *button)
     {
         m_state = RUN;
     }
+    else if (button->id() == "confirm")
+    {
+        switch (m_state)
+        {
+            case DEFENSE:
+                state = "defense";
+                break;
+            case REST:
+                state = "rest";
+                break;
+            case RUN:
+                state = "run";
+                break;
+            default:
+                break;
+        }
+        action = button->id();
+    }
+    else if (button->id() == "reject")
+    {
+        printf("reject\n");
+        m_state = NONE;
+    }
 
-    m_buttons["left_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
-    m_buttons["left_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
+    for (auto section : m_settings->sections())
+    {
+        if (section.first == button->id())
+        {
+            state = "item";
+            action = button->id();
+        }
+    }
 
-    m_buttons["right_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
-    m_buttons["right_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
-
-    bool confirm = m_state == DEFENSE or m_state == REST or m_state == RUN;
-    m_buttons["confirm"]->set_visible(confirm);
-    m_buttons["confirm"]->set_active(confirm);
-    m_buttons["reject"]->set_visible(confirm);
-    m_buttons["reject"]->set_active(confirm);
+    if (button->id().find("Skill_") != std::string::npos)
+    {
+        // TO DO
+    }
 
     if (button->id() == "left_arrow")
     {
@@ -557,7 +584,35 @@ Action::clicked_event(Button *button)
             }
         }
     }
+    else
+    {
+        m_page = 1;
+    }
+
+    if (not state.empty())
+    {
+        notify(state, action);
+    }
+
+    bool confirm = (m_state == DEFENSE or m_state == REST or m_state == RUN)
+        and button->id() != "reject";
+    m_buttons["confirm"]->set_visible(confirm);
+    m_buttons["confirm"]->set_active(confirm);
+    m_buttons["reject"]->set_visible(confirm);
+    m_buttons["reject"]->set_active(confirm);
+
+    m_buttons["left_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["left_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
+
+    m_buttons["right_arrow"]->set_visible(m_state == SKILL or m_state == ITEM);
+    m_buttons["right_arrow"]->set_active(m_state == SKILL or m_state == ITEM);
 
     change_buttons();
     active_buttons(m_state);
+}
+
+void
+Action::set_state(ActionState state)
+{
+    m_state = state;
 }

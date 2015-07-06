@@ -28,7 +28,7 @@ public:
     ~Combat();
 
 private:
-    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE, FINISHED_COMBAT } State;
+    typedef enum { ENEMY_ATTACK, CHARACTER_ATTACK, SHOW_DAMAGE, FINISHED_COMBAT, EXECUTE } State;
 
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_actions;
@@ -37,6 +37,7 @@ private:
     map<ObjectID, Character*> m_characters;
     map<ObjectID, Character*> m_enemies;
     multimap<int, string> m_attackers;
+    pair<string, string> current_action;
 
     int m_slot;
     string m_attacker;
@@ -49,7 +50,7 @@ private:
 
     void update_self(unsigned long elapsed);
     void draw_self();
-    bool on_message(Object *sender, MessageID id, Parameters Parameters);
+    bool on_message(Object *sender, MessageID id, Parameters p);
     void load_team();
     void load_enemies();
     void enemy_attack(Character* enemy);
@@ -58,6 +59,8 @@ private:
     bool on_event(const KeyboardEvent& event);
     void set_attacker_position(Character *character);
     void set_initial_position();
+    void character_message(MessageID id);
+    void action_message(MessageID id, Parameters p);
 };
 
 #endif

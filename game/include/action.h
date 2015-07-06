@@ -22,12 +22,13 @@ class Character;
 class Action : public Object
 {
 public:
+    typedef enum { ATTACK, SKILL, ITEM, DEFENSE, REST, RUN, NONE } ActionState;
     Action(int slot, Object *parent = nullptr);
     void set_current_character(Character *character);
+    void set_state(ActionState state);
 
 private:
     typedef enum { MILITARY, PSIONIC, TECH } SkillState;
-    typedef enum { ATTACK, SKILL, ITEM, DEFENSE, REST, RUN, NONE } ActionState;
 
     int m_slot;
     int m_page;
