@@ -175,7 +175,7 @@ Action::create_buttons()
             545 * scale_w, y * scale_h, 195 * scale_w, 25 * scale_h);
         button->set_visible(false);
         button->set_active(false);
-        m_buttons[button->id()] = button;
+        m_items_buttons[button->id()] = button;
 
         button->add_observer(this);
         add_child(button);
@@ -287,11 +287,11 @@ Action::draw_item()
     {
         if (++i < (m_page - 1) * ITEMS_PER_PAGE or i > ITEMS_PER_PAGE * m_page)
         {
-            change_button_state(m_buttons[section.first], false);
+            change_button_state(m_items_buttons[section.first], false);
             continue;
         }
 
-        change_button_state(m_buttons[section.first], true, y);
+        change_button_state(m_items_buttons[section.first], true, y);
 
         string qnt_earned = m_settings->read<string>(section.first, "qnt_earned", "");
 
@@ -306,7 +306,7 @@ Action::draw_item()
         y += 30;
     }
 
-    if (m_hover_button != "" and m_buttons[m_hover_button]->state() == Button::ON_HOVER)
+    if (m_hover_button != "" and m_items_buttons[m_hover_button]->state() == Button::ON_HOVER)
     {
         env->canvas->draw(m_textures["inspect_item"].get(),
             525 * scale_w, 382 * scale_h);
@@ -398,9 +398,9 @@ Action::active_buttons(ActionState state)
 
     for (auto s : m_settings->sections())
     {
-        bool active = m_buttons[s.first]->visible();
-        m_buttons[s.first]->set_active(state == ITEM and active);
-        m_buttons[s.first]->set_visible(state == ITEM and active);
+        bool active = m_items_buttons[s.first]->visible();
+        m_items_buttons[s.first]->set_active(state == ITEM and active);
+        m_items_buttons[s.first]->set_visible(state == ITEM and active);
     }
 }
 
