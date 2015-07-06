@@ -130,7 +130,7 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
     {
         m_screen = TEAM;
         change_screen();
-        
+
         m_buttons["select_drone"]->change_state(Button::IDLE);
         button->change_state(Button::ACTIVE);
     }
@@ -156,11 +156,11 @@ Squad::on_message(Object *sender, MessageID id, Parameters)
         Environment *env = Environment::get_instance();
         string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
         shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-        
+
         string hero1 = settings->read<string>("Squad", "hero1", "");
         if (hero1 != "")
         {
-            set_next("dungeon");
+            set_next("tower");
             finish();
         }
     }

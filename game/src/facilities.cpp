@@ -18,12 +18,16 @@
 using std::to_string;
 
 Facilities::Facilities(int slot, const string& next)
-    : Level("facilities", next), m_slot(slot), m_matter_cost(10),
-        m_energy_cost(10), m_screen(CHAT)
+    : Level("facilities", next), m_slot(slot), m_mcost(10),
+        m_pcost(10), m_tcost(10), m_screen(CHAT)
 {
     m_colony = new Colony(slot, this, "facilities");
     m_colony->add_observer(this);
     add_child(m_colony);
+
+    m_mcost += m_colony->mwaked() / 19 * 20;
+    m_pcost += m_colony->pwaked() / 19 * 20;
+    m_tcost += m_colony->twaked() / 19 * 20;
 
     create_buttons();
 }
@@ -76,7 +80,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int energy = m_colony->energy();
         int mwaked = m_colony->mwaked();
 
-        if (matter < m_matter_cost || energy < m_energy_cost)
+        if (matter < m_mcost || energy < m_mcost)
         {
             return true;
         }
@@ -87,10 +91,11 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_cost;
-            energy -= m_energy_cost;
+            matter -= m_mcost;
+            energy -= m_mcost;
         }
 
+        m_mcost += mwaked % 19 ? 0 : 20;
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
         m_colony->set_mwaked(mwaked);
@@ -101,7 +106,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int energy = m_colony->energy();
         int pwaked = m_colony->pwaked();
 
-        if (matter < m_matter_cost || energy < m_energy_cost)
+        if (matter < m_pcost || energy < m_pcost)
         {
             return true;
         }
@@ -112,10 +117,11 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_cost;
-            energy -= m_energy_cost;
+            matter -= m_pcost;
+            energy -= m_pcost;
         }
 
+        m_pcost += pwaked % 19 ? 0 : 20;
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
         m_colony->set_pwaked(pwaked);
@@ -126,7 +132,7 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         int energy = m_colony->energy();
         int twaked = m_colony->twaked();
 
-        if (matter < m_matter_cost || energy < m_energy_cost)
+        if (matter < m_tcost || energy < m_tcost)
         {
             return true;
         }
@@ -137,10 +143,11 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
         }
         else
         {
-            matter -= m_matter_cost;
-            energy -= m_energy_cost;
+            matter -= m_tcost;
+            energy -= m_tcost;
         }
 
+        m_tcost += twaked % 19 ? 0 : 20;
         m_colony->set_matter(matter);
         m_colony->set_energy(energy);
         m_colony->set_twaked(twaked);
@@ -168,6 +175,10 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
 
         button->change_state(Button::ACTIVE);
     }
+
+    m_buttons["mwake"]->set_active(m_screen == MILITARY);
+    m_buttons["pwake"]->set_active(m_screen == PSIONIC);
+    m_buttons["twake"]->set_active(m_screen == TECH);
 
     return true;
 }
@@ -291,10 +302,6 @@ Facilities::change_to_chat()
 void
 Facilities::change_to_military()
 {
-    m_buttons["mwake"]->set_active(true);
-    m_buttons["pwake"]->set_active(false);
-    m_buttons["twake"]->set_active(false);
-
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -311,10 +318,10 @@ Facilities::change_to_military()
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
-        string red = "red_";
-        if (mwaked / 19 >= i)
+        string red;
+        if (mwaked / 19 < i)
         {
-            red = "";
+            red = "red_";
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
@@ -359,7 +366,7 @@ Facilities::change_to_military()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_cost)
+    if (m_colony->matter() >= m_mcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -374,7 +381,7 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
-    if (m_colony->energy() >= m_energy_cost)
+    if (m_colony->energy() >= m_mcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -389,17 +396,13 @@ Facilities::change_to_military()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
-    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_mcost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_mcost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
 Facilities::change_to_psionic()
 {
-    m_buttons["mwake"]->set_active(false);
-    m_buttons["pwake"]->set_active(true);
-    m_buttons["twake"]->set_active(false);
-
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -416,10 +419,10 @@ Facilities::change_to_psionic()
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
-        string red = "red_";
-        if (pwaked / 19 >= i)
+        string red;
+        if (pwaked / 19 < i)
         {
-            red = "";
+            red = "red_";
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
@@ -463,7 +466,7 @@ Facilities::change_to_psionic()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_cost)
+    if (m_colony->matter() >= m_pcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -478,7 +481,7 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
-    if (m_colony->energy() >= m_energy_cost)
+    if (m_colony->energy() >= m_pcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -493,17 +496,13 @@ Facilities::change_to_psionic()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
-    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_pcost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_pcost), 510 * scale_w, 670 * scale_h, color);
 }
 
 void
 Facilities::change_to_tech()
 {
-    m_buttons["mwake"]->set_active(false);
-    m_buttons["pwake"]->set_active(false);
-    m_buttons["twake"]->set_active(true);
-
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/facilities/";
     Color color(170, 215, 190);
@@ -520,10 +519,10 @@ Facilities::change_to_tech()
 
     for (int i = 5, y = 235; i > 0; --i, y += 77)
     {
-        string red = "red_";
-        if (twaked / 19 >= i)
+        string red;
+        if (twaked / 19 < i)
         {
-            red = "";
+            red = "red_";
         }
 
         texture = env->resources_manager->get_texture(path + red + "rifle.png");
@@ -567,7 +566,7 @@ Facilities::change_to_tech()
 
     path = "res/images/colony/icons/";
 
-    if (m_colony->matter() >= m_matter_cost)
+    if (m_colony->matter() >= m_tcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -582,7 +581,7 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "matter.png");
     env->canvas->draw(texture.get(), clip, 385 * scale_w, 670 * scale_h, 24, 20);
 
-    if (m_colony->energy() >= m_energy_cost)
+    if (m_colony->energy() >= m_tcost)
     {
         y = 0;
         color = Color(170, 215, 190);
@@ -597,6 +596,6 @@ Facilities::change_to_tech()
     texture = env->resources_manager->get_texture(path + "energy.png");
     env->canvas->draw(texture.get(), clip, 478 * scale_w, 670 * scale_h, 11, 18);
 
-    env->canvas->draw(to_string(m_matter_cost), 425 * scale_w, 670 * scale_h, color);
-    env->canvas->draw(to_string(m_energy_cost), 510 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_tcost), 425 * scale_w, 670 * scale_h, color);
+    env->canvas->draw(to_string(m_tcost), 510 * scale_w, 670 * scale_h, color);
 }
