@@ -535,7 +535,6 @@ Action::clicked_event(Button *button)
     }
     else if (button->id() == "reject")
     {
-        printf("reject\n");
         m_state = NONE;
     }
 

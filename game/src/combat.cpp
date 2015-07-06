@@ -130,6 +130,7 @@ Combat::update_self(unsigned long elapsed)
     }
     else if (character)
     {
+        character->set_defense_mode(false);
         m_action->set_visible(true);
         m_action->set_current_character(character);
 
@@ -495,6 +496,14 @@ Combat::action_message(MessageID id, Parameters p)
         update_attackers(attacker);
         m_action->set_state(Action::NONE);
     }
+    else if (current_action.first == "defense")
+    {
+        Character *attacker = m_characters[m_attacker];
+        attacker->set_defense_mode(true);
+        m_state = EXECUTE;
+        update_attackers(attacker);
+        m_action->set_state(Action::NONE);
+    }
     else if (current_action.first == "run")
     {
 
@@ -519,8 +528,6 @@ Combat::action_message(MessageID id, Parameters p)
         double value = items->read<double>(current_action.second, "value", 0);
 
         Character *attacker = m_characters[m_attacker];
-
-        printf("%s\n", attribute.c_str());
 
         if (attribute == "life")
         {

@@ -82,6 +82,7 @@ public:
     void set_might_armor(int might_armor);
     void set_mind_armor(int mind_armor);
     void set_critical(int critical);
+    void set_defense_mode(bool defense_mode);
 
 private:
     int m_slot;
@@ -117,6 +118,7 @@ private:
     int m_might_armor;
     int m_mind_armor;
     int m_critical;
+    bool m_defense_mode;
 
     void init();
     void draw_self();

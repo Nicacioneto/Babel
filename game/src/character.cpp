@@ -75,6 +75,7 @@ Character::init()
     m_might_armor = m_settings->read<int>(m_name, "might_armor", 0);
     m_mind_armor = m_settings->read<int>(m_name, "mind_armor", 0);
     m_critical = m_settings->read<int>(m_name, "critical", 0);
+    m_defense_mode = false;
 }
 
 void
@@ -108,9 +109,9 @@ Character::receive_damage(Character *attacker)
 {
     double damage = 0;
 
-    if (attacker->might_attack() > m_defense)
+    if (attacker->might_attack() > m_defense * (1 + m_defense_mode))
     {
-        damage = attacker->might_attack() - m_defense;
+        damage = attacker->might_attack() - m_defense * (1 + m_defense_mode);
     }
     else
     {
@@ -473,6 +474,12 @@ Character::set_critical(int critical)
 {
     m_critical = critical;
     write<int>("critical", critical);
+}
+
+void
+Character::set_defense_mode(bool defense_mode)
+{
+    m_defense_mode = defense_mode;
 }
 
 template<typename T> void
