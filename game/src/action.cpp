@@ -71,6 +71,7 @@ Action::on_message(Object *sender, MessageID id, Parameters)
 
     if (id == Button::clickedID)
     {
+        printf("%s\n", button->id().c_str());
         clicked_event(button);
     }
     else if (id == Button::hoverID)
@@ -182,6 +183,49 @@ Action::create_buttons()
 
         y += 30;
     }
+
+    x = 530 * scale_w;
+    y = 582 * scale_h;
+    w = 38 * scale_w;
+    h = 37 * scale_h;
+
+    path = "res/images/colony/barracks/";
+
+    for (int i = 1; i <= 4; ++i, y += h)
+    {
+        x = 546 * scale_w;
+        for (int j = 1; j <= 5; ++j, x += w)
+        {
+            for (int k = 0; k < 3; ++k)
+            {
+                string skill = "Skill_";
+                switch (k)
+                {
+                    case 0:
+                        skill += "M_";
+                        break;
+                    case 1:
+                        skill += "P_";
+                        break;
+                    case 2:
+                        skill += "T_";
+                        break;
+                }
+
+                skill += to_string((i - 1) * 4 + j);
+
+                Button *button = new Button(this, skill, path + skill + ".png",
+                    x, y, w, h);
+                button->set_visible(false);
+                button->set_active(false);
+                button->set_sprites(1);
+                m_skill_buttons[button->id()] = button;
+
+                button->add_observer(this);
+                add_child(button);
+            }
+        }
+    }
 }
 
 void
@@ -255,11 +299,7 @@ Action::draw_skill()
         x = 546 * scale_w;
         for (int j = 1; j <= 5; ++j, x += w)
         {
-            if ((i - 1) * 5 + j <= hability)
-            {
-                env->canvas->draw(m_textures[skill + to_string((i - 1)*5 + j)].get(), x, y);
-            }
-            else
+            if ((i - 1) * 5 + j > hability)
             {
                 env->canvas->draw(m_textures[skill + "locked"].get(), x, y);
             }
@@ -376,7 +416,6 @@ Action::load_textures()
 
     path = "res/images/colony/icons/";
     m_textures["research"] = env->resources_manager->get_texture(path + "research.png");
-
 }
 
 void
@@ -401,6 +440,32 @@ Action::active_buttons(ActionState state)
         bool active = m_items_buttons[s.first]->visible();
         m_items_buttons[s.first]->set_active(state == ITEM and active);
         m_items_buttons[s.first]->set_visible(state == ITEM and active);
+    }
+
+    for (auto s : m_skill_buttons)
+    {
+        int index = atoi(s.first.substr(8).c_str());
+        bool active = false;
+
+        int hability = 0;
+
+        switch (s.first[6])
+        {
+            case 'M':
+                hability = m_character->military();
+                active = state == SKILL and m_mpt == MILITARY and index <= hability;
+                break;
+            case 'P':
+                hability = m_character->psionic();
+                active = state == SKILL and m_mpt == PSIONIC and index <= hability;
+                break;
+            case 'T':
+                hability = m_character->tech();
+                active = state == SKILL and m_mpt == TECH and index <= hability;
+                break;
+        }
+        s.second->set_visible(active);
+        s.second->set_active(active);
     }
 }
 
