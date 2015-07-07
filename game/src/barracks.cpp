@@ -8,6 +8,7 @@
 #include "barracks.h"
 #include "character.h"
 #include "colony.h"
+#include "equip.h"
 #include <algorithm>
 #include <core/font.h>
 #include <core/keyboardevent.h>
@@ -20,11 +21,15 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT), m_equip(WEAPON),
-        m_weapon(RIFLE)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
+
+    Equip *equip = new Equip(m_slot, this);
+    equip->add_observer(this);
+    add_child(equip);
+    equip->set_visible(false);
 
     create_buttons();
     load_textures();
@@ -81,7 +86,7 @@ Barracks::create_buttons()
     button->set_sprites(1);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "rifle", path + "rifle.png",
+    button = new Button(this, "weapon", path + "rifle.png",
         112 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
     button->set_sprites(1);
     button->set_active(false);
@@ -106,141 +111,6 @@ Barracks::create_buttons()
     {
         b.second->add_observer(this);
         add_child(b.second);
-    }
-
-    int y = 334 * scale_h;
-    int w = 35 * scale_w;
-    int h = 35 * scale_h;
-
-    button = new Button(this, "weapon_rifle", path + "equip/weapon_rifle.png", 148 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_shotgun", path + "equip/weapon_shotgun.png", 201 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_pistol", path + "equip/weapon_pistol.png", 254 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_sniper", path + "equip/weapon_sniper.png", 307 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_melee", path + "equip/weapon_melee.png", 413 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_hand", path + "equip/weapon_hand.png", 518 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_nano", path + "equip/weapon_nano.png", 571 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_ui", path + "equip/weapon_ui.png", 677 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_psiblade", path + "equip/weapon_psiblade.png", 730 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_psiamp", path + "equip/weapon_psiamp.png", 783 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    button = new Button(this, "weapon_psiwhip", path + "equip/weapon_psiwhip.png", 836 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_weapons[button->id()] = button;
-
-    for (auto b : m_weapons)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
-
-    button = new Button(this, "armor_light", path + "equip/armor_light.png", 148 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_armor[button->id()] = button;
-
-    button = new Button(this, "armor_medium", path + "equip/armor_medium.png", 201 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_armor[button->id()] = button;
-
-    button = new Button(this, "armor_heavy", path + "equip/armor_heavy.png", 254 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_armor[button->id()] = button;
-
-    for (auto b : m_armor)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
-
-    button = new Button(this, "shield_shield", path + "equip/shield_shield.png", 148 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_shield[button->id()] = button;
-
-    button = new Button(this, "shield_barrier", path + "equip/shield_barrier.png", 201 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
-    button->set_sprites(3);
-    m_shield[button->id()] = button;
-
-    for (auto b : m_shield)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
-
-    int x = 500;
-    y = 437;
-    w = 35 * scale_w;
-    h = 35 * scale_h;
-    for (int i = 0; i < 5; ++i, x += 85)
-    {
-        y = 437;
-        for (int j = 0; j < 4; ++j, y += 56)
-        {
-            button = new Button(this, to_string(i) + to_string(j), x * scale_w, y * scale_h, w, h);
-            button->set_visible(false);
-            m_equip_lvl[button->id()] = button;
-            button->add_observer(this);
-            add_child(button);
-        }
     }
 }
 
@@ -269,30 +139,6 @@ Barracks::load_textures()
     m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
     m_textures["skill_p_locked"] = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
     m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
-    m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "equip/Bracket.png");
-    m_textures["rifle_katana"] = env->resources_manager->get_texture(path + "equip/Rifle_Katana.png");
-    m_textures["rifle_blue"] = env->resources_manager->get_texture(path +"equip/rifle_blue.png");
-    m_textures["rifle_green"] = env->resources_manager->get_texture(path + "equip/rifle_green.png");
-    m_textures["rifle_orange"] = env->resources_manager->get_texture(path + "equip/rifle_orange.png");
-    m_textures["rifle_white"] = env->resources_manager->get_texture(path + "equip/rifle_white.png");
-    m_textures["locked_blue"] = env->resources_manager->get_texture(path + "equip/locked_blue.png");
-    m_textures["locked_green"] = env->resources_manager->get_texture(path + "equip/locked_green.png");
-    m_textures["locked_orange"] = env->resources_manager->get_texture(path + "equip/locked_orange.png");
-    m_textures["locked_white"] = env->resources_manager->get_texture(path + "equip/locked_white.png");
-    m_textures["selector"] = env->resources_manager->get_texture(path + "equip/selector.png");
-    m_textures["status"] = env->resources_manager->get_texture(path + "equip/status.png");
-    m_textures["agility"] = env->resources_manager->get_texture(path + "equip/icon_agility.png");
-    m_textures["critical"] = env->resources_manager->get_texture(path + "equip/icon_critical.png");
-    m_textures["hitchance"] = env->resources_manager->get_texture(path + "equip/icon_hitchance.png");
-    m_textures["might"] = env->resources_manager->get_texture(path + "equip/icon_might.png");
-    m_textures["mind"] = env->resources_manager->get_texture(path + "equip/icon_mind.png");
-    m_textures["perception"] = env->resources_manager->get_texture(path + "equip/icon_perception.png");
-    m_textures["resilience"] = env->resources_manager->get_texture(path + "equip/icon_resilience.png");
-    m_textures["speed"] = env->resources_manager->get_texture(path + "equip/icon_speed.png");
-    m_textures["willpower"] = env->resources_manager->get_texture(path + "equip/icon_willpower.png");
-    m_textures["bracket_m"] = env->resources_manager->get_texture(path + "equip/bracket_m.png");
-    m_textures["bracket_p"] = env->resources_manager->get_texture(path + "equip/bracket_p.png");
-    m_textures["bracket_t"] = env->resources_manager->get_texture(path + "equip/bracket_t.png");
 
     for (int i = 1; i <= 20; ++i)
     {
@@ -372,7 +218,7 @@ Barracks::draw_character()
     env->canvas->set_font(font);
     font->set_size(16);
     Color color(170, 215, 190);
-    
+
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
@@ -434,24 +280,6 @@ Barracks::draw_character()
             (y + 195) * scale_h, Color::WHITE);
         env->canvas->draw(to_string(character->max_mp()), (x + 183) * scale_w,
             (y + 225) * scale_h, Color::WHITE);
-    }
-    else if (m_screen == EQUIP)
-    {
-        int x = 112;
-        int y = 87;
-        font->set_size(18);
-        env->canvas->draw(m_textures["card_small"].get(), x * scale_w, y * scale_h);
-        env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
-
-        font->set_style(Font::BOLD);
-        env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
-            (y + 31) * scale_h, Color(208, 179, 43));
-        env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
-            (y + 58) * scale_h, Color(166, 69, 151));
-        env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
-            (y + 86) * scale_h, Color(78, 191, 190));
-
-        font->set_style(Font::NORMAL);
     }
 }
 
@@ -569,138 +397,28 @@ Barracks::equip_screen()
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(16);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
     Color color(170, 215, 190);
-
-    draw_character();
-
-    env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
-    env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
-    env->canvas->draw("I", 518 * scale_w, 405 * scale_h, color);
-    env->canvas->draw("II", 600 * scale_w, 405 * scale_h, color);
-    env->canvas->draw("III", 680 * scale_w, 405 * scale_h, color);
-    env->canvas->draw("IV", 763 * scale_w, 405 * scale_h, color);
-    env->canvas->draw("V", 850 * scale_w, 405 * scale_h, color);
-
-    for (auto b : m_weapons)
-    {
-        b.second->set_active(m_equip == WEAPON);
-        b.second->set_visible(m_equip == WEAPON);
-    }
-
-    for (auto b : m_armor)
-    {
-        b.second->set_active(m_equip == ARMOR);
-        b.second->set_visible(m_equip == ARMOR);
-    }
-
-    for (auto b : m_shield)
-    {
-        b.second->set_active(m_equip == SHIELD);
-        b.second->set_visible(m_equip == SHIELD);
-    }
-
-    draw_equipments();
-}
-
-void
-Barracks::draw_equipments()
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(16);
-
+    
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    env->canvas->draw(m_textures["bracket_m"].get(), 313 * scale_w, 477 * scale_h);
-    env->canvas->draw(m_textures["bracket_p"].get(), 358 * scale_w, 477 * scale_h);
-    env->canvas->draw(m_textures["bracket_t"].get(), 402 * scale_w, 477 * scale_h);
+    Character *character = current_char();
 
-    env->canvas->draw("0", (315+15) * scale_w, 477 * scale_h, Color(183, 157, 39));
-    env->canvas->draw("0", (358+15) * scale_w, 477 * scale_h, Color(143, 61, 130));
-    env->canvas->draw("6", (402+15) * scale_w, 477 * scale_h, Color(60, 145, 145));
+    int x = 112;
+    int y = 87;
+    font->set_size(18);
+    env->canvas->draw(m_textures["card_small"].get(), x * scale_w, y * scale_h);
+    env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
 
-    if (m_equip == WEAPON)
-    {
-        Color color(84, 107, 95);
+    font->set_style(Font::BOLD);
+    env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
+        (y + 31) * scale_h, Color(208, 179, 43));
+    env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
+        (y + 58) * scale_h, Color(166, 69, 151));
+    env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
+        (y + 86) * scale_h, Color(78, 191, 190));
 
-        // shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        //     to_string(m_slot) + "/equipments.sav");
-        // auto sections = settings->sections();
-        // string text = sections["Rifle"]["text"];
-
-        // replace(text.begin(), text.end(), ';', '\n');
-        // env->canvas->draw(text, 145 * scale_w, 384 * scale_h, color);
-
-        env->canvas->draw("Assault Rifles have high fire rate, sending",
-            145 * scale_w, 384 * scale_h, color);
-        env->canvas->draw("wave after wave of raining death.",
-            145 * scale_w, (384+17) * scale_h, color);
-
-        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
-            500 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 0, 35, 35),
-            585 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["rifle_green"].get(), Rect(0, 35, 35, 35),
-            670 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["locked_green"].get(), Rect(0, 0, 35, 35),
-            755 * scale_w, 437 * scale_h, 35 * scale_w, 35 * scale_h);
-
-        env->canvas->draw(m_textures["locked_blue"].get(), Rect(0, 0, 35, 35),
-            585 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["rifle_blue"].get(), Rect(0, 35, 35, 35),
-            670 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["locked_blue"].get(), Rect(0, 0, 35, 35),
-            840 * scale_w, 493 * scale_h, 35 * scale_w, 35 * scale_h);
-
-        env->canvas->draw(m_textures["rifle_orange"].get(), Rect(0, 0, 35, 35),
-            500 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["locked_orange"].get(), Rect(0, 0, 35, 35),
-            585 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["rifle_orange"].get(), Rect(0, 35, 35, 35),
-            840 * scale_w, 549 * scale_h, 35 * scale_w, 35 * scale_h);
-
-        env->canvas->draw(m_textures["locked_white"].get(), Rect(0, 0, 35, 35),
-            500 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["locked_white"].get(), Rect(0, 0, 35, 35),
-            755 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
-        env->canvas->draw(m_textures["rifle_white"].get(), Rect(0, 35, 35, 35),
-            840 * scale_w, 605 * scale_h, 35 * scale_w, 35 * scale_h);
-
-        Rect clip(0, 0, 50, 50);
-        env->canvas->draw(m_textures["selector"].get(), clip, (585-8) * scale_w, (437-8) * scale_h,
-            50 * scale_w, 50 * scale_h);
-        clip = Rect(0, 50, 50, 50);
-        env->canvas->draw(m_textures["selector"].get(), clip, (670-8) * scale_w, (437-8) * scale_h,
-            50 * scale_w, 50 * scale_h);
-
-        clip = Rect(0, 0, 298, 30);
-        env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
-            298 * scale_w, 30 * scale_h);
-
-        color = Color(170, 215, 190);
-        env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_w, 512 * scale_h, color);
-        env->canvas->draw("state-of-the art weapon, being", 211 * scale_w, (512+17) * scale_h, color);
-        env->canvas->draw("able to shoot a 10mm", 211 * scale_w, (512+17*2) * scale_h, color);
-        env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_w, (512+17*3) * scale_h, color);
-
-        font->set_size(24);
-        env->canvas->draw("Katana XM-11", 145 * scale_w, 477 * scale_h, color);
-        env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
-
-        font->set_size(16);
-        env->canvas->draw("+10", 150 * scale_w, 615 * scale_h, color);
-        env->canvas->draw("+10", 200 * scale_w, 615 * scale_h, color);
-        env->canvas->draw("%50", 250 * scale_w, 615 * scale_h, color);
-        env->canvas->draw(m_textures["might"].get(), 150 * scale_w, 640 * scale_h);
-        env->canvas->draw(m_textures["agility"].get(), 200 * scale_w, 640 * scale_h);
-        env->canvas->draw(m_textures["hitchance"].get(), 250 * scale_w, 640 * scale_h);
-    }
+    font->set_style(Font::NORMAL);
 }
 
 bool
@@ -720,14 +438,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        if (--m_character < 0)
-        {
-            m_character = m_characters.size() - 1;
-        }
+        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) : set_current_char(m_character - 1);
     }
     else if (button->id() == "right_arrow")
     {
-        m_character = (m_character + 1) % m_characters.size();
+        set_current_char((m_character + 1) % m_characters.size());
     }
     else if (button->id() == "levelup_m")
     {
@@ -802,18 +517,20 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             character.second->set_texture(character.first + "_small.png");
             character.second->set_h(123 * scale_h);
         }
+
+        notify("enable equip screen", "");
     }
-    else if (button->id() == "rifle")
+    else if (button->id() == "weapon")
     {
-        m_equip = WEAPON;
+        notify(button->id(), "");
     }
     else if (button->id() == "armor")
     {
-        m_equip = ARMOR;
+        notify(button->id(), "");
     }
     else if (button->id() == "shield")
     {
-        m_equip = SHIELD;
+        notify(button->id(), "");
     }
     else if (button->id() == "back")
     {
@@ -833,6 +550,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
                 character.second->set_texture(character.first + "_big.png");
                 character.second->set_h(270 * scale_h);
             }
+
+            notify("disable equip screen", "");
         }
         else
         {
@@ -847,11 +566,6 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     change_buttons();
     current_char()->set_visible(true);
-
-    if (m_screen == EQUIP)
-    {
-        button->change_state(Button::ACTIVE);
-    }
 
     return true;
 }
@@ -901,12 +615,6 @@ Barracks::hide_buttons()
             b.second->set_visible(false);
         }
     }
-
-    for (auto b : m_weapons)
-    {
-        b.second->set_active(false);
-        b.second->set_visible(false);
-    }
 }
 
 void
@@ -921,29 +629,14 @@ Barracks::change_buttons()
     m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_active(m_screen == INSPECT);
 
-    m_buttons["rifle"]->set_active(m_screen == EQUIP);
-    m_buttons["rifle"]->set_visible(m_screen == EQUIP);
+    m_buttons["weapon"]->set_active(m_screen == EQUIP);
+    m_buttons["weapon"]->set_visible(m_screen == EQUIP);
     m_buttons["armor"]->set_active(m_screen == EQUIP);
     m_buttons["armor"]->set_visible(m_screen == EQUIP);
     m_buttons["shield"]->set_active(m_screen == EQUIP);
     m_buttons["shield"]->set_visible(m_screen == EQUIP);
 
     for (auto b : m_buttons)
-    {
-        b.second->change_state(Button::IDLE);
-    }
-
-    for (auto b : m_weapons)
-    {
-        b.second->change_state(Button::IDLE);
-    }
-
-    for (auto b : m_armor)
-    {
-        b.second->change_state(Button::IDLE);
-    }
-
-    for (auto b : m_shield)
     {
         b.second->change_state(Button::IDLE);
     }
@@ -955,6 +648,18 @@ Barracks::current_char() const
     auto it = m_characters.begin();
     for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
     return it->second;
+}
+
+void
+Barracks::set_current_char(int char_)
+{
+    m_character = char_;
+
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
+    settings->write<int>("Barracks", "char", m_character);
+    settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
 }
 
 void
@@ -993,17 +698,14 @@ Barracks::on_event(const KeyboardEvent& event)
         return true;
     }
     else if (event.state() == KeyboardEvent::PRESSED
-        and event.key() == KeyboardEvent::RIGHT)
-    {
-        m_character = (m_character + 1) % m_characters.size();
-    }
-    else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::LEFT)
     {
-        if (--m_character < 0)
-        {
-            m_character = m_characters.size() - 1;
-        }
+        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) : set_current_char(m_character - 1);
+    }
+    else if (event.state() == KeyboardEvent::PRESSED
+        and event.key() == KeyboardEvent::RIGHT)
+    {
+        set_current_char((m_character + 1) % m_characters.size());
     }
 
     current_char()->set_visible(true);
