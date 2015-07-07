@@ -8,6 +8,7 @@
 #include "colony.h"
 #include "tower.h"
 #include <core/font.h>
+#include <core/keyboardevent.h>
 #include <core/line.h>
 #include <core/rect.h>
 #include <core/settings.h>
@@ -25,6 +26,7 @@ Tower::Tower(int slot, const string& next)
     add_child(colony);
 
     Environment *env = Environment::get_instance();
+    env->events_manager->register_listener(this);
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/tower.sav");
 
@@ -33,6 +35,12 @@ Tower::Tower(int slot, const string& next)
 
     load_texture();
     create_buttons();
+}
+
+Tower::~Tower()
+{
+    Environment *env = Environment::get_instance();
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -238,4 +246,22 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
 
     return true;
+}
+
+bool
+Tower::on_event(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED and
+        event.key() == KeyboardEvent::ESCAPE)
+    {
+        set_next("base");
+        finish();
+
+        Environment *env = Environment::get_instance();
+        env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
+
+        return true;
+    }
+
+    return false;
 }

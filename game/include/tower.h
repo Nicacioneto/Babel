@@ -10,6 +10,7 @@
 
 #include "base.h"
 #include <core/level.h>
+#include <core/listener.h>
 #include <memory>
 #include <map>
 
@@ -18,10 +19,11 @@ using std::map;
 class Button;
 class Texture;
 
-class Tower : public Level
+class Tower : public Level, public Listener
 {
 public:
     Tower(int slot, const string& next = "");
+    ~Tower();
 
 private:
     int m_slot, m_actual_floor, m_unlocked_floors;
@@ -35,6 +37,7 @@ private:
     void create_buttons();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
+    bool on_event(const KeyboardEvent& event);
 };
 
 #endif

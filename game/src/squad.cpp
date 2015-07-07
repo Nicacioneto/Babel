@@ -186,8 +186,8 @@ Squad::change_screen()
 bool
 Squad::on_event(const KeyboardEvent& event)
 {
-    if (event.state() == KeyboardEvent::PRESSED
-        and event.key() == KeyboardEvent::ESCAPE)
+    if (event.state() == KeyboardEvent::PRESSED and
+        event.key() == KeyboardEvent::ESCAPE)
     {
         set_next("base");
         finish();
