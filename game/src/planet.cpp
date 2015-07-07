@@ -5,13 +5,14 @@
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
+#include "colony.h"
 #include "planet.h"
+#include "timer.h"
 #include <core/font.h>
 #include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
 #include <core/settings.h>
-#include "timer.h"
 
 #define W 1024.0
 #define H 768.0
@@ -24,15 +25,14 @@ Planet::Planet(int slot, const string& next)
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
-    string path = "res/images/planet/";
-
-    m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
-    m_textures["popup"] = env->resources_manager->get_texture(path + "popup.png");
-    m_textures["place"] = env->resources_manager->get_texture(path + "place.png");
-
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/planet.sav");
 
+    Colony *colony = new Colony(slot, this, "hospital");
+    colony->add_observer(this);
+    add_child(colony);
+
+    load_textures();
     create_buttons();
 }
 
@@ -40,6 +40,21 @@ Planet::~Planet()
 {
     Environment *env = Environment::get_instance();
     env->events_manager->unregister_listener(this);
+}
+
+void
+Planet::load_textures()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/images/planet/";
+    m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
+    m_textures["popup"] = env->resources_manager->get_texture(path + "popup.png");
+    m_textures["place"] = env->resources_manager->get_texture(path + "place.png");
+    m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
+
+    path = "res/images/colony/";
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 }
 
 void
@@ -131,9 +146,9 @@ Planet::draw_self()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Color color(170, 215, 190);
+    env->canvas->draw(m_textures["bracket"].get(), 28 * scale_w, 175 * scale_h);
 
-    env->canvas->draw(m_textures["planet"].get());
+    Color color(170, 215, 190);
 
     if (m_state == POPUP)
     {
@@ -175,7 +190,15 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
 
     if (id != Button::clickedID or not button)
     {
-        return false;
+        Colony *colony = dynamic_cast<Colony *>(sender);
+        if (not colony)
+        {
+            return false;
+        }
+
+        set_next(id);
+        finish();
+        return true;
     }
 
     if (button->id() == "colony")
@@ -224,6 +247,7 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "send_party")
     {
+        // set_next("expedition");
         start_mission();
         enable_popup(false);
     }

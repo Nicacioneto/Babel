@@ -90,7 +90,7 @@ Base::create_buttons()
     const int w = 190 * scale_w;
     const int h = 180/3 * scale_h;
 
-    Button *button =  new Button(this, "barracks", path + "barracks_button.png",
+    Button *button = new Button(this, "barracks", path + "barracks_button.png",
         x, 218 * scale_h, w, h);
     button->set_sprites(3);
 

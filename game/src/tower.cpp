@@ -61,6 +61,10 @@ Tower::load_texture()
     m_textures["hostile"] = env->resources_manager->get_texture(path + "hostile.png");
     m_textures["quest"] = env->resources_manager->get_texture(path + "quest.png");
     m_textures["squad"] = env->resources_manager->get_texture(path + "squad.png");
+
+    path = "res/images/colony/";
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 }
 
 void
@@ -140,6 +144,9 @@ Tower::draw_self()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     // env->canvas->draw(m_textures["babel"].get(), 193 * scale_w, 25 * scale_h);
 

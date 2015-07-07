@@ -35,6 +35,7 @@ private:
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
+    void load_textures();
     void update_self(unsigned long elapsed);
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);

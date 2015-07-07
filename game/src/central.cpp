@@ -163,7 +163,7 @@ Central::create_buttons()
     int w = 190 * scale_w;
     int h = 180/3 * scale_h;
 
-    Button *button =  new Button(this, "central", path + "central_button.png",
+    Button *button = new Button(this, "central", path + "central_button.png",
         x, 218 * scale_h, w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);

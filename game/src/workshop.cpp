@@ -127,7 +127,7 @@ Workshop::create_buttons()
     const int w = (190 / W) * env->canvas->w();
     const int h = (180/3 / H) * env->canvas->h();
 
-    Button *button =  new Button(this, "workshop", path + "workshop_button.png",
+    Button *button = new Button(this, "workshop", path + "workshop_button.png",
         x, (218 / H) * env->canvas->h(), w, h);
     button->set_sprites(3);
     button->change_state(Button::ACTIVE);
