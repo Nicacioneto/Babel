@@ -373,12 +373,26 @@ Combat::update_attackers(Character* character)
 bool
 Combat::on_event(const KeyboardEvent& event)
 {
-    if (event.state() == KeyboardEvent::PRESSED and m_state == FINISHED_COMBAT)
+    switch (event.state())
     {
-        finish();
+        case KeyboardEvent::PRESSED:
+            if (m_state == FINISHED_COMBAT)
+            {
+                Environment *env = Environment::get_instance();
+                env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
+                finish();
+            }
+            else if (event.key() == KeyboardEvent::ESCAPE)
+            {
+                Environment *env = Environment::get_instance();
+                env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
+                set_next("tower");
+                finish();
+            }
 
-        Environment *env = Environment::get_instance();
-        env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
+            break;
+        default:
+            return false;
 
         return true;
     }
