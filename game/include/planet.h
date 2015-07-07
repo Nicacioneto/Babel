@@ -10,14 +10,17 @@
 
 #include "button.h"
 #include <core/level.h>
+#include <core/listener.h>
 #include <memory>
 
+class KeyboardEvent;
 class Texture;
 
-class Planet : public Level
+class Planet : public Level, public Listener
 {
 public:
     Planet(int slot, const string& next = "");
+    ~Planet();
 
 private:
     typedef enum { IDLE, POPUP } State;
@@ -38,6 +41,7 @@ private:
     void enable_popup(bool popup);
     void create_buttons();
     void start_mission();
+    bool on_event(const KeyboardEvent& event);
 };
 
 #endif

@@ -27,6 +27,7 @@ Tower::Tower(int slot, const string& next)
 
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
+
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/tower.sav");
 

@@ -7,6 +7,7 @@
  */
 #include "planet.h"
 #include <core/font.h>
+#include <core/keyboardevent.h>
 #include <core/rect.h>
 #include <core/resourcesmanager.h>
 #include <core/settings.h>
@@ -21,6 +22,8 @@ Planet::Planet(int slot, const string& next)
     : Level("planet", next), m_slot(slot), m_state(IDLE), m_last(0), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
+    env->events_manager->register_listener(this);
+
     string path = "res/images/planet/";
 
     m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
@@ -31,6 +34,12 @@ Planet::Planet(int slot, const string& next)
         to_string(m_slot) + "/planet.sav");
 
     create_buttons();
+}
+
+Planet::~Planet()
+{
+    Environment *env = Environment::get_instance();
+    env->events_manager->unregister_listener(this);
 }
 
 void
@@ -249,4 +258,22 @@ Planet::start_mission()
     unsigned long min = atol(time.substr(0, 2).c_str()) * 60;
     unsigned long seg = atol(time.substr(3).c_str());
     start_time(m_place, min + seg, "workshop", 50, 50);
+}
+
+bool
+Planet::on_event(const KeyboardEvent& event)
+{
+    if (event.state() == KeyboardEvent::PRESSED and
+        event.key() == KeyboardEvent::ESCAPE)
+    {
+        set_next("base");
+        finish();
+
+        Environment *env = Environment::get_instance();
+        env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
+
+        return true;
+    }
+
+    return false;
 }
