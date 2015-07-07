@@ -118,10 +118,11 @@ void
 Barracks::load_textures()
 {
     Environment *env = Environment::get_instance();
-    string path = "res/images/colony/barracks/";
+    string path = "res/images/characters/";
 
-    m_textures["card_big"] = env->resources_manager->get_texture("res/images/characters/card_big.png");
-    m_textures["card_small"] = env->resources_manager->get_texture("res/images/characters/card_small.png");
+    m_textures["card_big"] = env->resources_manager->get_texture(path + "card_big.png");
+    m_textures["card_small"] = env->resources_manager->get_texture(path + "card_small.png");
+    path = "res/images/colony/barracks/";
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
     m_textures["bracket_military"] = env->resources_manager->get_texture(path + "bracket-m.png");
     m_textures["bracket_pisionic"] = env->resources_manager->get_texture(path + "bracket-p.png");
@@ -438,7 +439,8 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) : set_current_char(m_character - 1);
+        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) :
+            set_current_char(m_character - 1);
     }
     else if (button->id() == "right_arrow")
     {
@@ -700,7 +702,8 @@ Barracks::on_event(const KeyboardEvent& event)
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::LEFT)
     {
-        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) : set_current_char(m_character - 1);
+        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) :
+            set_current_char(m_character - 1);
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)

@@ -257,9 +257,11 @@ Equip::draw_equipments()
 
         color = Color(170, 215, 190);
         env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_w, 512 * scale_h, color);
-        env->canvas->draw("state-of-the art weapon, being", 211 * scale_w, (512+17) * scale_h, color);
+        env->canvas->draw("state-of-the art weapon, being", 211 * scale_w,
+            (512+17) * scale_h, color);
         env->canvas->draw("able to shoot a 10mm", 211 * scale_w, (512+17*2) * scale_h, color);
-        env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_w, (512+17*3) * scale_h, color);
+        env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_w,
+            (512+17*3) * scale_h, color);
 
         font->set_size(24);
         env->canvas->draw("Katana XM-11", 145 * scale_w, 477 * scale_h, color);

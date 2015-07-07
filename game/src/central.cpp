@@ -25,7 +25,8 @@ Central::Central(int slot, const string& next)
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_textures["scenario"] = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
+    m_textures["scenario"] = env->resources_manager->get_texture(path +
+        "central/central_chat_scenario.png");
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
     m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 
@@ -52,7 +53,7 @@ Central::draw_self()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    env->canvas->draw(m_textures["scenario"].get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    env->canvas->draw(m_textures["scenario"].get(), 275 * scale_w, 173 * scale_h);
     env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
     env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
@@ -123,7 +124,8 @@ Central::on_message(Object *sender, MessageID id, Parameters)
 
         if (button->id() == "chat")
         {
-            m_textures["scenario"] = env->resources_manager->get_texture(path + "central_chat_scenario.png");
+            m_textures["scenario"] = env->resources_manager->get_texture(path +
+                "central_chat_scenario.png");
             m_screen = CHAT;
         }
         else if (button->id() == "quests")
