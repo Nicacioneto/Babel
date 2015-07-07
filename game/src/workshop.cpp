@@ -17,12 +17,13 @@
 using std::to_string;
 
 Workshop::Workshop(int slot, const string& next)
-    : Level("workshop", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr)
+    : Level("workshop", next), m_slot(slot), m_screen(CHAT)
 {
     Environment *env = Environment::get_instance();
-    string path = "res/images/colony/workshop/";
-
-    m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
+    string path = "res/images/colony/";
+    m_textures["scenario"] = env->resources_manager->get_texture(path + "workshop/chat_scenario.png");
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 
     Colony *colony = new Colony(slot, this, "workshop");
     colony->add_observer(this);
@@ -37,7 +38,12 @@ Workshop::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), (275 / W) * env->canvas->w(), (173 / H) * env->canvas->h());
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["scenario"].get(), (275 / W) * env->canvas->w(), (173 / H) * env->canvas->h());
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     switch (m_screen)
     {
@@ -80,13 +86,13 @@ Workshop::on_message(Object *sender, MessageID id, Parameters)
         Environment *env = Environment::get_instance();
         string path = "res/images/colony/workshop/";
 
-        m_scenario = env->resources_manager->get_texture(path + "scenario.png");
+        m_textures["scenario"] = env->resources_manager->get_texture(path + "scenario.png");
         change_buttons();
 
         if (button->id() == "chat")
         {
             m_screen = CHAT;
-            m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
+            m_textures["scenario"] = env->resources_manager->get_texture(path + "chat_scenario.png");
         }
         else if (button->id() == "drone")
         {

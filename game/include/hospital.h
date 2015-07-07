@@ -28,15 +28,19 @@ public:
     Hospital(int slot, const string& next = "");
 
 private:
+    typedef string Screen;
+
     int m_slot;
     Colony *m_colony;
-    string m_screen;
-    shared_ptr<Texture> m_scenario;
+    Screen m_screen;
     int m_page;
     int m_max_pages;
     Text *m_text;
+
+    map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
+    void add_children();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();

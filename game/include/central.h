@@ -29,10 +29,10 @@ private:
     Screen m_screen;
 
     unsigned long m_last;
-    shared_ptr<Texture> m_scenario;
     int m_page;
     int m_max_pages;
     Text *m_text;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);

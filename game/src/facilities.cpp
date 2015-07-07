@@ -29,6 +29,11 @@ Facilities::Facilities(int slot, const string& next)
     m_pcost += m_colony->pwaked() / 19 * 20;
     m_tcost += m_colony->twaked() / 19 * 20;
 
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/";
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
+
     create_buttons();
 }
 
@@ -37,6 +42,12 @@ Facilities::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->clear();
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     switch (m_screen)
     {

@@ -19,13 +19,15 @@
 using std::to_string;
 
 Central::Central(int slot, const string& next)
-    : Level("central", next), m_slot(slot), m_screen(CHAT), m_scenario(nullptr),
-    m_page(1), m_max_pages(1), m_text(nullptr)
+    : Level("central", next), m_slot(slot), m_screen(CHAT), m_page(1),
+        m_max_pages(1), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_scenario = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
+    m_textures["scenario"] = env->resources_manager->get_texture(path + "central/central_chat_scenario.png");
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 
     Colony *colony = new Colony(slot, this, "central");
     colony->add_observer(this);
@@ -47,7 +49,12 @@ Central::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["scenario"].get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     if (m_text and m_screen != CHAT and m_max_pages > 1)
     {
@@ -112,11 +119,11 @@ Central::on_message(Object *sender, MessageID id, Parameters)
     else
     {
         m_page = 1;
-        m_scenario = env->resources_manager->get_texture(path + "central_scenario.png");
+        m_textures["scenario"] = env->resources_manager->get_texture(path + "central_scenario.png");
 
         if (button->id() == "chat")
         {
-            m_scenario = env->resources_manager->get_texture(path + "central_chat_scenario.png");
+            m_textures["scenario"] = env->resources_manager->get_texture(path + "central_chat_scenario.png");
             m_screen = CHAT;
         }
         else if (button->id() == "quests")

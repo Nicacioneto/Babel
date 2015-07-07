@@ -20,11 +20,9 @@ Colony::Colony(int slot, Object *parent, ObjectID id)
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
     m_textures["colony"] = env->resources_manager->get_texture(path + "colony.png");
     m_textures["tower"] = env->resources_manager->get_texture(path + "tower.png");
     m_textures["planet"] = env->resources_manager->get_texture(path + "planet.png");
-    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
     m_textures["resources"] = env->resources_manager->get_texture(path + "resources.png");
 
     double scale_w = env->canvas->w() / W;
@@ -66,11 +64,9 @@ Colony::draw_self()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
     env->canvas->draw(m_textures["colony"].get(), 277 * scale_w, 25 * scale_h);
     env->canvas->draw(m_textures["tower"].get(), 28 * scale_w, 25 * scale_h);
     env->canvas->draw(m_textures["planet"].get(), 770 * scale_w, 25 * scale_h);
-    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
     env->canvas->draw(m_textures["resources"].get(), 28 * scale_w, 120 * scale_h);
 
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");

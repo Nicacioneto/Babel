@@ -14,12 +14,14 @@
 #define H 768.0
 
 Base::Base(int slot, const string& next)
-    : Level("base", next), m_slot(slot), m_scenario(nullptr)
+    : Level("base", next), m_slot(slot)
 {
     Environment *env = Environment::get_instance();
 
     string path = "res/images/colony/";
-    m_scenario = env->resources_manager->get_texture(path + "colony_scenario.png");
+    m_textures["scenario"] = env->resources_manager->get_texture(path + "colony_scenario.png");
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 
     Colony *colony = new Colony(slot, this, "base");
     colony->add_observer(this);
@@ -34,7 +36,12 @@ Base::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["scenario"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 }
 
 bool

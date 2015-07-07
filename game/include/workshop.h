@@ -28,7 +28,7 @@ private:
     
     int m_slot;
     Screen m_screen;
-    shared_ptr<Texture> m_scenario;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);

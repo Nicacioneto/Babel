@@ -24,20 +24,27 @@ using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
     : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen("chat"),
-    m_scenario(nullptr), m_page(1), m_max_pages(1), m_text(nullptr)
+        m_page(1), m_max_pages(1), m_text(nullptr)
 {
     Environment *env = Environment::get_instance();
-    string path = "res/images/colony/hospital/";
-
-    m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
+    string path = "res/images/colony/";
 
     m_colony = new Colony(slot, this, "hospital");
     m_colony->add_observer(this);
     add_child(m_colony);
 
+    m_textures["scenario"] = env->resources_manager->get_texture(path + "hospital/chat_scenario.png");
+    m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
+    m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
+
+    add_children();
     set_pages_text();
     create_buttons();
+}
 
+void
+Hospital::add_children()
+{
     Item *item = new Item(m_slot, m_colony, this);
     item->add_observer(this);
     add_child(item);
@@ -60,7 +67,12 @@ Hospital::draw_self()
     Environment *env = Environment::get_instance();
     env->canvas->clear();
 
-    env->canvas->draw(m_scenario.get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["scenario"].get(), 275 * env->canvas->w() / W, 173 * env->canvas->h() / H);
+    env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
+    env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     if (m_text and m_screen != "chat" and m_max_pages > 1)
     {
@@ -105,7 +117,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/hospital/";
 
-    m_scenario = env->resources_manager->get_texture(path + "scenario.png");
+    m_textures["scenario"] = env->resources_manager->get_texture(path + "scenario.png");
 
     if (button->id() == "left_arrow")
     {
@@ -127,7 +139,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
     {
         if (button->id() == "chat")
         {
-            m_scenario = env->resources_manager->get_texture(path + "chat_scenario.png");
+            m_textures["scenario"] = env->resources_manager->get_texture(path + "chat_scenario.png");
         }
 
         m_page = 1;

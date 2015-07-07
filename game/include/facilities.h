@@ -30,7 +30,8 @@ private:
     int m_slot, m_mcost, m_pcost, m_tcost;
     Colony *m_colony;
     Screen m_screen;
-    map<ObjectID, Button*> m_buttons;
+    map<ObjectID, shared_ptr<Texture>> m_textures;
+    map<ObjectID, Button *> m_buttons;
 
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
