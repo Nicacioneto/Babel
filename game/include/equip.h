@@ -23,8 +23,10 @@ public:
 
 private:
     typedef enum { WEAPON, ARMOR, SHIELD } Equipment;
-    typedef enum { RIFLE, SHOTGUN, PISTOL, SNIPER, MELEE, HAND, NANO,
-        UI, PSIBLADE, PSIAMP, PSIWHIP } Weapon;
+
+    typedef enum { RIFLE, SHOTGUN, PISTOL, SNIPER, MELEE, HAND,
+                    NANO, UI, PSIBLADE, PSIAMP, PSIWHIP
+                 } Weapon;
 
     int m_slot;
     Equipment m_equip;

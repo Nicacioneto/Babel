@@ -37,8 +37,7 @@ Item::Item(int slot, Colony *colony, Object *parent)
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/items.sav");
 
-    m_max_pages = (m_settings->sections().size() / BIG_LIST) +
-        (m_settings->sections().size() % BIG_LIST != 0);
+    calculate_max_page();
 
     create_buttons();
 
@@ -69,9 +68,12 @@ Item::draw_items(double scale_w, double scale_h, Color color)
     Environment *env = Environment::get_instance();
 
     int y = 236, i = 0;
+    bool research = false;
+
     for (auto section : m_settings->sections())
     {
-        if (++i < (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
+        research = m_settings->read<string>(section.first, "time", "00:00") == "00:00";
+        if (not research or (++i <= (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page))
         {
             change_button_state(m_buttons[section.first], false);
             continue;
@@ -202,5 +204,24 @@ Item::buy_item(const ObjectID id)
 
         m_settings->write<int>(id, "qnt_earned", ++qnt_earned);
         m_settings->save("res/datas/slot" + to_string(m_slot) + "/items.sav");
+    }
+}
+
+void
+Item::calculate_max_page()
+{
+    int count = 0;
+    for (auto section : m_settings->sections())
+    {
+        if (section.second["time"] == "00:00")
+        {
+            count++;
+        }
+    }
+    m_max_pages = (count / BIG_LIST) + (count % BIG_LIST != 0);
+    
+    if (m_max_pages == 1)
+    {
+        m_page = 1;
     }
 }

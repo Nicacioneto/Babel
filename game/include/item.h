@@ -41,6 +41,7 @@ private:
     void change_buttons(bool visible = false, bool active = false);
     void change_button_state(Button *button, bool state, int y = 0);
     void buy_item(const ObjectID id);
+    void calculate_max_page();
 };
 
 #endif
