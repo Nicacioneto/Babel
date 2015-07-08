@@ -58,6 +58,7 @@ private:
     void active_buttons(ActionState state);
     void clicked_event(Button *button);
     void hover_event(Button *button);
+    void update_max_pages();
 };
 
 #endif

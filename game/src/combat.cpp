@@ -541,6 +541,12 @@ Combat::action_message(MessageID id, Parameters p)
         
         double value = items->read<double>(current_action.second, "value", 0);
 
+        int qnt_earned = items->read<int>(current_action.second, "qnt_earned", 0);
+
+        items->write<int>(current_action.second, "qnt_earned", --qnt_earned);
+
+        items->save("res/datas/slot" + to_string(m_slot) + "/items.sav");
+
         Character *attacker = m_characters[m_attacker];
 
         if (attribute == "life")

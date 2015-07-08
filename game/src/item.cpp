@@ -68,12 +68,12 @@ Item::draw_items(double scale_w, double scale_h, Color color)
     Environment *env = Environment::get_instance();
 
     int y = 236, i = 0;
-    bool research = false;
+    bool item = false;
 
     for (auto section : m_settings->sections())
     {
-        research = m_settings->read<string>(section.first, "time", "00:00") == "00:00";
-        if (not research or (++i <= (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page))
+        item = m_settings->read<string>(section.first, "time", "00:00") == "00:00";
+        if (not item or (++i <= (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page))
         {
             change_button_state(m_buttons[section.first], false);
             continue;

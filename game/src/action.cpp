@@ -169,8 +169,7 @@ Action::create_buttons()
 
     auto sections = m_settings->sections();
     
-    m_max_pages = (sections.size() / ITEMS_PER_PAGE) +
-        (sections.size() % ITEMS_PER_PAGE != 0);
+    update_max_pages();
 
     y = 580;
 
@@ -327,9 +326,13 @@ Action::draw_item()
     env->canvas->draw(m_textures["item_shelf"].get(), 528 * scale_w, 522 * scale_h);
 
     int y = 580, i = 0;
+
+    bool has_item = false;
+
     for (auto section : m_settings->sections())
     {
-        if (++i < (m_page - 1) * ITEMS_PER_PAGE or i > ITEMS_PER_PAGE * m_page)
+        has_item = m_settings->read<int>(section.first, "qnt_earned", 0) > 0;
+        if (not has_item or (++i < (m_page - 1) * ITEMS_PER_PAGE or i > ITEMS_PER_PAGE * m_page))
         {
             change_button_state(m_items_buttons[section.first], false);
             continue;
@@ -337,8 +340,7 @@ Action::draw_item()
 
         change_button_state(m_items_buttons[section.first], true, y);
 
-        string qnt_earned = m_settings->read<string>(section.first, "qnt_earned", "");
-
+        string qnt_earned = section.second["qnt_earned"];
 
         env->canvas->draw(m_textures["research"].get(),
             540 * scale_w, y * scale_h, 50 * scale_w, 25 * scale_h);
@@ -502,6 +504,9 @@ Action::clicked_event(Button *button)
     else if (button->id() == "item")
     {
         m_state = ITEM;
+        Environment *env = Environment::get_instance();
+        m_settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/items.sav");
     }
     else if (button->id() == "defense")
     {
@@ -544,6 +549,7 @@ Action::clicked_event(Button *button)
         {
             state = "item";
             action = button->id();
+            update_max_pages();
         }
     }
 
@@ -614,4 +620,21 @@ void
 Action::set_state(ActionState state)
 {
     m_state = state;
+}
+
+void
+Action::update_max_pages()
+{
+    int count = 0;
+
+    for (auto section : m_settings->sections())
+    {
+        if (atoi(section.second["qnt_earned"].c_str()) > 0)
+        {
+            count++;
+        }
+    }
+
+    m_max_pages = (count / ITEMS_PER_PAGE) +
+        (count % ITEMS_PER_PAGE != 0);
 }
