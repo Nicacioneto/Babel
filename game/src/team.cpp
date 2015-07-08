@@ -21,17 +21,14 @@
 using std::to_string;
 
 Team::Team(int slot, Object *parent)
-    : Object(parent), m_slot(slot), m_settings(nullptr), m_bracket(nullptr)
+    : Object(parent), m_slot(slot), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     m_settings = env->resources_manager->get_settings(path);
 
-    m_bracket = env->resources_manager->get_texture("res/images/characters/card_small.png");
-
     load_characters();
     load_team();
-    load_texts();
 }
 
 void
@@ -43,79 +40,6 @@ Team::draw_self()
     double scale_h = env->canvas->h() / H;
 
     env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, Color(70, 89, 79));
-
-    int x = 155, y = 175;
-    int i = 0, j = 0;
-    for (auto c : m_characters)
-    {
-        if (j > 2)
-        {
-            ++i;
-            j = 0;
-        }
-
-        if (i > 2)
-        {
-            break;
-        }
-
-        env->canvas->draw(m_bracket.get(), (x + 249*j) * scale_w, (y + 150*i) * scale_h);
-        env->canvas->draw(c.first, (x + 133 + 249*j) * scale_w,
-            (y + 3 + 150*i) * scale_h, Color(170, 215, 190));
-
-        draw_attributes(x, y, i, j, c.first);
-        
-        ++j;
-    }
-
-}
-
-void
-Team::draw_attributes(int x, int y, int i, int j, string id)
-{
-    Environment *env = Environment::get_instance();
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    Rect box((x + 172 + 249*j) * scale_w, (y + 32 + 150*i) * scale_h,
-        40 * scale_w, 21 * scale_h);
-    double w_shield = m_texts[id + "_shield"]->w() + m_texts[id + "_max_shield"]->w();
-    double x_shield = (box.w() - w_shield)/2 + box.x();
-    double y_shield = (box.h() - m_texts[id + "_shield"]->h())/2 + box.y();
-    double x_max_shield = x_shield + m_texts[id + "_shield"]->w();
-    double y_max_shield = y_shield + m_texts[id + "_shield"]->h() -
-        m_texts[id + "_max_shield"]->h();
-
-    m_texts[id + "_shield"]->set_position(x_shield, y_shield);
-    m_texts[id + "_max_shield"]->set_position(x_max_shield, y_max_shield);
-    m_texts[id + "_shield"]->draw();
-    m_texts[id + "_max_shield"]->draw();
-
-    box.set_y(y + 59 + 150*i);
-    double w_life = m_texts[id + "_life"]->w() + m_texts[id + "_max_life"]->w();
-    double x_life = (box.w() - w_life)/2 + box.x();
-    double y_life = (box.h() - m_texts[id + "_life"]->h())/2 + box.y();
-    double x_max_life = x_life + m_texts[id + "_life"]->w();
-    double y_max_life = y_life + m_texts[id + "_life"]->h() -
-        m_texts[id + "_max_life"]->h();
-
-    m_texts[id + "_life"]->set_position(x_life, y_life);
-    m_texts[id + "_max_life"]->set_position(x_max_life, y_max_life);
-    m_texts[id + "_life"]->draw();
-    m_texts[id + "_max_life"]->draw();
-
-    box.set_y(y + 86 + 150*i);
-    double w_mp = m_texts[id + "_mp"]->w() + m_texts[id + "_max_mp"]->w();
-    double x_mp = (box.w() - w_mp)/2 + box.x();
-    double y_mp = (box.h() - m_texts[id + "_mp"]->h())/2 + box.y();
-    double x_max_mp = x_mp + m_texts[id + "_mp"]->w();
-    double y_max_mp = y_mp + m_texts[id + "_mp"]->h() -
-        m_texts[id + "_max_mp"]->h();
-
-    m_texts[id + "_mp"]->set_position(x_mp, y_mp);
-    m_texts[id + "_max_mp"]->set_position(x_max_mp, y_max_mp);
-    m_texts[id + "_mp"]->draw();
-    m_texts[id + "_max_mp"]->draw();
 }
 
 bool
@@ -215,32 +139,6 @@ Team::load_team()
             m_buttons[h.second]->set_visible(false);
             m_team.push_back(h.second);
         }
-    }
-}
-
-void
-Team::load_texts()
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-
-    for (auto c : m_characters)
-    {
-        string shield = to_string(c.second->shield());
-        string max_shield = to_string(c.second->max_shield());
-        string life = to_string(c.second->life());
-        string max_life = to_string(c.second->max_life());
-
-        font->set_size(10);
-        m_texts[c.first + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
-        m_texts[c.first + "_life"] = new Text(this, life + "/", Color(170, 215, 190));
-        m_texts[c.first + "_mp"] = new Text(this, life + "/", Color(170, 215, 190));
-
-        font->set_size(7);
-        m_texts[c.first + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
-        m_texts[c.first + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
-        m_texts[c.first + "_max_mp"] = new Text(this, max_life, Color(170, 215, 190));
     }
 }
 

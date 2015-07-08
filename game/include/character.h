@@ -12,8 +12,9 @@
 #include <core/object.h>
 #include <core/listener.h>
 
-class Texture;
 class MouseButtonEvent;
+class Text;
+class Texture;
 
 class Character : public Object, public Listener
 {
@@ -24,6 +25,8 @@ public:
         double x = 0, double y = 0, double w = 0, double h = 0, Type type = HERO);
     ~Character();
 
+    void load_texts();
+    void draw_attributes();
     int receive_damage(Character *character);
 
     Type type() const;
@@ -87,11 +90,13 @@ public:
 private:
     int m_slot;
     shared_ptr<Texture> m_texture;
+    shared_ptr<Texture> m_bracket;
     shared_ptr<Settings> m_settings;
 
     string m_name;
     Type m_type;
     int m_attacks_quantity;
+    map<ObjectID, Text*> m_texts;
 
     int m_military;
     int m_psionic;

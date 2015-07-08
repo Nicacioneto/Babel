@@ -6,25 +6,31 @@
  * License: LGPL. No copyright.
  */
 #include "character.h"
+#include <cmath>
 #include <core/environment.h>
-#include <core/texture.h>
+#include <core/font.h>
 #include <core/mousebuttonevent.h>
 #include <core/rect.h>
 #include <core/settings.h>
-#include <cmath>
+#include <core/text.h>
+#include <core/texture.h>
 
 using std::to_string;
 
+#define W 1024.0
+#define H 768.0
+
 Character::Character(int slot, Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h, Type type)
-    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), m_settings(nullptr),
-        m_name(id), m_type(type), m_attacks_quantity(0)
+    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), m_bracket(nullptr),
+        m_settings(nullptr), m_name(id), m_type(type), m_attacks_quantity(0)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
     string path = "res/images/characters/";
     m_texture = env->resources_manager->get_texture(path + texture);
+    m_bracket = env->resources_manager->get_texture("res/images/characters/card_small.png");
 
     if (not w and not h)
     {
@@ -39,6 +45,11 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
     m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot)
         + "/characters.sav");
     init();
+
+    if (m_type == HERO)
+    {
+        load_texts();
+    }
 }
 
 Character::~Character()
@@ -83,6 +94,93 @@ Character::draw_self()
 {
     Environment *env = Environment::get_instance();
     env->canvas->draw(m_texture.get(), x(), y(), w(), h());
+
+    if (m_type == HERO)
+    {
+        double scale_w = env->canvas->w() / W;
+        double scale_h = env->canvas->h() / H;
+        
+        env->canvas->draw(m_bracket.get(), x(), y());
+        env->canvas->draw(m_name, x() + 133 * scale_w, y() + 3 * scale_h, Color(170, 215, 190));
+        
+        draw_attributes();
+    }
+}
+
+void
+Character::draw_attributes()
+{
+    Environment *env = Environment::get_instance();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    Rect box(x() + 172 * scale_w, y() + 32 * scale_h,
+        40 * scale_w, 21 * scale_h);
+
+    double w_shield = m_texts[m_name + "_shield"]->w() + m_texts[m_name + "_max_shield"]->w();
+    double x_shield = (box.w() - w_shield)/2 + box.x();
+    double y_shield = (box.h() - m_texts[m_name + "_shield"]->h())/2 + box.y();
+    double x_max_shield = x_shield + m_texts[m_name + "_shield"]->w();
+    double y_max_shield = y_shield + m_texts[m_name + "_shield"]->h() -
+        m_texts[m_name + "_max_shield"]->h();
+
+    m_texts[m_name + "_shield"]->set_position(x_shield, y_shield);
+    m_texts[m_name + "_max_shield"]->set_position(x_max_shield, y_max_shield);
+    m_texts[m_name + "_shield"]->draw();
+    m_texts[m_name + "_max_shield"]->draw();
+
+    box.set_y(y() + 59);
+    double w_life = m_texts[m_name + "_life"]->w() + m_texts[m_name + "_max_life"]->w();
+    double x_life = (box.w() - w_life)/2 + box.x();
+    double y_life = (box.h() - m_texts[m_name + "_life"]->h())/2 + box.y();
+    double x_max_life = x_life + m_texts[m_name + "_life"]->w();
+    double y_max_life = y_life + m_texts[m_name + "_life"]->h() -
+        m_texts[m_name + "_max_life"]->h();
+
+    m_texts[m_name + "_life"]->set_position(x_life, y_life);
+    m_texts[m_name + "_max_life"]->set_position(x_max_life, y_max_life);
+    m_texts[m_name + "_life"]->draw();
+    m_texts[m_name + "_max_life"]->draw();
+
+    box.set_y(y() + 86);
+    double w_mp = m_texts[m_name + "_mp"]->w() + m_texts[m_name + "_max_mp"]->w();
+    double x_mp = (box.w() - w_mp)/2 + box.x();
+    double y_mp = (box.h() - m_texts[m_name + "_mp"]->h())/2 + box.y();
+    double x_max_mp = x_mp + m_texts[m_name + "_mp"]->w();
+    double y_max_mp = y_mp + m_texts[m_name + "_mp"]->h() -
+        m_texts[m_name + "_max_mp"]->h();
+
+    m_texts[m_name + "_mp"]->set_position(x_mp, y_mp);
+    m_texts[m_name + "_max_mp"]->set_position(x_max_mp, y_max_mp);
+    m_texts[m_name + "_mp"]->draw();
+    m_texts[m_name + "_max_mp"]->draw();
+}
+
+void
+Character::load_texts()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+
+    string shield = to_string(m_shield);
+    string max_shield = to_string(m_max_shield);
+    string life = to_string(m_life);
+    string max_life = to_string(m_max_life);
+    string mp = to_string(m_mp);
+    string max_mp = to_string(m_max_mp);
+
+    font->set_size(10);
+    m_texts[m_name + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
+    m_texts[m_name + "_life"] = new Text(this, life + "/", Color(170, 215, 190));
+    m_texts[m_name + "_mp"] = new Text(this, mp + "/", Color(170, 215, 190));
+
+    font->set_size(7);
+    m_texts[m_name + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
+    m_texts[m_name + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
+    m_texts[m_name + "_max_mp"] = new Text(this, max_mp, Color(170, 215, 190));
+    
+    font->set_size(16);
 }
 
 bool

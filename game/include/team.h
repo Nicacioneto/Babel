@@ -39,15 +39,11 @@ private:
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Character*> m_characters;
     vector<ObjectID> m_team;
-    shared_ptr<Texture> m_bracket;
-    map<ObjectID, Text*> m_texts;
 
     void draw_self();
-    void draw_attributes(int x, int y, int i, int j, string id);
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_characters();
     void load_team();
-    void load_texts();
 };
 
 #endif
