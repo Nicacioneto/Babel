@@ -622,14 +622,19 @@ Barracks::hide_buttons()
 void
 Barracks::change_buttons()
 {
-    m_buttons["levelup_m"]->set_visible(m_screen == INSPECT);
+    for (auto b : m_buttons)
+    {
+        b.second->change_state(Button::IDLE);
+    }
+
     m_buttons["levelup_m"]->set_active(m_screen == INSPECT);
-    m_buttons["levelup_p"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_m"]->set_visible(m_screen == INSPECT);
     m_buttons["levelup_p"]->set_active(m_screen == INSPECT);
-    m_buttons["levelup_t"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_p"]->set_visible(m_screen == INSPECT);
     m_buttons["levelup_t"]->set_active(m_screen == INSPECT);
-    m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
+    m_buttons["levelup_t"]->set_visible(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_active(m_screen == INSPECT);
+    m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
 
     m_buttons["weapon"]->set_active(m_screen == EQUIP);
     m_buttons["weapon"]->set_visible(m_screen == EQUIP);
@@ -637,11 +642,6 @@ Barracks::change_buttons()
     m_buttons["armor"]->set_visible(m_screen == EQUIP);
     m_buttons["shield"]->set_active(m_screen == EQUIP);
     m_buttons["shield"]->set_visible(m_screen == EQUIP);
-
-    for (auto b : m_buttons)
-    {
-        b.second->change_state(Button::IDLE);
-    }
 }
 
 Character *

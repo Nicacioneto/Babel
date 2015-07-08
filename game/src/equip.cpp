@@ -2,7 +2,7 @@
  * Equipe class implementation
  *
  * Author: Tiamat
- * Date: 21/06/2015
+ * Date: 07/07/2015
  * License: LGPL. No copyright.
  */
 #include "barracks.h"
@@ -20,12 +20,13 @@
 using std::to_string;
 
 Equip::Equip(int slot, Object *parent)
-    : Object(parent), m_slot(slot), m_equip(WEAPON)
+    : Object(parent), m_slot(slot), m_equip(WEAPON), m_equipment("Katana XM-11"), m_weapon(RIFLE)
 {
     parent->add_observer(this);
 
     load_textures();
     create_buttons();
+    load_equipments();
 }
 
 void
@@ -36,18 +37,18 @@ Equip::load_textures()
     m_textures["rifle_katana"] = env->resources_manager->get_texture(path + "Rifle_Katana.png");
     m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "Bracket.png");
     m_textures["status"] = env->resources_manager->get_texture(path + "status.png");
-    m_textures["agility"] = env->resources_manager->get_texture(path + "icon_agility.png");
-    m_textures["critical"] = env->resources_manager->get_texture(path + "icon_critical.png");
-    m_textures["hitchance"] = env->resources_manager->get_texture(path + "icon_hitchance.png");
-    m_textures["might"] = env->resources_manager->get_texture(path + "icon_might.png");
-    m_textures["mind"] = env->resources_manager->get_texture(path + "icon_mind.png");
-    m_textures["perception"] = env->resources_manager->get_texture(path + "icon_perception.png");
-    m_textures["resilience"] = env->resources_manager->get_texture(path + "icon_resilience.png");
-    m_textures["speed"] = env->resources_manager->get_texture(path + "icon_speed.png");
-    m_textures["willpower"] = env->resources_manager->get_texture(path + "icon_willpower.png");
     m_textures["bracket_m"] = env->resources_manager->get_texture(path + "bracket_m.png");
     m_textures["bracket_p"] = env->resources_manager->get_texture(path + "bracket_p.png");
     m_textures["bracket_t"] = env->resources_manager->get_texture(path + "bracket_t.png");
+    m_attributes["agility"] = env->resources_manager->get_texture(path + "icon_agility.png");
+    m_attributes["critical"] = env->resources_manager->get_texture(path + "icon_critical.png");
+    m_attributes["hit_chance"] = env->resources_manager->get_texture(path + "icon_hitchance.png");
+    m_attributes["might"] = env->resources_manager->get_texture(path + "icon_might.png");
+    m_attributes["mind"] = env->resources_manager->get_texture(path + "icon_mind.png");
+    m_attributes["perception"] = env->resources_manager->get_texture(path + "icon_perception.png");
+    m_attributes["resilience"] = env->resources_manager->get_texture(path + "icon_resilience.png");
+    m_attributes["speed"] = env->resources_manager->get_texture(path + "icon_speed.png");
+    m_attributes["willpower"] = env->resources_manager->get_texture(path + "icon_willpower.png");
 }
 
 void
@@ -179,6 +180,38 @@ Equip::create_buttons()
 }
 
 void
+Equip::load_equipments()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(16);
+
+    string path = "res/datas/slot" + to_string(m_slot) + "/";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path + "weapons.sav");
+    auto sections = settings->sections();
+    sections.size();
+
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+    int x = 680 * scale_w, y = 435;
+
+    for (auto weapon : sections)
+    {
+        Button *button = new Button(this, weapon.first, x, y * scale_h);
+        button->set_sprites(1);
+        button->set_text(weapon.first, color);
+        button->set_dimensions(button->text()->w() * scale_w, button->text()->h() * scale_h);
+        m_equipments[WEAPON][button->id()] = button;
+        button->add_observer(this);
+        add_child(button);
+
+        y += 35;
+    }
+}
+
+void
 Equip::draw_self()
 {
     Environment *env = Environment::get_instance();
@@ -193,6 +226,22 @@ Equip::draw_self()
 
     env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
     env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
+
+    string text = "Avaible ";
+    switch (m_equip)
+    {
+        case RIFLE:
+            text += "Rifles";
+            break;
+        case ARMOR:
+            text += "Armor";
+            break;
+        case SHIELD:
+            text += "Shields";
+            break;
+    }
+
+    env->canvas->draw(text, 733 * scale_w, 402 * scale_h, Color(84, 107, 95));
 
     for (auto b : m_weapons)
     {
@@ -226,14 +275,6 @@ Equip::draw_equipments()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    env->canvas->draw(m_textures["bracket_m"].get(), 313 * scale_w, 477 * scale_h);
-    env->canvas->draw(m_textures["bracket_p"].get(), 358 * scale_w, 477 * scale_h);
-    env->canvas->draw(m_textures["bracket_t"].get(), 402 * scale_w, 477 * scale_h);
-
-    env->canvas->draw("0", (315+15) * scale_w, 477 * scale_h, Color(183, 157, 39));
-    env->canvas->draw("0", (358+15) * scale_w, 477 * scale_h, Color(143, 61, 130));
-    env->canvas->draw("6", (402+15) * scale_w, 477 * scale_h, Color(60, 145, 145));
-
     if (m_equip == WEAPON)
     {
         Color color(84, 107, 95);
@@ -263,18 +304,62 @@ Equip::draw_equipments()
         env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_w,
             (512+17*3) * scale_h, color);
 
+        env->canvas->draw(m_textures["bracket_m"].get(), 313 * scale_w, 483 * scale_h);
+        env->canvas->draw(m_textures["bracket_p"].get(), 358 * scale_w, 483 * scale_h);
+        env->canvas->draw(m_textures["bracket_t"].get(), 402 * scale_w, 483 * scale_h);
+        env->canvas->draw(get_equipment("m"), (315+15) * scale_w, 483 * scale_h,
+            Color(183, 157, 39));
+        env->canvas->draw(get_equipment("p"), (358+15) * scale_w, 483 * scale_h,
+            Color(143, 61, 130));
+        env->canvas->draw(get_equipment("t"), (402+15) * scale_w, 483 * scale_h,
+            Color(60, 145, 145));
+        env->canvas->draw("->", m_equipments[m_equip][m_equipment]->x()-20 * scale_w,
+            m_equipments[m_equip][m_equipment]->y() * scale_h, color);
+
         font->set_size(24);
-        env->canvas->draw("Katana XM-11", 145 * scale_w, 477 * scale_h, color);
+        env->canvas->draw(m_equipment, 145 * scale_w, 477 * scale_h, color);
         env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
 
-        font->set_size(16);
-        env->canvas->draw("+10", 150 * scale_w, 615 * scale_h, color);
-        env->canvas->draw("+10", 200 * scale_w, 615 * scale_h, color);
-        env->canvas->draw("%50", 250 * scale_w, 615 * scale_h, color);
-        env->canvas->draw(m_textures["might"].get(), 150 * scale_w, 640 * scale_h);
-        env->canvas->draw(m_textures["agility"].get(), 200 * scale_w, 640 * scale_h);
-        env->canvas->draw(m_textures["hitchance"].get(), 250 * scale_w, 640 * scale_h);
+        font->set_size(14);
+
+        int x = 150, y = 640;
+        for (auto icon : m_attributes)
+        {
+            string value = get_equipment(icon.first);
+            if (value.substr(1) == "0")
+            {
+                continue;
+            }
+
+            env->canvas->draw(icon.second.get(), x * scale_w, y * scale_h);
+            env->canvas->draw(value, x * scale_w, (y-25) * scale_h, color);
+            x += 50;
+        }
     }
+}
+
+string
+Equip::get_equipment(string attr)
+{
+    string file;
+    switch (m_equip)
+    {
+        case WEAPON:
+            file = "/weapons.sav";
+            break;
+        case ARMOR:
+            file = "/armor.sav";
+            break;
+        case SHIELD:
+            file = "/shields.sav";
+            break;
+    }
+
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + file);
+    string value = settings->read<string>(m_equipment, attr, "+0");
+    return value;
 }
 
 bool
@@ -314,8 +399,39 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
-    change_buttons();
-    button->change_state(Button::ACTIVE);
+    bool ok = 1;
+    for (auto b : m_equipments[WEAPON])
+    {
+        if (button->id() == b.first)
+        {
+            m_equipment = b.first;
+            ok = 0;
+        }
+    }
+
+    for (auto b : m_equipments[ARMOR])
+    {
+        if (button->id() == b.first)
+        {
+            m_equipment = b.first;
+            ok = 0;
+        }
+    }
+
+    for (auto b : m_equipments[SHIELD])
+    {
+        if (button->id() == b.first)
+        {
+            m_equipment = b.first;
+            ok = 0;
+        }
+    }
+
+    if (ok)
+    {
+        change_buttons();
+        button->change_state(Button::ACTIVE);
+    }
 
     return true;
 }

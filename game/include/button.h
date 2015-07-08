@@ -8,7 +8,6 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <core/color.h>
 #include <core/environment.h>
 #include <core/listener.h>
 #include <core/object.h>
@@ -19,6 +18,7 @@
 using std::shared_ptr;
 using std::string;
 
+class Color;
 class MouseButtonEvent;
 class MouseMotionEvent;
 
@@ -28,9 +28,9 @@ public:
     typedef enum { IDLE, ON_HOVER, ACTIVE, INACTIVE } State;
     
     Button(Object *parent = nullptr, ObjectID id = "", const string& texture = "",
-        double x = 0, double y = 0, double w = 100, double h = 100);
-    Button(Object *parent, ObjectID id,
-        double x, double y, double w, double h, Color color = Color::TRANSPARENT);
+        double x = 0, double y = 0, double w = 1, double h = 1);
+    Button(Object *parent, ObjectID id = "",
+        double x = 0, double y = 0, double w = 1, double h = 1, Color color = Color::TRANSPARENT);
 
     ~Button();
 

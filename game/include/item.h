@@ -14,9 +14,9 @@
 using std::map;
 
 class Button;
-class Texture;
 class Colony;
 class Font;
+class Texture;
 
 class Item : public Object
 {
