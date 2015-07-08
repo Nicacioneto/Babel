@@ -313,8 +313,9 @@ Equip::draw_equipments()
             Color(143, 61, 130));
         env->canvas->draw(get_equipment("t"), (402+15) * scale_w, 483 * scale_h,
             Color(60, 145, 145));
-        env->canvas->draw("->", m_equipments[m_equip][m_equipment]->x()-20 * scale_w,
-            m_equipments[m_equip][m_equipment]->y() * scale_h, color);
+
+        auto button = m_equipments[m_equip][m_equipment];
+        env->canvas->draw("->", button->x() - 20, button->y(), color);
 
         font->set_size(24);
         env->canvas->draw(m_equipment, 145 * scale_w, 477 * scale_h, color);
