@@ -25,8 +25,6 @@ public:
         double x = 0, double y = 0, double w = 0, double h = 0, Type type = HERO);
     ~Character();
 
-    void load_texts();
-    void draw_attributes();
     int receive_damage(Character *character);
 
     Type type() const;
@@ -127,6 +125,9 @@ private:
 
     void init();
     void draw_self();
+    void draw_attributes();
+    void load_texts();
+    void set_attributes_positions();
     bool on_event(const MouseButtonEvent& event);
 
     template<typename T>
