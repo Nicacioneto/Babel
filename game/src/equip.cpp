@@ -11,6 +11,8 @@
 #include <algorithm>
 #include <core/font.h>
 #include <core/keyboardevent.h>
+#include <core/line.h>
+#include <core/point.h>
 #include <core/rect.h>
 #include <core/settings.h>
 
@@ -19,10 +21,11 @@
 
 using std::to_string;
 
-Equip::Equip(int slot, Object *parent)
-    : Object(parent), m_slot(slot), m_equip(WEAPON), m_equipment("Katana XM-11"), m_weapon(RIFLE)
+Equip::Equip(int slot, Object *parent, Character *character)
+    : Object(parent), m_slot(slot), m_equip(WEAPON), m_equipment("Exalibur GLX"), m_weapon(RIFLE)
 {
     parent->add_observer(this);
+    m_character = character;
 
     load_textures();
     create_buttons();
@@ -33,7 +36,7 @@ void
 Equip::set_character(Character *character)
 {
     m_character = character;
-    printf("set: %s\n", m_character->id().c_str());
+    // printf("set: %s\n", m_character->id().c_str());
 }
 
 void
@@ -65,6 +68,18 @@ Equip::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
     string path = "res/images/colony/barracks/equip/";
+
+    m_status = new Button(this, "status", path + "status.png", 145 * scale_w, 432 * scale_h,
+        298 * scale_w, 30 * scale_h);
+    m_status->set_sprites(4);
+    if (atoi(get_equipment("m").c_str()) > m_character->military() or
+        atoi(get_equipment("p").c_str()) > m_character->psionic() or
+        atoi(get_equipment("t").c_str()) > m_character->tech())
+    {
+        m_status->change_state(Button::INACTIVE);
+    }
+    m_status->add_observer(this);
+    add_child(m_status);
 
     int y = 334 * scale_h;
     int w = 35 * scale_w;
@@ -281,10 +296,10 @@ Equip::draw_equipments()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+    Color color(84, 107, 95);
 
     if (m_equip == WEAPON)
     {
-        Color color(84, 107, 95);
 
         // shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         //     to_string(m_slot) + "/equipments.sav");
@@ -299,17 +314,11 @@ Equip::draw_equipments()
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_w, (384+17) * scale_h, color);
 
-printf("%s\n", m_character->id().c_str());
-        int m = atoi(get_equipment("m").c_str());
-        int p = atoi(get_equipment("p").c_str());
-        int t = atoi(get_equipment("t").c_str());
-        int yi = m <= m_character->military() and
-            p <= m_character->psionic() and
-            t <= m_character->tech();
+// printf("%s\n", m_character->id().c_str());
 
-        Rect clip = Rect(0, yi * 30, 298, 30);
-        env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
-            298 * scale_w, 30 * scale_h);
+        // Rect clip = Rect(0, yi * 30, 298, 30);
+        // env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
+        //     298 * scale_w, 30 * scale_h);
 
         color = Color(170, 215, 190);
         env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_w, 512 * scale_h, color);
@@ -328,9 +337,6 @@ printf("%s\n", m_character->id().c_str());
             Color(143, 61, 130));
         env->canvas->draw(get_equipment("t"), (402+15) * scale_w, 483 * scale_h,
             Color(60, 145, 145));
-
-        auto button = m_equipments[m_equip][m_equipment];
-        env->canvas->draw("->", button->x() - 20, button->y(), color);
 
         font->set_size(24);
         env->canvas->draw(m_equipment, 145 * scale_w, 477 * scale_h, color);
@@ -351,6 +357,20 @@ printf("%s\n", m_character->id().c_str());
             env->canvas->draw(value, x * scale_w, (y-25) * scale_h, color);
             x += 50;
         }
+    }
+
+    auto button = m_equipments[m_equip][m_equipment];
+    Point a(button->x(), button->y() + 20);
+    Point b(button->x() + button->w(), button->y() + 20);
+    env->canvas->draw(Line(a, b), color);
+
+    font->set_size(16);
+    if (atoi(get_equipment("m").c_str()) <= m_character->military() and
+        atoi(get_equipment("p").c_str()) <= m_character->psionic() and
+        atoi(get_equipment("t").c_str()) <= m_character->tech())
+    {
+        env->canvas->draw(get_equipment("matter"), 310 * scale_w, 436 * scale_h, color);
+        env->canvas->draw(get_equipment("energy"), 380 * scale_w, 436 * scale_h, color);
     }
 }
 
@@ -422,6 +442,17 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             m_equipment = b.first;
             ok = 0;
+
+            if (atoi(get_equipment("m").c_str()) > m_character->military() or
+                atoi(get_equipment("p").c_str()) > m_character->psionic() or
+                atoi(get_equipment("t").c_str()) > m_character->tech())
+            {
+                m_status->change_state(Button::INACTIVE);
+            }
+            else
+            {
+                m_status->change_state(Button::IDLE);
+            }
         }
     }
 

@@ -31,7 +31,7 @@ Barracks::Barracks(int slot, const string& next)
     load_characters();
     current_char()->set_visible(true);
 
-    Equip *m_equip = new Equip(m_slot, this);
+    Equip *m_equip = new Equip(m_slot, this, current_char());
     m_equip->set_visible(false);
     m_equip->add_observer(this);
     m_equip->set_character(current_char());

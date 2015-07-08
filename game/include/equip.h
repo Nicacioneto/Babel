@@ -18,7 +18,7 @@ using std::map;
 class Equip : public Object
 {
 public:
-    Equip(int slot, Object *parent = nullptr);
+    Equip(int slot, Object *parent = nullptr, Character *character = nullptr);
     void set_character(Character *character);
 
 private:
@@ -33,8 +33,8 @@ private:
     ObjectID m_equipment;
     Weapon m_weapon;
     Character *m_character;
+    Button *m_status;
 
-    map<ObjectID, Button *> m_buttons;
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;
     map<ObjectID, Button *> m_shield;
