@@ -105,7 +105,17 @@ Team::draw_attributes(int x, int y, int i, int j, string id)
     m_texts[id + "_max_life"]->draw();
 
     box.set_y(y + 86 + 150*i);
-    //TODO mp
+    double w_mp = m_texts[id + "_mp"]->w() + m_texts[id + "_max_mp"]->w();
+    double x_mp = (box.w() - w_mp)/2 + box.x();
+    double y_mp = (box.h() - m_texts[id + "_mp"]->h())/2 + box.y();
+    double x_max_mp = x_mp + m_texts[id + "_mp"]->w();
+    double y_max_mp = y_mp + m_texts[id + "_mp"]->h() -
+        m_texts[id + "_max_mp"]->h();
+
+    m_texts[id + "_mp"]->set_position(x_mp, y_mp);
+    m_texts[id + "_max_mp"]->set_position(x_max_mp, y_max_mp);
+    m_texts[id + "_mp"]->draw();
+    m_texts[id + "_max_mp"]->draw();
 }
 
 bool
@@ -225,10 +235,12 @@ Team::load_texts()
         font->set_size(10);
         m_texts[c.first + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
         m_texts[c.first + "_life"] = new Text(this, life + "/", Color(170, 215, 190));
+        m_texts[c.first + "_mp"] = new Text(this, life + "/", Color(170, 215, 190));
 
         font->set_size(7);
         m_texts[c.first + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
         m_texts[c.first + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
+        m_texts[c.first + "_max_mp"] = new Text(this, max_life, Color(170, 215, 190));
     }
 }
 
