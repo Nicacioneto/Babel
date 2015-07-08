@@ -180,8 +180,8 @@ Team::load_characters()
 
         if (section.first != "Default")
         {
-            Character *character = new Character(m_slot, this, section.first, "Albert_small.png",
-                (x + 249*j) * scale_w, (y + 150*i) * scale_h,
+            Character *character = new Character(m_slot, this, section.first,
+                section.first + "_small.png", (x + 249*j) * scale_w, (y + 150*i) * scale_h,
                 w * scale_w, h * scale_h);
             character->set_active(false);
 

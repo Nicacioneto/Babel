@@ -244,7 +244,7 @@ Combat::load_team()
         {
             break;
         }
-        Character *character = new Character(m_slot, this, h.second, "Albert.png");
+        Character *character = new Character(m_slot, this, h.second, h.second + "_small.png");
         m_characters[character->id()] = character;
     }
 
