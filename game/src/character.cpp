@@ -169,6 +169,10 @@ Character::set_attributes_positions()
     {
         set_attributes_small();
     }
+    else
+    {
+        set_attributes_big();
+    }
 }
 
 void
@@ -178,7 +182,7 @@ Character::set_attributes_small()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    m_texts[m_name]->set_position(x() + 133 * scale_w, y() + 3 * scale_h);
+    m_texts[m_name]->set_position(x() + 131 * scale_w, y() + 3 * scale_h);
 
     Rect box(x() + 172 * scale_w, y() + 32 * scale_h,
         40 * scale_w, 21 * scale_h);
@@ -214,6 +218,16 @@ Character::set_attributes_small()
 
     m_texts[m_name + "_mp"]->set_position(x_mp, y_mp);
     m_texts[m_name + "_max_mp"]->set_position(x_max_mp, y_max_mp);
+}
+
+void
+Character::set_attributes_big()
+{
+    Environment *env = Environment::get_instance();
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    m_texts[m_name]->set_position(x() + 131 * scale_w, y() + 3 * scale_h);
 }
 
 bool

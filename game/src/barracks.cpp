@@ -239,8 +239,6 @@ Barracks::draw_character()
         m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
         m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
         m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
-        env->canvas->draw(m_textures["card_big"].get(), x * scale_w, y * scale_h);
-        env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
 
         font->set_style(Font::BOLD);
         env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
@@ -249,39 +247,6 @@ Barracks::draw_character()
             (y + 69) * scale_h, Color(166, 69, 151));
         env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
             (y + 100) * scale_h, Color(78, 191, 190));
-
-        font->set_size(14);
-        font->set_style(Font::NORMAL);
-
-        // number of digits
-        char buffer_length[100];
-        sprintf(buffer_length, "%d\n", character->shield());
-        string sf = buffer_length;
-
-        env->canvas->draw(to_string(character->shield()),
-            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 162) * scale_h, Color::WHITE);
-
-        sprintf(buffer_length, "%d\n", character->life());
-        sf = buffer_length;
-        env->canvas->draw(to_string(character->life()),
-            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 191) * scale_h, Color::WHITE);
-
-        sprintf(buffer_length, "%d\n", character->mp());
-        sf = buffer_length;
-        env->canvas->draw(to_string(character->mp()),
-            (x + 159 + 7 * (3 - sf.size())) * scale_w, (y + 220) * scale_h, Color::WHITE);
-
-        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 166) * scale_h, Color::WHITE);
-        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 195) * scale_h, Color::WHITE);
-        env->canvas->draw("/", (x + 175) * scale_w, (y-5 + 225) * scale_h, Color::WHITE);
-
-        font->set_size(10);
-        env->canvas->draw(to_string(character->max_shield()), (x + 183) * scale_w,
-            (y + 166) * scale_h, Color::WHITE);
-        env->canvas->draw(to_string(character->max_life()), (x + 183) * scale_w,
-            (y + 195) * scale_h, Color::WHITE);
-        env->canvas->draw(to_string(character->max_mp()), (x + 183) * scale_w,
-            (y + 225) * scale_h, Color::WHITE);
     }
 }
 
