@@ -11,7 +11,7 @@
 #include <memory>
 #include <map>
 
- class Button;
+class Button;
 
 using std::map;
 
@@ -19,6 +19,7 @@ class Equip : public Object
 {
 public:
     Equip(int slot, Object *parent = nullptr);
+    void set_character(Character *character);
 
 private:
     typedef enum { WEAPON, ARMOR, SHIELD } Equipment;
@@ -29,6 +30,7 @@ private:
     Equipment m_equip;
     ObjectID m_equipment;
     Weapon m_weapon;
+    Character *m_character;
 
     map<ObjectID, Button *> m_buttons;
     map<ObjectID, Button *> m_weapons;

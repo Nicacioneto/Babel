@@ -26,15 +26,16 @@ Barracks::Barracks(int slot, const string& next)
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
-    Equip *equip = new Equip(m_slot, this);
-    equip->add_observer(this);
-    add_child(equip);
-    equip->set_visible(false);
-
     create_buttons();
     load_textures();
     load_characters();
     current_char()->set_visible(true);
+
+    Equip *m_equip = new Equip(m_slot, this);
+    m_equip->set_visible(false);
+    m_equip->add_observer(this);
+    m_equip->set_character(current_char());
+    add_child(m_equip);
 }
 
 Barracks::~Barracks()
@@ -439,12 +440,17 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "left_arrow")
     {
-        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) :
-            set_current_char(m_character - 1);
+        if (--m_character < 0)
+        {
+            m_character = m_characters.size() - 1;
+        }
+
+        m_equip->set_character(current_char());
     }
     else if (button->id() == "right_arrow")
     {
-        set_current_char((m_character + 1) % m_characters.size());
+        m_character = (m_character + 1) % m_characters.size();
+        m_equip->set_character(current_char());
     }
     else if (button->id() == "levelup_m")
     {
@@ -653,18 +659,6 @@ Barracks::current_char() const
 }
 
 void
-Barracks::set_current_char(int char_)
-{
-    m_character = char_;
-
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/colony.sav");
-    settings->write<int>("Barracks", "char", m_character);
-    settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
-}
-
-void
 Barracks::update_char_attributes(Character *c, string class_)
 {
     Environment *env = Environment::get_instance();
@@ -702,13 +696,18 @@ Barracks::on_event(const KeyboardEvent& event)
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::LEFT)
     {
-        m_character - 1 < 0 ? set_current_char(m_characters.size() - 1) :
-            set_current_char(m_character - 1);
+        if (--m_character < 0)
+        {
+            m_character = m_characters.size() - 1;
+        }
+
+        m_equip->set_character(current_char());
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)
     {
-        set_current_char((m_character + 1) % m_characters.size());
+        m_character = (m_character + 1) % m_characters.size();
+        m_equip->set_character(current_char());
     }
 
     current_char()->set_visible(true);

@@ -16,6 +16,7 @@
 
 using std::map;
 
+class Equip;
 class Texture;
 class Character;
 class KeyboardEvent;
@@ -31,6 +32,7 @@ private:
 
     int m_slot, m_character;
     Screen m_screen;
+    Equip *m_equip;
 
     map<ObjectID, Button*> m_buttons;
     map<ObjectID, Button*> m_armor;
@@ -51,7 +53,6 @@ private:
     void hide_buttons();
     void change_buttons();
     Character * current_char() const;
-    void set_current_char(int char_);
     void update_char_attributes(Character *c, string class_);
     bool on_event(const KeyboardEvent& event);
 };

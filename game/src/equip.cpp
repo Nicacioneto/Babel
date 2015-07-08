@@ -30,6 +30,13 @@ Equip::Equip(int slot, Object *parent)
 }
 
 void
+Equip::set_character(Character *character)
+{
+    m_character = character;
+    printf("set: %s\n", m_character->id().c_str());
+}
+
+void
 Equip::load_textures()
 {
     Environment *env = Environment::get_instance();
@@ -292,7 +299,15 @@ Equip::draw_equipments()
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_w, (384+17) * scale_h, color);
 
-        Rect clip = Rect(0, 0, 298, 30);
+printf("%s\n", m_character->id().c_str());
+        int m = atoi(get_equipment("m").c_str());
+        int p = atoi(get_equipment("p").c_str());
+        int t = atoi(get_equipment("t").c_str());
+        int yi = m <= m_character->military() and
+            p <= m_character->psionic() and
+            t <= m_character->tech();
+
+        Rect clip = Rect(0, yi * 30, 298, 30);
         env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
             298 * scale_w, 30 * scale_h);
 
