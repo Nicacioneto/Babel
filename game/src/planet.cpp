@@ -28,7 +28,7 @@ Planet::Planet(int slot, const string& next)
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/planet.sav");
 
-    Colony *colony = new Colony(slot, this, "hospital");
+    Colony *colony = new Colony(slot, this, "planet");
     colony->add_observer(this);
     add_child(colony);
 
@@ -69,35 +69,36 @@ Planet::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button = new Button(this, "tundra", 0, 0, 300 * scale_w, 290 * scale_h);
+    Button *button = new Button(this, "tundra", path + "spot.png", 400 * scale_w, 380 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "jungle", 390 * scale_w, 0,
-        360 * scale_w, 235 * scale_h);
+    button = new Button(this, "jungle", path + "spot.png", 400 * scale_w, 490 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "sea", 755 * scale_w, 0,
-        265 * scale_w, 235 * scale_h);
+    button = new Button(this, "sea", path + "spot.png", 470 * scale_w, 585 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "dunes", 630 * scale_w, 270 * scale_h,
-        394 * scale_w, 185 * scale_h);
+    button = new Button(this, "dunes", path + "spot.png", 490 * scale_w, 460 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "taiga", 0 * scale_w, 410 * scale_h,
-        310 * scale_w, 358 * scale_h);
+    button = new Button(this, "taiga", path + "spot.png", 505 * scale_w, 312 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "lake", 300 * scale_w, 500 * scale_h,
-        300 * scale_w, 185 * scale_h);
+    button = new Button(this, "lake", path + "spot.png", 540 * scale_w, 338 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "swamp", 600 * scale_w, 485 * scale_h,
-        424 * scale_w, 283 * scale_h);
+    button = new Button(this, "swamp", path + "spot.png", 715 * scale_w, 377 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "colony", 405 * scale_w, 410 * scale_h,
-        110 * scale_w, 80 * scale_h);
+    button = new Button(this, "cavern", path + "spot.png", 740 * scale_w, 270 * scale_h,
+        25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
     int x = 700 * scale_w;
@@ -146,6 +147,7 @@ Planet::draw_self()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
+    env->canvas->draw(m_textures["planet"].get(), 28 * scale_w, 175 * scale_h);
     env->canvas->draw(m_textures["bracket"].get(), 28 * scale_w, 175 * scale_h);
 
     Color color(170, 215, 190);
@@ -201,12 +203,7 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         return true;
     }
 
-    if (button->id() == "colony")
-    {
-        set_next("base");
-        finish();
-    }
-    else if (button->id() == "tundra")
+    if (button->id() == "tundra")
     {
         m_place = "Tundra";
         enable_popup(true);
@@ -241,13 +238,17 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         m_place = "Swamp";
         enable_popup(true);
     }
+    else if (button->id() == "cavern")
+    {
+        m_place = "Cavern";
+        enable_popup(true);
+    }
     else if (button->id() == "x")
     {
         enable_popup(false);
     }
     else if (button->id() == "send_party")
     {
-        // set_next("expedition");
         start_mission();
         enable_popup(false);
     }

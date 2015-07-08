@@ -46,6 +46,7 @@ void set_reward(Mission *mission)
         settings->write<int>(name, "research_matter", 0);
         settings->write<string>(name, "time", "00:00");
     }
+
     settings->save("res/datas/slot" + to_string(m_slot) + "/" + file + ".sav");
 }
 
