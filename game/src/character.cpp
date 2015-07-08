@@ -165,27 +165,23 @@ Character::load_texts()
 void
 Character::set_attributes_positions()
 {
-    if (m_style == SMALL)
-    {
-        set_attributes_small();
-    }
-    else
-    {
-        set_attributes_big();
-    }
-}
-
-void
-Character::set_attributes_small()
-{
     Environment *env = Environment::get_instance();
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
     m_texts[m_name]->set_position(x() + 131 * scale_w, y() + 3 * scale_h);
 
-    Rect box(x() + 172 * scale_w, y() + 32 * scale_h,
-        40 * scale_w, 21 * scale_h);
+    Rect box;
+    if (m_style == SMALL)
+    {
+        box.set_position(x() + 172 * scale_w, y() + 32 * scale_h);
+        box.set_dimensions(40 * scale_w, 21 * scale_h);
+    }
+    else
+    {
+        box.set_position(x() + 144 * scale_w, y() + 160 * scale_h);
+        box.set_dimensions(65 * scale_w, 20 * scale_h);
+    }
 
     double w_shield = m_texts[m_name + "_shield"]->w() + m_texts[m_name + "_max_shield"]->w();
     double x_shield = (box.w() - w_shield)/2 + box.x();
@@ -197,7 +193,7 @@ Character::set_attributes_small()
     m_texts[m_name + "_shield"]->set_position(x_shield, y_shield);
     m_texts[m_name + "_max_shield"]->set_position(x_max_shield, y_max_shield);
 
-    box.set_y(y() + 59);
+    (m_style == SMALL ? box.set_y(y() + 59) : box.set_y(y() + 190));
     double w_life = m_texts[m_name + "_life"]->w() + m_texts[m_name + "_max_life"]->w();
     double x_life = (box.w() - w_life)/2 + box.x();
     double y_life = (box.h() - m_texts[m_name + "_life"]->h())/2 + box.y();
@@ -208,7 +204,7 @@ Character::set_attributes_small()
     m_texts[m_name + "_life"]->set_position(x_life, y_life);
     m_texts[m_name + "_max_life"]->set_position(x_max_life, y_max_life);
 
-    box.set_y(y() + 86);
+    (m_style == SMALL ? box.set_y(y() + 86) : box.set_y(y() + 220));
     double w_mp = m_texts[m_name + "_mp"]->w() + m_texts[m_name + "_max_mp"]->w();
     double x_mp = (box.w() - w_mp)/2 + box.x();
     double y_mp = (box.h() - m_texts[m_name + "_mp"]->h())/2 + box.y();
@@ -218,16 +214,6 @@ Character::set_attributes_small()
 
     m_texts[m_name + "_mp"]->set_position(x_mp, y_mp);
     m_texts[m_name + "_max_mp"]->set_position(x_max_mp, y_max_mp);
-}
-
-void
-Character::set_attributes_big()
-{
-    Environment *env = Environment::get_instance();
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    m_texts[m_name]->set_position(x() + 131 * scale_w, y() + 3 * scale_h);
 }
 
 bool

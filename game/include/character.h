@@ -131,8 +131,6 @@ private:
     void draw_attributes();
     void load_texts();
     void set_attributes_positions();
-    void set_attributes_small();
-    void set_attributes_big();
     bool on_event(const MouseButtonEvent& event);
 
     template<typename T>
