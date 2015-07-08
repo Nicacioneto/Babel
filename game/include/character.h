@@ -20,6 +20,7 @@ class Character : public Object, public Listener
 {
 public:
     typedef enum { HERO, ENEMY } Type;
+    typedef enum { BIG, SMALL } Style;
 
     Character(int slot, Object *parent = nullptr, ObjectID id = "", const string& texture = "",
         double x = 0, double y = 0, double w = 0, double h = 0, Type type = HERO);
@@ -88,11 +89,13 @@ public:
 private:
     int m_slot;
     shared_ptr<Texture> m_texture;
-    shared_ptr<Texture> m_bracket;
+    shared_ptr<Texture> m_bracket_small;
+    shared_ptr<Texture> m_bracket_big;
     shared_ptr<Settings> m_settings;
 
     string m_name;
     Type m_type;
+    Style m_style;
     int m_attacks_quantity;
     map<ObjectID, Text*> m_texts;
 
@@ -128,6 +131,7 @@ private:
     void draw_attributes();
     void load_texts();
     void set_attributes_positions();
+    void set_attributes_small();
     bool on_event(const MouseButtonEvent& event);
 
     template<typename T>

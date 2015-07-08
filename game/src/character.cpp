@@ -22,15 +22,17 @@ using std::to_string;
 
 Character::Character(int slot, Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h, Type type)
-    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), m_bracket(nullptr),
-        m_settings(nullptr), m_name(id), m_type(type), m_attacks_quantity(0)
+    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), 
+        m_bracket_small(nullptr), m_bracket_big(nullptr), m_settings(nullptr),
+        m_name(id), m_type(type), m_style(SMALL), m_attacks_quantity(0)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
 
     string path = "res/images/characters/";
     m_texture = env->resources_manager->get_texture(path + texture);
-    m_bracket = env->resources_manager->get_texture("res/images/characters/card_small.png");
+    m_bracket_small = env->resources_manager->get_texture("res/images/characters/card_small.png");
+    m_bracket_big = env->resources_manager->get_texture("res/images/characters/card_big.png");
 
     if (not w and not h)
     {
@@ -44,6 +46,11 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
 
     m_settings = env->resources_manager->get_settings("res/datas/slot" + to_string(m_slot)
         + "/characters.sav");
+
+    if (texture.find("small") == string::npos)
+    {
+        m_style = BIG;
+    }
     init();
 
     if (m_type == HERO)
@@ -97,7 +104,14 @@ Character::draw_self()
 
     if (m_type == HERO)
     {
-        env->canvas->draw(m_bracket.get(), x(), y());
+        if (m_style == SMALL)
+        {
+            env->canvas->draw(m_bracket_small.get(), x(), y());
+        }
+        else
+        {
+            env->canvas->draw(m_bracket_big.get(), x(), y());
+        }
         
         draw_attributes();
     }
@@ -134,15 +148,15 @@ Character::load_texts()
     string mp = to_string(m_mp);
     string max_mp = to_string(m_max_mp);
 
-    font->set_size(16);
+    font->set_size(m_style == SMALL ? 16 : 18);
     m_texts[m_name] = new Text(this, m_name, Color(170, 215, 190));
 
-    font->set_size(10);
+    font->set_size(m_style == SMALL ? 10 : 14);
     m_texts[m_name + "_shield"] = new Text(this, shield + "/", Color(170, 215, 190));
     m_texts[m_name + "_life"] = new Text(this, life + "/", Color(170, 215, 190));
     m_texts[m_name + "_mp"] = new Text(this, mp + "/", Color(170, 215, 190));
 
-    font->set_size(7);
+    font->set_size(m_style == SMALL ? 7 : 10);
     m_texts[m_name + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
     m_texts[m_name + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
     m_texts[m_name + "_max_mp"] = new Text(this, max_mp, Color(170, 215, 190));
@@ -150,6 +164,15 @@ Character::load_texts()
 
 void
 Character::set_attributes_positions()
+{
+    if (m_style == SMALL)
+    {
+        set_attributes_small();
+    }
+}
+
+void
+Character::set_attributes_small()
 {
     Environment *env = Environment::get_instance();
     double scale_w = env->canvas->w() / W;
