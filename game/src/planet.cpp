@@ -281,7 +281,7 @@ Planet::start_mission()
     string time = m_settings->read<string>(m_place, "time", "00:00");
     unsigned long min = atol(time.substr(0, 2).c_str()) * 60;
     unsigned long seg = atol(time.substr(3).c_str());
-    start_time(m_place, min + seg, "workshop", 50, 50);
+    start_time(m_place, min + seg, "workshop", 50, 50, "colony");
 }
 
 bool

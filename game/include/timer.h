@@ -22,6 +22,7 @@ extern void create_threads(int slot);
 extern void kill_threads();
 
 extern void start_time(const string& name = "", unsigned long start = 0,
-    const string& icon = "", int energy = 0, int matter = 0) throw (Exception);
+    const string& icon = "", int energy = 0, int matter = 0,
+    const string& file = "") throw (Exception);
 
 #endif

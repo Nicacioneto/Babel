@@ -8,8 +8,9 @@
 #include "mission.h"
 
 Mission::Mission(const string& name, unsigned long remainder, const string& icon,
-    int energy, int matter)
-    : m_name(name), m_remainder(remainder), m_icon(icon), m_energy(energy), m_matter(matter)
+    int energy, int matter, const string& file)
+    : m_name(name), m_remainder(remainder), m_icon(icon), m_energy(energy),
+        m_matter(matter), m_file(file)
 {
 }
 
@@ -47,4 +48,10 @@ int
 Mission::matter()
 {
     return m_matter;
+}
+
+string
+Mission::file()
+{
+    return m_file;
 }

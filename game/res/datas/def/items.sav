@@ -5,7 +5,9 @@ matter=70
 energy=100
 qnt_earned=0
 qnt_max=20
-time=15:00
+time=00:10
+research_matter=100
+research_energy=50
 
 [Hyper-Metabolism]
 attribute=life
@@ -15,6 +17,8 @@ energy=100
 qnt_earned=0
 qnt_max=20
 time=15:00
+research_matter=100
+research_energy=50
 
 [Super-Metabolism]
 attribute=life
@@ -24,6 +28,8 @@ energy=100
 qnt_earned=0
 qnt_max=15
 time=15:00
+research_matter=100
+research_energy=50
 
 [Metabolism]
 attribute=might_attack
@@ -33,6 +39,8 @@ energy=100
 qnt_earned=0
 qnt_max=10
 time=15:00
+research_matter=100
+research_energy=50
 
 [Energy Potion]
 attribute=life
@@ -42,6 +50,8 @@ energy=100
 qnt_earned=0
 qnt_max=20
 time=15:00
+research_matter=100
+research_energy=50
 
 [Health Potion II]
 attribute=life
@@ -51,3 +61,60 @@ energy=100
 qnt_earned=0
 qnt_max=20
 time=15:00
+research_matter=100
+research_energy=50
+
+[Health Potion III]
+attribute=life
+value=50
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
+research_matter=100
+research_energy=50
+
+[Health Potion IV]
+attribute=life
+value=50
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
+research_matter=100
+research_energy=50
+
+[Health Potion V]
+attribute=life
+value=50
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
+research_matter=100
+research_energy=50
+
+[Health Potion VI]
+attribute=life
+value=50
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
+research_matter=100
+research_energy=50
+
+[Health Potion VII]
+attribute=life
+value=50
+matter=90
+energy=100
+qnt_earned=0
+qnt_max=20
+time=15:00
+research_matter=100
+research_energy=50

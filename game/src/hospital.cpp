@@ -51,7 +51,7 @@ Hospital::add_children()
     add_child(item);
     item->set_visible(false);
 
-    Research *research = new Research(m_slot, this);
+    Research *research = new Research(m_slot, m_colony, this);
     research->add_observer(this);
     add_child(research);
     research->set_visible(false);
@@ -92,6 +92,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
     if (id == "max_pages")
     {
         m_max_pages = atoi(p.c_str());
+        change_buttons();
         set_pages_text();
         return true;
     }

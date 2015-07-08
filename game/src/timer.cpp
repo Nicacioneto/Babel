@@ -21,19 +21,32 @@ int m_slot = 0;
 void set_reward(Mission *mission)
 {
     Environment *env = Environment::get_instance();
+
+    string file = mission->file();
     
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/colony.sav");
-    int energy = settings->read<int>("Colony", "energy", 0);
-    int matter = settings->read<int>("Colony", "matter", 0);
+        to_string(m_slot) + "/" + file + ".sav");
 
-    energy += mission->energy();
-    matter += mission->matter();
+    if (file == "colony")
+    {
+        int energy = settings->read<int>("Colony", "energy", 0);
+        int matter = settings->read<int>("Colony", "matter", 0);
 
-    settings->write<int>("Colony", "energy", energy);
-    settings->write<int>("Colony", "matter", matter);
-    
-    settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+        energy += mission->energy();
+        matter += mission->matter();
+
+        settings->write<int>("Colony", "energy", energy);
+        settings->write<int>("Colony", "matter", matter);
+    }
+    else if (file == "items")
+    {
+        string name = mission->name();
+
+        settings->write<int>(name, "research_energy", 0);
+        settings->write<int>(name, "research_matter", 0);
+        settings->write<string>(name, "time", "00:00");
+    }
+    settings->save("res/datas/slot" + to_string(m_slot) + "/" + file + ".sav");
 }
 
 int monitoring_mission(void *ptr)
@@ -58,9 +71,9 @@ int monitoring_mission(void *ptr)
 }
 
 void start_time(const string& name, unsigned long start, const string& icon,
-    int energy, int matter) throw (Exception)
+    int energy, int matter, const string& file) throw (Exception)
 {
-    Mission *mission = new Mission(name, start, icon, energy, matter);
+    Mission *mission = new Mission(name, start, icon, energy, matter, file);
     m_missions.push_back(mission);
     
     SDL_Thread *thread = SDL_CreateThread(monitoring_mission, "monitoring mission",
@@ -89,7 +102,8 @@ void create_threads(int slot)
         string icon = section.second["icon"];
         int energy = atoi(section.second["energy"].c_str());
         int matter = atoi(section.second["matter"].c_str());
-        start_time(name, remainder, icon, energy, matter);
+        string file = section.second["file"];
+        start_time(name, remainder, icon, energy, matter, file);
     }
 }
 
@@ -109,6 +123,7 @@ void kill_threads()
         settings->write<string>(name, "icon", mission->icon());
         settings->write<int>(name, "energy", mission->energy());
         settings->write<int>(name, "matter", mission->matter());
+        settings->write<string>(name, "file", mission->file());
 
         settings->save("res/datas/slot" + to_string(m_slot) + "/timers.sav");
     }
