@@ -34,6 +34,12 @@ Tower::Tower(int slot, const string& next)
     m_actual_floor = m_settings->read<int>("Tower", "actual_floor", 1);
     m_unlocked_floors = m_settings->read<int>("Tower", "unlocked_floors", 1);
 
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+
+    m_drone.first = settings->read<string>("Drone", "name", "");
+    m_drone.second = settings->read<string>("Drone", "hability", "");
+
     load_texture();
     create_buttons();
 }
@@ -191,6 +197,24 @@ Tower::draw_self()
     env->canvas->draw("Hornet Drone", 360 * scale_w, 666 * scale_h, color);
     env->canvas->draw("+10 Barrier Strenght", 360 * scale_w, 686 * scale_h, color);
     env->canvas->draw("15:00", 535 * scale_w, 695 * scale_h, color);
+    
+    int x, y;
+    if (m_actual_floor % 2)
+    {
+        x = 200;
+        y = 650 - 54 * (m_actual_floor / 2);
+    }
+    else
+    {
+        x = 37;
+        y = 630 - 54 * ((m_actual_floor - 1) / 2);
+    }
+
+    if (m_drone.first.size())
+    {
+        env->canvas->draw(m_textures["drone2"].get(), x * scale_w, y * scale_h,
+            20 * scale_w, 20 * scale_h);
+    }
 }
 
 bool
@@ -210,11 +234,11 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
-    else if (button->id() == "inspect_drone")
-    {
-        set_next("drone");
-        finish();
-    }
+    // else if (button->id() == "inspect_drone")
+    // {
+    //     set_next("drone");
+    //     finish();
+    // }
     else if (button->id() == "inspect_team")
     {
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +

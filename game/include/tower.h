@@ -28,6 +28,7 @@ public:
 private:
     int m_slot, m_actual_floor, m_unlocked_floors;
     shared_ptr<Settings> m_settings;
+    pair<string, string> m_drone;
 
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
