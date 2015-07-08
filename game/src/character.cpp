@@ -132,6 +132,13 @@ Character::draw_attributes()
 
     m_texts[m_name + "_mp"]->draw();
     m_texts[m_name + "_max_mp"]->draw();
+
+    if (m_style == BIG)
+    {
+        m_texts[m_name + "_military"]->draw();
+        m_texts[m_name + "_psionic"]->draw();
+        m_texts[m_name + "_tech"]->draw();
+    }
 }
 
 void
@@ -160,6 +167,16 @@ Character::load_texts()
     m_texts[m_name + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
     m_texts[m_name + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
     m_texts[m_name + "_max_mp"] = new Text(this, max_mp, Color(170, 215, 190));
+
+    string military = to_string(m_military);
+    string psionic = to_string(m_psionic);
+    string tech = to_string(m_tech);
+
+    font->set_size(18);
+    font->set_style(Font::BOLD);
+    m_texts[m_name + "_military"] = new Text(this, military, Color(208, 179, 43));
+    m_texts[m_name + "_psionic"] = new Text(this, psionic, Color(166, 69, 151));
+    m_texts[m_name + "_tech"] = new Text(this, tech, Color(78, 191, 190));
 }
 
 void
@@ -193,7 +210,7 @@ Character::set_attributes_positions()
     m_texts[m_name + "_shield"]->set_position(x_shield, y_shield);
     m_texts[m_name + "_max_shield"]->set_position(x_max_shield, y_max_shield);
 
-    (m_style == SMALL ? box.set_y(y() + 59) : box.set_y(y() + 190));
+    (m_style == SMALL ? box.set_y(y() + 59 * scale_h) : box.set_y(y() + 190 * scale_h));
     double w_life = m_texts[m_name + "_life"]->w() + m_texts[m_name + "_max_life"]->w();
     double x_life = (box.w() - w_life)/2 + box.x();
     double y_life = (box.h() - m_texts[m_name + "_life"]->h())/2 + box.y();
@@ -204,7 +221,7 @@ Character::set_attributes_positions()
     m_texts[m_name + "_life"]->set_position(x_life, y_life);
     m_texts[m_name + "_max_life"]->set_position(x_max_life, y_max_life);
 
-    (m_style == SMALL ? box.set_y(y() + 86) : box.set_y(y() + 220));
+    (m_style == SMALL ? box.set_y(y() + 86 * scale_h) : box.set_y(y() + 220 * scale_h));
     double w_mp = m_texts[m_name + "_mp"]->w() + m_texts[m_name + "_max_mp"]->w();
     double x_mp = (box.w() - w_mp)/2 + box.x();
     double y_mp = (box.h() - m_texts[m_name + "_mp"]->h())/2 + box.y();
@@ -214,6 +231,29 @@ Character::set_attributes_positions()
 
     m_texts[m_name + "_mp"]->set_position(x_mp, y_mp);
     m_texts[m_name + "_max_mp"]->set_position(x_max_mp, y_max_mp);
+
+    if (m_style == BIG)
+    {
+        box.set_position(x() + 170 * scale_w, y() + 37 * scale_h);
+        box.set_dimensions(40 * scale_w, 22 * scale_h);
+
+        double x_military = (box.w() - m_texts[m_name + "_military"]->w())/2 + box.x();
+        double y_military = (box.h() - m_texts[m_name + "_military"]->h())/2 + box.y();
+
+        m_texts[m_name + "_military"]->set_position(x_military, y_military);
+        
+        box.set_y(y() + 69 * scale_h);
+        double x_psionic = (box.w() - m_texts[m_name + "_psionic"]->w())/2 + box.x();
+        double y_psionic = (box.h() - m_texts[m_name + "_psionic"]->h())/2 + box.y();
+
+        m_texts[m_name + "_psionic"]->set_position(x_psionic, y_psionic);
+
+        box.set_y(y() + 100 * scale_h);
+        double x_tech = (box.w() - m_texts[m_name + "_tech"]->w())/2 + box.x();
+        double y_tech = (box.h() - m_texts[m_name + "_tech"]->h())/2 + box.y();
+
+        m_texts[m_name + "_tech"]->set_position(x_tech, y_tech);
+    }
 }
 
 bool

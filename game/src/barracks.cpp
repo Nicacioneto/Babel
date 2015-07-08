@@ -233,20 +233,10 @@ Barracks::draw_character()
         int data = Colony(m_slot).data();
         env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
 
-        int x = 112;
-        int y = 87;
         font->set_size(18);
         m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
         m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
         m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
-
-        font->set_style(Font::BOLD);
-        env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
-            (y + 37) * scale_h, Color(208, 179, 43));
-        env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
-            (y + 69) * scale_h, Color(166, 69, 151));
-        env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
-            (y + 100) * scale_h, Color(78, 191, 190));
     }
 }
 
