@@ -232,12 +232,6 @@ Central::create_buttons()
 void
 Central::change_buttons()
 {
-    m_buttons["left_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
-    m_buttons["left_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
-
-    m_buttons["right_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
-    m_buttons["right_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
-
     for (auto b : m_buttons)
     {
         if (b.first != "central")
@@ -436,6 +430,12 @@ Central::update_max_pages(int sections)
 {
     m_max_pages = (sections / BIG_LIST) + (sections % BIG_LIST != 0);
     m_max_pages = m_max_pages == 0 ? 1 : m_max_pages;
+    
+    m_buttons["left_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
+    m_buttons["left_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
+
+    m_buttons["right_arrow"]->set_active(m_screen != CHAT and m_max_pages > 1);
+    m_buttons["right_arrow"]->set_visible(m_screen != CHAT and m_max_pages > 1);
     
     set_pages_text();
 }

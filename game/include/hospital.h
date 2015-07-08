@@ -47,6 +47,7 @@ private:
     void change_buttons();
     void chat_screen();
     void set_pages_text();
+    void update_arrows();
 };
 
 #endif

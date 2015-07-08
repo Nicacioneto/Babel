@@ -92,7 +92,7 @@ Hospital::on_message(Object *sender, MessageID id, Parameters p)
     if (id == "max_pages")
     {
         m_max_pages = atoi(p.c_str());
-        change_buttons();
+        update_arrows();
         set_pages_text();
         return true;
     }
@@ -236,11 +236,7 @@ Hospital::create_buttons()
 void
 Hospital::change_buttons()
 {
-    m_buttons["left_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
-    m_buttons["left_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
-
-    m_buttons["right_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
-    m_buttons["right_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
+    update_arrows();
 
     for (auto b : m_buttons)
     {
@@ -291,4 +287,14 @@ Hospital::set_pages_text()
     double x = (env->canvas->w() - m_text->w()) / 2 + (275  * env->canvas->w() / W) / 2;
     double y = env->canvas->h() - 100 * env->canvas->h() / H;
     m_text->set_position(x, y);
+}
+
+void
+Hospital::update_arrows()
+{
+    m_buttons["left_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
+    m_buttons["left_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
+
+    m_buttons["right_arrow"]->set_active(m_screen != "chat" and m_max_pages > 1);
+    m_buttons["right_arrow"]->set_visible(m_screen != "chat" and m_max_pages > 1);
 }
