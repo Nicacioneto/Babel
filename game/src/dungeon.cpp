@@ -31,10 +31,15 @@ Dungeon::Dungeon(int slot, int steps, int probability_combat)
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/dungeon.sav");
 
-    m_x = settings->read<int>("Dungeon", "x", 0);
-    m_y = settings->read<int>("Dungeon", "y", 0);
+    shared_ptr<Settings> s = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/tower.sav");
 
-    int direction = settings->read<int>("Dungeon", "direction", 0);
+    string actual_floor = s->read<string>("Tower", "actual_floor", "1");
+
+    m_x = settings->read<int>(actual_floor, "x", 0);
+    m_y = settings->read<int>(actual_floor, "y", 0);
+
+    int direction = settings->read<int>(actual_floor, "direction", 0);
     m_direction = Direction(direction);
 
     m_screen = new Bitmap(env->video->canvas());
@@ -388,7 +393,12 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    string file = read_file("res/maps/map.txt");
+    Environment *env = Environment::get_instance();
+    string path = "res/datas/slot" + to_string(m_slot) + "/tower.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+    string f = settings->read<string>("Tower", "actual_floor", "1");
+
+    string file = read_file("res/maps/map" + f + ".txt");
 
     std::stringstream ss;
     ss << file;
@@ -483,9 +493,13 @@ Dungeon::calculate_probability_combat()
         string path = "res/datas/slot" + to_string(m_slot) + "/dungeon.sav";
         
         shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-        settings->write<int>("Dungeon", "x", m_x);
-        settings->write<int>("Dungeon", "y", m_y);
-        settings->write<int>("Dungeon", "direction", m_direction.front());
+        path = "res/datas/slot" + to_string(m_slot) + "/tower.sav";
+        shared_ptr<Settings> s = env->resources_manager->get_settings(path);
+        string actual_floor = s->read<string>("Tower", "actual_floor", "1");
+
+        settings->write<int>(actual_floor, "x", m_x);
+        settings->write<int>(actual_floor, "y", m_y);
+        settings->write<int>(actual_floor, "direction", m_direction.front());
 
         settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
         set_next("combat");

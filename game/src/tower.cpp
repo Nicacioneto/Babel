@@ -251,6 +251,10 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id().find("floor") != string::npos)
     {
         m_actual_floor = atoi(button->id().substr(5).c_str());
+        shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+            to_string(m_slot) + "/tower.sav");
+        settings->write<int>("Tower", "actual_floor", m_actual_floor);
+        settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
     }
 
     return true;
