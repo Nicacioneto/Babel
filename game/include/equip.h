@@ -48,6 +48,7 @@ private:
     void draw_equipments();
     string get_equipment(string equipment_id, string attr);
     bool on_message(Object *sender, MessageID id, Parameters p);
+    void deactivate_equipments();
     void change_buttons();
 };
 

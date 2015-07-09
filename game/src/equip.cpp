@@ -76,69 +76,46 @@ Equip::create_buttons()
     int h = 35 * scale_h;
 
     Button *button = new Button(this, "rifle", path + "weapon_rifle.png", 148 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
-    button->change_state(Button::ACTIVE);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "shotgun", path + "weapon_shotgun.png", 201 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "pistol", path + "weapon_pistol.png", 254 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "sniper", path + "weapon_sniper.png", 307 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "melee", path + "weapon_melee.png", 413 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "hand", path + "weapon_hand.png", 518 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "nano", path + "weapon_nano.png", 571 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "ui", path + "weapon_ui.png", 677 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "psiblade", path + "weapon_psiblade.png", 730 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "psiamp", path + "weapon_psiamp.png", 783 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
     button = new Button(this, "psiwhip", path + "weapon_psiwhip.png", 836 * scale_w, y, w, h);
-    button->set_active(false);
-    button->set_visible(false);
     button->set_sprites(3);
     m_weapons[button->id()] = button;
 
@@ -255,7 +232,6 @@ Equip::draw_self()
     env->canvas->draw(to_string(Colony(m_slot).matter()), 550 * scale_w, 437 * scale_h, color);
     env->canvas->draw(to_string(Colony(m_slot).energy()), 615 * scale_w, 437 * scale_h, color);
     env->canvas->draw("Avaible " + m_state + "s", 700 * scale_w, 436 * scale_h, Color(84, 107, 95));
-
 
     for (auto b : m_weapons)
     {
@@ -389,28 +365,30 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
 
     if (barracks)
     {
+        deactivate_equipments();
+
         if (id == "weapon")
         {
             m_class = "weapon";
             m_equipment.clear();
-            m_weapons["rifle"]->change_state(Button::ACTIVE);
         }
         else if (id == "armor")
         {
             m_class = "armor";
             m_equipment.clear();
-            m_armor["light"]->change_state(Button::ACTIVE);
         }
         else if (id == "shield")
         {
             m_class = "shield";
             m_equipment.clear();
-            m_shield["shield"]->change_state(Button::ACTIVE);
         }
         else
         {
             set_visible(id.find("enable") != string::npos);
         }
+
+        m_status->set_active(false);
+        m_status->set_visible(false);
 
         return true;
     }
@@ -422,12 +400,15 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
+    deactivate_equipments();
+
     for (auto b : m_weapons)
     {
         if (button->id() == b.first)
         {
             m_state = button->id();
             m_equipment.clear();
+            break;
         }
     }
 
@@ -437,6 +418,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             m_state = button->id();
             m_equipment.clear();
+            break;
         }
     }
 
@@ -446,6 +428,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             m_state = button->id();
             m_equipment.clear();
+            break;
         }
     }
 
@@ -453,16 +436,16 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     m_status->set_visible(not m_equipment.empty());
 
     bool ok = 1;
-    for (auto b : m_equipments["weapon"])
+    for (auto b : m_equipments[m_class])
     {
         if (button->id() == b.first)
         {
-            m_equipment = b.first;
             ok = 0;
+            m_equipment = b.first;
 
             Environment *env = Environment::get_instance();
             shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/weapon.sav");
+                to_string(m_slot) + "/" + m_class + ".sav");
             int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
 
             if (equiped)
@@ -487,70 +470,6 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         b.second->set_visible(get_equipment(b.first, "type") == m_state);
     }
 
-    for (auto b : m_equipments["armor"])
-    {
-        if (button->id() == b.first)
-        {
-            m_equipment = b.first;
-            ok = 0;
-
-            Environment *env = Environment::get_instance();
-            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/weapon.sav");
-            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
-
-            if (equiped)
-            {
-                m_status->change_state(Button::ACTIVE);
-            }
-            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
-                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
-                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
-            {
-                m_status->change_state(Button::INACTIVE);
-            }
-            else
-            {
-                m_status->change_state(Button::IDLE);
-            }
-        }
-
-        b.second->set_active(get_equipment(b.first, "type") == m_state);
-        b.second->set_visible(get_equipment(b.first, "type") == m_state);
-    }
-
-    for (auto b : m_equipments["shield"])
-    {
-        if (button->id() == b.first)
-        {
-            m_equipment = b.first;
-            ok = 0;
-
-            Environment *env = Environment::get_instance();
-            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/weapon.sav");
-            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
-
-            if (equiped)
-            {
-                m_status->change_state(Button::ACTIVE);
-            }
-            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
-                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
-                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
-            {
-                m_status->change_state(Button::INACTIVE);
-            }
-            else
-            {
-                m_status->change_state(Button::IDLE);
-            }
-        }
-
-        b.second->set_active(get_equipment(b.first, "type") == m_state);
-        b.second->set_visible(get_equipment(b.first, "type") == m_state);
-    }
-
     if (button->id() == "status")
     {
         if (button->state() != Button::ACTIVE)
@@ -560,9 +479,9 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
 
             Environment *env = Environment::get_instance();
             shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/weapon.sav");
+                to_string(m_slot) + "/" + m_class + ".sav");
             settings->write<int>(m_equipment, m_character->id(), 1);
-            settings->save("res/datas/slot" + to_string(m_slot) + "/weapon.sav");
+            settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
         }
 
         ok = 0;
@@ -576,6 +495,28 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     }
 
     return true;
+}
+
+void
+Equip::deactivate_equipments()
+{
+    for (auto b : m_equipments["weapon"])
+    {
+        b.second->set_active(false);
+        b.second->set_visible(false);
+    }
+
+    for (auto b : m_equipments["armor"])
+    {
+        b.second->set_active(false);
+        b.second->set_visible(false);
+    }
+
+    for (auto b : m_equipments["shield"])
+    {
+        b.second->set_active(false);
+        b.second->set_visible(false);
+    }
 }
 
 void

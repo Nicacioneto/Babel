@@ -1,5 +1,5 @@
-[1. Shield 1]
-type=shield
+[1. Light 1]
+type=light
 m=1
 p=1
 t=1
@@ -12,9 +12,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-
-[2. Shield 2]
-type=shield
+[2. Light 2]
+type=light
 m=1
 p=1
 t=1
@@ -27,8 +26,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[3. Shield 3]
-type=shield
+[3. Light 3]
+type=light
 m=1
 p=1
 t=1
@@ -41,8 +40,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[4. Shield 4]
-type=shield
+[4. Light 4]
+type=light
 m=1
 p=1
 t=1
@@ -55,8 +54,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[1. Barrier 1]
-type=barrier
+[1. Medium 1]
+type=medium
 m=1
 p=1
 t=1
@@ -69,8 +68,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[2. Barrier 2]
-type=barrier
+[2. Medium 2]
+type=medium
 m=1
 p=1
 t=1
@@ -83,8 +82,8 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[3. Barrier 3]
-type=barrier
+[3. Medium 3]
+type=medium
 m=1
 p=1
 t=1
@@ -97,8 +96,64 @@ agility=+10
 hit_chance=%50
 text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
 
-[4. Barrier 4]
-type=barrier
+[4. Medium 4]
+type=medium
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
+
+[Heavy 1]
+type=heavy
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
+
+[Heavy 2]
+type=heavy
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
+
+[Heavy 3]
+type=heavy
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a;state-of-the-art weapon, being;able to shoot a 10mm;steel-core bullet at 800 rpm.
+
+[Heavy 4]
+type=heavy
 m=1
 p=1
 t=1
