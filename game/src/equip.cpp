@@ -7,6 +7,7 @@
  */
 #include "barracks.h"
 #include "character.h"
+#include "colony.h"
 #include "equip.h"
 #include <algorithm>
 #include <core/font.h>
@@ -22,7 +23,8 @@
 using std::to_string;
 
 Equip::Equip(int slot, Object *parent, Character *character)
-    : Object(parent), m_slot(slot), m_class("weapon"), m_state("rifle")
+    : Object(parent), m_slot(slot), m_matter_cost(0), m_energy_cost(0),
+        m_class("weapon"), m_state("rifle")
 {
     parent->add_observer(this);
     m_character = character;
@@ -349,10 +351,13 @@ Equip::draw_equipments()
         font->set_size(16);
         if (atoi(get_equipment(m_equipment, "m").c_str()) <= m_character->military() and
             atoi(get_equipment(m_equipment, "p").c_str()) <= m_character->psionic() and
-            atoi(get_equipment(m_equipment, "t").c_str()) <= m_character->tech())
+            atoi(get_equipment(m_equipment, "t").c_str()) <= m_character->tech() and
+            m_status->state() != Button::ACTIVE)
         {
-            env->canvas->draw(get_equipment(m_equipment, "matter"), 310 * scale_w, 436 * scale_h, color);
-            env->canvas->draw(get_equipment(m_equipment, "energy"), 380 * scale_w, 436 * scale_h, color);
+            m_matter_cost = atoi(get_equipment(m_equipment, "matter").c_str());
+            m_energy_cost = atoi(get_equipment(m_equipment, "energy").c_str());
+            env->canvas->draw(to_string(m_matter_cost), 310 * scale_w, 436 * scale_h, color);
+            env->canvas->draw(to_string(m_energy_cost), 380 * scale_w, 436 * scale_h, color);
         }
     }
 }
@@ -444,7 +449,16 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             m_equipment = b.first;
             ok = 0;
 
-            if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/weapon.sav");
+            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
+
+            if (equiped)
+            {
+                m_status->change_state(Button::ACTIVE);
+            }
+            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
                 atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
                 atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
             {
@@ -466,6 +480,26 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             m_equipment = b.first;
             ok = 0;
+
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/weapon.sav");
+            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
+
+            if (equiped)
+            {
+                m_status->change_state(Button::ACTIVE);
+            }
+            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
+                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
+                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
+            {
+                m_status->change_state(Button::INACTIVE);
+            }
+            else
+            {
+                m_status->change_state(Button::IDLE);
+            }
         }
 
         b.second->set_active(get_equipment(b.first, "type") == m_state);
@@ -478,6 +512,26 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             m_equipment = b.first;
             ok = 0;
+
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/weapon.sav");
+            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
+
+            if (equiped)
+            {
+                m_status->change_state(Button::ACTIVE);
+            }
+            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
+                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
+                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
+            {
+                m_status->change_state(Button::INACTIVE);
+            }
+            else
+            {
+                m_status->change_state(Button::IDLE);
+            }
         }
 
         b.second->set_active(get_equipment(b.first, "type") == m_state);
@@ -486,6 +540,18 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
 
     if (button->id() == "status")
     {
+        if (button->state() != Button::ACTIVE)
+        {
+            Colony(m_slot).set_matter(Colony(m_slot).matter() - m_matter_cost);
+            Colony(m_slot).set_energy(Colony(m_slot).energy() - m_energy_cost);
+
+            Environment *env = Environment::get_instance();
+            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/weapon.sav");
+            settings->write<int>(m_equipment, m_character->id(), 1);
+            settings->save("res/datas/slot" + to_string(m_slot) + "/weapon.sav");
+        }
+
         ok = 0;
         button->change_state(Button::ACTIVE);
     }

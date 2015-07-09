@@ -25,7 +25,7 @@ private:
     typedef string State;
     typedef string EquipmentClass;
 
-    int m_slot;
+    int m_slot, m_matter_cost, m_energy_cost;
     EquipmentClass m_class;
     ObjectID m_equipment;
     Character *m_character;
