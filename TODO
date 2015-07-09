@@ -1,0 +1,59 @@
+Barracks
+    - icones de equipamentos
+    - dados de equipamentos (mpt, atributos, custo materia e energia, etc)
+    - [bug] não está sendo possível trocar de personagem
+    - [bug] não atualiza mpt
+
+Facilities
+    - textos para chat
+    - definir icones
+    - definir custo para acordar
+
+Hospital
+    - textos para chat
+    - definir custos e tempo de itens
+    - definir custo para acordar um personagem
+
+Workshop
+    - textos para chat
+    - drone
+    - veículos
+    - arsenal
+
+Central
+    - textos para chat
+    - quests
+    - bestiary
+
+Tower
+    - icones dos andares
+    - textos referentes a cada andar
+
+Drone
+    - imagens dos drones
+    - descrição dos drones
+
+Dungeon
+    - mudar música de fundo
+    - alterar as paredes do labiritinto
+    - definir mapas
+    - animação das portas
+    - tela de pause
+
+Combat
+    - imagens dos inimigos
+    - definir o range da quantidade dos inimigos por andar
+    - carregar animação do combate (personagens e inimigos)
+    - mudar imagem do personagem ativo
+    - mudar icones da ordem de combate
+    - mudar número do ataque (ex: -10 HP)
+    - mudar quadrado azul
+
+Planet
+    - imagens dos lugares
+    - descrição do lugar
+    - definir nível do lugar (none, low, moderate, high)
+
+Colony
+    - faltando imagens de cima (babel, colony, planet)
+    - faltando imagem da coloônia
