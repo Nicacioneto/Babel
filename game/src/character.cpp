@@ -147,7 +147,11 @@ Character::load_texts()
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
+    
 
+    string military = to_string(m_military);
+    string psionic = to_string(m_psionic);
+    string tech = to_string(m_tech);
     string shield = to_string(m_shield);
     string max_shield = to_string(m_max_shield);
     string life = to_string(m_life);
@@ -155,6 +159,13 @@ Character::load_texts()
     string mp = to_string(m_mp);
     string max_mp = to_string(m_max_mp);
 
+    font->set_style(Font::BOLD);
+    font->set_size(18);
+    m_texts[m_name + "_military"] = new Text(this, military, Color(208, 179, 43));
+    m_texts[m_name + "_psionic"] = new Text(this, psionic, Color(166, 69, 151));
+    m_texts[m_name + "_tech"] = new Text(this, tech, Color(78, 191, 190));
+
+    font->set_style(Font::NORMAL);
     font->set_size(m_style == SMALL ? 16 : 18);
     m_texts[m_name] = new Text(this, m_name, Color(170, 215, 190));
 
@@ -167,16 +178,6 @@ Character::load_texts()
     m_texts[m_name + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
     m_texts[m_name + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
     m_texts[m_name + "_max_mp"] = new Text(this, max_mp, Color(170, 215, 190));
-
-    string military = to_string(m_military);
-    string psionic = to_string(m_psionic);
-    string tech = to_string(m_tech);
-
-    font->set_size(18);
-    font->set_style(Font::BOLD);
-    m_texts[m_name + "_military"] = new Text(this, military, Color(208, 179, 43));
-    m_texts[m_name + "_psionic"] = new Text(this, psionic, Color(166, 69, 151));
-    m_texts[m_name + "_tech"] = new Text(this, tech, Color(78, 191, 190));
 }
 
 void

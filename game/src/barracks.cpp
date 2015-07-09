@@ -168,14 +168,9 @@ Barracks::draw_self()
     env->canvas->draw(m_textures["stats"].get(), 690 * scale_w, 87 * scale_h);
     draw_attributes();
 
-    switch (m_screen)
+    if (m_screen == INSPECT)
     {
-        case INSPECT:
-            inspect_screen();
-            break;
-        case EQUIP:
-            equip_screen();
-            break;
+        inspect_screen();
     }
 }
 
@@ -345,37 +340,6 @@ Barracks::draw_skills()
             }
         }
     }
-}
-
-void
-Barracks::equip_screen()
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(16);
-    Color color(170, 215, 190);
-    
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    Character *character = current_char();
-
-    int x = 112;
-    int y = 87;
-    font->set_size(18);
-    env->canvas->draw(m_textures["card_small"].get(), x * scale_w, y * scale_h);
-    env->canvas->draw(character->id(), (x + 131) * scale_w, (y + 3) * scale_h, color);
-
-    font->set_style(Font::BOLD);
-    env->canvas->draw(to_string(character->military()), (x+182) * scale_w,
-        (y + 31) * scale_h, Color(208, 179, 43));
-    env->canvas->draw(to_string(character->psionic()), (x+182) * scale_w,
-        (y + 58) * scale_h, Color(166, 69, 151));
-    env->canvas->draw(to_string(character->tech()), (x+182) * scale_w,
-        (y + 86) * scale_h, Color(78, 191, 190));
-
-    font->set_style(Font::NORMAL);
 }
 
 bool
