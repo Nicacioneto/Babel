@@ -44,7 +44,6 @@ private:
     void load_textures();
     void draw_self();
     void inspect_screen();
-    void draw_character();
     void draw_attributes();
     void draw_skills();
     void equip_screen();

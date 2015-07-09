@@ -164,8 +164,6 @@ Barracks::draw_self()
     double scale_h = env->canvas->h() / H;
     
     env->canvas->draw(m_textures["bracket"].get(), 30 * scale_w, 25 * scale_h);
-    env->canvas->draw(m_textures["attributes"].get(), 402 * scale_w, 87 * scale_h);
-    env->canvas->draw(m_textures["stats"].get(), 690 * scale_w, 87 * scale_h);
     draw_attributes();
 
     if (m_screen == INSPECT)
@@ -187,69 +185,43 @@ Barracks::inspect_screen()
 
     env->canvas->draw("Inspect Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
 
-    int y = 470 * scale_h;
-    env->canvas->draw(m_textures["bracket_military"].get(), 112 * scale_w, y);
-    env->canvas->draw(m_textures["bracket_pisionic"].get(), 402 * scale_w, y);
-    env->canvas->draw(m_textures["bracket_tech"].get(), 690 * scale_w, y);
+    env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
 
-    y = 485 * scale_h;
-    env->canvas->draw(m_textures["military"].get(), 135 * scale_w, y);
-    env->canvas->draw(m_textures["psionic"].get(), 420 * scale_w, y);
-    env->canvas->draw(m_textures["tech"].get(), 710 * scale_w, y);
-
+    int data = Colony(m_slot).data();
+    env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
+    
+    Character *character = current_char();
+    font->set_size(18);
     env->canvas->draw(m_textures["levelup"].get(), 402 * scale_w, 322 * scale_h);
+    m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
+    m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
+    m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
+
     env->canvas->draw(m_textures["equip"].get(), 690 * scale_w, 322 * scale_h);
     env->canvas->draw(m_textures["rifle"].get(), 702 * scale_w, 360 * scale_h);
     env->canvas->draw(m_textures["armor"].get(), 772 * scale_w, 360 * scale_h);
     env->canvas->draw(m_textures["shield"].get(), 847 * scale_w, 360 * scale_h);
 
-    draw_character();
     draw_skills();
-}
-
-void
-Barracks::draw_character()
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(16);
-    Color color(170, 215, 190);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    Character *character = current_char();
-
-    if (m_screen == INSPECT)
-    {
-        env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
-
-        int data = Colony(m_slot).data();
-        env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
-
-        font->set_size(18);
-        m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
-        m_buttons["levelup_p"]->set_text(to_string(character->levelup_p()), Color(166, 69, 151));
-        m_buttons["levelup_t"]->set_text(to_string(character->levelup_t()), Color(79, 194, 193));
-    }
 }
 
 void
 Barracks::draw_attributes()
 {
     Environment *env = Environment::get_instance();
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    Color color(170, 215, 190);
-    
-    font->set_size(14);
-
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Character *character = current_char();
+    env->canvas->draw(m_textures["attributes"].get(), 402 * scale_w, 87 * scale_h);
+    env->canvas->draw(m_textures["stats"].get(), 690 * scale_w, 87 * scale_h);
+    
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
 
+    Character *character = current_char();
+    Color color(170, 215, 190);
+
+    font->set_size(14);
     int x = 606 * scale_w;
     env->canvas->draw(to_string(character->might()), x, 120 * scale_h, color);
     env->canvas->draw(to_string(character->mind()), x, 150 * scale_h, color);
@@ -276,12 +248,22 @@ void
 Barracks::draw_skills()
 {
     Environment *env = Environment::get_instance();
-
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
+    int y = 470 * scale_h;
+    env->canvas->draw(m_textures["bracket_military"].get(), 112 * scale_w, y);
+    env->canvas->draw(m_textures["bracket_pisionic"].get(), 402 * scale_w, y);
+    env->canvas->draw(m_textures["bracket_tech"].get(), 690 * scale_w, y);
+
+    y = 485 * scale_h;
+    env->canvas->draw(m_textures["military"].get(), 135 * scale_w, y);
+    env->canvas->draw(m_textures["psionic"].get(), 420 * scale_w, y);
+    env->canvas->draw(m_textures["tech"].get(), 710 * scale_w, y);
+    
+
     int x = 130 * scale_w;
-    int y = 530 * scale_h;
+    y = 530 * scale_h;
     int w = 38 * scale_w;
     int h = 37 * scale_h;
 
