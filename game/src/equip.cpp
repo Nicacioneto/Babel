@@ -22,14 +22,13 @@
 using std::to_string;
 
 Equip::Equip(int slot, Object *parent, Character *character)
-    : Object(parent), m_slot(slot), m_equip(WEAPON), m_equipment("Exalibur GLX"), m_weapon(RIFLE)
+    : Object(parent), m_slot(slot), m_class("weapon"), m_state("rifle")
 {
     parent->add_observer(this);
     m_character = character;
 
     load_textures();
     create_buttons();
-    load_equipments();
 }
 
 void
@@ -68,18 +67,6 @@ Equip::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
     string path = "res/images/colony/barracks/equip/";
-
-    m_status = new Button(this, "status", path + "status.png", 145 * scale_w, 432 * scale_h,
-        298 * scale_w, 30 * scale_h);
-    m_status->set_sprites(4);
-    if (atoi(get_equipment("m").c_str()) > m_character->military() or
-        atoi(get_equipment("p").c_str()) > m_character->psionic() or
-        atoi(get_equipment("t").c_str()) > m_character->tech())
-    {
-        m_status->change_state(Button::INACTIVE);
-    }
-    m_status->add_observer(this);
-    add_child(m_status);
 
     int y = 334 * scale_h;
     int w = 35 * scale_w;
@@ -199,37 +186,50 @@ Equip::create_buttons()
         b.second->add_observer(this);
         add_child(b.second);
     }
+
+    load_equipments("weapon");
+    load_equipments("armor");
+    load_equipments("shield");
+
+    m_class = "weapon";
+
+    m_status = new Button(this, "status", path + "status.png", 145 * scale_w, 432 * scale_h,
+        298 * scale_w, 30 * scale_h);
+    m_status->set_sprites(4);
+    m_status->set_active(false);
+    m_status->set_visible(false);
+    m_status->add_observer(this);
+    add_child(m_status);
 }
 
 void
-Equip::load_equipments()
+Equip::load_equipments(string type)
 {
     Environment *env = Environment::get_instance();
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     font->set_size(16);
 
-    string path = "res/datas/slot" + to_string(m_slot) + "/";
-    shared_ptr<Settings> settings = env->resources_manager->get_settings(path + "weapons.sav");
-    auto sections = settings->sections();
-    sections.size();
-
     Color color(170, 215, 190);
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
-    int x = 680 * scale_w, y = 435;
 
-    for (auto weapon : sections)
+    int x = 680 * scale_w, y = 435;
+    string path = "res/datas/slot" + to_string(m_slot) + "/";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path + type + ".sav");
+
+    for (auto it : settings->sections())
     {
-        Button *button = new Button(this, weapon.first, x, y * scale_h);
+        int num = it.first.front() - '1';
+        Button *button = new Button(this, it.first, x, (y + 35 * num) * scale_h);
         button->set_sprites(1);
-        button->set_text(weapon.first, color);
+        button->set_text(it.first, color);
         button->set_dimensions(button->text()->w() * scale_w, button->text()->h() * scale_h);
-        m_equipments[WEAPON][button->id()] = button;
+        button->set_active(m_state == get_equipment(it.first, "type"));
+        button->set_visible(m_state == get_equipment(it.first, "type"));
+        m_equipments[type][button->id()] = button;
         button->add_observer(this);
         add_child(button);
-
-        y += 35;
     }
 }
 
@@ -248,39 +248,24 @@ Equip::draw_self()
 
     env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
     env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
-
-    string text = "Avaible ";
-    switch (m_equip)
-    {
-        case RIFLE:
-            text += "Rifles";
-            break;
-        case ARMOR:
-            text += "Armor";
-            break;
-        case SHIELD:
-            text += "Shields";
-            break;
-    }
-
-    env->canvas->draw(text, 733 * scale_w, 402 * scale_h, Color(84, 107, 95));
+    env->canvas->draw("Avaible " + m_class, 733 * scale_w, 402 * scale_h, Color(84, 107, 95));
 
     for (auto b : m_weapons)
     {
-        b.second->set_active(m_equip == WEAPON);
-        b.second->set_visible(m_equip == WEAPON);
+        b.second->set_active(m_class == "weapon");
+        b.second->set_visible(m_class == "weapon");
     }
 
     for (auto b : m_armor)
     {
-        b.second->set_active(m_equip == ARMOR);
-        b.second->set_visible(m_equip == ARMOR);
+        b.second->set_active(m_class == "armor");
+        b.second->set_visible(m_class == "armor");
     }
 
     for (auto b : m_shield)
     {
-        b.second->set_active(m_equip == SHIELD);
-        b.second->set_visible(m_equip == SHIELD);
+        b.second->set_active(m_class == "shield");
+        b.second->set_visible(m_class == "shield");
     }
 
     draw_equipments();
@@ -298,9 +283,8 @@ Equip::draw_equipments()
     double scale_h = env->canvas->h() / H;
     Color color(84, 107, 95);
 
-    if (m_equip == WEAPON)
+    if (not m_equipment.empty())
     {
-
         // shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         //     to_string(m_slot) + "/equipments.sav");
         // auto sections = settings->sections();
@@ -314,7 +298,7 @@ Equip::draw_equipments()
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_w, (384+17) * scale_h, color);
 
-// printf("%s\n", m_character->id().c_str());
+    // printf("%s\n", m_character->id().c_str());
 
         // Rect clip = Rect(0, yi * 30, 298, 30);
         // env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
@@ -331,15 +315,15 @@ Equip::draw_equipments()
         env->canvas->draw(m_textures["bracket_m"].get(), 313 * scale_w, 483 * scale_h);
         env->canvas->draw(m_textures["bracket_p"].get(), 358 * scale_w, 483 * scale_h);
         env->canvas->draw(m_textures["bracket_t"].get(), 402 * scale_w, 483 * scale_h);
-        env->canvas->draw(get_equipment("m"), (315+15) * scale_w, 483 * scale_h,
+        env->canvas->draw(get_equipment(m_equipment, "m"), (315+15) * scale_w, 483 * scale_h,
             Color(183, 157, 39));
-        env->canvas->draw(get_equipment("p"), (358+15) * scale_w, 483 * scale_h,
+        env->canvas->draw(get_equipment(m_equipment, "p"), (358+15) * scale_w, 483 * scale_h,
             Color(143, 61, 130));
-        env->canvas->draw(get_equipment("t"), (402+15) * scale_w, 483 * scale_h,
+        env->canvas->draw(get_equipment(m_equipment, "t"), (402+15) * scale_w, 483 * scale_h,
             Color(60, 145, 145));
 
         font->set_size(24);
-        env->canvas->draw(m_equipment, 145 * scale_w, 477 * scale_h, color);
+        env->canvas->draw(m_equipment.substr(3), 145 * scale_w, 477 * scale_h, color);
         env->canvas->draw(m_textures["rifle_katana"].get(), 145 * scale_w, 512 * scale_h);
 
         font->set_size(14);
@@ -347,7 +331,7 @@ Equip::draw_equipments()
         int x = 150, y = 640;
         for (auto icon : m_attributes)
         {
-            string value = get_equipment(icon.first);
+            string value = get_equipment(m_equipment, icon.first);
             if (value.substr(1) == "0")
             {
                 continue;
@@ -357,45 +341,29 @@ Equip::draw_equipments()
             env->canvas->draw(value, x * scale_w, (y-25) * scale_h, color);
             x += 50;
         }
-    }
+        auto button = m_equipments[m_class][m_equipment];
+        Point a(button->x(), button->y() + 20);
+        Point b(button->x() + 190 * scale_w, button->y() + 20);
+        env->canvas->draw(Line(a, b), color);
 
-    auto button = m_equipments[m_equip][m_equipment];
-    Point a(button->x(), button->y() + 20);
-    Point b(button->x() + button->w(), button->y() + 20);
-    env->canvas->draw(Line(a, b), color);
-
-    font->set_size(16);
-    if (atoi(get_equipment("m").c_str()) <= m_character->military() and
-        atoi(get_equipment("p").c_str()) <= m_character->psionic() and
-        atoi(get_equipment("t").c_str()) <= m_character->tech())
-    {
-        env->canvas->draw(get_equipment("matter"), 310 * scale_w, 436 * scale_h, color);
-        env->canvas->draw(get_equipment("energy"), 380 * scale_w, 436 * scale_h, color);
+        font->set_size(16);
+        if (atoi(get_equipment(m_equipment, "m").c_str()) <= m_character->military() and
+            atoi(get_equipment(m_equipment, "p").c_str()) <= m_character->psionic() and
+            atoi(get_equipment(m_equipment, "t").c_str()) <= m_character->tech())
+        {
+            env->canvas->draw(get_equipment(m_equipment, "matter"), 310 * scale_w, 436 * scale_h, color);
+            env->canvas->draw(get_equipment(m_equipment, "energy"), 380 * scale_w, 436 * scale_h, color);
+        }
     }
 }
 
 string
-Equip::get_equipment(string attr)
+Equip::get_equipment(string equipment_id, string attr)
 {
-    string file;
-    switch (m_equip)
-    {
-        case WEAPON:
-            file = "/weapons.sav";
-            break;
-        case ARMOR:
-            file = "/armor.sav";
-            break;
-        case SHIELD:
-            file = "/shields.sav";
-            break;
-    }
-
     Environment *env = Environment::get_instance();
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + file);
-    string value = settings->read<string>(m_equipment, attr, "+0");
-    return value;
+        to_string(m_slot) + "/" + m_class + ".sav");
+    return settings->read<string>(equipment_id, attr, "+0");
 }
 
 bool
@@ -407,17 +375,20 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     {
         if (id == "weapon")
         {
-            m_equip = WEAPON;
+            m_class = "weapon";
+            m_equipment.clear();
             m_weapons["rifle"]->change_state(Button::ACTIVE);
         }
         else if (id == "armor")
         {
-            m_equip = ARMOR;
+            m_class = "armor";
+            m_equipment.clear();
             m_armor["light"]->change_state(Button::ACTIVE);
         }
         else if (id == "shield")
         {
-            m_equip = SHIELD;
+            m_class = "shield";
+            m_equipment.clear();
             m_shield["shield"]->change_state(Button::ACTIVE);
         }
         else
@@ -435,17 +406,47 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         return false;
     }
 
+    for (auto b : m_weapons)
+    {
+        if (button->id() == b.first)
+        {
+            m_state = button->id();
+            m_equipment.clear();
+        }
+    }
+    
+    for (auto b : m_armor)
+    {
+        if (button->id() == b.first)
+        {
+            m_state = button->id();
+            m_equipment.clear();
+        }
+    }
+    
+    for (auto b : m_shield)
+    {
+        if (button->id() == b.first)
+        {
+            m_state = button->id();
+            m_equipment.clear();
+        }
+    }
+
+    m_status->set_active(not m_equipment.empty());
+    m_status->set_visible(not m_equipment.empty());
+
     bool ok = 1;
-    for (auto b : m_equipments[WEAPON])
+    for (auto b : m_equipments["weapon"])
     {
         if (button->id() == b.first)
         {
             m_equipment = b.first;
             ok = 0;
 
-            if (atoi(get_equipment("m").c_str()) > m_character->military() or
-                atoi(get_equipment("p").c_str()) > m_character->psionic() or
-                atoi(get_equipment("t").c_str()) > m_character->tech())
+            if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
+                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
+                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
             {
                 m_status->change_state(Button::INACTIVE);
             }
@@ -454,24 +455,39 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
                 m_status->change_state(Button::IDLE);
             }
         }
+
+        b.second->set_active(get_equipment(b.first, "type") == m_state);
+        b.second->set_visible(get_equipment(b.first, "type") == m_state);
     }
 
-    for (auto b : m_equipments[ARMOR])
+    for (auto b : m_equipments["armor"])
     {
         if (button->id() == b.first)
         {
             m_equipment = b.first;
             ok = 0;
         }
+
+        b.second->set_active(get_equipment(b.first, "type") == m_state);
+        b.second->set_visible(get_equipment(b.first, "type") == m_state);
     }
 
-    for (auto b : m_equipments[SHIELD])
+    for (auto b : m_equipments["shield"])
     {
         if (button->id() == b.first)
         {
             m_equipment = b.first;
             ok = 0;
         }
+
+        b.second->set_active(get_equipment(b.first, "type") == m_state);
+        b.second->set_visible(get_equipment(b.first, "type") == m_state);
+    }
+
+    if (button->id() == "status")
+    {
+        ok = 0;
+        button->change_state(Button::ACTIVE);
     }
 
     if (ok)

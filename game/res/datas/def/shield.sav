@@ -1,0 +1,24 @@
+[Barrier 1]
+type=barrier
+
+[Barrier 2]
+type=barrier
+
+[Barrier 3]
+type=barrier
+
+[Barrier 4]
+type=barrier
+
+[Shield 1]
+type=shield
+
+[Shield 2]
+type=shield
+
+[Shield 3]
+type=shield
+
+[Shield 4]
+type=shield
+
