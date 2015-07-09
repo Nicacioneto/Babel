@@ -92,7 +92,7 @@ qnt_earned=0
 qnt_max=20
 research_energy=50
 research_matter=100
-time=01:0
+time=01:00
 value=50
 
 [Hyper-Metabolism]
