@@ -463,7 +463,9 @@ void
 Character::set_texture(const string& id)
 {
     Environment *env = Environment::get_instance();
-    m_texture = env->resources_manager->get_texture("res/images/characters/" + id);
+    string texture = "res/images/characters/" + id;
+    m_texture = env->resources_manager->get_texture(texture);
+    m_style = texture.find("small") != string::npos ? SMALL : BIG;
 }
 
 void
