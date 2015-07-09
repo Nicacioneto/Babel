@@ -48,6 +48,7 @@ Equip::load_textures()
     m_textures["rifle_katana"] = env->resources_manager->get_texture(path + "Rifle_Katana.png");
     m_textures["bracket_equip"] = env->resources_manager->get_texture(path + "Bracket.png");
     m_textures["status"] = env->resources_manager->get_texture(path + "status.png");
+    m_textures["resources"] = env->resources_manager->get_texture(path + "resources.png");
     m_textures["bracket_m"] = env->resources_manager->get_texture(path + "bracket_m.png");
     m_textures["bracket_p"] = env->resources_manager->get_texture(path + "bracket_p.png");
     m_textures["bracket_t"] = env->resources_manager->get_texture(path + "bracket_t.png");
@@ -216,14 +217,14 @@ Equip::load_equipments(string type)
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    int x = 680 * scale_w, y = 435;
+    int x = 518 * scale_w, y = 480;
     string path = "res/datas/slot" + to_string(m_slot) + "/";
     shared_ptr<Settings> settings = env->resources_manager->get_settings(path + type + ".sav");
 
     for (auto it : settings->sections())
     {
         int num = it.first.front() - '1';
-        Button *button = new Button(this, it.first, x, (y + 35 * num) * scale_h);
+        Button *button = new Button(this, it.first, x, (y + 30 * num) * scale_h);
         button->set_sprites(1);
         button->set_text(it.first, color);
         button->set_dimensions(button->text()->w() * scale_w, button->text()->h() * scale_h);
@@ -250,7 +251,11 @@ Equip::draw_self()
 
     env->canvas->draw(m_textures["bracket_equip"].get(), 112 * scale_w, 322 * scale_h);
     env->canvas->draw("Equip Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
-    env->canvas->draw("Avaible " + m_class, 733 * scale_w, 402 * scale_h, Color(84, 107, 95));
+    env->canvas->draw(m_textures["resources"].get(), 518 * scale_w, 432 * scale_h);
+    env->canvas->draw(to_string(Colony(m_slot).matter()), 550 * scale_w, 437 * scale_h, color);
+    env->canvas->draw(to_string(Colony(m_slot).energy()), 615 * scale_w, 437 * scale_h, color);
+    env->canvas->draw("Avaible " + m_state + "s", 700 * scale_w, 436 * scale_h, Color(84, 107, 95));
+
 
     for (auto b : m_weapons)
     {
@@ -345,7 +350,7 @@ Equip::draw_equipments()
         }
         auto button = m_equipments[m_class][m_equipment];
         Point a(button->x(), button->y() + 20);
-        Point b(button->x() + 190 * scale_w, button->y() + 20);
+        Point b(button->x() + m_textures["resources"].get()->w() * scale_w, button->y() + 20);
         env->canvas->draw(Line(a, b), color);
 
         font->set_size(16);
@@ -354,6 +359,12 @@ Equip::draw_equipments()
             atoi(get_equipment(m_equipment, "t").c_str()) <= m_character->tech() and
             m_status->state() != Button::ACTIVE)
         {
+            if (atoi(get_equipment(m_equipment, "matter").c_str()) > Colony(m_slot).matter() or
+                atoi(get_equipment(m_equipment, "energy").c_str()) > Colony(m_slot).energy())
+            {
+                color = Color(154, 6, 6);
+            }
+
             m_matter_cost = atoi(get_equipment(m_equipment, "matter").c_str());
             m_energy_cost = atoi(get_equipment(m_equipment, "energy").c_str());
             env->canvas->draw(to_string(m_matter_cost), 310 * scale_w, 436 * scale_h, color);
@@ -419,7 +430,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             m_equipment.clear();
         }
     }
-    
+
     for (auto b : m_armor)
     {
         if (button->id() == b.first)
@@ -428,7 +439,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             m_equipment.clear();
         }
     }
-    
+
     for (auto b : m_shield)
     {
         if (button->id() == b.first)
@@ -460,7 +471,9 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             }
             else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
                 atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
-                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech())
+                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech() or
+                atoi(get_equipment(b.first, "matter").c_str()) > Colony(m_slot).matter() or
+                atoi(get_equipment(b.first, "energy").c_str()) > Colony(m_slot).energy())
             {
                 m_status->change_state(Button::INACTIVE);
             }
