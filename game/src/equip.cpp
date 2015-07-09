@@ -354,12 +354,12 @@ Equip::draw_equipments()
         env->canvas->draw(Line(a, b), color);
 
         font->set_size(16);
-        if (atoi(get_equipment(m_equipment, "m").c_str()) <= m_character->military() and
-            atoi(get_equipment(m_equipment, "p").c_str()) <= m_character->psionic() and
-            atoi(get_equipment(m_equipment, "t").c_str()) <= m_character->tech() and
-            m_status->state() != Button::ACTIVE)
+        if (m_status->state() != Button::ACTIVE)
         {
-            if (atoi(get_equipment(m_equipment, "matter").c_str()) > Colony(m_slot).matter() or
+            if (atoi(get_equipment(m_equipment, "m").c_str()) > m_character->military() or
+                atoi(get_equipment(m_equipment, "p").c_str()) > m_character->psionic() or
+                atoi(get_equipment(m_equipment, "t").c_str()) > m_character->tech() or
+                atoi(get_equipment(m_equipment, "matter").c_str()) > Colony(m_slot).matter() or
                 atoi(get_equipment(m_equipment, "energy").c_str()) > Colony(m_slot).energy())
             {
                 color = Color(154, 6, 6);
