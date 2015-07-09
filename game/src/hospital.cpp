@@ -56,7 +56,7 @@ Hospital::add_children()
     add_child(research);
     research->set_visible(false);
 
-    Revive *revive = new Revive(m_slot, this);
+    Revive *revive = new Revive(m_slot, m_colony, this);
     revive->add_observer(this);
     add_child(revive);
     revive->set_visible(false);
