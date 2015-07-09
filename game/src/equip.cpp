@@ -474,14 +474,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     {
         if (button->state() != Button::ACTIVE)
         {
-            Colony(m_slot).set_matter(Colony(m_slot).matter() - m_matter_cost);
-            Colony(m_slot).set_energy(Colony(m_slot).energy() - m_energy_cost);
-
-            Environment *env = Environment::get_instance();
-            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/" + m_class + ".sav");
-            settings->write<int>(m_equipment, m_character->id(), 1);
-            settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
+            buy_equipment(m_equipment);
         }
 
         ok = 0;
@@ -517,6 +510,19 @@ Equip::deactivate_equipments()
         b.second->set_active(false);
         b.second->set_visible(false);
     }
+}
+
+void
+Equip::buy_equipment(ObjectID equipment)
+{
+    Colony(m_slot).set_matter(Colony(m_slot).matter() - m_matter_cost);
+    Colony(m_slot).set_energy(Colony(m_slot).energy() - m_energy_cost);
+
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/" + m_class + ".sav");
+    settings->write<int>(equipment, m_character->id(), 1);
+    settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
 }
 
 void

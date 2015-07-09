@@ -49,6 +49,7 @@ private:
     string get_equipment(string equipment_id, string attr);
     bool on_message(Object *sender, MessageID id, Parameters p);
     void deactivate_equipments();
+    void buy_equipment(ObjectID equipment);
     void change_buttons();
 };
 
