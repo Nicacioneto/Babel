@@ -163,7 +163,10 @@ Tower::draw_self()
     env->canvas->draw(m_textures["quest"].get(), 308 * scale_w, 317 * scale_h);
 
     // Send team
-    env->canvas->draw(m_textures["drone2"].get(), 680 * scale_w, 680 * scale_h);
+    if (m_settings->read<bool>("Tower", "drone", 0))
+    {
+        env->canvas->draw(m_textures["drone2"].get(), 680 * scale_w, 680 * scale_h);
+    }
     env->canvas->draw(Line(Point(724 * scale_w, 683 * scale_h),
         Point(724 * scale_w, 712 * scale_h)), color);
     env->canvas->draw(m_textures["char1"].get(), 734 * scale_w, 680 * scale_h);
@@ -260,6 +263,8 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "send_drone")
     {
+        m_settings->write<bool>("Tower", "drone", true);
+        m_settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
         // TODO
     }
     else if (button->id() == "send_team")
