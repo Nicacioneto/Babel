@@ -24,7 +24,8 @@ using std::to_string;
 
 Dungeon::Dungeon(int slot, int steps, int probability_combat)
     : Level("dungeon", ""), m_slot(slot), m_steps(steps), m_delta(0),
-        m_probability_combat(probability_combat), m_last(0), m_state(WAITING)
+        m_probability_combat(probability_combat), m_last(0), m_state(WAITING),
+        m_levels(0), m_front_blocked(false)
 {
     Environment *env = Environment::get_instance();
 
@@ -70,6 +71,11 @@ Dungeon::~Dungeon()
 bool
 Dungeon::on_event(const KeyboardEvent& event)
 {
+    if (m_state == DOOR)
+    {
+        return false;
+    }
+
     switch (event.state())
     {
         case KeyboardEvent::PRESSED:
@@ -171,20 +177,32 @@ Dungeon::update_self(unsigned long elapsed)
         m_last = elapsed;
     }
 
-    if (elapsed - m_last < 5)
+    if (m_state == MOVING)
     {
-        return;
+        if (elapsed - m_last < 5)
+        {
+            return;
+        }
+
+        m_last = elapsed;
+
+        if (m_delta == 1)
+        {
+            steps_to_foward();
+        }
+        else if (m_delta == -1)
+        {
+            steps_to_backward();
+        }
+    }
+    else if (m_state == DOOR)
+    {
+        printf("Estado de porta...\n");
     }
 
-    m_last = elapsed;
-
-    if (m_delta == 1)
+    if (m_levels == 1 and m_delta == 1)
     {
-        steps_to_foward();
-    }
-    else if (m_delta == -1)
-    {
-        steps_to_backward();
+        m_front_blocked = true;
     }
 }
 
@@ -206,11 +224,12 @@ Dungeon::draw_self()
     bool blocked = false;
     Rect back;
     Rect center_rect = center(env->canvas->w(), env->canvas->h());
-    int levels = 0;
+    m_levels = 0;
+    int north_tile = 0, east_tile = 0, west_tile = 0, floor_tile = 0, roof_tile = 0;
 
     while (not ps.empty())
     {
-        ++levels;
+        ++m_levels;
 
         back = ps.front();
         ps.pop_front();
@@ -218,7 +237,7 @@ Dungeon::draw_self()
         Rect f { front.x(), front.y(), 0, front.h() };
         Rect b { back.x(), back.y(), 0, back.h() };
 
-        int west_tile = m_rooms[idx][idy].tile(m_direction.prev());
+        west_tile = m_rooms[idx][idy].tile(m_direction.prev());
         if (west_tile)
         {
             mapping.draw_walls(m_screen, m_tiles[west_tile].get(), f, b);
@@ -227,7 +246,7 @@ Dungeon::draw_self()
         f.set_x(f.x() + front.w());
         b.set_x(b.x() + back.w());
 
-        int east_tile = m_rooms[idx][idy].tile(m_direction.next());
+        east_tile = m_rooms[idx][idy].tile(m_direction.next());
 
         if (east_tile)
         {
@@ -237,7 +256,7 @@ Dungeon::draw_self()
         f = Rect(front.x(), front.y(), front.w(), 0);
         b = Rect(back.x(), back.y(), back.w(), 0);
 
-        int roof_tile = m_rooms[idx][idy].tile(m_direction.roof());
+        roof_tile = m_rooms[idx][idy].tile(m_direction.roof());
 
         if (roof_tile)
         {
@@ -246,14 +265,14 @@ Dungeon::draw_self()
 
         f.set_y(f.y() + front.h());
         b.set_y(b.y() + back.h());
-        int floor_tile = m_rooms[idx][idy].tile(m_direction.floor());
+        floor_tile = m_rooms[idx][idy].tile(m_direction.floor());
 
         if (floor_tile)
         {
             mapping.draw_ceiling_floor(m_screen, m_tiles[floor_tile].get(), f, b);
         }
         
-        int north_tile = m_rooms[idx][idy].tile(m_direction.front());
+        north_tile = m_rooms[idx][idy].tile(m_direction.front());
 
         if (north_tile)
         {
@@ -279,9 +298,17 @@ Dungeon::draw_self()
         }
     }
 
-    if (not blocked or (blocked and levels > 3))
+    if (not blocked or (blocked and m_levels > 3))
     {
         m_screen->fill(center_rect, 0);
+    }
+    if (m_front_blocked) {
+        if (north_tile == 4) //when north is a door
+        {
+            m_state = DOOR;
+        }
+        
+        m_front_blocked = false;
     }
 
     env->canvas->draw(m_screen);
@@ -489,6 +516,7 @@ Dungeon::calculate_probability_combat()
 
     if (random < m_probability_combat)
     {
+        return;
         Environment *env = Environment::get_instance();
         string path = "res/datas/slot" + to_string(m_slot) + "/dungeon.sav";
         
