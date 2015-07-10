@@ -128,6 +128,7 @@ private:
     bool m_defense_mode;
 
     void init();
+    int range(int min, int max) const;
     void draw_self();
     void draw_attributes();
     void load_texts();

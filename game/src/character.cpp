@@ -6,7 +6,6 @@
  * License: LGPL. No copyright.
  */
 #include "character.h"
-#include <cmath>
 #include <core/environment.h>
 #include <core/font.h>
 #include <core/mousebuttonevent.h>
@@ -14,6 +13,8 @@
 #include <core/settings.h>
 #include <core/text.h>
 #include <core/texture.h>
+#include <cmath>
+#include <ctime>
 
 using std::to_string;
 
@@ -86,14 +87,26 @@ Character::init()
     m_willpower = m_settings->read<int>(m_name, "willpower", 0);
     m_agility = m_settings->read<int>(m_name, "agility", 0);
     m_perception = m_settings->read<int>(m_name, "perception", 0);
-    m_might_attack = m_settings->read<int>(m_name, "might_attack", 0);
-    m_mind_attack = m_settings->read<int>(m_name, "mind_attack", 0);
-    m_cooldown = m_settings->read<int>(m_name, "cooldown", 0);
-    m_defense = m_settings->read<int>(m_name, "defense", 0);
+    // m_might_attack = m_settings->read<int>(m_name, "might_attack", 0);
+    // m_mind_attack = m_settings->read<int>(m_name, "mind_attack", 0);
+    // m_defense = m_settings->read<int>(m_name, "defense", 0);
+    // m_cooldown = m_settings->read<int>(m_name, "cooldown", 0);
     m_might_armor = m_settings->read<int>(m_name, "might_armor", 0);
     m_mind_armor = m_settings->read<int>(m_name, "mind_armor", 0);
-    m_critical = m_settings->read<int>(m_name, "critical", 0);
+    // m_critical = m_settings->read<int>(m_name, "critical", 0);
+    set_might_attack(m_might*10 + range((-1)*m_might, m_might));
+    set_mind_attack(m_mind*10 + range((-1)*m_mind, m_mind));
+    set_defense(m_resilience);
+    set_cooldown((m_agility + m_perception) / 2);
+    set_critical(m_agility/4);
     m_defense_mode = false;
+}
+
+int
+Character::range(int min, int max) const
+{
+    srand(time(NULL));
+    return rand() % (max - min) + min;
 }
 
 void
