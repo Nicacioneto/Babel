@@ -330,7 +330,7 @@ Character::receive_damage(Character *attacker)
     // TODO Balance attacks
 
     int d = round(damage);
-    m_life -= d;
+    set_life(m_life - d);
 
     return d;
 }
@@ -707,4 +707,7 @@ Character::write(const string& attr, const T& value)
         m_settings->write<int>(m_name, attr, value);
         m_settings->save("res/datas/slot" + to_string(m_slot) + "/characters.sav");
     }
+
+    delete_texts();
+    load_texts();
 }
