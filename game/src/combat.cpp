@@ -181,15 +181,22 @@ Combat::draw_self()
     auto it = m_attackers.begin();
     for (int i = 1; i <= 12; ++i)
     {
-        string attacker = "character_mini";
+        string attacker = "";
 
         if (m_enemies.find(it->second) != m_enemies.end())
         {
-            attacker = "technopus_mini";
+            string name = it->second;
+            name.pop_back();
+
+            attacker = name + "_icon.png";
+        }
+        else
+        {
+            attacker = it->second + "_icon.png";
         }
 
-        m_attacker_icon = env->resources_manager->get_texture("res/images/combat/" +
-            attacker + ".png");
+        m_attacker_icon = env->resources_manager->get_texture("res/images/characters/" +
+            attacker);
 
         env->canvas->draw(m_attacker_icon.get(), x, 25 * env->canvas->h() / H);
 
