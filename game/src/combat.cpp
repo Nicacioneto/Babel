@@ -552,6 +552,8 @@ Combat::action_message(MessageID id, Parameters p)
         if (attribute == "life")
         {
             value += attacker->life();
+
+            value = value > attacker->max_life() ? attacker->max_life() : value;
             attacker->set_life(value);
         }
         else if (attribute == "might_attack")
