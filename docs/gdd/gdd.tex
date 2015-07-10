@@ -118,13 +118,14 @@
 \textbf{Versão}     & \textbf{Data}     & \textbf{Descrição}                                    & \textbf{Autor}    \\ \hline
 0.1                 & 14/04/2015        & Versão inicial                                        & Álex Mesquita     \\ \hline
 0.2                 & 15/04/2015        & Requisitos Tecnológicos                               & Álex Mesquita     \\ \hline
-0.3                 & 15/04/2015        & Revisão ortográfica                                   &                   \\ \hline
+0.3                 & 15/04/2015        & Revisão ortográfica                                   & Álex Mesquita     \\ \hline
 0.4                 & 25/04/2015        & Front End                                             & Álex Mesquita     \\ \hline
 0.5                 & 29/04/2015        & Atualização da imagem de fundo                        & Álex Mesquita     \\ \hline
 0.5.1               & 21/05/2015        & Criação das mecânicas do jogo - Exploração vertical   & Jefferson Xavier  \\ \hline
 0.5.2               & 21/05/2015        & Criação da Mecânica Exploração horizontal             & Jefferson Xavier  \\ \hline
 0.6                 & 21/05/2015        & Finalização das Mecânicas                             & Jefferson Xavier  \\ \hline
-0.7                 & 20/06/2015        & Atualização dos Objetivos e criação do Gameplay       & Álex Mesquita  \\ \hline
+0.7                 & 20/06/2015        & Atualização dos Objetivos e criação do Gameplay       & Álex Mesquita     \\ \hline
+0.7                 & 10/07/2015        & Criação das estruturas                                & Álex Mesquita     \\ \hline
 \end{tabu}
 \end{table}
 
@@ -256,6 +257,46 @@ Condições de vitória e derrota:
 O jogo contará com 3 recursos distintos para realizar a progressão da base e dos personagens, sendo eles Data, Matéria e Energia.
 
 \subsubsection{Estrutura}
+
+\paragraph{Barracks} \mbox{}\\
+Estrutura fundamental para desenvolvimento dos personagens, todo o planejamento em relação a habilidades, equipamento e equipe são feitos nesta tela.
+
+Funções:
+\begin{itemize}
+  \item \textbf{Chat} - Hank,  supervisor geral do centro de treinamento de forças especiais, um homem certamente muito habilidoso e respeitado.
+  \item \textbf{Inspect} - Tela para analisar o status do seu personagem e avançar de nível.
+  \item \textbf{Equip} - Tela para equipar e comprar equipamentos.
+  \item \textbf{Party} - Tela para se escolher a equipe que vai fazer a exploração da torre.
+\end{itemize}
+
+
+\paragraph{Facilities} \mbox{}\\
+Estrutura de upgrades gerais, habilita schematics e habilidades passivas.
+
+Funções:
+\begin{itemize}
+  \item \textbf{Chat}
+    \begin{enumerate}
+      \item \textbf{Militar} - Bowie, homem loiro e de grande porte/estatura porém levemente gentil.
+      \item \textbf{Psiônico} - Ripley, mulher magra, misteriosa, com aparencia frágil e com roupas coladas cabelos ruivos. 
+      \item \textbf{Tecnológico} - Connor, Hacker numa colônia espacial
+    \end{enumerate}
+  \item \textbf{Militar} - Tela onde os personagens militares que estão em criogenia serão acordados, para cada 15 personagens acordados o level das armas do tipo militar terão um acrescimo de uma unidade.
+  \item \textbf{Psiônico} - Tela onde os personagens psiônicos que estão em criogenia serão acordados, para cada 15 personagens acordados o level das armas do tipo psiônico terão um acrescimo de uma unidade.
+  \item \textbf{Tecnológico} - Tela onde os personagens tecnológicos que estão em criogenia serão acordados, para cada 15 personagens acordados o level das armas do tipo tecnológico terão um acrescimo de uma unidade.
+\end{itemize}
+
+\paragraph{Hospital} \mbox{}\\
+Estrutura onde se compra itens, cura e revive os personagens e se realiza novas pesquisas tanto de medicamentos e genética. 
+
+Funções:
+\begin{itemize}
+  \item \textbf{Chat} - Doutora Anne C. Clarke, Loira olhos azuis, óculos, cabelo preso com rabo de cavalo, jaleco.
+  \item \textbf{Itens} - Medicamentos de cura, aumento de potencial humano. 
+  \item \textbf{Research} - Pesquisa dos itens através de pesquisas liberadas em facilities e descobertas da torre.
+  \item \textbf{Revive} - Cura personagens e revive os mortos. 
+\end{itemize}
+
 \subsubsection{Pesquisas}
 \subsubsection{NPCs}
 
