@@ -1,5 +1,5 @@
 /*
- * Equipe class implementation
+ * Equip class implementation
  *
  * Author: Tiamat
  * Date: 07/07/2015
@@ -22,22 +22,16 @@
 
 using std::to_string;
 
-Equip::Equip(int slot, Object *parent, Character *character)
+Equip::Equip(int slot, Object *parent)
     : Object(parent), m_slot(slot), m_matter_cost(0), m_energy_cost(0),
-        m_class("weapon"), m_state("rifle")
+        m_class("weapon"), m_state("rifle"), m_barracks(nullptr)
 {
     parent->add_observer(this);
-    m_character = character;
+
+    m_barracks = dynamic_cast<Barracks *>(parent);
 
     load_textures();
     create_buttons();
-}
-
-void
-Equip::set_character(Character *character)
-{
-    m_character = character;
-    // printf("set: %s\n", m_character->id().c_str());
 }
 
 void
@@ -332,9 +326,10 @@ Equip::draw_equipments()
         font->set_size(16);
         if (m_status->state() != Button::ACTIVE)
         {
-            if (atoi(get_equipment(m_equipment, "m").c_str()) > m_character->military() or
-                atoi(get_equipment(m_equipment, "p").c_str()) > m_character->psionic() or
-                atoi(get_equipment(m_equipment, "t").c_str()) > m_character->tech() or
+            Character *c = m_barracks->current_char();
+            if (atoi(get_equipment(m_equipment, "m").c_str()) > c->military() or
+                atoi(get_equipment(m_equipment, "p").c_str()) > c->psionic() or
+                atoi(get_equipment(m_equipment, "t").c_str()) > c->tech() or
                 atoi(get_equipment(m_equipment, "matter").c_str()) > Colony(m_slot).matter() or
                 atoi(get_equipment(m_equipment, "energy").c_str()) > Colony(m_slot).energy())
             {
@@ -446,15 +441,17 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             Environment *env = Environment::get_instance();
             shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
                 to_string(m_slot) + "/" + m_class + ".sav");
-            int equiped = settings->read<int>(m_equipment, m_character->id(), 0);
+            
+            Character *c = m_barracks->current_char();            
+            int equiped = settings->read<int>(m_equipment, c->id(), 0);
 
             if (equiped)
             {
                 m_status->change_state(Button::ACTIVE);
             }
-            else if (atoi(get_equipment(b.first, "m").c_str()) > m_character->military() or
-                atoi(get_equipment(b.first, "p").c_str()) > m_character->psionic() or
-                atoi(get_equipment(b.first, "t").c_str()) > m_character->tech() or
+            else if (atoi(get_equipment(b.first, "m").c_str()) > c->military() or
+                atoi(get_equipment(b.first, "p").c_str()) > c->psionic() or
+                atoi(get_equipment(b.first, "t").c_str()) > c->tech() or
                 atoi(get_equipment(b.first, "matter").c_str()) > Colony(m_slot).matter() or
                 atoi(get_equipment(b.first, "energy").c_str()) > Colony(m_slot).energy())
             {
@@ -521,7 +518,8 @@ Equip::buy_equipment(ObjectID equipment)
     Environment *env = Environment::get_instance();
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/" + m_class + ".sav");
-    settings->write<int>(equipment, m_character->id(), 1);
+
+    settings->write<int>(equipment, m_barracks->current_char()->id(), 1);
     settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
 }
 

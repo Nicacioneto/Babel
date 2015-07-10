@@ -12,14 +12,14 @@
 #include <map>
 
 class Button;
+class Barracks;
 
 using std::map;
 
 class Equip : public Object
 {
 public:
-    Equip(int slot, Object *parent = nullptr, Character *character = nullptr);
-    void set_character(Character *character);
+    Equip(int slot, Object *parent = nullptr);
 
 private:
     typedef string State;
@@ -28,9 +28,9 @@ private:
     int m_slot, m_matter_cost, m_energy_cost;
     EquipmentClass m_class;
     ObjectID m_equipment;
-    Character *m_character;
     Button *m_status;
     State m_state;
+    Barracks *m_barracks;
 
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;

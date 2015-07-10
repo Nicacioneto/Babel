@@ -21,7 +21,7 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT), m_equip(nullptr)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -31,10 +31,9 @@ Barracks::Barracks(int slot, const string& next)
     load_characters();
     current_char()->set_visible(true);
 
-    Equip *m_equip = new Equip(m_slot, this, current_char());
+    m_equip = new Equip(m_slot, this);
     m_equip->set_visible(false);
     m_equip->add_observer(this);
-    m_equip->set_character(current_char());
     add_child(m_equip);
 }
 
@@ -335,7 +334,6 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Character *c = current_char();
-    c->set_visible(false);
 
     hide_buttons();
 
@@ -345,13 +343,10 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         {
             m_character = m_characters.size() - 1;
         }
-
-        m_equip->set_character(current_char());
     }
     else if (button->id() == "right_arrow")
     {
         m_character = (m_character + 1) % m_characters.size();
-        m_equip->set_character(current_char());
     }
     else if (button->id() == "levelup_m")
     {
@@ -474,7 +469,6 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     change_buttons();
-    current_char()->set_visible(true);
 
     return true;
 }
@@ -583,13 +577,11 @@ Barracks::on_event(const KeyboardEvent& event)
             m_character = m_characters.size() - 1;
         }
 
-        m_equip->set_character(current_char());
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)
     {
         m_character = (m_character + 1) % m_characters.size();
-        m_equip->set_character(current_char());
     }
 
     current_char()->set_visible(true);
