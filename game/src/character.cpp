@@ -148,7 +148,6 @@ Character::load_texts()
     shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
     env->canvas->set_font(font);
     
-
     string military = to_string(m_military);
     string psionic = to_string(m_psionic);
     string tech = to_string(m_tech);
@@ -178,6 +177,19 @@ Character::load_texts()
     m_texts[m_name + "_max_shield"] = new Text(this, max_shield, Color(170, 215, 190));
     m_texts[m_name + "_max_life"] = new Text(this, max_life, Color(170, 215, 190));
     m_texts[m_name + "_max_mp"] = new Text(this, max_mp, Color(170, 215, 190));
+}
+
+void
+Character::delete_texts()
+{
+    for (auto text : m_texts)
+    {
+        if (text.second != nullptr)
+        {
+            delete text.second;
+            text.second = nullptr;
+        }
+    }
 }
 
 void
@@ -255,6 +267,28 @@ Character::set_attributes_positions()
 
         m_texts[m_name + "_tech"]->set_position(x_tech, y_tech);
     }
+}
+
+void
+Character::update_from_levelup(string class_)
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/levelup.sav");
+
+    set_life(m_life + settings->read<int>(class_, "life", 0));
+    set_max_life(m_max_life + settings->read<int>(class_, "life", 0));
+    set_mp(m_mp + settings->read<int>(class_, "mp", 0));
+    set_max_mp(m_max_mp + settings->read<int>(class_, "mp", 0));
+    set_might(m_might + settings->read<int>(class_, "might", 0));
+    set_mind(m_mind + settings->read<int>(class_, "mind", 0));
+    set_resilience(m_resilience + settings->read<int>(class_, "resilience", 0));
+    set_willpower(m_willpower + settings->read<int>(class_, "willpower", 0));
+    set_agility(m_agility + settings->read<int>(class_, "agility", 0));
+    set_perception(m_perception + settings->read<int>(class_, "perception", 0));
+
+    delete_texts();
+    load_texts();
 }
 
 bool

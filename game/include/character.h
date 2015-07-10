@@ -27,6 +27,7 @@ public:
     ~Character();
 
     int receive_damage(Character *character);
+    void update_from_levelup(string class_);
 
     Type type() const;
     int attacks_quantity() const;
@@ -130,6 +131,7 @@ private:
     void draw_self();
     void draw_attributes();
     void load_texts();
+    void delete_texts();
     void set_attributes_positions();
     bool on_event(const MouseButtonEvent& event);
 

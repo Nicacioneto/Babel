@@ -52,7 +52,6 @@ private:
     void hide_buttons();
     void change_buttons();
     Character * current_char() const;
-    void update_char_attributes(Character *c, string class_);
     bool on_event(const KeyboardEvent& event);
 };
 
