@@ -358,9 +358,6 @@ Action::draw_item()
             525 * scale_w, 382 * scale_h);
         env->canvas->draw(m_hover_button, 550 * scale_w, 400 * scale_h, color);
     }
-
-    // TODO not work
-    font->set_size(18);
 }
 
 void

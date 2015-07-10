@@ -31,10 +31,6 @@ Combat::Combat(int slot, const string& next)
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
 
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(30);
-
     load_team();
     load_enemies();
 
@@ -279,27 +275,27 @@ Combat::load_enemies()
     int h = 265 * scale_h;
     int i = 0;
 
-    Character *enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    Character *enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         58 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         194 * scale_w, 247 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         330 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         530 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         665 * scale_w, 247 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
-    enemy = new Character(m_slot, this, "technopus" + to_string(++i), "technopus.png",
+    enemy = new Character(m_slot, this, "Technopus" + to_string(++i), "Technopus.png",
         800 * scale_w, 200 * scale_h, w, h, Character::ENEMY);
     m_enemies[enemy->id()] = enemy;
 
@@ -403,6 +399,11 @@ Combat::on_event(const KeyboardEvent& event)
 void
 Combat::set_text(const string& str, const Color& color)
 {
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(30);
+
     if (m_text)
     {
         delete m_text;
