@@ -11,8 +11,9 @@
 #include <memory>
 #include <map>
 
-class Button;
 class Barracks;
+class Button;
+class Settings;
 
 using std::map;
 
@@ -31,6 +32,7 @@ private:
     Button *m_status;
     State m_state;
     Barracks *m_barracks;
+    shared_ptr<Settings> m_settings;
 
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;

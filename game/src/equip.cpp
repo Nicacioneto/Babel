@@ -24,7 +24,7 @@ using std::to_string;
 
 Equip::Equip(int slot, Object *parent)
     : Object(parent), m_slot(slot), m_matter_cost(0), m_energy_cost(0),
-        m_class("weapon"), m_state("rifle"), m_barracks(nullptr)
+        m_class("weapon"), m_state(""), m_barracks(nullptr), m_settings(nullptr)
 {
     parent->add_observer(this);
 
@@ -32,6 +32,10 @@ Equip::Equip(int slot, Object *parent)
 
     load_textures();
     create_buttons();
+
+    Environment *env = Environment::get_instance();
+    m_settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/" + m_class + ".sav");
 }
 
 void
@@ -226,8 +230,8 @@ Equip::load_equipments(string type)
         button->set_sprites(1);
         button->set_text(it.first, color);
         button->set_dimensions(button->text()->w() * scale_w, button->text()->h() * scale_h);
-        button->set_active(m_state == get_equipment(it.first, "type"));
-        button->set_visible(m_state == get_equipment(it.first, "type"));
+        button->set_active(false);
+        button->set_visible(false);
         m_equipments[type][button->id()] = button;
         button->add_observer(this);
         add_child(button);
@@ -302,12 +306,6 @@ Equip::draw_equipments()
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_w, (384+17) * scale_h, color);
 
-    // printf("%s\n", m_character->id().c_str());
-
-        // Rect clip = Rect(0, yi * 30, 298, 30);
-        // env->canvas->draw(m_textures["status"].get(), clip, 145 * scale_w, 432 * scale_h,
-        //     298 * scale_w, 30 * scale_h);
-
         color = Color(170, 215, 190);
         env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_w, 512 * scale_h, color);
         env->canvas->draw("state-of-the art weapon, being", 211 * scale_w,
@@ -374,10 +372,7 @@ Equip::draw_equipments()
 string
 Equip::get_equipment(string equipment_id, string attr)
 {
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/" + m_class + ".sav");
-    return settings->read<string>(equipment_id, attr, "+0");
+    return m_settings->read<string>(equipment_id, attr, "+0");
 }
 
 bool
@@ -456,12 +451,8 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             ok = false;
             m_equipment = b.first;
 
-            Environment *env = Environment::get_instance();
-            shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-                to_string(m_slot) + "/" + m_class + ".sav");
-            
             Character *c = m_barracks->current_char();            
-            int equiped = settings->read<int>(m_equipment, c->id(), 0);
+            int equiped = m_settings->read<int>(m_equipment, c->id(), 0);
 
             if (equiped)
             {
@@ -479,6 +470,8 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             {
                 m_status->change_state(Button::IDLE);
             }
+
+            m_status->set_visible(true);
         }
 
         b.second->set_active(get_equipment(b.first, "type") == m_state);
@@ -533,12 +526,8 @@ Equip::buy_equipment(ObjectID equipment)
     Colony(m_slot).set_matter(Colony(m_slot).matter() - m_matter_cost);
     Colony(m_slot).set_energy(Colony(m_slot).energy() - m_energy_cost);
 
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/" + m_class + ".sav");
-
-    settings->write<int>(equipment, m_barracks->current_char()->id(), 1);
-    settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
+    m_settings->write<int>(equipment, m_barracks->current_char()->id(), 1);
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/" + m_class + ".sav");
 }
 
 void
