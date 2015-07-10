@@ -25,7 +25,7 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
     double x, double y, double w, double h, Type type)
     : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), 
         m_bracket_small(nullptr), m_bracket_big(nullptr), m_settings(nullptr),
-        m_name(id), m_type(type), m_style(SMALL), m_attacks_quantity(0)
+        m_name(id), m_type(type), m_style(SMALL), m_attacks_quantity(0), m_mpt_mode(false)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -87,13 +87,8 @@ Character::init()
     m_willpower = m_settings->read<int>(m_name, "willpower", 0);
     m_agility = m_settings->read<int>(m_name, "agility", 0);
     m_perception = m_settings->read<int>(m_name, "perception", 0);
-    // m_might_attack = m_settings->read<int>(m_name, "might_attack", 0);
-    // m_mind_attack = m_settings->read<int>(m_name, "mind_attack", 0);
-    // m_defense = m_settings->read<int>(m_name, "defense", 0);
-    // m_cooldown = m_settings->read<int>(m_name, "cooldown", 0);
     m_might_armor = m_settings->read<int>(m_name, "might_armor", 0);
     m_mind_armor = m_settings->read<int>(m_name, "mind_armor", 0);
-    // m_critical = m_settings->read<int>(m_name, "critical", 0);
     set_might_attack(m_might*10 + range((-1)*m_might, m_might));
     set_mind_attack(m_mind*10 + range((-1)*m_mind, m_mind));
     set_defense(m_resilience);
@@ -137,20 +132,22 @@ Character::draw_attributes()
 
     m_texts[m_name]->draw();
 
-    m_texts[m_name + "_shield"]->draw();
-    m_texts[m_name + "_max_shield"]->draw();
-
-    m_texts[m_name + "_life"]->draw();
-    m_texts[m_name + "_max_life"]->draw();
-
-    m_texts[m_name + "_mp"]->draw();
-    m_texts[m_name + "_max_mp"]->draw();
-
-    if (m_style == BIG)
+    if (m_style == BIG or m_mpt_mode)
     {
         m_texts[m_name + "_military"]->draw();
         m_texts[m_name + "_psionic"]->draw();
         m_texts[m_name + "_tech"]->draw();
+    }
+    if (m_style == BIG or (m_style == SMALL and not m_mpt_mode))
+    {
+        m_texts[m_name + "_shield"]->draw();
+        m_texts[m_name + "_max_shield"]->draw();
+
+        m_texts[m_name + "_life"]->draw();
+        m_texts[m_name + "_max_life"]->draw();
+
+        m_texts[m_name + "_mp"]->draw();
+        m_texts[m_name + "_max_mp"]->draw();
     }
 }
 
@@ -214,17 +211,11 @@ Character::set_attributes_positions()
 
     m_texts[m_name]->set_position(x() + 131 * scale_w, y() + 3 * scale_h);
 
-    Rect box;
-    if (m_style == SMALL)
-    {
-        box.set_position(x() + 172 * scale_w, y() + 32 * scale_h);
-        box.set_dimensions(40 * scale_w, 21 * scale_h);
-    }
-    else
-    {
-        box.set_position(x() + 144 * scale_w, y() + 160 * scale_h);
-        box.set_dimensions(65 * scale_w, 20 * scale_h);
-    }
+    int x_plus = 0, y_plus = 0, w = 0, h = 0;
+    m_style == BIG ? (x_plus = 144, y_plus = 160, w = 65, h = 20) :
+        (x_plus = 172, y_plus = 32, w = 40, h = 21);
+
+    Rect box(x() + x_plus * scale_w, y() + y_plus * scale_h, w * scale_w, h * scale_h);
 
     double w_shield = m_texts[m_name + "_shield"]->w() + m_texts[m_name + "_max_shield"]->w();
     double x_shield = (box.w() - w_shield)/2 + box.x();
@@ -258,28 +249,27 @@ Character::set_attributes_positions()
     m_texts[m_name + "_mp"]->set_position(x_mp, y_mp);
     m_texts[m_name + "_max_mp"]->set_position(x_max_mp, y_max_mp);
 
-    if (m_style == BIG)
-    {
-        box.set_position(x() + 170 * scale_w, y() + 37 * scale_h);
-        box.set_dimensions(40 * scale_w, 22 * scale_h);
+    m_style == BIG ? (x_plus = 170, y_plus = 37) : (x_plus = 172, y_plus = 32);
 
-        double x_military = (box.w() - m_texts[m_name + "_military"]->w())/2 + box.x();
-        double y_military = (box.h() - m_texts[m_name + "_military"]->h())/2 + box.y();
+    box.set_position(x() + x_plus * scale_w, y() + y_plus * scale_h);
+    box.set_dimensions(40 * scale_w, 21 * scale_h); 
 
-        m_texts[m_name + "_military"]->set_position(x_military, y_military);
-        
-        box.set_y(y() + 69 * scale_h);
-        double x_psionic = (box.w() - m_texts[m_name + "_psionic"]->w())/2 + box.x();
-        double y_psionic = (box.h() - m_texts[m_name + "_psionic"]->h())/2 + box.y();
+    double x_military = (box.w() - m_texts[m_name + "_military"]->w())/2 + box.x();
+    double y_military = (box.h() - m_texts[m_name + "_military"]->h())/2 + box.y();
 
-        m_texts[m_name + "_psionic"]->set_position(x_psionic, y_psionic);
+    m_texts[m_name + "_military"]->set_position(x_military, y_military);
+    
+    (m_style == SMALL ? box.set_y(y() + 59 * scale_h) : box.set_y(y() + 69 * scale_h));
+    double x_psionic = (box.w() - m_texts[m_name + "_psionic"]->w())/2 + box.x();
+    double y_psionic = (box.h() - m_texts[m_name + "_psionic"]->h())/2 + box.y();
 
-        box.set_y(y() + 100 * scale_h);
-        double x_tech = (box.w() - m_texts[m_name + "_tech"]->w())/2 + box.x();
-        double y_tech = (box.h() - m_texts[m_name + "_tech"]->h())/2 + box.y();
+    m_texts[m_name + "_psionic"]->set_position(x_psionic, y_psionic);
 
-        m_texts[m_name + "_tech"]->set_position(x_tech, y_tech);
-    }
+    (m_style == SMALL ? box.set_y(y() + 86 * scale_h) : box.set_y(y() + 100 * scale_h));
+    double x_tech = (box.w() - m_texts[m_name + "_tech"]->w())/2 + box.x();
+    double y_tech = (box.h() - m_texts[m_name + "_tech"]->h())/2 + box.y();
+
+    m_texts[m_name + "_tech"]->set_position(x_tech, y_tech);
 }
 
 void
@@ -701,6 +691,12 @@ void
 Character::set_defense_mode(bool defense_mode)
 {
     m_defense_mode = defense_mode;
+}
+
+void
+Character::set_mpt_mode(bool mpt_mode)
+{
+    m_mpt_mode = mpt_mode;
 }
 
 template<typename T> void

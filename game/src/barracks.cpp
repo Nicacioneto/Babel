@@ -400,6 +400,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         for (auto character : m_characters)
         {
             character.second->set_texture(character.first + "_small.png");
+            character.second->set_mpt_mode(true);
             character.second->set_h(123 * scale_h);
         }
 
@@ -421,6 +422,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             for (auto character : m_characters)
             {
                 character.second->set_texture(character.first + "_big.png");
+                character.second->set_mpt_mode(false);
                 character.second->set_h(270 * scale_h);
             }
 

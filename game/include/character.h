@@ -86,6 +86,7 @@ public:
     void set_mind_armor(int mind_armor);
     void set_critical(int critical);
     void set_defense_mode(bool defense_mode);
+    void set_mpt_mode(bool mpt_mode);
 
 private:
     int m_slot;
@@ -98,6 +99,7 @@ private:
     Type m_type;
     Style m_style;
     int m_attacks_quantity;
+    bool m_mpt_mode;
     map<ObjectID, Text*> m_texts;
 
     int m_military;
