@@ -41,6 +41,8 @@ Hospital::Hospital(int slot, const string& next)
     add_children();
     set_pages_text();
     create_buttons();
+
+    notify(m_screen, "");
 }
 
 void

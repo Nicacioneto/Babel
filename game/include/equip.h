@@ -35,7 +35,7 @@ private:
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;
     map<ObjectID, Button *> m_shield;
-    map<ObjectID, Button *> m_rifle;
+    map<ObjectID, Button *> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, shared_ptr<Texture>> m_attributes;
@@ -51,6 +51,7 @@ private:
     void deactivate_equipments();
     void buy_equipment(ObjectID equipment);
     void change_buttons();
+    void change_buttons(bool visible);
 };
 
 #endif

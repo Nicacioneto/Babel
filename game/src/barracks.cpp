@@ -35,6 +35,8 @@ Barracks::Barracks(int slot, const string& next)
     m_equip->set_visible(false);
     m_equip->add_observer(this);
     add_child(m_equip);
+
+    notify("disable equip", "");
 }
 
 Barracks::~Barracks()
@@ -84,27 +86,6 @@ Barracks::create_buttons()
     button = new Button(this, "back", path + "back.png",
         912 * scale_w, 55 * scale_h, 67 * scale_w, 26 * scale_h);
     button->set_sprites(1);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "weapon", path + "rifle.png",
-        112 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "armor", path + "armor.png",
-        194 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "shield", path + "shield.png",
-        278 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
@@ -422,19 +403,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             character.second->set_h(123 * scale_h);
         }
 
-        notify("enable equip screen", "");
-    }
-    else if (button->id() == "weapon")
-    {
-        notify(button->id(), "");
-    }
-    else if (button->id() == "armor")
-    {
-        notify(button->id(), "");
-    }
-    else if (button->id() == "shield")
-    {
-        notify(button->id(), "");
+        notify("enable equip", "");
     }
     else if (button->id() == "back")
     {
@@ -455,7 +424,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
                 character.second->set_h(270 * scale_h);
             }
 
-            notify("disable equip screen", "");
+            notify("disable equip", "");
         }
         else
         {
@@ -536,13 +505,6 @@ Barracks::change_buttons()
     m_buttons["levelup_t"]->set_visible(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_active(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
-
-    m_buttons["weapon"]->set_active(m_screen == EQUIP);
-    m_buttons["weapon"]->set_visible(m_screen == EQUIP);
-    m_buttons["armor"]->set_active(m_screen == EQUIP);
-    m_buttons["armor"]->set_visible(m_screen == EQUIP);
-    m_buttons["shield"]->set_active(m_screen == EQUIP);
-    m_buttons["shield"]->set_visible(m_screen == EQUIP);
 }
 
 Character *

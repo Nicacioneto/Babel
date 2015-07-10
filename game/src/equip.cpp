@@ -161,6 +161,33 @@ Equip::create_buttons()
         add_child(b.second);
     }
 
+    button = new Button(this, "weapon", "res/images/colony/barracks/rifle.png",
+        112 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "armor", "res/images/colony/barracks/armor.png",
+        194 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "shield", "res/images/colony/barracks/shield.png",
+        278 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
+    button->set_sprites(1);
+    button->set_active(false);
+    button->set_visible(false);
+    m_buttons[button->id()] = button;
+
+    for (auto b : m_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
+
     load_equipments("weapon");
     load_equipments("armor");
     load_equipments("shield");
@@ -360,27 +387,8 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
 
     if (barracks)
     {
-        deactivate_equipments();
-
-        if (id == "weapon")
-        {
-            m_class = "weapon";
-            m_equipment.clear();
-        }
-        else if (id == "armor")
-        {
-            m_class = "armor";
-            m_equipment.clear();
-        }
-        else if (id == "shield")
-        {
-            m_class = "shield";
-            m_equipment.clear();
-        }
-        else
-        {
-            set_visible(id.find("enable") != string::npos);
-        }
+        set_visible(id == "enable equip");
+        change_buttons(visible());
 
         m_status->set_active(false);
         m_status->set_visible(false);
@@ -396,6 +404,16 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     }
 
     deactivate_equipments();
+
+    for (auto b : m_buttons)
+    {
+        if (button->id() == b.first)
+        {
+            m_class = b.first;
+            m_equipment.clear();
+            break;
+        }
+    }
 
     for (auto b : m_weapons)
     {
@@ -430,12 +448,12 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
     m_status->set_active(not m_equipment.empty());
     m_status->set_visible(not m_equipment.empty());
 
-    bool ok = 1;
+    bool ok = true;
     for (auto b : m_equipments[m_class])
     {
         if (button->id() == b.first)
         {
-            ok = 0;
+            ok = false;
             m_equipment = b.first;
 
             Environment *env = Environment::get_instance();
@@ -474,7 +492,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             buy_equipment(m_equipment);
         }
 
-        ok = 0;
+        ok = false;
         button->change_state(Button::ACTIVE);
     }
 
@@ -539,5 +557,36 @@ Equip::change_buttons()
     for (auto b : m_shield)
     {
         b.second->change_state(Button::IDLE);
+    }
+}
+
+void
+Equip::change_buttons(bool visible)
+{
+    for (auto b : m_buttons)
+    {
+        b.second->set_visible(visible);
+        b.second->set_active(visible);
+    }
+    
+    for (auto b : m_weapons)
+    {
+        b.second->set_visible(visible);
+        b.second->set_active(visible);
+    }
+
+    if (not visible)
+    {
+        for (auto b : m_armor)
+        {
+            b.second->set_visible(false);
+            b.second->set_active(false);
+        }
+        
+        for (auto b : m_shield)
+        {
+            b.second->set_visible(false);
+            b.second->set_active(false);
+        }
     }
 }
