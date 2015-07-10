@@ -25,7 +25,7 @@ using std::to_string;
 Dungeon::Dungeon(int slot, int steps, int probability_combat)
     : Level("dungeon", ""), m_slot(slot), m_steps(steps), m_delta(0),
         m_probability_combat(probability_combat), m_last(0), m_state(WAITING),
-        m_levels(0), m_front_blocked(false)
+        m_levels(0), m_front_blocked(false), m_door(0), m_screen(nullptr)
 {
     Environment *env = Environment::get_instance();
 
@@ -197,7 +197,20 @@ Dungeon::update_self(unsigned long elapsed)
     }
     else if (m_state == DOOR)
     {
-        printf("Estado de porta...\n");
+        if (elapsed - m_last < 350)
+        {
+            return;
+        }
+
+        m_last = elapsed;
+
+        ++m_door;
+        if (m_door > 12)
+        {
+            m_state = MOVING;
+            steps_to_foward();
+            m_door = 4;
+        }
     }
 
     if (m_levels == 1 and m_delta == 1)
@@ -276,7 +289,14 @@ Dungeon::draw_self()
 
         if (north_tile)
         {
-            mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
+            if (m_state == DOOR)
+            {
+                mapping.draw_center(m_screen, m_tiles[m_door].get(), back);
+            }
+            else
+            {
+                mapping.draw_center(m_screen, m_tiles[north_tile].get(), back);
+            }
             blocked = true;
             break;
         }
@@ -505,6 +525,8 @@ Dungeon::load_tiles()
         }
         catch (Exception) {}
     }
+
+    m_door = 4; //init door
 }
 
 void
@@ -516,7 +538,6 @@ Dungeon::calculate_probability_combat()
 
     if (random < m_probability_combat)
     {
-        return;
         Environment *env = Environment::get_instance();
         string path = "res/datas/slot" + to_string(m_slot) + "/dungeon.sav";
         

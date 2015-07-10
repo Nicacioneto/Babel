@@ -60,11 +60,11 @@ private:
     Room **m_rooms;
 
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
+    int m_door;
     Bitmap *m_screen;
     
     list<Rect> planes(int w, int h, double& ratio);
     Rect center(int sw, int sh) const;
-
 };
 
 #endif
