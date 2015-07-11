@@ -275,7 +275,12 @@ Equip::draw_self()
     env->canvas->draw(m_textures["resources"].get(), 518 * scale_w, 432 * scale_h);
     env->canvas->draw(to_string(Colony(m_slot).matter()), 550 * scale_w, 437 * scale_h, color);
     env->canvas->draw(to_string(Colony(m_slot).energy()), 615 * scale_w, 437 * scale_h, color);
-    env->canvas->draw("Avaible " + m_type + "s", 700 * scale_w, 436 * scale_h, Color(84, 107, 95));
+
+    string text = m_type == "shield_shield" ? "shield" : m_type;
+    if (not m_type.empty())
+    {
+        env->canvas->draw("Avaible " + text + "s", 700 * scale_w, 436 * scale_h, Color(84, 107, 95));
+    }
 
     for (auto b : m_weapons)
     {

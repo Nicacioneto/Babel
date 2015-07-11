@@ -702,323 +702,323 @@ agility=+25
 hit_chance=%80
 text=The Boa is a long-coil double-striking psy-edge that disrupts and destroys the psy-field of it's enemy.
 
-[1. Light 1]
+[1. Silk 05]
 class=armor
 type=light
-name=Light
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
+name=Silk
+m=0
+p=0
+t=0
+matter=50
+energy=50
+might=+0
 mind=+0
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Silk armor is made of carbon nano-tubes that covers any nook, cranny and crevice of it's wearer.
 
-[2. Light 2]
+[2. Flax J10]
 class=armor
 type=light
-name=Light
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
-mind=+0
+name=Flax
+m=0
+p=2
+t=0
+matter=100
+energy=120
+might=+0
+mind=+5
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Flax uses psy-energy to remake itself, making it a reliable armor for long firefights.
 
-[3. Light 3]
+[3. Wool 2000]
 class=armor
 type=light
-name=Light
-m=1
-p=1
+name=Wool
+m=0
+p=4
 t=1
-matter=200
-energy=100
+matter=320
+energy=200
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Wool is made of a nanite thread that stores micro psy-powered energy, transfering them to it's wearer whenever needed.
 
-[4. Light 4]
+[4. Leather X]
 class=armor
 type=light
-name=Light
+name=Leather
 m=1
-p=1
+p=6
 t=1
-matter=200
-energy=100
+matter=400
+energy=250
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Leather is made of a layered psy-powered tech-skin, able to regenerate lost psy-power.
 
-[1. Medium 1]
+[1. Weave LT]
 class=armor
 type=medium
-name=Medium
-m=1
-p=1
+name=Weave
+m=0
+p=0
 t=1
-matter=200
+matter=240
 energy=100
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Weave is made from alien-earth alloy, making it a hardy surface to pierce.
 
-[2. Medium 2]
+[2. Knit YM]
 class=armor
 type=medium
-name=Medium
-m=1
-p=1
-t=1
-matter=200
-energy=100
+name=Knit
+m=0
+p=0
+t=3
+matter=350
+energy=200
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Knit is an eletrical powered surface that creates a local mag-fields to disrupt enemy attacks.
 
-[3. Medium 3]
+[3. Braid 3EU]
 class=armor
 type=medium
-name=Medium
+name=Braid
 m=1
-p=1
-t=1
-matter=200
-energy=100
+p=0
+t=6
+matter=500
+energy=400
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Braid is made of fission powered links woven around the wearer's body, deploying counter-energy fields.
 
-[4. Medium 4]
+[4. Interwine Z]
 class=armor
 type=medium
-name=Medium
-m=1
+name=Interwine
+m=2
 p=1
-t=1
-matter=200
+t=8
+matter=750
 energy=100
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Interwine is a harness that creates an energy-turned-physical armor that is able to stop energy attacks of any kind.
 
-[1. Heavy 1]
+[1. Cast GNR]
 class=armor
 type=heavy
-name=Weave
-m=1
-p=1
-t=1
-matter=200
-energy=100
+name=Cast
+m=2
+p=0
+t=0
+matter=220
+energy=80
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Cast is made of layered mechanical plates that moves on the body, intercepting incoming attacks.
 
-[2. Heavy 2]
+[2. Smelt TES]
 class=armor
 type=heavy
-name=Weave
-m=1
-p=1
-t=1
-matter=200
-energy=100
+name=Smelt
+m=4
+p=0
+t=0
+matter=400
+energy=340
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Smelt's armor composite plates reforges itself after each blow, making it a hardy armor worthy of space warfare.
 
-[3. Heavy 3]
+[3. Forge RS12]
 class=armor
 type=heavy
-name=Weave
-m=1
-p=1
+name=Forge
+m=7
+p=0
 t=1
-matter=200
-energy=100
+matter=600
+energy=450
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Forge is made of heavy-metal nanites that transfer the matter of incoming attacks into the armor.
 
-[4. Heavy 4]
+[4. Crucible 4000]
 class=armor
 type=heavy
-name=Weave
-m=1
-p=1
-t=1
-matter=200
-energy=100
+name=Crucible
+m=10
+p=0
+t=3
+matter=1000
+energy=600
 might=+10
 mind=+0
 speed=+0
 agility=+10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Crucible is made of matter building nanites that reforms and repairs the armor from the walls of the Tower.
 
-[1. Shield 1]
+[1. Targa M10]
 class=shield
-type=shield
-name=Moat
-m=1
-p=1
-t=1
+type=shield_shield
+name=Targa
+m=3
+p=0
+t=0
 matter=200
 energy=100
-might=+10
+might=+5
 mind=+0
 speed=+0
-agility=+10
+agility=-5
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Targa made of titanium-alloy, able to stop most small arms rounds at short range.
 
 
-[2. Shield 2]
+[2. Kite G8]
 class=shield
-type=shield
-name=Moat
-m=1
-p=1
-t=1
-matter=200
-energy=100
+type=shield_shield
+name=Kite
+m=5
+p=0
+t=0
+matter=450
+energy=120
 might=+10
 mind=+0
-speed=+0
-agility=+10
+speed=10
+agility=-10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Kite deploys a rotating protective layers technology that stops even explosive class weaponry.
 
-[3. Shield 3]
+[3. Scuta XSS]
 class=shield
-type=shield
-name=Moat
-m=1
-p=1
+type=shield_shield
+name=Scuta
+m=7
+p=0
 t=1
-matter=200
-energy=100
+matter=600
+energy=220
 might=+10
 mind=+0
 speed=+0
-agility=+10
+agility=-10
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Scuta uses nanites to change it's shape and matter-composition to defend at maximum capacity.
 
-[4. Shield 4]
+[4. Pavise SD12]
 class=shield
-type=shield
-name=Moat
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
+type=shield_shield
+name=Pavise
+m=9
+p=0
+t=3
+matter=750
+energy=200
+might=+20
 mind=+0
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Pavise deploys a building-class nanite that assembles disposable shields to block any incoming attack.
 
-[1. Barrier 1]
+[1. Fence O2]
+class=shield
+type=barrier
+name=Fence
+m=0
+p=0
+t=0
+matter=30
+energy=60
+might=+0
+mind=+0
+speed=+0
+agility=+0
+hit_chance=%50
+text=The Fence is the first line of defence of every soldier, disrupting energy-based attacks.
+
+[2. Moat N7]
 class=shield
 type=barrier
 name=Moat
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
+m=0
+p=0
+t=2
+matter=100
+energy=340
+might=+0
 mind=+0
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Moat is a triple layered energy-shield that recharge itself while the others are being destroyed.
 
-[2. Barrier 2]
+[3. Rampart K12]
 class=shield
 type=barrier
-name=Moat
-m=1
-p=1
-t=1
+name=Rampart
+m=0
+p=2
+t=6
 matter=200
-energy=100
-might=+10
+energy=560
+might=+0
 mind=+0
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Rampart deploys psy-vapours that enhance the energy field surrounding it.
 
-[3. Barrier 3]
+[4. Caslte OX]
 class=shield
 type=barrier
-name=Moat
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
+name=Caslte
+m=0
+p=3
+t=10
+matter=340
+energy=1000
+might=+0
 mind=+0
 speed=+0
-agility=+10
+agility=+0
 hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
-
-[4. Barrier 4]
-class=shield
-type=barrier
-name=Moat
-m=1
-p=1
-t=1
-matter=200
-energy=100
-might=+10
-mind=+0
-speed=+0
-agility=+10
-hit_chance=%50
-text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+text=The Castle is able to convert any kind of energy into it's batteries, making it nigh unlimited energy.
