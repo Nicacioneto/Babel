@@ -237,11 +237,6 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
         set_next(id);
         finish();
     }
-    // else if (button->id() == "inspect_drone")
-    // {
-    //     set_next("drone");
-    //     finish();
-    // }
     else if (button->id() == "inspect_team")
     {
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +

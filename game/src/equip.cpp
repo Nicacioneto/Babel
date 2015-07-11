@@ -536,8 +536,84 @@ Equip::buy_equipment(ObjectID equipment)
     Colony(m_slot).set_matter(Colony(m_slot).matter() - m_matter_cost);
     Colony(m_slot).set_energy(Colony(m_slot).energy() - m_energy_cost);
 
+    m_char = m_barracks->current_char();
+    for (auto icon : m_attributes)
+    {
+        string value = get_equipment(m_equipment, icon.first);
+        if (value.substr(1) == "0")
+        {
+            continue;
+        }
+
+        if (icon.first == "agility")
+        {
+            int new_value = calculate_attribute(m_char->agility(), value);
+            m_char->set_agility(new_value);
+        }
+        else if (icon.first == "critical")
+        {
+            int new_value = calculate_attribute(m_char->critical(), value);
+            m_char->set_critical(new_value);
+        }
+        else if (icon.first == "hit_chance")
+        {
+            int new_value = calculate_attribute(m_char->hit_chance(), value);
+            m_char->set_hit_chance(new_value);
+        }
+        else if (icon.first == "might")
+        {
+            int new_value = calculate_attribute(m_char->might(), value);
+            m_char->set_might(new_value);
+        }
+        else if (icon.first == "mind")
+        {
+            int new_value = calculate_attribute(m_char->mind(), value);
+            m_char->set_mind(new_value);
+        }
+        else if (icon.first == "perception")
+        {
+            int new_value = calculate_attribute(m_char->perception(), value);
+            m_char->set_perception(new_value);
+        }
+        else if (icon.first == "resilience")
+        {
+            int new_value = calculate_attribute(m_char->resilience(), value);
+            m_char->set_resilience(new_value);
+        }
+        else if (icon.first == "speed")
+        {
+            int new_value = calculate_attribute(m_char->cooldown(), value);
+            m_char->set_cooldown(new_value);
+        }
+        else if (icon.first == "willpower")
+        {
+            int new_value = calculate_attribute(m_char->willpower(), value);
+            m_char->set_willpower(new_value);
+        }
+    }
+
     m_settings->write<int>(equipment, m_barracks->current_char()->id(), 1);
     m_settings->save("res/datas/slot" + to_string(m_slot) + "/equipments.sav");
+}
+
+int
+Equip::calculate_attribute(int get, const string& value)
+{
+    int val = atoi(value.substr(1).c_str());
+    if (value.front() == '+')
+    {
+        return get + val;
+    }
+    else if (value.front() == '-')
+    {
+        return get - val;
+    }
+    else if (value.front() == '%')
+    {
+        return get * (1 + val/100.0);
+    }
+
+    return 0;
 }
 
 void

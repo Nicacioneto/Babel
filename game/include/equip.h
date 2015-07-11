@@ -57,6 +57,7 @@ private:
     bool on_message(Object *sender, MessageID id, Parameters p);
     void deactivate_equipments();
     void buy_equipment(ObjectID equipment);
+    int calculate_attribute(int get, const string& value);
     void change_buttons();
     void change_buttons(bool visible);
 };

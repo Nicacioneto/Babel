@@ -96,6 +96,7 @@ Character::init()
     set_defense(m_resilience);
     set_cooldown((m_agility + m_perception) / 2);
     set_critical(m_agility/4);
+    set_hit_chance(m_perception / 2);
     m_defense_mode = false;
     m_available = m_settings->read<bool>(m_name, "available", true);
     set_available(m_available);
@@ -116,14 +117,8 @@ Character::draw_self()
 
     if (m_type == HERO)
     {
-        if (m_style == SMALL)
-        {
-            env->canvas->draw(m_bracket_small.get(), x(), y());
-        }
-        else
-        {
+        m_style == SMALL ? env->canvas->draw(m_bracket_small.get(), x(), y()) :
             env->canvas->draw(m_bracket_big.get(), x(), y());
-        }
         
         draw_attributes();
     }
@@ -517,6 +512,12 @@ Character::critical() const
     return m_critical;
 }
 
+int
+Character::hit_chance() const
+{
+    return m_hit_chance;
+}
+
 bool
 Character::available() const
 {
@@ -723,6 +724,13 @@ Character::set_available(bool available)
 {
     m_available = available;
     write<bool>("available", available);
+}
+
+void
+Character::set_hit_chance(int hit_chance)
+{
+    m_hit_chance = hit_chance;
+    write<int>("hit_chance", hit_chance);
 }
 
 void

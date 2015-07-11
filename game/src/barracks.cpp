@@ -220,7 +220,7 @@ Barracks::draw_attributes()
     x = 900 * scale_w;
     env->canvas->draw(to_string(character->might_armor()), x, 125 * scale_h, color);
     env->canvas->draw(to_string(character->mind_armor()), x, 172 * scale_h, color);
-    env->canvas->draw(to_string(character->critical()), x, 219 * scale_h, color);
+    env->canvas->draw(to_string(character->hit_chance()), x, 219 * scale_h, color);
     env->canvas->draw(to_string(character->critical()), x, 266 * scale_h, color);
 }
 

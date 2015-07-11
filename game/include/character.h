@@ -56,6 +56,7 @@ public:
     int might_armor() const;
     int mind_armor() const;
     int critical() const;
+    int hit_chance() const;
     bool available() const;
 
     void set_texture(const string& id);
@@ -86,6 +87,8 @@ public:
     void set_might_armor(int might_armor);
     void set_mind_armor(int mind_armor);
     void set_critical(int critical);
+    void set_hit_chance(int hit_chance);
+
     void set_defense_mode(bool defense_mode);
     void set_mpt_mode(bool mpt_mode);
     void set_available(bool available);
@@ -131,6 +134,7 @@ private:
     int m_might_armor;
     int m_mind_armor;
     int m_critical;
+    int m_hit_chance;
     bool m_defense_mode;
     bool m_available;
 
