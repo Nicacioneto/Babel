@@ -30,8 +30,8 @@ Research::Research(int slot, Colony *colony, Object *parent)
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
 
-    m_textures["matter_energy"] = env->resources_manager->get_texture(path +
-        "icons/matter_energy.png");
+    m_textures["data"] = env->resources_manager->get_texture(path +
+        "icons/data.png");
 
     m_textures["health"] = env->resources_manager->get_texture(path + "/icons/health.png");
 
@@ -58,7 +58,7 @@ Research::draw_self()
 
     env->canvas->draw("Name", 360 * scale_w, 188 * scale_h, color);
     env->canvas->draw("Time", 855 * scale_w, 186 * scale_h, color);
-    env->canvas->draw(m_textures["matter_energy"].get(), 690 * scale_w, 188 * scale_h);
+    env->canvas->draw(m_textures["data"].get(), 690 * scale_w, 188 * scale_h);
 
     draw_items(scale_w, scale_h, color);
 }
@@ -73,7 +73,7 @@ Research::draw_items(double scale_w, double scale_h, Color color)
 
     for (auto section : m_settings->sections())
     {
-        research = m_settings->read<int>(section.first, "research_energy", 0) > 0;
+        research = m_settings->read<int>(section.first, "research_data", 0) > 0;
         if (not research or (++i <= (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page))
         {
             change_button_state(m_buttons[section.first], false);
@@ -85,7 +85,7 @@ Research::draw_items(double scale_w, double scale_h, Color color)
         string time = m_settings->read<string>(section.first, "time", "");
 
         env->canvas->draw(section.first, 360 * scale_w, y * scale_h, color);
-        env->canvas->draw(section.second["matter"] + "/" + section.second["energy"],
+        env->canvas->draw(section.second["research_data"],
             690 * scale_w, y * scale_h, color);
         env->canvas->draw(time, 855 * scale_w, y * scale_h, color);
 
@@ -192,16 +192,13 @@ Research::change_button_state(Button *button, bool state, int y)
 void
 Research::research_item(const ObjectID id)
 {
-    int matter = m_colony->matter() - m_settings->read<int>(id, "research_matter", 0);
-    int energy = m_colony->energy() - m_settings->read<int>(id, "research_energy", 0);
+    int data = m_colony->data() - m_settings->read<int>(id, "research_data", 0);
 
-    if (matter >= 0 and energy >= 0)
+    if (data >= 0)
     {
-        m_colony->set_matter(matter);
-        m_colony->set_energy(energy);
+        m_colony->set_data(data);
 
-        m_settings->write<int>(id, "research_matter", 0);
-        m_settings->write<int>(id, "research_energy", 0);
+        m_settings->write<int>(id, "research_data", 0);
 
         m_settings->save("res/datas/slot" + to_string(m_slot) + "/items.sav");
         
@@ -221,7 +218,7 @@ Research::calculate_max_page()
     int count = 0;
     for (auto section : m_settings->sections())
     {
-        if (atoi(section.second["research_energy"].c_str()) > 0)
+        if (atoi(section.second["research_data"].c_str()) > 0)
         {
             count++;
         }
