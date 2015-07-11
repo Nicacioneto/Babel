@@ -130,6 +130,7 @@
 0.10                & 10/07/2015        & Atualização dos NPCs                                  & Álex Mesquita     \\ \hline
 0.11                & 10/07/2015        & Adição da Saúde                                       & Álex Mesquita     \\ \hline
 0.11                & 10/07/2015        & Adição das Telas                                      & Álex Mesquita     \\ \hline
+0.12                & 10/07/2015        & Câmera e HUD                                          & Álex Mesquita     \\ \hline
 \end{tabu}
 \end{table}
 
@@ -454,8 +455,8 @@ A tela de \textit{Play Game} é a tela onde o jogador poderar criar um novo jogo
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.25]{res/load.png}
-\caption{Abertura}
-\label{Abertura}
+\caption{Play Game}
+\label{Play Game}
 \end{figure}
 
 \subsection{Tela de Options}
@@ -465,8 +466,8 @@ A tela de \textit{Options} é a tela onde o jogador poderar configurar o volume 
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.25]{res/options.png}
-\caption{Abertura}
-\label{Abertura}
+\caption{Options}
+\label{Options}
 \end{figure}
 
 \subsection{Tela de Credits}
@@ -476,8 +477,52 @@ Na tela de \textit{Credits} poderá ser observado o nome e a função dos integr
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.25]{res/credits.png}
-\caption{Abertura}
-\label{Abertura}
+\caption{Credits}
+\label{Credits}
+\end{figure}
+
+\section{Câmera e HUD}
+
+\subsection{Câmera na Exploração Vertical}
+
+A câmera na exploração vertical será tipicamente de um jogo Dungeon Crawl, portanto esta será FPS (em primeira pessoa). como pode ser visto na figura a seguir.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.25]{res/dungeon.png}
+\caption{Câmera FPS}
+\label{Câmera FPS}
+\end{figure}
+
+\subsection{Câmera na Exploração Horizontal}
+
+Na exploração horizontal a câmera fixa, onde estarão mapeados os locais específicos das missões.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.25]{res/planet.png}
+\caption{Câmera Fixa}
+\label{Câmera Fixa}
+\end{figure}
+
+\subsection{HUD}
+
+O HUD (Heads-Up Display) dentro do jogo será apresentado de forma mais explicita durante as telas de \textit{Barracks} e \textit{Equip}. Na tela do \textit{Barracks} é apresentado todos os atributos do personagem, bem como suas \textit{Skills} habilitadas.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.25]{res/barracks.png}
+\caption{Tela Barracks}
+\label{Tela Barracks}
+\end{figure}
+
+Na tela \textit{é apresentado} todos os equipamentos no qual o personagem poderá utilizar durante o combate que se passarão durante a exploração vertical.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.25]{res/equip.png}
+\caption{Tela Equip}
+\label{Tela Equip}
 \end{figure}
 
 \section{Esquema de controle e interface com o usuário}
