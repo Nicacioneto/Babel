@@ -389,7 +389,7 @@ Combat::on_event(const KeyboardEvent& event)
             {
                 Environment *env = Environment::get_instance();
                 env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
-                set_next("tower");
+                set_next("dungeon");
                 finish();
             }
 

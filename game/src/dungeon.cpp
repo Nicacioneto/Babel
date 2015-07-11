@@ -17,7 +17,7 @@
 #include <sstream>
 #include <vector>
 
-#define PROBABILITY_STEPWISE 2;
+#define PROBABILITY_STEPWISE 0;
 
 using std::vector;
 using std::to_string;
@@ -29,18 +29,15 @@ Dungeon::Dungeon(int slot, int steps, int probability_combat)
 {
     Environment *env = Environment::get_instance();
 
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+    m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/dungeon.sav");
 
-    shared_ptr<Settings> s = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/tower.sav");
+    m_actual_floor = m_settings->read<string>("Tower", "actual_floor", "1");
 
-    string actual_floor = s->read<string>("Tower", "actual_floor", "1");
+    m_x = m_settings->read<int>(m_actual_floor, "x", 0);
+    m_y = m_settings->read<int>(m_actual_floor, "y", 0);
 
-    m_x = settings->read<int>(actual_floor, "x", 0);
-    m_y = settings->read<int>(actual_floor, "y", 0);
-
-    int direction = settings->read<int>(actual_floor, "direction", 0);
+    int direction = m_settings->read<int>(m_actual_floor, "direction", 0);
     m_direction = Direction(direction);
 
     m_screen = new Bitmap(env->video->canvas());
@@ -49,7 +46,6 @@ Dungeon::Dungeon(int slot, int steps, int probability_combat)
     load_map();
 
     env->events_manager->register_listener(this);
-
     env->music->play("res/music/Pandora_s_Music_Box.ogg", -1);
 }
 
@@ -100,6 +96,9 @@ Dungeon::on_event(const KeyboardEvent& event)
                 case KeyboardEvent::ESCAPE:
                     set_next("tower");
                     finish();
+                    return true;
+                case KeyboardEvent::P:
+                    m_probability_combat=100;
                     return true;
                 default:
                     return false;
@@ -241,6 +240,30 @@ Dungeon::update_self(unsigned long elapsed)
     if (m_levels == 1 and m_delta == 1)
     {
         m_front_blocked = true;
+    }
+
+
+    if (m_x == m_out.first and m_y == m_out.second)
+    {
+        Environment *env = Environment::get_instance();
+        string path = "res/datas/def/dungeon.sav";
+        shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+
+        m_x = settings->read<int>(m_actual_floor, "x", 0);
+        m_y = settings->read<int>(m_actual_floor, "y", 0);
+        int direction = settings->read<int>(m_actual_floor, "direction", 0);
+        m_direction = Direction(direction);
+
+        int unlocked_floors = m_settings->read<int>("Tower", "unlocked_floors", 1);
+        if (atoi(m_actual_floor.c_str()) + 1 > unlocked_floors)
+        {
+            m_settings->write<int>("Tower", "unlocked_floors", unlocked_floors + 1);
+            m_settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
+        }
+
+        save_position();
+        set_next("tower");
+        finish();
     }
 }
 
@@ -471,11 +494,7 @@ Dungeon::turn_right()
 void
 Dungeon::load_map()
 {
-    Environment *env = Environment::get_instance();
-    string path = "res/datas/slot" + to_string(m_slot) + "/tower.sav";
-    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-    string f = settings->read<string>("Tower", "actual_floor", "1");
-
+    string f = m_settings->read<string>("Tower", "actual_floor", "1");
     string file = read_file("res/maps/map" + f + ".txt");
 
     std::stringstream ss;
@@ -487,6 +506,7 @@ Dungeon::load_map()
     int north, east, south, west, roof, floor;
     char garbage;
 
+    ss >> m_out.first >> m_out.second;
     while (ss >> north >> east >> south >> west >> roof >> floor >> garbage)
     {
         p.push_back(north);
@@ -569,19 +589,7 @@ Dungeon::calculate_probability_combat()
 
     if (random < m_probability_combat)
     {
-        Environment *env = Environment::get_instance();
-        string path = "res/datas/slot" + to_string(m_slot) + "/dungeon.sav";
-        
-        shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
-        path = "res/datas/slot" + to_string(m_slot) + "/tower.sav";
-        shared_ptr<Settings> s = env->resources_manager->get_settings(path);
-        string actual_floor = s->read<string>("Tower", "actual_floor", "1");
-
-        settings->write<int>(actual_floor, "x", m_x);
-        settings->write<int>(actual_floor, "y", m_y);
-        settings->write<int>(actual_floor, "direction", m_direction.front());
-
-        settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
+        save_position();
         set_next("combat");
         finish();
     }
@@ -589,4 +597,14 @@ Dungeon::calculate_probability_combat()
     {
         m_probability_combat += PROBABILITY_STEPWISE;
     }
+}
+
+void
+Dungeon::save_position()
+{
+    m_settings->write<int>(m_actual_floor, "x", m_x);
+    m_settings->write<int>(m_actual_floor, "y", m_y);
+    m_settings->write<int>(m_actual_floor, "direction", m_direction.front());
+
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
 }

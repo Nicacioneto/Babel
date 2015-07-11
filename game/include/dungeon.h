@@ -50,6 +50,7 @@ private:
     void load_tiles();
 
     void calculate_probability_combat();
+    void save_position();
 
     int m_x, m_y, m_w, m_h;
     int m_slot, m_steps, m_delta, m_probability_combat;
@@ -59,8 +60,11 @@ private:
     int m_levels;
     bool m_front_blocked;
     Room **m_rooms;
+    string m_actual_floor;
+    pair<int, int> m_out;
 
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
+    shared_ptr<Settings> m_settings;
     int m_door;
     Bitmap *m_screen;
     
