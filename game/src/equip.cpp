@@ -254,7 +254,7 @@ Equip::create_textbox()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Rect area(203 * scale_w, 502 * scale_h, 250 * scale_w, 102 * scale_h);
+    Rect area(203 * scale_w, 502 * scale_h, 270 * scale_w, 102 * scale_h);
     m_equipment_text = new TextBox(this, area, "", color);
 }
 
