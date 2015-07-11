@@ -24,14 +24,14 @@ public:
     Equip(int slot, Object *parent = nullptr);
 
 private:
-    typedef string State;
+    typedef string Type;
     typedef string EquipmentClass;
 
     int m_slot, m_matter_cost, m_energy_cost;
     EquipmentClass m_class;
     ObjectID m_equipment;
     Button *m_status;
-    State m_state;
+    Type m_type;
     Barracks *m_barracks;
     TextBox *m_equipment_text;
     shared_ptr<Settings> m_settings;
@@ -47,11 +47,11 @@ private:
 
     void load_textures();
     void create_buttons();
-    void load_equipments(string type);
+    void load_equipments(const string& type);
     void draw_self();
     void draw_equipments();
     void create_textbox();
-    string get_equipment(string equipment_id, string attr);
+    string get_equipment(const string& equipment_id, const string& attr) const;
     bool on_message(Object *sender, MessageID id, Parameters p);
     void deactivate_equipments();
     void buy_equipment(ObjectID equipment);

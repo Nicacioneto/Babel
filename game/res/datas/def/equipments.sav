@@ -1,8 +1,1024 @@
-[Rifle]
-text = Assault Rifles have high fire rate, sending;wave after wave of raining death.
+[1. Katana XM-11]
+class=weapon
+type=rifle
+name=Katana
+m=0
+p=0
+t=6
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
 
-[Shotgun]
+[2. Exalibur GLX]
+class=weapon
+type=rifle
+name=Exalibur
+m=1
+p=1
+t=1
+matter=220
+energy=120
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Exablibur Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
 
-[Pistol]
+[3. Scimitar A7]
+class=weapon
+type=rifle
+name=Scimitar
+m=1
+p=3
+t=2
+matter=240
+energy=140
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Scimitar Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
 
-[Sniper]
+[4. Gladius K47]
+class=weapon
+type=rifle
+name=Gladius
+m=4
+p=7
+t=0
+matter=260
+energy=160
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Gladius Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Hatched]
+class=weapon
+type=shotgun
+name=Hatched
+m=4
+p=7
+t=0
+matter=260
+energy=160
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Gladius Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Halberd]
+class=weapon
+type=shotgun
+name=Halberd
+m=4
+p=7
+t=0
+matter=260
+energy=160
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Gladius Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Francisca]
+class=weapon
+type=shotgun
+name=Francisca
+m=4
+p=7
+t=0
+matter=260
+energy=160
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Gladius Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Reaver]
+class=weapon
+type=shotgun
+name=Reaver
+m=4
+p=7
+t=0
+matter=260
+energy=160
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Gladius Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Stilleto]
+class=weapon
+type=pistol
+name=Stilleto
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Dirk]
+class=weapon
+type=pistol
+name=Dirk
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Kukri]
+class=weapon
+type=pistol
+name=Kukri
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Brutus]
+class=weapon
+type=pistol
+name=Brutus
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Pike]
+class=weapon
+type=sniper
+name=Pike
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Gendarme]
+class=weapon
+type=sniper
+name=Gendarme
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Naginata]
+class=weapon
+type=sniper
+name=Naginata
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Gungnir]
+class=weapon
+type=sniper
+name=Gungnir
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Space Baton]
+class=weapon
+type=melee
+name=Space
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Laser Sword]
+class=weapon
+type=melee
+name=Laser
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Plasma Blade]
+class=weapon
+type=melee
+name=Plasma
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Mjolnir]
+class=weapon
+type=melee
+name=Mjolnir
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Trebuchet]
+class=weapon
+type=hand
+name=Trebuchet
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Culverin]
+class=weapon
+type=hand
+name=Culverin
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Mortar]
+class=weapon
+type=hand
+name=Mortar
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Howitzer]
+class=weapon
+type=hand
+name=Howitzer
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Herd]
+class=weapon
+type=nano
+name=Herd
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Flock]
+class=weapon
+type=nano
+name=Flock
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Cloud]
+class=weapon
+type=nano
+name=Cloud
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Pride]
+class=weapon
+type=nano
+name=Pride
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Seer]
+class=weapon
+type=ui
+name=Seer
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Oracle]
+class=weapon
+type=ui
+name=Oracle
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Diviner]
+class=weapon
+type=ui
+name=Diviner
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Prophet]
+class=weapon
+type=ui
+name=Prophet
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Messer]
+class=weapon
+type=psiblade
+name=Messer
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Slasher]
+class=weapon
+type=psiblade
+name=Slasher
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Gasher]
+class=weapon
+type=psiblade
+name=Gasher
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Render]
+class=weapon
+type=psiblade
+name=Render
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Kindle]
+class=weapon
+type=psiamp
+name=Kindle
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Flame]
+class=weapon
+type=psiamp
+name=Flame
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Bonfire]
+class=weapon
+type=psiamp
+name=Bonfire
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Beacon]
+class=weapon
+type=psiamp
+name=Beacon
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Viper]
+class=weapon
+type=psiwhip
+name=Viper
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Naja]
+class=weapon
+type=psiwhip
+name=Naja
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Boa]
+class=weapon
+type=psiwhip
+name=Boa
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Anaconda]
+class=weapon
+type=psiwhip
+name=Anaconda
+m=1
+p=0
+t=0
+matter=280
+energy=180
+might=+7
+mind=+0
+speed=+0
+agility=+0
+hit_chance=+5
+text=The Kukri Pistol is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Light 1]
+class=armor
+type=light
+name=Light
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Light 2]
+class=armor
+type=light
+name=Light
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Light 3]
+class=armor
+type=light
+name=Light
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Light 4]
+class=armor
+type=light
+name=Light
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Medium 1]
+class=armor
+type=medium
+name=Medium
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Medium 2]
+class=armor
+type=medium
+name=Medium
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Medium 3]
+class=armor
+type=medium
+name=Medium
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Medium 4]
+class=armor
+type=medium
+name=Medium
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Heavy 1]
+class=armor
+type=heavy
+name=Weave
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Heavy 2]
+class=armor
+type=heavy
+name=Weave
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Heavy 3]
+class=armor
+type=heavy
+name=Weave
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Heavy 4]
+class=armor
+type=heavy
+name=Weave
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Shield 1]
+class=shield
+type=shield
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+
+[2. Shield 2]
+class=shield
+type=shield
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Shield 3]
+class=shield
+type=shield
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Shield 4]
+class=shield
+type=shield
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[1. Barrier 1]
+class=shield
+type=barrier
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[2. Barrier 2]
+class=shield
+type=barrier
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[3. Barrier 3]
+class=shield
+type=barrier
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
+
+[4. Barrier 4]
+class=shield
+type=barrier
+name=Moat
+m=1
+p=1
+t=1
+matter=200
+energy=100
+might=+10
+mind=+0
+speed=+0
+agility=+10
+hit_chance=%50
+text=The Katana Assault Rifle is a state-of-the-art weapon, being able to shoot a 10mm steel-core bullet at 800 rpm.
