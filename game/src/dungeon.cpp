@@ -217,13 +217,12 @@ Dungeon::update_self(unsigned long elapsed)
     }
     else if (m_state == DOOR)
     {
-        if (elapsed - m_last < 350)
+        if (elapsed - m_last < 300)
         {
             return;
         }
 
         m_last = elapsed;
-
         ++m_door;
 
         if (m_door > 12)
@@ -242,8 +241,13 @@ Dungeon::update_self(unsigned long elapsed)
         m_front_blocked = true;
     }
 
-
-    if (m_x == m_out.first and m_y == m_out.second)
+    if (m_x == m_in.first and m_y == m_in.second)
+    {
+        set_next("tower");
+        set_visible(false);
+        finish();
+    }
+    else if (m_x == m_out.first and m_y == m_out.second)
     {
         Environment *env = Environment::get_instance();
         string path = "res/datas/def/tower.sav";
@@ -265,6 +269,8 @@ Dungeon::update_self(unsigned long elapsed)
         set_next("tower");
         finish();
     }
+
+    printf("x: %d, y: %d\n", m_x, m_y);
 }
 
 void
@@ -495,7 +501,6 @@ void
 Dungeon::load_map()
 {
     string f = m_settings->read<string>("Tower", "actual_floor", "1");
-    printf("%s\n", f.c_str());
     string file = read_file("res/maps/map" + f + ".txt");
 
     std::stringstream ss;
@@ -507,7 +512,7 @@ Dungeon::load_map()
     int north, east, south, west, roof, floor;
     char garbage;
 
-    ss >> m_out.first >> m_out.second;
+    ss >> m_in.first >> m_in.second >> m_out.first >> m_out.second;
     while (ss >> north >> east >> south >> west >> roof >> floor >> garbage)
     {
         p.push_back(north);

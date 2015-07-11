@@ -61,7 +61,7 @@ private:
     bool m_front_blocked;
     Room **m_rooms;
     string m_actual_floor;
-    pair<int, int> m_out;
+    pair<int, int> m_in, m_out;
 
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
     shared_ptr<Settings> m_settings;
