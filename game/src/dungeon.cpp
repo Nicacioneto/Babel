@@ -165,6 +165,27 @@ Dungeon::steps_to_backward()
 }
 
 void
+Dungeon::pass_door()
+{
+    if (m_direction.front() == Direction::EAST)
+    {
+        m_y++;
+    }
+    else if (m_direction.front() == Direction::WEST)
+    {
+        m_y--;
+    }
+    else if (m_direction.front() == Direction::NORTH)
+    {
+        m_x++;
+    }
+    else
+    {
+        m_x--;
+    }
+}
+
+void
 Dungeon::update_self(unsigned long elapsed)
 {
     if (m_state == WAITING)
@@ -207,8 +228,8 @@ Dungeon::update_self(unsigned long elapsed)
         ++m_door;
         if (m_door > 12)
         {
-            m_state = MOVING;
-            steps_to_foward();
+            m_state = WAITING;
+            pass_door();
             m_door = 4;
         }
     }

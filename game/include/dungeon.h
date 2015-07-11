@@ -41,6 +41,7 @@ public:
 private:
     void steps_to_foward();
     void steps_to_backward();
+    void pass_door();
 
     void update_self(unsigned long);
     void draw_self();
