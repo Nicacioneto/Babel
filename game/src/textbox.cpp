@@ -5,6 +5,7 @@
  * Date: 10/07/2015
  * License: LGPL. No copyright.
  */
+#include "textbox.h"
 #include <core/point.h>
 #include <core/rect.h>
 #include <core/texture.h>
@@ -12,18 +13,16 @@
 
 #include <vector>
 #include <list>
-#include <iostream>
 #include <sstream>
 
 using namespace std;
 
-#include "textbox.h"
-
 class TextBox::Impl
 {
 public:
-    Impl(TextBox *text_box, const string& text, Alignment alignment)
-        : m_text_box(text_box), m_text(""), m_alignment(alignment), m_border(Color::BLUE), m_background(Color::TRANSPARENT)
+    Impl(TextBox *text_box, const string& text, const Color& text_color, Alignment alignment)
+        : m_text_box(text_box), m_text(""), m_alignment(alignment), m_border(Color::BLUE),
+            m_background(Color::TRANSPARENT), m_text_color(text_color)
     {
         set_text(text);
     }
@@ -41,7 +40,7 @@ public:
 
     void set_text(const string& text)
     {
-        // Apaga as texturas antigas, se existirem
+        // Erase old textures, if it exists
         if (not m_textures.empty())
         {
             for (size_t i = 0; i < m_textures.size(); ++i)
@@ -50,7 +49,7 @@ public:
             m_textures.clear();
         }
 
-        // Lê o conjunto de palavras da mensagem
+        // Reads the set of the words of the message
         istringstream is(text);
         string word;
         list<string> words;
@@ -58,7 +57,7 @@ public:
         while (is >> word)
             words.push_back(word);
  
-        // Renderiza as palavras, linha a linha
+        // Renders the words, line by line
         Environment *env = Environment::get_instance();
         double x = m_text_box->x() + 5;
         double y = m_text_box->y() + 5;
@@ -72,7 +71,7 @@ public:
             os << words.front();
 
             Texture *line = nullptr;
-            Texture *texture = env->canvas->render_text(os.str(), Color::BLACK);
+            Texture *texture = env->canvas->render_text(os.str(), m_text_color);
 
             while (texture->w() < m_text_box->w() - 10)
             {
@@ -86,7 +85,7 @@ public:
                     break;
 
                 os << " " << words.front();
-                texture = env->canvas->render_text(os.str(), Color::BLACK);
+                texture = env->canvas->render_text(os.str(), m_text_color);
             }
 
             if (texture != line)
@@ -117,7 +116,7 @@ public:
 
                 for (auto w : wl)
                 {
-                    texture = env->canvas->render_text(w, Color::BLACK);
+                    texture = env->canvas->render_text(w, m_text_color);
                     total += texture->w();
                     tl.push_back(texture);
                 }
@@ -144,6 +143,11 @@ public:
         m_background = background;
     }
 
+    void set_text_color(const Color& text_color)
+    {
+        m_text_color = text_color;
+    }
+
     void update_self(unsigned long)
     {
     }
@@ -151,8 +155,10 @@ public:
     void draw_self()
     {
         Environment *env = Environment::get_instance();
+        env->canvas->set_blend_mode(Canvas::BLEND);
         env->canvas->fill(m_text_box->bounding_box(), m_background);
         env->canvas->draw(m_text_box->bounding_box(), m_border);
+        env->canvas->set_blend_mode(Canvas::NONE);
 
         for (auto it : m_textures)
         {
@@ -166,13 +172,15 @@ private:
     TextBox *m_text_box;
     string m_text;
     Alignment m_alignment;
-    Color m_border, m_background;
+    Color m_border, m_background, m_text_color;
 
     vector< pair<Texture *, Point> > m_textures;
 };
 
-TextBox::TextBox(Object *parent, const Rect& area, const string& text, Alignment alignment)
-    : Object(parent, "textbox", area.x(), area.y(), area.w(), area.h()), m_impl(new Impl(this, text, alignment))
+TextBox::TextBox(Object *parent, const Rect& area, const string& text,
+    const Color& text_color, Alignment alignment)
+    : Object(parent, "textbox", area.x(), area.y(), area.w(), area.h()),
+        m_impl(new Impl(this, text, text_color, alignment))
 {
 }
     
@@ -186,6 +194,12 @@ void
 TextBox::set_colors(const Color& border, const Color& background)
 {
     m_impl->set_colors(border, background);
+}
+
+void
+TextBox::set_text_color(const Color& text_color)
+{
+    m_impl->set_text_color(text_color);
 }
 
 void

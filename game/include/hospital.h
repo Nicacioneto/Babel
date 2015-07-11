@@ -9,6 +9,7 @@
 #define HOSPITAL_H
 
 #include "base.h"
+#include "textbox.h"
 #include <core/level.h>
 #include <memory>
 #include <map>
@@ -36,10 +37,12 @@ private:
     int m_page;
     int m_max_pages;
     Text *m_text;
+    TextBox *m_textbox;
 
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
+    void welcome();
     void add_children();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();

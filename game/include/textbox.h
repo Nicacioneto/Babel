@@ -16,10 +16,12 @@ class TextBox : public Object
 public:
     typedef enum { LEFT, RIGHT, JUSTIFY, CENTER } Alignment;
 
-    TextBox(Object *parent, const Rect& area, const string& text = "", Alignment alignment = LEFT);
+    TextBox(Object *parent, const Rect& area, const string& text = "",
+        const Color& text_color = Color::WHITE, Alignment alignment = LEFT);
     
     void set_text(const string& text);
     void set_colors(const Color& border, const Color& background = Color::TRANSPARENT);
+    void set_text_color(const Color& text_color);
 
 private:
     class Impl;
