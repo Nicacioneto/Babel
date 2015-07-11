@@ -23,7 +23,7 @@ using std::to_string;
 
 Character::Character(int slot, Object *parent, ObjectID id, const string& texture,
     double x, double y, double w, double h, Type type)
-    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr), 
+    : Object(parent, id, x, y, w, h), m_slot(slot), m_texture(nullptr),
         m_bracket_small(nullptr), m_bracket_big(nullptr), m_settings(nullptr),
         m_name(id), m_type(type), m_style(SMALL), m_attacks_quantity(0), m_mpt_mode(false)
 {
@@ -252,7 +252,7 @@ Character::set_attributes_positions()
     m_style == BIG ? (x_plus = 170, y_plus = 37) : (x_plus = 172, y_plus = 32);
 
     box.set_position(x() + x_plus * scale_w, y() + y_plus * scale_h);
-    box.set_dimensions(40 * scale_w, 21 * scale_h); 
+    box.set_dimensions(40 * scale_w, 21 * scale_h);
 
     double x_military = (box.w() - m_texts[m_name + "_military"]->w())/2 + box.x();
     double y_military = (box.h() - m_texts[m_name + "_military"]->h())/2 + box.y();

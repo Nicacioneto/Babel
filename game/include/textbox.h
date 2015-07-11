@@ -18,7 +18,7 @@ public:
 
     TextBox(Object *parent, const Rect& area, const string& text = "",
         const Color& text_color = Color::WHITE, Alignment alignment = LEFT);
-    
+
     void set_text(const string& text);
     void set_colors(const Color& border, const Color& background = Color::TRANSPARENT);
     void set_text_color(const Color& text_color);

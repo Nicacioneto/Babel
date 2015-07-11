@@ -32,7 +32,9 @@ public:
         if (not m_textures.empty())
         {
             for (size_t i = 0; i < m_textures.size(); ++i)
+            {
                 delete m_textures[i].first;
+            }
 
             m_textures.clear();
         }
@@ -44,7 +46,9 @@ public:
         if (not m_textures.empty())
         {
             for (size_t i = 0; i < m_textures.size(); ++i)
+            {
                 delete m_textures[i].first;
+            }
 
             m_textures.clear();
         }
@@ -55,8 +59,10 @@ public:
         list<string> words;
 
         while (is >> word)
+        {
             words.push_back(word);
- 
+        }
+
         // Renders the words, line by line
         Environment *env = Environment::get_instance();
         double x = m_text_box->x() + 5;
@@ -82,17 +88,23 @@ public:
                 line = texture;
 
                 if (words.empty())
+                {
                     break;
+                }
 
                 os << " " << words.front();
                 texture = env->canvas->render_text(os.str(), m_text_color);
             }
 
             if (texture != line)
+            {
                 delete texture;
+            }
 
             if (line == nullptr)
+            {
                 break;
+            }
 
             switch (m_alignment)
             {
@@ -183,7 +195,7 @@ TextBox::TextBox(Object *parent, const Rect& area, const string& text,
         m_impl(new Impl(this, text, text_color, alignment))
 {
 }
-    
+
 void
 TextBox::set_text(const string& text)
 {

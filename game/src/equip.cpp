@@ -451,7 +451,7 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
             ok = false;
             m_equipment = b.first;
 
-            Character *c = m_barracks->current_char();            
+            Character *c = m_barracks->current_char();
             int equiped = m_settings->read<int>(m_equipment, c->id(), 0);
 
             if (equiped)

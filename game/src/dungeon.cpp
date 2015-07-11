@@ -347,8 +347,10 @@ Dungeon::draw_self()
     {
         m_screen->fill(center_rect, 0);
     }
-    if (m_front_blocked) {
-        if (north_tile == 4) //when north is a door
+
+    if (m_front_blocked)
+    {
+        if (north_tile == 4) // when north is a door
         {
             m_state = DOOR;
             
