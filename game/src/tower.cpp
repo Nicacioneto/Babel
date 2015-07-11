@@ -29,7 +29,7 @@ Tower::Tower(int slot, const string& next)
     env->events_manager->register_listener(this);
 
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/dungeon.sav");
+        to_string(m_slot) + "/tower.sav");
 
     m_actual_floor = m_settings->read<int>("Tower", "actual_floor", 1);
     m_unlocked_floors = m_settings->read<int>("Tower", "unlocked_floors", 1);
@@ -264,7 +264,7 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     else if (button->id() == "send_drone")
     {
         m_settings->write<bool>("Tower", "drone", true);
-        m_settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
+        m_settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
         // TODO
     }
     else if (button->id() == "send_team")
@@ -281,7 +281,7 @@ Tower::on_message(Object *sender, MessageID id, Parameters)
     {
         m_actual_floor = atoi(button->id().substr(5).c_str());
         shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-            to_string(m_slot) + "/dungeon.sav");
+            to_string(m_slot) + "/tower.sav");
         settings->write<int>("Tower", "actual_floor", m_actual_floor);
         settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
     }

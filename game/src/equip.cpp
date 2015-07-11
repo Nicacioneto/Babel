@@ -279,7 +279,8 @@ Equip::draw_self()
     string text = m_type == "shield_shield" ? "shield" : m_type;
     if (not m_type.empty())
     {
-        env->canvas->draw("Avaible " + text + "s", 700 * scale_w, 436 * scale_h, Color(84, 107, 95));
+        env->canvas->draw("Avaible " + text + "s", 700 * scale_w, 436 * scale_h,
+            Color(84, 107, 95));
     }
 
     for (auto b : m_weapons)

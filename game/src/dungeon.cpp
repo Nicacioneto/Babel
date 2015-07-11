@@ -30,7 +30,7 @@ Dungeon::Dungeon(int slot, int steps, int probability_combat)
     Environment *env = Environment::get_instance();
 
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/dungeon.sav");
+        to_string(m_slot) + "/tower.sav");
 
     m_actual_floor = m_settings->read<string>("Tower", "actual_floor", "1");
 
@@ -246,7 +246,7 @@ Dungeon::update_self(unsigned long elapsed)
     if (m_x == m_out.first and m_y == m_out.second)
     {
         Environment *env = Environment::get_instance();
-        string path = "res/datas/def/dungeon.sav";
+        string path = "res/datas/def/tower.sav";
         shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
 
         m_x = settings->read<int>(m_actual_floor, "x", 0);
@@ -258,7 +258,7 @@ Dungeon::update_self(unsigned long elapsed)
         if (atoi(m_actual_floor.c_str()) + 1 > unlocked_floors)
         {
             m_settings->write<int>("Tower", "unlocked_floors", unlocked_floors + 1);
-            m_settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
+            m_settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
         }
 
         save_position();
@@ -495,6 +495,7 @@ void
 Dungeon::load_map()
 {
     string f = m_settings->read<string>("Tower", "actual_floor", "1");
+    printf("%s\n", f.c_str());
     string file = read_file("res/maps/map" + f + ".txt");
 
     std::stringstream ss;
@@ -606,5 +607,5 @@ Dungeon::save_position()
     m_settings->write<int>(m_actual_floor, "y", m_y);
     m_settings->write<int>(m_actual_floor, "direction", m_direction.front());
 
-    m_settings->save("res/datas/slot" + to_string(m_slot) + "/dungeon.sav");
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/tower.sav");
 }
