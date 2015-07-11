@@ -99,7 +99,8 @@ Revive::draw_character(double scale_w, double scale_h, Color color)
 
         int cost = (level * 100 * (max_life - life)) / max_life;
 
-        env->canvas->draw(to_string(cost) + "/" + to_string(cost), 718 * scale_w, y * scale_h, color);
+        env->canvas->draw(to_string(cost) + "/" + to_string(cost), 718 * scale_w,
+            y * scale_h, color);
 
         if (life == 0)
         {

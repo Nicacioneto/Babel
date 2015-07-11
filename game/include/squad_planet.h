@@ -55,7 +55,7 @@ private:
     void confirm_state();
     void start_mission();
     void calculate_level();
-    void update_squad_tower();
+    void update_squad();
 };
 
 #endif

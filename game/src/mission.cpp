@@ -6,11 +6,16 @@
  * License: LGPL. No copyright.
  */
 #include "mission.h"
+#include <core/settings.h>
+#include <core/environment.h>
+
+using std::to_string;
+using std::shared_ptr;
 
 Mission::Mission(const string& name, unsigned long remainder, const string& icon,
-    int energy, int matter, const string& file, int m, int p, int t, vector<string> c)
+    int energy, int matter, const string& file, int m, int p, int t, vector<string> c, int slot)
     : m_name(name), m_remainder(remainder), m_icon(icon), m_energy(energy),
-        m_matter(matter), m_file(file), m_m(m), m_p(p), m_t(t), m_c(c)
+        m_matter(matter), m_file(file), m_m(m), m_p(p), m_t(t), m_c(c), m_slot(slot)
 {
 }
 
@@ -75,12 +80,21 @@ Mission::file()
 }
 
 void
-Mission::available_character()
+Mission::available_character(bool available)
 {
-    // TODO
-    /*
-    for (auto it : m_c)
+    Environment *env = Environment::get_instance();
+    
+    string path = "res/datas/slot" + to_string(m_slot) + "/characters.sav";
+    shared_ptr<Settings> characters = env->resources_manager->get_settings(path);
+    for (auto c : m_c)
     {
-        it->set_available(true);
-    }*/
+        for (auto s : characters->sections())
+        {
+            if (c == s.first)
+            {
+                characters->write<bool>(c, "available", available);
+            }
+        }
+    }
+    characters->save(path);
 }

@@ -37,6 +37,8 @@ void set_reward(Mission *mission)
 
         settings->write<int>("Colony", "energy", energy);
         settings->write<int>("Colony", "matter", matter);
+
+        mission->available_character(true);
     }
     else if (file == "items")
     {
@@ -105,7 +107,7 @@ void create_threads(int slot)
 
 
         // TODO, ver os persogem q foi enviado para essa missão
-        Mission *mission = new Mission(name, remainder, icon, energy, matter, file);
+        Mission *mission = new Mission(name, remainder, icon, energy, matter, file, m_slot);
 
         start_time(mission);
     }

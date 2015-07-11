@@ -187,12 +187,3 @@ TeamPlanet::size()
 {
     return m_team.size();
 }
-
-void
-TeamPlanet::update_available()
-{
-    for (auto c : m_characters)
-    {
-        c.second->set_available(false);
-    }
-}

@@ -34,6 +34,8 @@ Character::Character(int slot, Object *parent, ObjectID id, const string& textur
     m_texture = env->resources_manager->get_texture(path + texture);
     m_bracket_small = env->resources_manager->get_texture("res/images/characters/card_small.png");
     m_bracket_big = env->resources_manager->get_texture("res/images/characters/card_big.png");
+    unvailable = env->resources_manager->get_texture("res/images/colony/icons/workshop.png");
+    dead = env->resources_manager->get_texture("res/images/colony/icons/workshop.png");
 
     if (not w and not h)
     {
@@ -124,6 +126,22 @@ Character::draw_self()
         }
         
         draw_attributes();
+    }
+
+    if (not m_available)
+    {
+        if (not m_life)
+        {
+            Rect rect { x(), y(), (double)m_texture->w(), (double)m_texture->h() };
+            env->canvas->set_blend_mode(Canvas::BLEND);
+            env->canvas->draw(dead.get(), x() + 5, y() + 10);
+            env->canvas->fill(rect, Color(128, 0, 0, 128));
+            env->canvas->set_blend_mode(Canvas::NONE);
+        }
+        else 
+        {
+            env->canvas->draw(unvailable.get(), x() + 5, y() + 10);
+        }
     }
 }
 

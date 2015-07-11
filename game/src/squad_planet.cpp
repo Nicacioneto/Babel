@@ -257,7 +257,6 @@ SquadPlanet::confirm_state()
 void
 SquadPlanet::start_mission()
 {
-    update_squad_tower();
     string current_mission = m_settings->read<string>("Mission", "current", "");
     string time = m_settings->read<string>(current_mission, "time", "00:00");
     int matter = m_settings->read<int>(current_mission, "matter", 0);
@@ -270,8 +269,10 @@ SquadPlanet::start_mission()
     unsigned long seg = atol(time.substr(3).c_str());
 
     Mission *mission = new Mission(current_mission, min + seg, "workshop",
-        energy, matter, "colony", m, p, t);
+        energy, matter, "colony", m, p, t, m_team->m_team, m_slot);
 
+    mission->available_character(false);
+    update_squad();
     start_time(mission);
 }
 
@@ -291,14 +292,26 @@ SquadPlanet::calculate_level()
 }
 
 void
-SquadPlanet::update_squad_tower()
+SquadPlanet::update_squad()
 {
     Environment *env = Environment::get_instance();
-    m_team->update_available();
 
     string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
     shared_ptr<Settings> squad_tower = env->resources_manager->get_settings(path);
 
+    for (int i = 1; i <= 4; ++i)
+    {
+        squad_tower->write<string>("Squad", "hero" + to_string(i), "");
+    }
+    squad_tower->save(path);
+
     path = "res/datas/slot" + to_string(m_slot) + "/squad_planet.sav";
     shared_ptr<Settings> squad_planet = env->resources_manager->get_settings(path);
+
+    for (int i = 1; i <= 4; ++i)
+    {
+        squad_planet->write<string>("Squad Planet", "hero" + to_string(i), "");
+    }
+
+    squad_planet->save(path);
 }

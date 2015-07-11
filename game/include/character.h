@@ -95,6 +95,8 @@ private:
     shared_ptr<Texture> m_texture;
     shared_ptr<Texture> m_bracket_small;
     shared_ptr<Texture> m_bracket_big;
+    shared_ptr<Texture> unvailable;
+    shared_ptr<Texture> dead;
     shared_ptr<Settings> m_settings;
 
     string m_name;
