@@ -6,7 +6,6 @@
  * License: LGPL. No copyright.
  */
 #include "barracks.h"
-#include "character.h"
 #include "colony.h"
 #include "equip.h"
 #include <algorithm>
@@ -357,16 +356,26 @@ Equip::draw_equipments()
         env->canvas->draw(Line(a, b), color);
 
         font->set_size(16);
-        if (m_status->state() != Button::ACTIVE)
+        m_char = m_barracks->current_char();
+        int equipped = m_settings->read<int>(m_equipment, m_char->id(), 0);
+        if (equipped)
         {
-            Character *c = m_barracks->current_char();
-            if (atoi(get_equipment(m_equipment, "m").c_str()) > c->military() or
-                atoi(get_equipment(m_equipment, "p").c_str()) > c->psionic() or
-                atoi(get_equipment(m_equipment, "t").c_str()) > c->tech() or
+            m_status->change_state(Button::ACTIVE);
+        }
+        else
+        {
+            if (atoi(get_equipment(m_equipment, "m").c_str()) > m_char->military() or
+                atoi(get_equipment(m_equipment, "p").c_str()) > m_char->psionic() or
+                atoi(get_equipment(m_equipment, "t").c_str()) > m_char->tech() or
                 atoi(get_equipment(m_equipment, "matter").c_str()) > Colony(m_slot).matter() or
                 atoi(get_equipment(m_equipment, "energy").c_str()) > Colony(m_slot).energy())
             {
                 color = Color(154, 6, 6);
+                m_status->change_state(Button::INACTIVE);
+            }
+            else
+            {
+                m_status->change_state(Button::IDLE);
             }
 
             m_matter_cost = atoi(get_equipment(m_equipment, "matter").c_str());
@@ -390,11 +399,15 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
 
     if (barracks)
     {
-        set_visible(id == "enable equip");
-        change_buttons(visible());
-
-        m_status->set_active(false);
-        m_status->set_visible(false);
+        if (id == "update character")
+        {
+            m_char = m_barracks->current_char();
+        }
+        else if (id.find("equip"))
+        {
+            set_visible(id == "enable equip");
+            change_buttons(visible());
+        }
 
         return true;
     }
@@ -458,27 +471,6 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         {
             ok = false;
             m_equipment = b.first;
-
-            Character *c = m_barracks->current_char();
-            int equiped = m_settings->read<int>(m_equipment, c->id(), 0);
-
-            if (equiped)
-            {
-                m_status->change_state(Button::ACTIVE);
-            }
-            else if (atoi(get_equipment(b.first, "m").c_str()) > c->military() or
-                atoi(get_equipment(b.first, "p").c_str()) > c->psionic() or
-                atoi(get_equipment(b.first, "t").c_str()) > c->tech() or
-                atoi(get_equipment(b.first, "matter").c_str()) > Colony(m_slot).matter() or
-                atoi(get_equipment(b.first, "energy").c_str()) > Colony(m_slot).energy())
-            {
-                m_status->change_state(Button::INACTIVE);
-            }
-            else
-            {
-                m_status->change_state(Button::IDLE);
-            }
-
             m_status->set_visible(true);
         }
 

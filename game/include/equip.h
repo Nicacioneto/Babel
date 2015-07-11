@@ -8,6 +8,7 @@
 #ifndef EQUIP_H
 #define EQUIP_H
 
+#include "character.h"
 #include "textbox.h"
 #include <memory>
 #include <map>
@@ -35,6 +36,7 @@ private:
     Barracks *m_barracks;
     TextBox *m_equipment_text;
     shared_ptr<Settings> m_settings;
+    Character *m_char;
 
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;

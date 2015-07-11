@@ -325,10 +325,13 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         {
             m_character = m_characters.size() - 1;
         }
+
+        notify("update character", "");
     }
     else if (button->id() == "right_arrow")
     {
         m_character = (m_character + 1) % m_characters.size();
+        notify("update character", "");
     }
     else if (button->id() == "levelup_m")
     {
@@ -542,11 +545,14 @@ Barracks::on_event(const KeyboardEvent& event)
         {
             m_character = m_characters.size() - 1;
         }
+
+        notify("update character", "");
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)
     {
         m_character = (m_character + 1) % m_characters.size();
+        notify("update character", "");
     }
 
     current_char()->set_visible(true);
