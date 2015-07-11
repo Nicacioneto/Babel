@@ -315,6 +315,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Character *c = current_char();
+    c->set_visible(false);
 
     hide_buttons();
 
@@ -440,6 +441,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     change_buttons();
+    current_char()->set_visible(true);
 
     return true;
 }
@@ -540,7 +542,6 @@ Barracks::on_event(const KeyboardEvent& event)
         {
             m_character = m_characters.size() - 1;
         }
-
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)
