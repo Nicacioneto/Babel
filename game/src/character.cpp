@@ -95,6 +95,8 @@ Character::init()
     set_cooldown((m_agility + m_perception) / 2);
     set_critical(m_agility/4);
     m_defense_mode = false;
+    m_available = m_settings->read<bool>(m_name, "available", true);
+    set_available(m_available);
 }
 
 int
@@ -497,6 +499,12 @@ Character::critical() const
     return m_critical;
 }
 
+bool
+Character::available() const
+{
+    return m_available;
+}
+
 void
 Character::set_texture(const string& id)
 {
@@ -573,6 +581,11 @@ Character::set_life(int life)
 {
     m_life = life;
     write<int>("life", life);
+
+    if (not life)
+    {
+        set_available(false);
+    }
 }
 
 void
@@ -685,6 +698,13 @@ Character::set_critical(int critical)
 {
     m_critical = critical;
     write<int>("critical", critical);
+}
+
+void
+Character::set_available(bool available)
+{
+    m_available = available;
+    write<bool>("available", available);
 }
 
 void

@@ -56,6 +56,7 @@ public:
     int might_armor() const;
     int mind_armor() const;
     int critical() const;
+    bool available() const;
 
     void set_texture(const string& id);
 
@@ -87,6 +88,7 @@ public:
     void set_critical(int critical);
     void set_defense_mode(bool defense_mode);
     void set_mpt_mode(bool mpt_mode);
+    void set_available(bool available);
 
 private:
     int m_slot;
@@ -128,6 +130,7 @@ private:
     int m_mind_armor;
     int m_critical;
     bool m_defense_mode;
+    bool m_available;
 
     void init();
     int range(int min, int max) const;

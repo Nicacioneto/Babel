@@ -99,7 +99,7 @@ Revive::draw_character(double scale_w, double scale_h, Color color)
 
         int cost = (level * 100 * (max_life - life)) / max_life;
 
-        env->canvas->draw(to_string(cost), 706 * scale_w, y * scale_h, color);
+        env->canvas->draw(to_string(cost) + "/" + to_string(cost), 718 * scale_w, y * scale_h, color);
 
         if (life == 0)
         {
@@ -224,6 +224,7 @@ Revive::revive_character(const ObjectID id)
     if (matter >= 0)
     {
         m_colony->set_matter(matter);
+        m_colony->set_energy(matter);
 
         m_settings->write<int>(id, "life", max_life);
         m_settings->save("res/datas/slot" + to_string(m_slot) + "/characters.sav");

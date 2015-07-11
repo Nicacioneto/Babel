@@ -1,23 +1,63 @@
 [Tundra]
 time=01:00
+energy=70
+matter=289
+military=1
+psionic=0
+tech=1
 
 [Jungle]
 time=01:10
+energy=134
+matter=287
+military=1
+psionic=0
+tech=0
 
 [Sea]
 time=01:20
+energy=112
+matter=276
+military=0
+psionic=2
+tech=0
 
 [Dunes]
 time=01:30
+energy=178
+matter=289
+military=1
+psionic=3
+tech=0
 
 [Taiga]
 time=01:40
+energy=236
+matter=123
+military=2
+psionic=2
+tech=3
 
 [Lake]
 time=01:50
+energy=123
+matter=232
+military=1
+psionic=1
+tech=1
 
 [Swamp]
 time=02:00
+energy=345
+matter=654
+military=5
+psionic=5
+tech=5
 
 [Cavern]
 time=02:10
+energy=123
+matter=654
+military=4
+psionic=5
+tech=1

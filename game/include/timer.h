@@ -16,13 +16,12 @@
 
 using std::vector;
 
-
 extern vector<Mission *> missions();
 extern void create_threads(int slot);
 extern void kill_threads();
 
-extern void start_time(const string& name = "", unsigned long start = 0,
-    const string& icon = "", int energy = 0, int matter = 0,
-    const string& file = "") throw (Exception);
+class Mission;
+
+extern void start_time(Mission *mission) throw (Exception);
 
 #endif

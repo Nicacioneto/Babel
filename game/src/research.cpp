@@ -207,7 +207,9 @@ Research::research_item(const ObjectID id)
         unsigned long min = atol(time.substr(0, 2).c_str()) * 60;
         unsigned long seg = atol(time.substr(3).c_str());
         
-        start_time(id, min + seg, "hospital", 0, 0, "items");
+        Mission *mission = new Mission(id, min + seg, "hospital", 0, 0, "items");
+
+        start_time(mission);
         calculate_max_page();
     }
 }

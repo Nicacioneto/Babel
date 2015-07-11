@@ -21,6 +21,7 @@
 #include "planet.h"
 #include "play.h"
 #include "squad.h"
+#include "squad_planet.h"
 #include "timer.h"
 #include "tower.h"
 #include "workshop.h"
@@ -114,6 +115,10 @@ Babel::load_level(const string& id)
     else if (id == "squad")
     {
         return new Squad(m_slot);
+    }
+    else if (id == "squad_planet")
+    {
+        return new SquadPlanet(m_slot);
     }
     else if (id == "drone")
     {

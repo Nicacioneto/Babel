@@ -252,10 +252,12 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
     }
     else if (button->id() == "send_party")
     {
-        start_mission();
         enable_popup(false);
+        set_next("squad_planet");
+        finish();
     }
-
+    m_settings->write<string>("Mission", "current", m_place);
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/planet.sav");
     return true;
 }
 
@@ -277,15 +279,6 @@ Planet::enable_popup(bool popup)
     }
 
     m_state = popup ? POPUP : IDLE;
-}
-
-void
-Planet::start_mission()
-{
-    string time = m_settings->read<string>(m_place, "time", "00:00");
-    unsigned long min = atol(time.substr(0, 2).c_str()) * 60;
-    unsigned long seg = atol(time.substr(3).c_str());
-    start_time(m_place, min + seg, "workshop", 50, 50, "colony");
 }
 
 bool

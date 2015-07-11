@@ -1,12 +1,12 @@
 /*
- * Team class implementation
+ * Team planet class implementation
  *
  * Author: Tiamat
  * Date: 21/06/2015
  * License: LGPL. No copyright.
  */
 #include "character.h"
-#include "team.h"
+#include "team_planet.h"
 #include <algorithm>
 #include <core/color.h>
 #include <core/font.h>
@@ -20,11 +20,11 @@
 
 using std::to_string;
 
-Team::Team(int slot, Object *parent)
+TeamPlanet::TeamPlanet(int slot, Object *parent)
     : Object(parent), m_slot(slot), m_settings(nullptr)
 {
     Environment *env = Environment::get_instance();
-    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad_planet.sav";
     m_settings = env->resources_manager->get_settings(path);
 
     load_characters();
@@ -32,18 +32,18 @@ Team::Team(int slot, Object *parent)
 }
 
 void
-Team::draw_self()
+TeamPlanet::draw_self()
 {
     Environment *env = Environment::get_instance();
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    env->canvas->draw("Select Squad", 60 * scale_w, 50 * scale_h, Color(70, 89, 79));
+    env->canvas->draw("Select Expedition Party", 60 * scale_w, 50 * scale_h, Color(70, 89, 79));
 }
 
 bool
-Team::on_message(Object *sender, MessageID id, Parameters)
+TeamPlanet::on_message(Object *sender, MessageID id, Parameters)
 {
     Button *button = dynamic_cast<Button *>(sender);
 
@@ -75,7 +75,7 @@ Team::on_message(Object *sender, MessageID id, Parameters)
 }
 
 void
-Team::load_characters()
+TeamPlanet::load_characters()
 {
     Environment *env = Environment::get_instance();
 
@@ -126,11 +126,11 @@ Team::load_characters()
 }
 
 void
-Team::load_team()
+TeamPlanet::load_team()
 {
     m_team.clear();
     
-    auto heroes = m_settings->sections()["Squad"];
+    auto heroes = m_settings->sections()["Squad Planet"];
 
     for (auto h : heroes)
     {
@@ -143,24 +143,24 @@ Team::load_team()
 }
 
 void
-Team::confirm()
+TeamPlanet::confirm()
 {
     int i = 1;
     for (auto id : m_team)
     {
-        m_settings->write<string>("Squad", "hero" + to_string(i++), id);
+        m_settings->write<string>("Squad Planet", "hero" + to_string(i++), id);
     }
 
     for (int j = i; j <= 4; ++j)
     {
-        m_settings->write<string>("Squad", "hero" + to_string(j), "");
+        m_settings->write<string>("Squad Planet", "hero" + to_string(j), "");
     }
 
-    m_settings->save("res/datas/slot" + to_string(m_slot) + "/squad.sav");
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/squad_planet.sav");
 }
 
 void
-Team::reset()
+TeamPlanet::reset()
 {
     for (auto c : m_characters)
     {
@@ -171,7 +171,7 @@ Team::reset()
 }
 
 void
-Team::change_buttons(bool state)
+TeamPlanet::change_buttons(bool state)
 {
     for (auto b : m_buttons)
     {
@@ -183,7 +183,16 @@ Team::change_buttons(bool state)
 }
 
 unsigned int
-Team::size()
+TeamPlanet::size()
 {
     return m_team.size();
+}
+
+void
+TeamPlanet::update_available()
+{
+    for (auto c : m_characters)
+    {
+        c.second->set_available(false);
+    }
 }

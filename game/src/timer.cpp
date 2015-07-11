@@ -71,10 +71,8 @@ int monitoring_mission(void *ptr)
     return 0;
 }
 
-void start_time(const string& name, unsigned long start, const string& icon,
-    int energy, int matter, const string& file) throw (Exception)
+void start_time(Mission *mission) throw (Exception)
 {
-    Mission *mission = new Mission(name, start, icon, energy, matter, file);
     m_missions.push_back(mission);
     
     SDL_Thread *thread = SDL_CreateThread(monitoring_mission, "monitoring mission",
@@ -104,7 +102,12 @@ void create_threads(int slot)
         int energy = atoi(section.second["energy"].c_str());
         int matter = atoi(section.second["matter"].c_str());
         string file = section.second["file"];
-        start_time(name, remainder, icon, energy, matter, file);
+
+
+        // TODO, ver os persogem q foi enviado para essa missão
+        Mission *mission = new Mission(name, remainder, icon, energy, matter, file);
+
+        start_time(mission);
     }
 }
 
