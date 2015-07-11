@@ -10,6 +10,7 @@
 
 #include "button.h"
 #include "base.h"
+#include "textbox.h"
 #include <core/level.h>
 #include <memory>
 #include <map>
@@ -30,7 +31,9 @@ private:
     Screen m_screen;
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
+    TextBox *m_chat_text;
 
+    void welcome();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();

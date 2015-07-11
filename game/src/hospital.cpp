@@ -24,7 +24,7 @@ using std::to_string;
 
 Hospital::Hospital(int slot, const string& next)
     : Level("hospital", next), m_slot(slot), m_colony(nullptr), m_screen("chat"),
-        m_page(1), m_max_pages(1), m_text(nullptr)
+        m_page(1), m_max_pages(1), m_text(nullptr), m_chat_text(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
@@ -64,8 +64,8 @@ Hospital::welcome()
     string text = sections["Hospital"]["welcome"];
 
     Rect area(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h);
-    m_textbox = new TextBox(this, area, text, color);
-    m_textbox->set_colors(color);
+    m_chat_text = new TextBox(this, area, text, color);
+    m_chat_text->set_colors(color);
 }
 
 void
@@ -275,7 +275,7 @@ Hospital::change_buttons()
 void
 Hospital::chat_screen()
 {
-   m_textbox->draw();
+   m_chat_text->draw();
 }
 
 void

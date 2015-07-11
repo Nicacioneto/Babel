@@ -19,7 +19,7 @@ using std::to_string;
 
 Facilities::Facilities(int slot, const string& next)
     : Level("facilities", next), m_slot(slot), m_mcost(10),
-        m_pcost(10), m_tcost(10), m_screen(CHAT)
+        m_pcost(10), m_tcost(10), m_screen(CHAT), m_chat_text(nullptr)
 {
     m_colony = new Colony(slot, this, "facilities");
     m_colony->add_observer(this);
@@ -34,7 +34,30 @@ Facilities::Facilities(int slot, const string& next)
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
     m_textures["left_bracket"] = env->resources_manager->get_texture(path + "left_bracket.png");
 
+    welcome();
     create_buttons();
+}
+
+void
+Facilities::welcome()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
+
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
+    auto sections = settings->sections();
+    string text = sections["Facilities"]["welcome"];
+
+    Rect area(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h);
+    m_chat_text = new TextBox(this, area, text, color);
+    m_chat_text->set_colors(color);
 }
 
 void
@@ -292,22 +315,7 @@ Facilities::change_buttons()
 void
 Facilities::change_to_chat()
 {
-    Environment *env = Environment::get_instance();
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-    Color color(170, 215, 190);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/colony.sav");
-    auto sections = settings->sections();
-    string text = sections["Facilities"]["welcome"];
-    env->canvas->draw(text, (305+5) * scale_w, 605 * scale_h, color);
-    env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, 670 * scale_w, 116 * scale_h), color);
+    m_chat_text->draw();
 }
 
 void

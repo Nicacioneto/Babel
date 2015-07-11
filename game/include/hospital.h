@@ -37,7 +37,7 @@ private:
     int m_page;
     int m_max_pages;
     Text *m_text;
-    TextBox *m_textbox;
+    TextBox *m_chat_text;
 
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
