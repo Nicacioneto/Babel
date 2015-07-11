@@ -52,6 +52,7 @@ Planet::load_textures()
     m_textures["place"] = env->resources_manager->get_texture(path + "place.png");
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
     m_textures["Tundra"] = env->resources_manager->get_texture(path + "Tundra.png");
+    m_textures["Lake"] = env->resources_manager->get_texture(path + "Lake.png");
 
     path = "res/images/colony/";
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
@@ -162,8 +163,8 @@ Planet::draw_self()
         env->canvas->set_blend_mode(Canvas::NONE);
 
         env->canvas->draw(m_textures["popup"].get(), 317 * scale_w, 230 * scale_h);
-        // env->canvas->draw(m_textures[m_place].get(), 280 * scale_w, 278 * scale_h);
-        env->canvas->draw(m_textures["place"].get(), 280 * scale_w, 278 * scale_h);
+        env->canvas->draw(m_textures[m_place].get(), 280 * scale_w, 278 * scale_h);
+        // env->canvas->draw(m_textures["place"].get(), 280 * scale_w, 278 * scale_h);
         env->canvas->draw(m_place, 345 * scale_w, 240 * scale_h, color);
 
         font->set_size(16);
