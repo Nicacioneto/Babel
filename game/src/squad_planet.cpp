@@ -138,7 +138,7 @@ SquadPlanet::draw_self()
     env->canvas->draw("Reset Choice", 565 * scale_w, 630 * scale_h, color);
 
     env->canvas->draw(m_level_m, 418 * scale_w, 120 * scale_h, color);
-    env->canvas->draw(m_level_p, 495 * scale_w, 120 * scale_h, color);
+    env->canvas->draw(m_level_p, 500 * scale_w, 120 * scale_h, color);
     env->canvas->draw(m_level_t, 580 * scale_w, 120 * scale_h, color);
 
     env->canvas->draw(m_timer, 685 * scale_w, 95 * scale_h, color);

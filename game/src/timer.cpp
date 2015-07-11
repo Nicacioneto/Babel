@@ -27,13 +27,19 @@ void set_reward(Mission *mission)
     shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/" + file + ".sav");
 
-    if (file == "colony")
+    if (file == "colony" and mission->c().size())
     {
-        int energy = settings->read<int>("Colony", "energy", 0);
-        int matter = settings->read<int>("Colony", "matter", 0);
 
-        energy += mission->energy();
-        matter += mission->matter();
+        int energy = mission->energy();
+        int matter = mission->matter();
+        
+        double percent = mission->calculate_percent();
+
+        energy *= percent;
+        matter *= percent;
+
+        energy += settings->read<int>("Colony", "energy", 0);
+        matter += settings->read<int>("Colony", "matter", 0);
 
         settings->write<int>("Colony", "energy", energy);
         settings->write<int>("Colony", "matter", matter);

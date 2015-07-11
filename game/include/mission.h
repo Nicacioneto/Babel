@@ -31,7 +31,9 @@ public:
     int m();
     int p();
     int t();
+    vector<string> c();
     void available_character(bool available);
+    double calculate_percent();
 
 private:
     string m_name;

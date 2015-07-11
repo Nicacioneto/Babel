@@ -73,6 +73,12 @@ Mission::t()
     return m_t;
 }
 
+vector<string>
+Mission::c()
+{
+    return m_c;
+}
+
 string
 Mission::file()
 {
@@ -97,4 +103,37 @@ Mission::available_character(bool available)
         }
     }
     characters->save(path);
+}
+
+double
+Mission::calculate_percent()
+{
+    Environment *env = Environment::get_instance();
+    
+    string path = "res/datas/slot" + to_string(m_slot) + "/characters.sav";
+    shared_ptr<Settings> characters = env->resources_manager->get_settings(path);
+
+    int military = 0;
+    int psionic = 0;
+    int tech = 0;
+    for (auto c : m_c)
+    {
+        for (auto s : characters->sections())
+        {
+            if (c == s.first)
+            {
+                military += characters->read(c, "military", 0);
+                psionic += characters->read(c, "psionic", 0);
+                tech += characters->read(c, "tech", 0);
+            }
+        }
+    }
+
+    int sum = 0;
+
+    sum += military >= m_m ? 1 : 0;
+    sum += psionic >= m_p ? 1 : 0;
+    sum += tech >= m_t ? 1 : 0;
+
+    return sum == 3 ? 1 : (sum == 2 ? 0.7 : 0);
 }

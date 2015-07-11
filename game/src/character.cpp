@@ -119,7 +119,6 @@ Character::draw_self()
     {
         m_style == SMALL ? env->canvas->draw(m_bracket_small.get(), x(), y()) :
             env->canvas->draw(m_bracket_big.get(), x(), y());
-        
         draw_attributes();
     }
 
@@ -133,7 +132,7 @@ Character::draw_self()
             env->canvas->fill(rect, Color(128, 0, 0, 128));
             env->canvas->set_blend_mode(Canvas::NONE);
         }
-        else 
+        else
         {
             env->canvas->draw(unvailable.get(), x() + 5, y() + 10);
         }
