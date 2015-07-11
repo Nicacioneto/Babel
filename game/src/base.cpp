@@ -31,6 +31,55 @@ Base::Base(int slot, const string& next)
 }
 
 void
+Base::create_buttons()
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/images/colony/";
+
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    const int x = 28 * scale_w;
+    const int w = 190 * scale_w;
+    const int h = 180/3 * scale_h;
+
+    Button *button = new Button(this, "barracks", path + "barracks_button.png",
+        x, 218 * scale_h, w, h);
+    button->set_sprites(3);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "facilities", path + "facilities_button.png",
+        x, 322 * scale_h, w, h);
+    button->set_sprites(3);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "hospital", path + "hospital_button.png",
+        x, 427 * scale_h, w, h);
+    button->set_sprites(3);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "workshop", path + "workshop_button.png",
+        x, 531 * scale_h, w, h);
+    button->set_sprites(3);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "central", path + "central_button.png",
+        x, 635 * scale_h, w, h);
+    button->set_sprites(3);
+    m_buttons[button->id()] = button;
+
+    button = new Button(this, "main_menu", path + "main_menu.png",
+        850 * scale_w, 680 * scale_h, 120 * scale_w, 35 * scale_h);
+    m_buttons[button->id()] = button;
+
+    for (auto b : m_buttons)
+    {
+        b.second->add_observer(this);
+        add_child(b.second);
+    }
+}
+
+void
 Base::draw_self()
 {
     Environment *env = Environment::get_instance();
@@ -59,6 +108,10 @@ Base::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(id);
     }
+    else if (button->id() == "main_menu")
+    {
+        set_next("menu");
+    }
     else
     {
         if (button->id() == "barracks")
@@ -72,57 +125,7 @@ Base::on_message(Object *sender, MessageID id, Parameters)
 
         set_next(button->id());
     }
-    
+
     finish();
     return true;
-}
-
-void
-Base::create_buttons()
-{
-    Environment *env = Environment::get_instance();
-    string path = "res/images/colony/";
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-
-    const int x = 28 * scale_w;
-    const int w = 190 * scale_w;
-    const int h = 180/3 * scale_h;
-
-    Button *button = new Button(this, "barracks", path + "barracks_button.png",
-        x, 218 * scale_h, w, h);
-    button->set_sprites(3);
-
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "facilities", path + "facilities_button.png",
-        x, 322 * scale_h, w, h);
-    button->set_sprites(3);
-
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "hospital", path + "hospital_button.png",
-        x, 427 * scale_h, w, h);
-    button->set_sprites(3);
-
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "workshop", path + "workshop_button.png",
-        x, 531 * scale_h, w, h);
-    button->set_sprites(3);
-
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "central", path + "central_button.png",
-        x, 635 * scale_h, w, h);
-    button->set_sprites(3);
-
-    m_buttons[button->id()] = button;
-
-    for (auto b : m_buttons)
-    {
-        b.second->add_observer(this);
-        add_child(b.second);
-    }
 }
