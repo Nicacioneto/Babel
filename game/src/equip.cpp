@@ -24,7 +24,8 @@ using std::to_string;
 
 Equip::Equip(int slot, Object *parent)
     : Object(parent), m_slot(slot), m_matter_cost(0), m_energy_cost(0),
-        m_class("weapon"), m_state(""), m_barracks(nullptr), m_settings(nullptr)
+        m_class("weapon"), m_state(""), m_barracks(nullptr), m_equipment_text(nullptr),
+        m_settings(nullptr)
 {
     parent->add_observer(this);
 
@@ -36,6 +37,8 @@ Equip::Equip(int slot, Object *parent)
     Environment *env = Environment::get_instance();
     m_settings = env->resources_manager->get_settings("res/datas/slot" +
         to_string(m_slot) + "/" + m_class + ".sav");
+
+    create_textbox();
 }
 
 void
@@ -239,6 +242,22 @@ Equip::load_equipments(string type)
 }
 
 void
+Equip::create_textbox()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(16);
+
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    Rect area(203 * scale_w, 502 * scale_h, 250 * scale_w, 102 * scale_h);
+    m_equipment_text = new TextBox(this, area, "", color);
+}
+
+void
 Equip::draw_self()
 {
     Environment *env = Environment::get_instance();
@@ -293,26 +312,13 @@ Equip::draw_equipments()
 
     if (not m_equipment.empty())
     {
-        // shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        //     to_string(m_slot) + "/equipments.sav");
-        // auto sections = settings->sections();
-        // string text = sections["Rifle"]["text"];
-
-        // replace(text.begin(), text.end(), ';', '\n');
-        // env->canvas->draw(text, 145 * scale_w, 384 * scale_h, color);
-
+        m_equipment_text->draw();
         env->canvas->draw("Assault Rifles have high fire rate, sending",
             145 * scale_w, 384 * scale_h, color);
         env->canvas->draw("wave after wave of raining death.",
             145 * scale_w, (384+17) * scale_h, color);
 
         color = Color(170, 215, 190);
-        env->canvas->draw("The Katana Assault Rifle is a", 211 * scale_w, 512 * scale_h, color);
-        env->canvas->draw("state-of-the art weapon, being", 211 * scale_w,
-            (512+17) * scale_h, color);
-        env->canvas->draw("able to shoot a 10mm", 211 * scale_w, (512+17*2) * scale_h, color);
-        env->canvas->draw("steel-core bullet at 800 rpm.", 211 * scale_w,
-            (512+17*3) * scale_h, color);
 
         env->canvas->draw(m_textures["bracket_m"].get(), 313 * scale_w, 483 * scale_h);
         env->canvas->draw(m_textures["bracket_p"].get(), 358 * scale_w, 483 * scale_h);
@@ -488,6 +494,10 @@ Equip::on_message(Object *sender, MessageID id, Parameters)
         ok = false;
         button->change_state(Button::ACTIVE);
     }
+
+    auto sections = m_settings->sections();
+    string text = sections[m_equipment]["text"];
+    m_equipment_text->set_text(text);
 
     if (ok)
     {

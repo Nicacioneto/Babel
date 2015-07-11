@@ -21,7 +21,7 @@ class TextBox::Impl
 {
 public:
     Impl(TextBox *text_box, const string& text, const Color& text_color, Alignment alignment)
-        : m_text_box(text_box), m_text(""), m_alignment(alignment), m_border(Color::BLUE),
+        : m_text_box(text_box), m_text(""), m_alignment(alignment), m_border(Color::TRANSPARENT),
             m_background(Color::TRANSPARENT), m_text_color(text_color)
     {
         set_text(text);

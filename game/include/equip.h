@@ -8,6 +8,7 @@
 #ifndef EQUIP_H
 #define EQUIP_H
 
+#include "textbox.h"
 #include <memory>
 #include <map>
 
@@ -32,6 +33,7 @@ private:
     Button *m_status;
     State m_state;
     Barracks *m_barracks;
+    TextBox *m_equipment_text;
     shared_ptr<Settings> m_settings;
 
     map<ObjectID, Button *> m_weapons;
@@ -48,6 +50,7 @@ private:
     void load_equipments(string type);
     void draw_self();
     void draw_equipments();
+    void create_textbox();
     string get_equipment(string equipment_id, string attr);
     bool on_message(Object *sender, MessageID id, Parameters p);
     void deactivate_equipments();
