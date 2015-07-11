@@ -1,10 +1,11 @@
 [Barracks]
 
 tower = 0
+welcome=Welcome to the barracks soldier, here you can use your resources to strengthen your squad. You can use the data you collected on the new frontier to make them stronger or buy new weapons and armors with the resources you collected out there.
 
 [Central]
 
-welcome = Welcome to Central
+welcome=Welcome to Central. This screen will serve as a guide to all the quests made in the game, both in the tower and in the colony and the planet. Showing that have already been made and the missions in progress.
 
 [Colony]
 
@@ -17,12 +18,12 @@ tech = 0
 
 [Facilities]
 
-welcome = Welcome to Facilities
+welcome=Welcome to Facilities. Structure of general upgrades, enables schematics and passive skills.
 
 [Hospital]
 
-welcome = Welcome to Hospital
+welcome=Welcome to the Hospital. Here is where you purchase items, healing and revive the characters and conducts new research both medicine and genetics.
 
 [Workshop]
 
-welcome = Welcome to Workshop
+welcome=Welcome to Workshop. Here you will find the central war Search colony, and you can search for new weapons, armor, drones and vehicles.

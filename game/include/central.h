@@ -9,6 +9,7 @@
 #define CENTRAL_H
 
 #include "button.h"
+#include "textbox.h"
 #include <core/level.h>
 #include <memory>
 #include <map>
@@ -32,9 +33,12 @@ private:
     int m_page;
     int m_max_pages;
     Text *m_text;
+    TextBox *m_chat_text;
+
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button*> m_buttons;
 
+    void welcome();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();

@@ -27,6 +27,8 @@ public:
     Barracks(int slot, const string& next = "base");
     ~Barracks();
 
+    Character * current_char() const;
+
 private:
     typedef enum { INSPECT, EQUIP } Screen;
 
@@ -51,8 +53,6 @@ private:
     void load_characters();
     void hide_buttons();
     void change_buttons();
-    Character * current_char() const;
-    void update_char_attributes(Character *c, string class_);
     bool on_event(const KeyboardEvent& event);
 };
 

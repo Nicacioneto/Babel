@@ -27,6 +27,7 @@ public:
     ~Character();
 
     int receive_damage(Character *character);
+    void update_from_levelup(string class_);
 
     Type type() const;
     int attacks_quantity() const;
@@ -85,6 +86,7 @@ public:
     void set_mind_armor(int mind_armor);
     void set_critical(int critical);
     void set_defense_mode(bool defense_mode);
+    void set_mpt_mode(bool mpt_mode);
 
 private:
     int m_slot;
@@ -97,6 +99,7 @@ private:
     Type m_type;
     Style m_style;
     int m_attacks_quantity;
+    bool m_mpt_mode;
     map<ObjectID, Text*> m_texts;
 
     int m_military;
@@ -127,9 +130,11 @@ private:
     bool m_defense_mode;
 
     void init();
+    int range(int min, int max) const;
     void draw_self();
     void draw_attributes();
     void load_texts();
+    void delete_texts();
     void set_attributes_positions();
     bool on_event(const MouseButtonEvent& event);
 

@@ -34,8 +34,31 @@ Central::Central(int slot, const string& next)
     colony->add_observer(this);
     add_child(colony);
 
+    welcome();
     set_pages_text();
     create_buttons();
+}
+
+void
+Central::welcome()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
+
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
+    auto sections = settings->sections();
+    string text = sections["Central"]["welcome"];
+
+    Rect area(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h);
+    m_chat_text = new TextBox(this, area, text, color);
+    m_chat_text->set_colors(color);
 }
 
 void
@@ -244,22 +267,7 @@ Central::change_buttons()
 void
 Central::change_to_chat()
 {
-    Environment *env = Environment::get_instance();
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-    Color color(170, 215, 190);
-
-    double scale_w = env->canvas->w() / W;
-    double scale_h = env->canvas->h() / H;
-    
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/colony.sav");
-    auto sections = settings->sections();
-    string text = sections["Central"]["welcome"];
-    env->canvas->draw(text, (305 + 5) * scale_w, 605 * scale_h, color);
-    env->canvas->draw(Rect(305 * scale_w, 605 * scale_h, 670 * scale_w, 116 * scale_h), color);
+    m_chat_text->draw();
 }
 
 void

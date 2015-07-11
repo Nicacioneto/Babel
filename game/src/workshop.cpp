@@ -17,7 +17,7 @@
 using std::to_string;
 
 Workshop::Workshop(int slot, const string& next)
-    : Level("workshop", next), m_slot(slot), m_screen(CHAT)
+    : Level("workshop", next), m_slot(slot), m_screen(CHAT), m_chat_text(nullptr)
 {
     Environment *env = Environment::get_instance();
     string path = "res/images/colony/";
@@ -30,7 +30,30 @@ Workshop::Workshop(int slot, const string& next)
     colony->add_observer(this);
     add_child(colony);
 
+    welcome();
     create_buttons();
+}
+
+void
+Workshop::welcome()
+{
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(18);
+
+    Color color(170, 215, 190);
+    double scale_w = env->canvas->w() / W;
+    double scale_h = env->canvas->h() / H;
+
+    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
+        to_string(m_slot) + "/colony.sav");
+    auto sections = settings->sections();
+    string text = sections["Workshop"]["welcome"];
+
+    Rect area(305 * scale_w, 605 * scale_h, +670 * scale_w, 116 * scale_h);
+    m_chat_text = new TextBox(this, area, text, color);
+    m_chat_text->set_colors(color);
 }
 
 void
@@ -187,23 +210,7 @@ Workshop::change_buttons()
 void
 Workshop::change_to_chat()
 {
-    Environment *env = Environment::get_instance();
-
-    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
-    env->canvas->set_font(font);
-    font->set_size(18);
-
-    Color color(170, 215, 190);
-    
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/colony.sav");
-    auto sections = settings->sections();
-    string text = sections["Workshop"]["welcome"];
-    
-    env->canvas->draw(text, ((305 + 5) / W) * env->canvas->w(),
-        (605 / H) * env->canvas->h(), color);
-    env->canvas->draw(Rect((305 / W) * env->canvas->w(), (605 / H) * env->canvas->h(),
-        (670 / W) * env->canvas->w(), (116 / H) * env->canvas->h()), color);
+    m_chat_text->draw();
 }
 
 void

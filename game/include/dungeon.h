@@ -20,7 +20,7 @@ class Bitmap;
 class KeyboardEvent;
 class Texture;
 
-#define MAXT 10
+#define MAXT 20
 
 class Dungeon : public Level, Listener
 {
@@ -36,11 +36,12 @@ public:
 
     bool on_event(const KeyboardEvent& event);
 
-    typedef enum { MOVING, WAITING } State;
+    typedef enum { MOVING, WAITING, DOOR } State;
 
 private:
     void steps_to_foward();
     void steps_to_backward();
+    void pass_door();
 
     void update_self(unsigned long);
     void draw_self();
@@ -55,14 +56,16 @@ private:
     unsigned long m_last;
     Direction m_direction;
     State m_state;
+    int m_levels;
+    bool m_front_blocked;
     Room **m_rooms;
 
     shared_ptr<Bitmap> m_tiles[MAXT + 1];
+    int m_door;
     Bitmap *m_screen;
     
     list<Rect> planes(int w, int h, double& ratio);
     Rect center(int sw, int sh) const;
-
 };
 
 #endif

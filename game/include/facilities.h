@@ -10,6 +10,7 @@
 
 #include "button.h"
 #include "base.h"
+#include "textbox.h"
 #include "colony.h"
 #include <core/level.h>
 #include <memory>
@@ -30,9 +31,12 @@ private:
     int m_slot, m_mcost, m_pcost, m_tcost;
     Colony *m_colony;
     Screen m_screen;
+    TextBox *m_chat_text;
+
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, Button *> m_buttons;
 
+    void welcome();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void draw_self();
     void create_buttons();

@@ -21,7 +21,7 @@
 using std::to_string;
 
 Barracks::Barracks(int slot, const string& next)
-    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT)
+    : Level("barracks", next), m_slot(slot), m_character(0), m_screen(INSPECT), m_equip(nullptr)
 {
     Environment *env = Environment::get_instance();
     env->events_manager->register_listener(this);
@@ -31,11 +31,12 @@ Barracks::Barracks(int slot, const string& next)
     load_characters();
     current_char()->set_visible(true);
 
-    Equip *m_equip = new Equip(m_slot, this, current_char());
+    m_equip = new Equip(m_slot, this);
     m_equip->set_visible(false);
     m_equip->add_observer(this);
-    m_equip->set_character(current_char());
     add_child(m_equip);
+
+    notify("disable equip", "");
 }
 
 Barracks::~Barracks()
@@ -85,27 +86,6 @@ Barracks::create_buttons()
     button = new Button(this, "back", path + "back.png",
         912 * scale_w, 55 * scale_h, 67 * scale_w, 26 * scale_h);
     button->set_sprites(1);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "weapon", path + "rifle.png",
-        112 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "armor", path + "armor.png",
-        194 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
-    m_buttons[button->id()] = button;
-
-    button = new Button(this, "shield", path + "shield.png",
-        278 * scale_w, 222 * scale_h, 55 * scale_w, 75 * scale_h);
-    button->set_sprites(1);
-    button->set_active(false);
-    button->set_visible(false);
     m_buttons[button->id()] = button;
 
     for (auto b : m_buttons)
@@ -335,7 +315,6 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     Character *c = current_char();
-    c->set_visible(false);
 
     hide_buttons();
 
@@ -345,13 +324,10 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         {
             m_character = m_characters.size() - 1;
         }
-
-        m_equip->set_character(current_char());
     }
     else if (button->id() == "right_arrow")
     {
         m_character = (m_character + 1) % m_characters.size();
-        m_equip->set_character(current_char());
     }
     else if (button->id() == "levelup_m")
     {
@@ -369,7 +345,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
                 c->set_levelup_m(c->levelup_m() + 20);
             }
 
-            update_char_attributes(c, "M");
+            c->update_from_levelup("M");
         }
     }
     else if (button->id() == "levelup_p")
@@ -388,7 +364,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
                 c->set_levelup_p(c->levelup_p() + 20);
             }
 
-            update_char_attributes(c, "P");
+            c->update_from_levelup("P");
         }
     }
     else if (button->id() == "levelup_t")
@@ -407,7 +383,7 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
                 c->set_levelup_t(c->levelup_t() + 20);
             }
 
-            update_char_attributes(c, "T");
+            c->update_from_levelup("T");
         }
     }
     else if (button->id() == "equip_shelf")
@@ -424,22 +400,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
         for (auto character : m_characters)
         {
             character.second->set_texture(character.first + "_small.png");
+            character.second->set_mpt_mode(true);
             character.second->set_h(123 * scale_h);
         }
 
-        notify("enable equip screen", "");
-    }
-    else if (button->id() == "weapon")
-    {
-        notify(button->id(), "");
-    }
-    else if (button->id() == "armor")
-    {
-        notify(button->id(), "");
-    }
-    else if (button->id() == "shield")
-    {
-        notify(button->id(), "");
+        notify("enable equip", "");
     }
     else if (button->id() == "back")
     {
@@ -457,10 +422,11 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
             for (auto character : m_characters)
             {
                 character.second->set_texture(character.first + "_big.png");
+                character.second->set_mpt_mode(false);
                 character.second->set_h(270 * scale_h);
             }
 
-            notify("disable equip screen", "");
+            notify("disable equip", "");
         }
         else
         {
@@ -474,7 +440,6 @@ Barracks::on_message(Object *sender, MessageID id, Parameters)
     }
 
     change_buttons();
-    current_char()->set_visible(true);
 
     return true;
 }
@@ -542,13 +507,6 @@ Barracks::change_buttons()
     m_buttons["levelup_t"]->set_visible(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_active(m_screen == INSPECT);
     m_buttons["equip_shelf"]->set_visible(m_screen == INSPECT);
-
-    m_buttons["weapon"]->set_active(m_screen == EQUIP);
-    m_buttons["weapon"]->set_visible(m_screen == EQUIP);
-    m_buttons["armor"]->set_active(m_screen == EQUIP);
-    m_buttons["armor"]->set_visible(m_screen == EQUIP);
-    m_buttons["shield"]->set_active(m_screen == EQUIP);
-    m_buttons["shield"]->set_visible(m_screen == EQUIP);
 }
 
 Character *
@@ -557,25 +515,6 @@ Barracks::current_char() const
     auto it = m_characters.begin();
     for (int i = 0; i < m_character; ++it, ++i) {}; // not work very well with other ++ operators
     return it->second;
-}
-
-void
-Barracks::update_char_attributes(Character *c, string class_)
-{
-    Environment *env = Environment::get_instance();
-    shared_ptr<Settings> settings = env->resources_manager->get_settings("res/datas/slot" +
-        to_string(m_slot) + "/levelup.sav");
-
-    c->set_life(c->life() + settings->read<int>(class_, "life", 0));
-    c->set_max_life(c->max_life() + settings->read<int>(class_, "life", 0));
-    c->set_mp(c->mp() + settings->read<int>(class_, "mp", 0));
-    c->set_max_mp(c->max_mp() + settings->read<int>(class_, "mp", 0));
-    c->set_might(c->might() + settings->read<int>(class_, "might", 0));
-    c->set_mind(c->mind() + settings->read<int>(class_, "mind", 0));
-    c->set_resilience(c->resilience() + settings->read<int>(class_, "resilience", 0));
-    c->set_willpower(c->willpower() + settings->read<int>(class_, "willpower", 0));
-    c->set_agility(c->agility() + settings->read<int>(class_, "agility", 0));
-    c->set_perception(c->perception() + settings->read<int>(class_, "perception", 0));
 }
 
 bool
@@ -602,13 +541,11 @@ Barracks::on_event(const KeyboardEvent& event)
             m_character = m_characters.size() - 1;
         }
 
-        m_equip->set_character(current_char());
     }
     else if (event.state() == KeyboardEvent::PRESSED
         and event.key() == KeyboardEvent::RIGHT)
     {
         m_character = (m_character + 1) % m_characters.size();
-        m_equip->set_character(current_char());
     }
 
     current_char()->set_visible(true);

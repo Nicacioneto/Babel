@@ -8,18 +8,20 @@
 #ifndef EQUIP_H
 #define EQUIP_H
 
+#include "textbox.h"
 #include <memory>
 #include <map>
 
+class Barracks;
 class Button;
+class Settings;
 
 using std::map;
 
 class Equip : public Object
 {
 public:
-    Equip(int slot, Object *parent = nullptr, Character *character = nullptr);
-    void set_character(Character *character);
+    Equip(int slot, Object *parent = nullptr);
 
 private:
     typedef string State;
@@ -28,14 +30,16 @@ private:
     int m_slot, m_matter_cost, m_energy_cost;
     EquipmentClass m_class;
     ObjectID m_equipment;
-    Character *m_character;
     Button *m_status;
     State m_state;
+    Barracks *m_barracks;
+    TextBox *m_equipment_text;
+    shared_ptr<Settings> m_settings;
 
     map<ObjectID, Button *> m_weapons;
     map<ObjectID, Button *> m_armor;
     map<ObjectID, Button *> m_shield;
-    map<ObjectID, Button *> m_rifle;
+    map<ObjectID, Button *> m_buttons;
     map<ObjectID, Character*> m_characters;
     map<ObjectID, shared_ptr<Texture>> m_textures;
     map<ObjectID, shared_ptr<Texture>> m_attributes;
@@ -46,11 +50,13 @@ private:
     void load_equipments(string type);
     void draw_self();
     void draw_equipments();
+    void create_textbox();
     string get_equipment(string equipment_id, string attr);
     bool on_message(Object *sender, MessageID id, Parameters p);
     void deactivate_equipments();
     void buy_equipment(ObjectID equipment);
     void change_buttons();
+    void change_buttons(bool visible);
 };
 
 #endif
