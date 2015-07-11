@@ -226,11 +226,15 @@ Dungeon::update_self(unsigned long elapsed)
         m_last = elapsed;
 
         ++m_door;
+
         if (m_door > 12)
         {
             m_state = WAITING;
             pass_door();
             m_door = 4;
+
+            Environment *env = Environment::get_instance();
+            env->music->resume();
         }
     }
 
@@ -347,6 +351,10 @@ Dungeon::draw_self()
         if (north_tile == 4) //when north is a door
         {
             m_state = DOOR;
+            
+            Environment *env = Environment::get_instance();
+            env->music->pause();
+            env->sfx->play("res/sfx/openning_door.ogg", 1);
         }
         
         m_front_blocked = false;
