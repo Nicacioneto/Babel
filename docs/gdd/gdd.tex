@@ -128,6 +128,7 @@
 0.8                 & 10/07/2015        & Criação das estruturas                                & Álex Mesquita     \\ \hline
 0.9                 & 10/07/2015        & Criação dos NPCs                                      & Álex Mesquita     \\ \hline
 0.10                & 10/07/2015        & Atualização dos NPCs                                  & Álex Mesquita     \\ \hline
+0.11                & 10/07/2015        & Adição da Saúde                                       & Álex Mesquita     \\ \hline
 \end{tabu}
 \end{table}
 
@@ -135,7 +136,7 @@
 
 \section{Objetivo do jogo}
 
-Babel é um jogo de RPG com temática \textit{Sci-fi}, onde a raça humana vagueia pelo universo na esperança de reconstrução da espécie humana nem novo lar. Após receber um sinal, a raça humana desloca sua nave espacial para um planeta desconhecido à procura desse sinal e acaba encontrando uma torre que definitivamente não podia ter sido construída por humanos. O desafio do jogador será explorar essa torre afim de descobrir seus mistérios, no entanto o jogador deverá explorar o planeta para encontrar e administrar recursos que poderão evoluir as habilidades dos personagens ou serem utilizados para construir equipamentos para facilitar a exploração da torre.
+Babel é um jogo de RPG com temática \textit{Sci-fi}, onde a raça humana vagueia pelo universo na esperança de reconstrução da espécie humana em um novo lar. Após receber um sinal, a raça humana desloca sua nave espacial para um planeta desconhecido à procura desse sinal e acaba encontrando uma torre que definitivamente não podia ter sido construída por humanos. O desafio do jogador será explorar essa torre afim de descobrir seus mistérios, no entanto o jogador deverá explorar o planeta para encontrar e administrar recursos que poderão evoluir as habilidades dos personagens ou serem utilizados para construir equipamentos para facilitar a exploração da torre.
 
 \section{Gênero}
 
@@ -284,7 +285,7 @@ Funções:
 \end{itemize}
 
 \subsubsection{Hospital}
-Estrutura onde se compra itens, cura e revive os personagens e se realiza novas pesquisas tanto de medicamentos e genética. 
+Estrutura onde se compra itens, cura e revive os personagens e se realiza novas pesquisas tanto de medicamentos e quanto de genética. 
 
 Funções:
 \begin{itemize}
@@ -396,6 +397,38 @@ A primeira vez que se entrar em uma estrutura os NPCs terão uma fala tutorial e
   \item \textbf{Background}: Mulher com um alto nível de concentração e organização;
   \item \textbf{Recompensas}: Informa ao jogador os tudo que estiver relacionado a tela \textit{Central};
   \item \textbf{Diálogo}: (não definido).
+\end{itemize}
+
+\section{Saúde}
+
+Cada personagem terá um valor representando o nível de vida deste. A vida atual de cada personagem pode ser observada nas telas de Combate, Barracks e na tela de seleção do time, aparecendo o seu valor dentro do card roxo, como pode ser visualizado na figura a seguir.
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.75]{res/card.png}
+\caption{Card do Personagem}
+\label{Card do Personagem}
+\end{figure}
+
+\subsection{Restauração de vida}
+
+A restaração de vida dos personagens pode ser dar de duas formas:
+
+\begin{itemize}
+  \item \textbf{Itens}: utilizando itens que recuperam vida durante o combate.
+    \begin{figure}[!htp]
+    \centering
+    \includegraphics[scale=0.35]{res/item_combat.png}
+    \caption{Card do Personagem}
+    \label{Card do Personagem}
+    \end{figure}
+  \item \textbf{Hospital}: Restaurando ou revivendo os personagens na tela \textit{Revive} do \textit{Hospital}, porém para isto será preciso o uso de \textit{Data}.
+    \begin{figure}[!htp]
+    \centering
+    \includegraphics[scale=0.3]{res/revive.png}
+    \caption{Card do Personagem}
+    \label{Card do Personagem}
+    \end{figure}
 \end{itemize}
 
 \section{Esquema de controle e interface com o usuário}
