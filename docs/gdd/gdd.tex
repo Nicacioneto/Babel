@@ -176,7 +176,7 @@ Dentro da Torre há diferentes tipos de encontros. Há o encontro de Combate, en
 A mecânica de exploração horizontal se dará através de menus, numa espécie de hit list, gerando posteriormente a administração dos pontos de interesse do planeta para que o jogador possa gerir os recursos adquiridos.
 
 \subsection{Timer}
-As diversas ações que o jogador poderá fazer na Base, como Imprimir (construir/comprar) objetos irá demorar uma quantidade de Tempo, tempo imitando a demora para se fazer essa ação. Explorar o planeta também demora uma quantidade de Tempo para ser explorado.
+As diversas ações que o jogador poderá fazer na Base, como Imprimir (construir/comparar) objetos irá demorar uma quantidade de Tempo, tempo imitando a demora para se fazer essa ação. Explorar o planeta também demora uma quantidade de Tempo para ser explorado.
 
 Enquanto as ações demoram uma quantidade X de Tempo para ser realizadas, o jogador é incentivado a passar este tempo na Exploração Vertical, essa mecânica aumenta a dinamicidade entre as mecânicas de Exploração Vertical e Exploração Horizontal.
 
@@ -270,7 +270,7 @@ Funções:
 \begin{itemize}
   \item \textbf{Chat} - Tela onde o NPC do \textit{Barracks} Hank irá enviar mensagens ao jogador.
   \item \textbf{Inspect} - Tela para analisar o status do seu personagem e avançar de nível.
-  \item \textbf{Equip} - Tela para equipar e comprar equipamentos.
+  \item \textbf{Equip} - Tela para equipar e comparar equipamentos.
   \item \textbf{Party} - Tela para se escolher a equipe que vai fazer a exploração da torre.
 \end{itemize}
 
@@ -287,7 +287,7 @@ Funções:
 \end{itemize}
 
 \subsubsection{Hospital}
-Estrutura onde se compra itens, cura e revive os personagens e se realiza novas pesquisas tanto de medicamentos e quanto de genética. 
+Estrutura onde se compara itens, cura e revive os personagens e se realiza novas pesquisas tanto de medicamentos e quanto de genética. 
 
 Funções:
 \begin{itemize}
@@ -450,7 +450,7 @@ A tela de abertura do jogo dará acesso para outras três telas, que são: \text
 
 \subsection{Tela de Play Game}
 
-A tela de \textit{Play Game} é a tela onde o jogador poderar criar um novo jogo ou carregar algum \textit{slot} salvo anteriormente.
+A tela de \textit{Play Game} é a tela onde o jogador poderá criar um novo jogo ou carregar algum \textit{slot} salvo anteriormente.
 
 \begin{figure}[!htp]
 \centering
@@ -461,7 +461,7 @@ A tela de \textit{Play Game} é a tela onde o jogador poderar criar um novo jogo
 
 \subsection{Tela de Options}
 
-A tela de \textit{Options} é a tela onde o jogador poderar configurar o volume do e a resolução do jogo da maneira que este achar mais adequado.
+A tela de \textit{Options} é a tela onde o jogador poderá configurar o volume do e a resolução do jogo da maneira que este achar mais adequado.
 
 \begin{figure}[!htp]
 \centering
@@ -524,6 +524,361 @@ Na tela \textit{é apresentado} todos os equipamentos no qual o personagem poder
 \caption{Tela Equip}
 \label{Tela Equip}
 \end{figure}
+
+\section{Personagens Principais}
+
+Os personagens possuem uma série de \textit{status} em comum, que são:
+
+\subsection{Status Simples}
+
+\begin {itemize}
+  \item \textbf{Hp} - Health points 
+  \item \textbf{Mp} - Mind Points 
+  \item \textbf{Might} - Força física 
+  \item \textbf{Mind} - Força Mental 
+  \item \textbf{Resilience} - Defesa física 
+  \item \textbf{Willpower} - Defesa mental 
+  \item \textbf{Agility} - Chance de esquiva e Iniciativa 
+  \item \textbf{Perception} - Chance de acerto e Iniciativa
+\end {itemize}
+
+\subsection{Status Composto}
+
+\begin {itemize}
+  \item \textbf{Atack Power} -(mind+weapon)x10 
+  \item \textbf{Mind power} -Resilience + armor 
+  \item \textbf{Def} -Willpower + armor 
+  \item \textbf{Mdef} -(Agility + Perception)/2 
+  \item \textbf{Iniciativa} -weapon + (perception/2) 
+  \item \textbf{Hit chance} -(agility/4) + Class + Armor 
+\end {itemize}
+
+A seguir será detalhado todos os personagens das classes Militar, Psiônico e Tecnológico.
+
+\subsection{Militares}
+
+\subsubsection{Atlas}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Atlas.png}
+\caption{Atlas}
+\label{Atlas}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 250
+    \item \textbf{Mp}: 10
+    \item \textbf{Might}: 8
+    \item \textbf{Mind}: 2
+    \item \textbf{Resilience}: 16
+    \item \textbf{Wilpower}: 6
+    \item \textbf{Agility}: 4
+    \item \textbf{Perception}: 6
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Defender
+    \item \textbf{Custo}: 5 Mp
+    \item \textbf{Descrição}: Dobra o valor da armadura e todo dano recebido pela equipe até o próximo turno de Atlas é inteiramente direcionado a ele;\\
+    Ganha mais 10 de armor para cada nível de Militar que este possuir;\\
+    Transforma 1\% do dano recebido em Mp para Atlas para cada ponto de Psiônico;\\
+    Cura 10HP para cada ponto em Tecnológico.
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Melee - Tactical Facecrusher, que aumenta o \textit{Might} em 8 pontos;
+    \item \textbf{Armadura}: Defiance Mk I - Ganho de acumulo de 12 pontos em \textit{Resilience} e 2 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Iron heart - Ganho de acumulo de 4 pontos em \textit{Barrier}, 5 pontos em \textit{Resilience}, 2 pontos em \textit{Willpower}, -2 pontos em \textit{Agility} e -2 pontos em \textit{Mind}.
+  \end{enumerate}
+\end{itemize}
+
+\subsubsection{Ram}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Ram.png}
+\caption{Ram}
+\label{Ram}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 180
+    \item \textbf{Mp}: 30
+    \item \textbf{Might}: 12
+    \item \textbf{Mind}: 8
+    \item \textbf{Resilience}: 8
+    \item \textbf{Wilpower}: 8
+    \item \textbf{Agility}: 8
+    \item \textbf{Perception}: 8
+  \end{enumerate}
+\item \textbf{Habilidade}: (não definido).
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Shotgun - Hatchet Mk I, que proporciona um acumulo de 14 pontos em \textit{Might} e -2 pontos em \textit{Perception};
+    \item \textbf{Armadura}: Defiance Mk I - Ganho de acumulo de 12 pontos em \textit{Resilience} e -2 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Warden Mk I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+\subsubsection{Gorgon}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Gorgon.png}
+\caption{Gorgon}
+\label{Gorgon}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 130
+    \item \textbf{Mp}: 15
+    \item \textbf{Might}: 16
+    \item \textbf{Mind}: 4
+    \item \textbf{Resilience}: 10
+    \item \textbf{Wilpower}: 4
+    \item \textbf{Agility}: 8
+    \item \textbf{Perception}: 10
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Focused Fire
+    \item \textbf{Custo}: 5 Mp
+    \item \textbf{Descrição}: Executa 3 ataques a 100\% de dano físico mais 10 de dano em cada ataque;\\
+    Ganha mais 5 de dano em cada ataque para cada nível de Militar que este possuir;\\
+    Ganha mais 10\% de dano ataque para cada ponto de Psiônico;\\
+    Diminui em 5 a agilidade dos inimigos durante uma rodada para cada ponto em Tecnológico.
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Assault Rifle - Katana Mk I, que aumenta o \textit{Might} em 12 pontos;
+    \item \textbf{Armadura}: Defiance Mk I - Ganho de acumulo de 12 pontos em \textit{Resilience} e 2 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Warden Mk I - Ganho de acumulo de 2 pontos em \textit{Barrier}
+  \end{enumerate}
+\end{itemize}
+
+\subsection{Psiônicos}
+
+\subsubsection{Archos}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Archos.png}
+\caption{Archos}
+\label{Archos}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 60
+    \item \textbf{Mp}: 60
+    \item \textbf{Might}: 12
+    \item \textbf{Mind}: 18
+    \item \textbf{Resilience}: 2
+    \item \textbf{Wilpower}: 12
+    \item \textbf{Agility}: 12
+    \item \textbf{Perception}: 10
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Mind Blast
+    \item \textbf{Custo}: 10 Mp mais 3 por nível
+    \item \textbf{Descrição}: Dobra o valor de mind;\\
+    Ganha mais 15 de dano para cada nível de Psiônico que este possuir;\\
+    Ganha 2\% de chance de deixar o inimigo confuso para cada nível de Tecnológico que este possuir;\\
+    Reduz 5 de armor do inimigo para cada ponto em Militar.
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Psy Amp - Stormfury, que aumenta o \textit{HP} em 4 pontos e o \textit{Mp} em 2 pontos por turno e o \textit{Might} em 10 pontos;
+    \item \textbf{Armadura}: Tactical Rags - Ganho de acumulo de 1 ponto em \textit{Resilience}, 2 pontos em \textit{Willpower} e 10 pontos em \textit{Agility};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+
+\subsubsection{Wraith}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Wraith.png}
+\caption{Wraith}
+\label{Wraith}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 80
+    \item \textbf{Mp}: 40
+    \item \textbf{Might}: 18
+    \item \textbf{Mind}: 12
+    \item \textbf{Resilience}: 2
+    \item \textbf{Wilpower}: 6
+    \item \textbf{Agility}: 14
+    \item \textbf{Perception}: 10
+  \end{enumerate}
+\item \textbf{Habilidade}: (não definido);
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Sniper - Javelin Mk1, que aumenta o \textit{Might} em 15 pontos, o \textit{Critical} em 2\% e reduz o \textit{Agility} do inimigo 5 pontos;
+    \item \textbf{Armadura}: Tactical Rags - Ganho de acumulo de 1 ponto em \textit{Resilience}, 2 pontos em \textit{Willpower} e 10 pontos em \textit{Agility};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+\subsubsection{Vanth}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Vanth.png}
+\caption{Vanth}
+\label{Vanth}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 70
+    \item \textbf{Mp}: 50
+    \item \textbf{Might}: 16
+    \item \textbf{Mind}: 16
+    \item \textbf{Resilience}: 2
+    \item \textbf{Wilpower}: 2
+    \item \textbf{Agility}: 16
+    \item \textbf{Perception}: 8
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Mercy
+    \item \textbf{Custo}: 10 Mp mais 3 por nível
+    \item \textbf{Descrição}: Aumenta em 150\% o valor de mind;\\
+    Ganha mais 4 Mp para cada nível de Psiônico que este possuir;\\
+    Ganha 10\% de Mind por level Militar;\\
+    Ganha 20\% de Mind por level Tecnológico;\\
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Psyblade - Hate Mk 1, que aumenta o \textit{Might} em 10 pontos e o \textit{Life} em 1\%;
+    \item \textbf{Armadura}: Tactical Rags - Ganho de acumulo de 1 ponto em \textit{Resilience}, 2 pontos em \textit{Willpower} e 10 pontos em \textit{Agility};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+\subsection{Tecnológico}
+
+\subsubsection{Minerva}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Minerva.png}
+\caption{Minerva}
+\label{Minerva}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 90
+    \item \textbf{Mp}: 50
+    \item \textbf{Might}: 4
+    \item \textbf{Mind}: 18
+    \item \textbf{Resilience}: 7
+    \item \textbf{Wilpower}: 8
+    \item \textbf{Agility}: 4
+    \item \textbf{Perception}: 12
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Aegis
+    \item \textbf{Custo}: 8 Mp
+    \item \textbf{Descrição}: Cura 50 pontos de vida de um personagem;\\
+    Ganha mais 10 de cura para cada nível de Tecnológico que este possuir;\\
+    Ganha mais 10 de armor até o fim do turno do personagem curado para cada nível de Militar que este possuir;\\
+    Aumenta o HP em 10 pontos para cada ponto em Psiônico.
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Nano Swarm - Hive MkI, que aumenta o \textit{Might} em 12 pontos;
+    \item \textbf{Armadura}: Tecno Cuirass - Ganho de acumulo de 6 ponto em \textit{Resilience} e 6 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+\subsubsection{Trojan}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Trojan.png}
+\caption{Trojan}
+\label{Trojan}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 110
+    \item \textbf{Mp}: 50
+    \item \textbf{Might}: 6
+    \item \textbf{Mind}: 14
+    \item \textbf{Resilience}: 8
+    \item \textbf{Wilpower}: 8
+    \item \textbf{Agility}: 6
+    \item \textbf{Perception}: 14
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Armaggedon
+    \item \textbf{Custo}: 15 Mp mais 5 por nível
+    \item \textbf{Descrição}: Destrói a barreira de um inimigo;\\
+    Para cada nível de Tecnológico que este possuir será o número de barreiras a serem destruídas;\\
+    Ganha mais 15 de dano para cada nível de Militar que este possuir;\\
+    Aumenta o dano em 20\% para cada ponto em Psiônico.
+  \end{enumerate}
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: U.I - Alfred Mk I, que aumenta o \textit{Might} em 6 pontos e \textit{Barrier};
+    \item \textbf{Armadura}: Tecno Cuirass - Ganho de acumulo de 6 ponto em \textit{Resilience} e 6 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
+
+\subsubsection{Artemis}
+
+\begin{figure}[!htp]
+\centering
+\includegraphics[scale=0.5]{res/characters/Artemis.png}
+\caption{Artemis}
+\label{Artemis}
+\end{figure}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 130
+    \item \textbf{Mp}: 35
+    \item \textbf{Might}: 14
+    \item \textbf{Mind}: 8
+    \item \textbf{Resilience}: 8
+    \item \textbf{Wilpower}: 7
+    \item \textbf{Agility}: 6
+    \item \textbf{Perception}: 10
+  \end{enumerate}
+\item \textbf{Habilidade}: (não definido)
+\item \textbf{Equipamentos}:
+  \begin{enumerate}
+    \item \textbf{Arma}: Blaster - Micro Buster Mk I, que aumenta o \textit{Might} em 5;
+    \item \textbf{Armadura}: Tecno Cuirass - Ganho de acumulo de 6 ponto em \textit{Resilience} e 6 pontos em \textit{Willpower};
+    \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
+  \end{enumerate}
+\end{itemize}
 
 \section{Esquema de controle e interface com o usuário}
 
