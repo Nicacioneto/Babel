@@ -204,6 +204,7 @@ Os Eventos poderão ser completados de diversas formas, entre eles:
   \item \textbf{Combate}: Será dada a opção de resolver o conflito por meio de Combate. Utilizando as mecânicas apresentadas de Combate.
   \item \textbf{Valor MPT}: Será dada também a opção de os eventos e conflitos serem resolvidos por meio do Valor MPT do grupo ou de algum indivíduo.
   \item \textbf{Carregar/Ser alguém específico}: Será dada a opção de certos conflitos serem resolvidas por meio de na sua equipe ter algum membro específico de uma classe, ou um item carregado (como uma chave ou relativo a missão).
+  \\
   \item \textbf{Portas}:
   \begin{itemize}
     \item As portas servirão para dividir espaços dentro da Torre, servindo como divisória entre corredores e salas, por exemplo.
@@ -247,6 +248,8 @@ Condições de vitória e derrota:
   \item \textbf{1 valor igual ou superior} - Metade dos personagens envolvidos na exploração morrem, o veículo é reduzido a 50\% de sua durabilidade(a questão de durabilidade ainda vai ser discutida no entanto, devido a quantidade de conteúdos com prioridade na lista de implementação) todos os recursos são gastos, a zona desconhecida permanecerá desconhecida.
   \item \textbf{0 valores iguais ou superiores} - Todos seus personagens morrem, o veículo é perdido, todos os recursos são gastos e a zona permanece desconhecida.
 \end{itemize}
+
+\newpage
 
 \section{Colônia}
 
@@ -318,12 +321,6 @@ Funções:
   \item \textbf{Bestiary} - Lista de todos os monstros conhecidos do jogo com discrição do inimigo e status.
   \item \textbf{Timers} - Lista com todas as missões em andamento.
 \end{itemize}
-
-\subsection{Pesquisas}
-
-\section{Combate}
-
-\newpage
 
 \section{NPCs}
 
@@ -401,9 +398,12 @@ A primeira vez que se entrar em uma estrutura os NPCs terão uma fala tutorial e
   \item \textbf{Diálogo}: (não definido).
 \end{itemize}
 
+
 \section{Saúde}
 
 Cada personagem terá um valor representando o nível de vida deste. A vida atual de cada personagem pode ser observada nas telas de Combate, Barracks e na tela de seleção do time, aparecendo o seu valor dentro do card roxo, como pode ser visualizado na figura a seguir.
+
+\newpage
 
 \begin{figure}[!htp]
 \centering
@@ -424,6 +424,7 @@ A restauração de vida dos personagens pode ser dar de duas formas:
     \caption{Card do Personagem}
     \label{Card do Personagem}
     \end{figure}
+    \newpage
   \item \textbf{Hospital}: Restaurando ou revivendo os personagens na tela \textit{Revive} do \textit{Hospital}, porém para isto será preciso o uso de \textit{Data}.
     \begin{figure}[!htp]
     \centering
@@ -435,8 +436,6 @@ A restauração de vida dos personagens pode ser dar de duas formas:
 
 \section{Telas}
 
-\subsection{Attract Mode}
-
 \subsection{Tela de Abertura}
 
 A tela de abertura do jogo dará acesso para outras três telas, que são: \textit{Play Game}, \textit{Options} e \textit{Credits}.
@@ -447,6 +446,8 @@ A tela de abertura do jogo dará acesso para outras três telas, que são: \text
 \caption{Abertura}
 \label{Abertura}
 \end{figure}
+
+\newpage
 
 \subsection{Tela de Play Game}
 
@@ -481,6 +482,8 @@ Na tela de \textit{Credits} poderá ser observado o nome e a função dos integr
 \label{Credits}
 \end{figure}
 
+\newpage
+
 \section{Câmera e HUD}
 
 \subsection{Câmera na Exploração Vertical}
@@ -493,6 +496,8 @@ A câmera na exploração vertical será tipicamente de um jogo Dungeon Crawl, p
 \caption{Câmera FPS}
 \label{Câmera FPS}
 \end{figure}
+
+\newpage
 
 \subsection{Câmera na Exploração Horizontal}
 
@@ -525,6 +530,8 @@ Na tela \textit{é apresentado} todos os equipamentos no qual o personagem poder
 \label{Tela Equip}
 \end{figure}
 
+\newpage
+
 \section{Personagens Principais}
 
 Os personagens possuem uma série de \textit{status} em comum, que são:
@@ -553,7 +560,7 @@ Os personagens possuem uma série de \textit{status} em comum, que são:
   \item \textbf{Hit chance} -(agility/4) + Class + Armor 
 \end {itemize}
 
-A seguir será detalhado todos os personagens das classes Militar, Psiônico e Tecnológico.
+A seguir será detalhado todos os personagens das classes Militar, Psiônico e Tecnológico e os Inimigos.
 
 \subsection{Militares}
 
@@ -667,6 +674,8 @@ A seguir será detalhado todos os personagens das classes Militar, Psiônico e T
 
 \subsubsection{Archos}
 
+\newpage
+
 \begin{figure}[!htp]
 \centering
 \includegraphics[scale=0.5]{res/characters/Archos.png}
@@ -772,7 +781,7 @@ A seguir será detalhado todos os personagens das classes Militar, Psiônico e T
   \end{enumerate}
 \end{itemize}
 
-\subsection{Tecnológico}
+\subsection{Tecnológicos}
 
 \subsubsection{Minerva}
 
@@ -813,6 +822,8 @@ A seguir será detalhado todos os personagens das classes Militar, Psiônico e T
 \end{itemize}
 
 \subsubsection{Trojan}
+
+\newpage
 
 \begin{figure}[!htp]
 \centering
@@ -879,6 +890,76 @@ A seguir será detalhado todos os personagens das classes Militar, Psiônico e T
     \item \textbf{Escudo}: Warden Mark I - Ganho de acumulo de 2 pontos em \textit{Barrier}.
   \end{enumerate}
 \end{itemize}
+
+\subsection{Inimigos}
+
+\subsubsection{B.M.A. I} Babel Magnectic Anomaly one
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 100
+    \item \textbf{Mp}: 20
+    \item \textbf{Might}: 50
+    \item \textbf{Mind}: 50
+    \item \textbf{Resilience}: 20
+    \item \textbf{Wilpower}: 5
+    \item \textbf{Agility}: 15
+    \item \textbf{Perception}: 85
+  \end{enumerate}
+\item \textbf{Habilidade}: 80\% de chance de realizar um ataque físico e 20\% de chance de realizar um ataque mental, cada ataque mental custa 10 de Mp podendo realizar apenas 2 por batalha.
+\item \textbf{Recompensa}: 10 de Data para cada inimigo abatido.
+\end{itemize}
+
+\subsubsection{Sentry}
+
+\begin{itemize}
+\item \textbf{Atributos}:
+  \begin{enumerate}
+    \item \textbf{HP}: 90
+    \item \textbf{Mp}: 20
+    \item \textbf{Might}: 70
+    \item \textbf{Mind}: 30
+    \item \textbf{Resilience}: 15
+    \item \textbf{Wilpower}: 15
+    \item \textbf{Agility}: 19
+    \item \textbf{Perception}: 85
+  \end{enumerate}
+\item \textbf{Habilidade}:
+  \begin{enumerate}
+    \item \textbf{Nome}: Gatling Lasers
+    \item \textbf{Custo}: 10 Mp
+    \item \textbf{Descrição}: 30\% de chance de realizar um ataque triplo onde cada projétil tem 30 de \textit{Might} ao invés de 70.
+  \end{enumerate}
+\item \textbf{Recompensa}: 15 de Data para cada inimigo abatido.
+\end{itemize}
+
+\section{Colecionáveis}
+\subsection{Armas}
+ O jogo terá 11 classes de armas com suas próprias mecânicas que juntas permitem um sistema de combate dinâmico e interessante seguem a seguir as classes de armas e suas mecânicas:
+
+\begin {itemize}
+  \item \textbf{Assault Rifle}: Faz 3 ataques em um mesmo inimigo, cada um dos ataques é independente, tendo sua própria chance de acerto e crítico;
+
+  \item \textbf{Shotgun}: um ataque em dois inimigos adjacentes;
+
+  \item \textbf{Pistol}: Um ataque com boa chance de crítico e chance de inflingir algum status negativo;
+
+  \item \textbf{Sniper}: Um poderoso ataque com alta chance de crítico;
+
+  \item \textbf{Melee}: Um ataque que ignora totalmente o valor de barreira do inimigo, a barreira não reduz dano da arma e a arma não reduz o valor de barreira.
+
+  \item \textbf{Psy Amp}: Um ataque, recupera uma pequena quantidade de HP e MP fixa por turno;
+
+  \item \textbf{Psy Blade}: Um ataque recupera uma quantidade de hp baseada no valor do golpe infringido;
+
+  \item \textbf{Psy Whip}: Um ataque recupera uma quantidade de mp baseada no valor do golpe infringido;
+
+  \item \textbf{Nano Swarm}: Ataca todos os inimigos da tela da esquerda pra direita, perdendo 20\% de dano em cada golpe;
+
+  \item \textbf{U.I}: Um ataque que causa dano extra ao inimigo baseado no número de barreiras que destruiu e que tem seu valor reduzido pela metade quando o alvo não possui barreiras;
+
+  \item \textbf{Blaster}: O ataque desse tipo de arma é reduzido a 0 por qualquer barreira porém quando o inimigo não possúi barreira o dano é multiplicado por x(especificado na arma);
+\end {itemize}
 
 \section{Esquema de controle e interface com o usuário}
 
