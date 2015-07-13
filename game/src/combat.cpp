@@ -162,7 +162,7 @@ Combat::draw_self()
     }
     else if (m_state == FINISHED_COMBAT)
     {
-        m_text = new Text(this, "Você ganhou " + to_string(m_data) + " de Data",
+        m_text = new Text(this, "You earned " + to_string(m_data) + " Data",
             Color(170, 215, 190));
 
         m_text->set_position(env->canvas->w() / 2 - m_text->w() / 2,
