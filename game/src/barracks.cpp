@@ -117,7 +117,7 @@ Barracks::load_textures()
     m_textures["rifle"] = env->resources_manager->get_texture(path + "rifle.png");
     m_textures["armor"] = env->resources_manager->get_texture(path + "armor.png");
     m_textures["shield"] = env->resources_manager->get_texture(path + "shield.png");
-    m_textures["isaac_skills"] = env->resources_manager->get_texture(path + "isaac_skills.png");
+    m_textures["bhmp"] = env->resources_manager->get_texture(path + "bhmp.png");
     m_textures["skill_m_locked"] = env->resources_manager->get_texture(path + "Skill_M_Locked.png");
     m_textures["skill_p_locked"] = env->resources_manager->get_texture(path + "Skill_P_Locked.png");
     m_textures["skill_t_locked"] = env->resources_manager->get_texture(path + "Skill_T_Locked.png");
@@ -162,15 +162,24 @@ Barracks::inspect_screen()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+    Color color(170, 215, 190);
+
+    Character *character = current_char();
 
     env->canvas->draw("Inspect Hero", 52 * scale_w, 52 * scale_h, Color(84, 107, 95));
+    env->canvas->draw(m_textures["bhmp"].get(), 112 * scale_w, 376 * scale_h);
+    env->canvas->draw(to_string(character->shield()) + "/", (112 + 20) * scale_w, (376 + 50) * scale_h, color);
+    env->canvas->draw(to_string(character->life()) + "/", (112 + 94) * scale_w, (376 + 50) * scale_h, color);
+    env->canvas->draw(to_string(character->mp()) + "/", (112 + 170) * scale_w, (376 + 50) * scale_h, color);
 
-    env->canvas->draw(m_textures["isaac_skills"].get(), 112 * scale_w, 376 * scale_h);
+    font->set_size(10);
+    env->canvas->draw(to_string(character->max_shield()), (112 + 20 + 33) * scale_w, (376 + 57) * scale_h, color);
+    env->canvas->draw(to_string(character->max_life()), (112 + 94 + 33) * scale_w, (376 + 57) * scale_h, color);
+    env->canvas->draw(to_string(character->max_mp()), (112 + 170 + 33) * scale_w, (376 + 57) * scale_h, color);
 
     int data = Colony(m_slot).data();
     env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
     
-    Character *character = current_char();
     font->set_size(18);
     env->canvas->draw(m_textures["levelup"].get(), 402 * scale_w, 322 * scale_h);
     m_buttons["levelup_m"]->set_text(to_string(character->levelup_m()), Color(168, 145, 35));
