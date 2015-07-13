@@ -53,6 +53,7 @@ Planet::load_textures()
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
     m_textures["Tundra"] = env->resources_manager->get_texture(path + "Tundra.png");
     m_textures["Lake"] = env->resources_manager->get_texture(path + "Lake.png");
+    m_textures["Cavern"] = env->resources_manager->get_texture(path + "Cavern.png");
 
     path = "res/images/colony/";
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");

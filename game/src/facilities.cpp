@@ -213,6 +213,9 @@ Facilities::on_message(Object *sender, MessageID id, Parameters)
     m_buttons["mwake"]->set_active(m_screen == MILITARY);
     m_buttons["pwake"]->set_active(m_screen == PSIONIC);
     m_buttons["twake"]->set_active(m_screen == TECH);
+    m_buttons["mwake"]->set_visible(m_screen == MILITARY);
+    m_buttons["pwake"]->set_visible(m_screen == PSIONIC);
+    m_buttons["twake"]->set_visible(m_screen == TECH);
 
     return true;
 }
@@ -275,18 +278,22 @@ Facilities::create_buttons()
     w = 60 * scale_w;
     h = 60 * scale_h;
 
-    button = new Button(this, "mwake", x, y, w, h);
+    path += "facilities/";
+    button = new Button(this, "mwake", path + "wake-m_button.png", x, y, w, h);
     button->set_active(false);
+    button->set_visible(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "pwake", x, y, w, h);
+    button = new Button(this, "pwake", path + "wake-p_button.png", x, y, w, h);
     button->set_active(false);
+    button->set_visible(false);
 
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "twake", x, y, w, h);
+    button = new Button(this, "twake", path + "wake-t_button.png", x, y, w, h);
     button->set_active(false);
+    button->set_visible(false);
 
     m_buttons[button->id()] = button;
 

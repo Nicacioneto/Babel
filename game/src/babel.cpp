@@ -125,6 +125,7 @@ Babel::load_level(const string& id)
         return new Squad(m_slot, Squad::DRONE);
     }
 
+    return new Facilities(m_slot);
     return load_frontend(id);
 }
 
