@@ -136,10 +136,19 @@ Team::load_team()
     {
         if (h.second != "")
         {
-            m_buttons[h.second]->set_visible(false);
-            m_team.push_back(h.second);
+            if (m_characters[h.second]->life() == 0)
+            {
+                m_settings->write<string>("Squad", h.first, "");
+            }
+            else
+            {
+                m_buttons[h.second]->set_visible(false);
+                m_team.push_back(h.second);
+            }
         }
     }
+
+    m_settings->save("res/datas/slot" + to_string(m_slot) + "/squad.sav");
 }
 
 void

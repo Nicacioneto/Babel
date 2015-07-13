@@ -344,7 +344,8 @@ Character::receive_damage(Character *attacker)
     // TODO Balance attacks
 
     int d = round(damage);
-    set_life(m_life - d);
+    int life = (m_life - d) > 0 ? (m_life - d) : 0;
+    set_life(life);
 
     return d;
 }

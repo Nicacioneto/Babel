@@ -217,7 +217,7 @@ Dungeon::update_self(unsigned long elapsed)
     }
     else if (m_state == DOOR)
     {
-        if (elapsed - m_last < 300)
+        if (elapsed - m_last < 100)
         {
             return;
         }
