@@ -13,8 +13,10 @@
 #include <core/settings.h>
 #include <core/text.h>
 #include <core/keyboardevent.h>
+#include <memory>
 
 using std::to_string;
+using std::shared_ptr;
 
 #define W 1024.0
 #define H 768.0
@@ -22,7 +24,7 @@ using std::to_string;
 
 Combat::Combat(int slot, const string& next)
     : Level("combat", next), m_slot(slot), m_attacker(""), m_state(ENEMY_ATTACK),
-        m_enemy_turn(nullptr), m_text(nullptr), m_last(0)
+        m_enemy_turn(nullptr), m_text(nullptr), m_last(0), m_data(0)
 {
     Environment *env = Environment::get_instance();
 
@@ -160,10 +162,18 @@ Combat::draw_self()
     }
     else if (m_state == FINISHED_COMBAT)
     {
+        m_text = new Text(this, "Você ganhou " + to_string(m_data) + " de Data",
+            Color(170, 215, 190));
+
+        m_text->set_position(env->canvas->w() / 2 - m_text->w() / 2,
+        env->canvas->w() / 2 - m_text->h() / 2);
+
         int x = ((env->canvas->w() - m_result->w()) / 2 / W) * env->canvas->w();
         int y = ((env->canvas->h() - m_result->h()) / 2 / H) * env->canvas->h();
 
         env->canvas->draw(m_result.get(), x, y);
+        m_text->draw();
+
     }
     
     if (m_enemy_turn)
@@ -397,28 +407,40 @@ Combat::update_attackers(Character* character)
 bool
 Combat::on_event(const KeyboardEvent& event)
 {
+    Environment *env = Environment::get_instance();
+    shared_ptr<Settings> settings;
+    int data;
     switch (event.state())
     {
         case KeyboardEvent::PRESSED:
             if (m_state == FINISHED_COMBAT)
             {
-                Environment *env = Environment::get_instance();
                 env->sfx->play("res/sfx/uiBattle_Escape.ogg", 1);
                 finish();
             }
             else if (event.key() == KeyboardEvent::ESCAPE)
             {
-                Environment *env = Environment::get_instance();
                 env->sfx->play("res/sfx/uiConfirm1.ogg", 1);
                 set_next("dungeon");
                 finish();
             }
 
-            break;
+            settings = env->resources_manager->get_settings("res/datas/slot" +
+                to_string(m_slot) + "/colony.sav");
+
+
+            data = settings->read<int>("Colony", "data", 0);
+
+            data += m_data;
+
+            settings->write<int>("Colony", "data", data);
+
+            settings->save("res/datas/slot" + to_string(m_slot) + "/colony.sav");
+
+            return true;
         default:
             return false;
-
-        return true;
+            break;
     }
 
     return false;
@@ -513,6 +535,8 @@ Combat::character_message(MessageID id)
                     m_attackers.erase(it);
                 }
             }
+
+            m_data += enemy->data();
 
             delete enemy;
         }

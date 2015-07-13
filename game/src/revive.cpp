@@ -72,6 +72,11 @@ Revive::draw_character(double scale_w, double scale_h, Color color)
 
     for (auto section : m_settings->sections())
     {
+        if (section.first == "Default")
+        {
+            continue;
+        }
+
         if (++i <= (m_page - 1) * BIG_LIST or i > BIG_LIST * m_page)
         {
             change_button_state(m_buttons[section.first], false);
@@ -171,6 +176,10 @@ Revive::create_buttons()
 
     for (auto s : sections)
     {
+        if (s.first == "Default")
+        {
+            continue;
+        }
         Button *button = new Button(this, s.first, "res/images/colony/big_list.png",
             310 * scale_w, (y+5) * scale_h, 602 * scale_w, 25 * scale_h);
 

@@ -100,6 +100,7 @@ Character::init()
     m_defense_mode = false;
     m_available = m_settings->read<bool>(m_name, "available", true);
     set_available(m_available);
+    m_data = m_settings->read<int>(m_name, "data", 0);
 }
 
 int
@@ -522,6 +523,12 @@ bool
 Character::available() const
 {
     return m_available;
+}
+
+int
+Character::data() const
+{
+    return m_data;
 }
 
 void

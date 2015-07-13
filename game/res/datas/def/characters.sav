@@ -277,3 +277,4 @@ defense = 10
 might_armor = 12
 mind_armor = 12
 max_mp = 20
+data = 50

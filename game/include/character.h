@@ -58,6 +58,7 @@ public:
     int critical() const;
     int hit_chance() const;
     bool available() const;
+    int data() const;
 
     void set_texture(const string& id);
 
@@ -137,6 +138,7 @@ private:
     int m_hit_chance;
     bool m_defense_mode;
     bool m_available;
+    int m_data;
 
     void init();
     int range(int min, int max) const;
