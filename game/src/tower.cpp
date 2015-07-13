@@ -57,6 +57,7 @@ Tower::load_texture()
     string path = "res/images/tower/";
 
     m_textures["babel"] = env->resources_manager->get_texture(path + "babel_headline.png");
+    m_textures["tower"] = env->resources_manager->get_texture(path + "tower.png");
     m_textures["char1"] = env->resources_manager->get_texture(path + "char1.png");
     m_textures["char2"] = env->resources_manager->get_texture(path + "char2.png");
     m_textures["char3"] = env->resources_manager->get_texture(path + "char3.png");
@@ -150,6 +151,8 @@ Tower::draw_self()
 
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
+
+    env->canvas->draw(m_textures["tower"].get(), 28 * scale_w, 175 * scale_h);    
 
     env->canvas->draw(m_textures["right_bracket"].get(), 275 * scale_w, 173 * scale_h);
     env->canvas->draw(m_textures["left_bracket"].get(), 28 * scale_w, 175 * scale_h);
