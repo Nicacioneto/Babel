@@ -108,6 +108,7 @@ TeamPlanet::load_characters()
                 section.first + "_small.png", (x + 249*j) * scale_w, (y + 150*i) * scale_h,
                 w * scale_w, h * scale_h);
             character->set_active(false);
+            character->set_mpt_mode(true);
 
             character->add_observer(this);
             add_child(character);
