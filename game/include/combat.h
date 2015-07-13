@@ -52,6 +52,7 @@ private:
     void draw_self();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_team();
+    void clear_team(string hero);
     void load_enemies();
     void enemy_attack(Character* enemy);
     void update_attackers(Character* character);

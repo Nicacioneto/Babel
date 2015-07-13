@@ -271,6 +271,26 @@ Combat::load_team()
 }
 
 void
+Combat::clear_team(string hero)
+{
+    Environment *env = Environment::get_instance();
+    string path = "res/datas/slot" + to_string(m_slot) + "/squad.sav";
+    shared_ptr<Settings> settings = env->resources_manager->get_settings(path);
+    auto heroes = settings->sections()["Squad"];
+
+    for (auto h : heroes)
+    {
+        if (h.second == hero)
+        {
+            settings->write<string>("Squad", h.first, "");
+            break;
+        }
+    }
+
+    settings->save("res/datas/slot" + to_string(m_slot) + "/squad.sav");
+}
+
+void
 Combat::load_enemies()
 {
     Environment *env = Environment::get_instance();
@@ -352,6 +372,7 @@ Combat::enemy_attack(Character* enemy)
             }
         }
         
+        clear_team(character->id());
         delete character;
 
     }
