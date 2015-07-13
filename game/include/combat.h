@@ -46,6 +46,7 @@ private:
     Action *m_action;
     Text *m_text;
     unsigned long m_last;
+    int m_data;
 
 
     void update_self(unsigned long elapsed);

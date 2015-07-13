@@ -59,3 +59,6 @@ It's necessary the following packages to compile the game:
 - Mixer library (SDL-mixer) (2.0.0)
     * maintainer: http://www.libsdl.org/projects/SDL_mixer/
     * debian/ubuntu: sudo apt-get install libsdl2-mixer-dev
+
+
+Roubo

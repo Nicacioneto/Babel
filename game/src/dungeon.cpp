@@ -17,7 +17,7 @@
 #include <sstream>
 #include <vector>
 
-#define PROBABILITY_STEPWISE 0;
+#define PROBABILITY_STEPWISE 2;
 
 using std::vector;
 using std::to_string;
@@ -269,8 +269,6 @@ Dungeon::update_self(unsigned long elapsed)
         set_next("tower");
         finish();
     }
-
-    printf("x: %d, y: %d\n", m_x, m_y);
 }
 
 void
