@@ -30,6 +30,7 @@ Combat::Combat(int slot, const string& next)
 
     env->events_manager->register_listener(this);
     m_texture = env->resources_manager->get_texture("res/images/combat/arena.png");
+    m_turn = env->resources_manager->get_texture("res/images/combat/enemy_turn.png");
 
     env->sfx->play("res/sfx/uiBattle_Turn1.ogg", 1);
 
@@ -176,15 +177,14 @@ Combat::draw_self()
 
     }
     
-    if (m_enemy_turn)
+    if (m_enemy_turn and m_state != FINISHED_COMBAT)
     {
-        double x = m_enemy_turn->x() - (5 * W / env->canvas->w());
-        double y = m_enemy_turn->y() - (5 * H / env->canvas->h());
-        double w = m_enemy_turn->w() + (10 * W / env->canvas->w());
-        double h = m_enemy_turn->h() + (10 * H / env->canvas->h());
+        double scale_w = env->canvas->w() / W;
+        double scale_h = env->canvas->h() / H;
+        double x = m_enemy_turn->x() - 10 * scale_w;
+        double y = m_enemy_turn->y() + m_enemy_turn->h() - 15 * scale_h;
         
-        Rect rect { x, y, w, h };
-        env->canvas->fill(rect, Color::BLUE);
+        env->canvas->draw(m_turn.get(), x, y);
     }
 
     double x = 30 * env->canvas->w() / W;
