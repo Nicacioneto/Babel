@@ -17,7 +17,7 @@
 #include <sstream>
 #include <vector>
 
-#define PROBABILITY_STEPWISE 2;
+#define PROBABILITY_STEPWISE 2
 
 using std::vector;
 using std::to_string;
@@ -393,11 +393,13 @@ Dungeon::draw_self()
 
     auto texture = env->resources_manager->get_texture("res/images/dungeon/compass.png");
 
-    int x = 140 * m_direction.front();
-    env->canvas->draw(texture.get(), Rect(x, 0, 140, 140),
-        (60/1024.0) * env->canvas->w(),
-        (600/800.0) * env->canvas->h(),
-        140, 140);
+    double scale_w = env->canvas->w() / 1024.0;
+    double scale_h = env->canvas->h() / 768.0;
+    int x = 416 * m_direction.front();
+    env->canvas->draw(texture.get(), Rect(x, 0, 416, 58),
+        (1024 - 416) / 2 * scale_w,
+        600 * scale_h,
+        416, 58);
 }
 
 Rect
