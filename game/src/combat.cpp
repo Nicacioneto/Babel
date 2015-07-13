@@ -163,12 +163,7 @@ Combat::draw_self()
     }
     else if (m_state == FINISHED_COMBAT)
     {
-        m_text = new Text(this, "You earned " + to_string(m_data) + " Data",
-            Color(170, 215, 190));
-
-        m_text->set_position(env->canvas->w() / 2 - m_text->w() / 2,
-        env->canvas->w() / 2 - m_text->h() / 2);
-
+        set_data_result();
         int x = ((env->canvas->w() - m_result->w()) / 2 / W) * env->canvas->w();
         int y = ((env->canvas->h() - m_result->h()) / 2 / H) * env->canvas->h();
 
@@ -223,6 +218,28 @@ Combat::draw_self()
         x += 82 * env->canvas->w() / W;
         ++it;
     }
+}
+
+void
+Combat::set_data_result()
+{
+    if (m_text)
+    {
+        delete m_text;
+        m_text = nullptr;
+    }
+
+    Environment *env = Environment::get_instance();
+    shared_ptr<Font> font = env->resources_manager->get_font("res/fonts/exo-2/Exo2.0-Regular.otf");
+    env->canvas->set_font(font);
+    font->set_size(20);
+
+    m_text = new Text(this, "You earned " + to_string(m_data) + " Data",
+        Color(170, 215, 190));
+
+    double scale_h = env->canvas->h() / H;
+    m_text->set_position(env->canvas->w() / 2 - m_text->w() / 2,
+        env->canvas->w() / 2 - m_text->h() / 2 - 60 * scale_h);
 }
 
 bool

@@ -51,6 +51,7 @@ private:
 
     void update_self(unsigned long elapsed);
     void draw_self();
+    void set_data_result();
     bool on_message(Object *sender, MessageID id, Parameters p);
     void load_team();
     void clear_team(string hero);
