@@ -51,9 +51,11 @@ Planet::load_textures()
     m_textures["popup"] = env->resources_manager->get_texture(path + "popup.png");
     m_textures["place"] = env->resources_manager->get_texture(path + "place.png");
     m_textures["bracket"] = env->resources_manager->get_texture(path + "bracket.png");
-    m_textures["Tundra"] = env->resources_manager->get_texture(path + "Tundra.png");
-    m_textures["Lake"] = env->resources_manager->get_texture(path + "Lake.png");
     m_textures["Cavern"] = env->resources_manager->get_texture(path + "Cavern.png");
+    m_textures["Coast"] = env->resources_manager->get_texture(path + "Coast.png");
+    m_textures["Dunes"] = env->resources_manager->get_texture(path + "Dunes.png");
+    m_textures["Lake"] = env->resources_manager->get_texture(path + "Lake.png");
+    m_textures["Tundra"] = env->resources_manager->get_texture(path + "Tundra.png");
 
     path = "res/images/colony/";
     m_textures["right_bracket"] = env->resources_manager->get_texture(path + "right_bracket.png");
@@ -72,7 +74,7 @@ Planet::create_buttons()
     double scale_w = env->canvas->w() / W;
     double scale_h = env->canvas->h() / H;
 
-    Button *button = new Button(this, "tundra", path + "spot.png", 400 * scale_w, 380 * scale_h,
+    Button *button = new Button(this, "coast", path + "spot.png", 400 * scale_w, 380 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
@@ -80,11 +82,11 @@ Planet::create_buttons()
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "sea", path + "spot.png", 470 * scale_w, 585 * scale_h,
+    button = new Button(this, "lake", path + "spot.png", 470 * scale_w, 585 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "dunes", path + "spot.png", 490 * scale_w, 460 * scale_h,
+    button = new Button(this, "swamp", path + "spot.png", 490 * scale_w, 460 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
@@ -92,15 +94,15 @@ Planet::create_buttons()
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "lake", path + "spot.png", 540 * scale_w, 338 * scale_h,
+    button = new Button(this, "tundra", path + "spot.png", 540 * scale_w, 338 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "swamp", path + "spot.png", 715 * scale_w, 377 * scale_h,
+    button = new Button(this, "cavern", path + "spot.png", 715 * scale_w, 377 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
-    button = new Button(this, "cavern", path + "spot.png", 740 * scale_w, 270 * scale_h,
+    button = new Button(this, "dunes", path + "spot.png", 740 * scale_w, 270 * scale_h,
         25 * scale_w, 25 * scale_h);
     m_buttons[button->id()] = button;
 
@@ -217,9 +219,9 @@ Planet::on_message(Object *sender, MessageID id, Parameters)
         m_place = "Jungle";
         enable_popup(true);
     }
-    else if (button->id() == "sea")
+    else if (button->id() == "coast")
     {
-        m_place = "Sea";
+        m_place = "Coast";
         enable_popup(true);
     }
     else if (button->id() == "dunes")
