@@ -114,7 +114,7 @@ Tower::create_buttons()
 
     // Select floor
     int x, y = 638 + 34;
-    for (int i = 1; i <= 15; ++i)
+    for (int i = 1; i <= m_unlocked_floors; ++i)
     {
         if (i % 2)
         {
@@ -127,11 +127,9 @@ Tower::create_buttons()
             y -= 20;
         }
 
-        string f = i > m_unlocked_floors ? "L" : to_string(i);
-        button = new Button(this, "floor" + to_string(i), path + "floor" + f + ".png",
+        button = new Button(this, "floor" + to_string(i), path + "floor" + to_string(i) + ".png",
             x * scale_w, y * scale_h, 35 * scale_w, 35 * scale_h);
         button->set_sprites(1);
-        button->set_active(f != "L");
         m_floors[button->id()] = button;
         button->add_observer(this);
         add_child(button);
