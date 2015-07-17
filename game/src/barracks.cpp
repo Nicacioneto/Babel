@@ -172,13 +172,13 @@ Barracks::inspect_screen()
     env->canvas->draw(to_string(character->life()) + "/", (112 + 94) * scale_w, (376 + 50) * scale_h, color);
     env->canvas->draw(to_string(character->mp()) + "/", (112 + 170) * scale_w, (376 + 50) * scale_h, color);
 
+    int data = Colony(m_slot).data();
+    env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
+
     font->set_size(10);
     env->canvas->draw(to_string(character->max_shield()), (112 + 20 + 33) * scale_w, (376 + 57) * scale_h, color);
     env->canvas->draw(to_string(character->max_life()), (112 + 94 + 33) * scale_w, (376 + 57) * scale_h, color);
     env->canvas->draw(to_string(character->max_mp()), (112 + 170 + 33) * scale_w, (376 + 57) * scale_h, color);
-
-    int data = Colony(m_slot).data();
-    env->canvas->draw(to_string(data), 500 * scale_w, 353 * scale_h, Color(170, 215, 190));
     
     font->set_size(18);
     env->canvas->draw(m_textures["levelup"].get(), 402 * scale_w, 322 * scale_h);
