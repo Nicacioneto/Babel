@@ -17,7 +17,7 @@ public:
     ~Babel();
 
 private:
-    int m_slot;
+    int m_slot, m_frontend;
 
     bool on_event(const KeyboardEvent& event);
     bool on_event(const SystemEvent& event);

@@ -33,7 +33,7 @@
 using std::to_string;
 
 Babel::Babel()
-    : Game("tiamat_logo"), m_slot(0)
+    : Game("tiamat_logo"), m_slot(0), m_frontend(0)
 {
 }
 
@@ -142,10 +142,11 @@ Babel::load_frontend(const string& id)
     }
     else if (id == "classification")
     {
-        return new FrontEnd(id, "menu", path + "classification.png");
+        return new FrontEnd(id, "text1", path + "classification.png");
     }
 
-    return nullptr;
+    string next = ++m_frontend < 6 ?  "text" + to_string(m_frontend + 1) : "menu";
+    return new FrontEnd(id, next, path + "text" + to_string(m_frontend) + ".png", 6000);
 }
 
 bool
