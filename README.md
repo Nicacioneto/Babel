@@ -1,15 +1,5 @@
 # Babel - Tiamat Team
 
----
-
-[![Throughput Graph](https://graphs.waffle.io/ije-tiamat/babel/throughput.svg)](https://waffle.io/ije-tiamat/babel/metrics)
-
-[![Stories in Ready](https://badge.waffle.io/ije-tiamat/babel.png?label=ready&title=Ready)](http://waffle.io/ije-tiamat/babel)
-[![Stories in Progress](https://badge.waffle.io/ije-tiamat/babel.png?label=in%20progress&title=In%20Progress)](http://waffle.io/ije-tiamat/babel) 
-[![Stories in Check](https://badge.waffle.io/ije-tiamat/babel.png?label=check&title=Check)](http://waffle.io/ije-tiamat/babel)
-
----
-
 Singleplayer game like Sci-fi. The mankind wanders the universe looking for a new habitable planet. They found an unknown planet with a big and strange tower.
 
 The challenge is explore the tower and the planet and expand your resources, but be careful with the mysteries of this new planet.
