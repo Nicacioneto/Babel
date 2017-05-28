@@ -1,0 +1,15 @@
+Source: babel
+Section: unknown
+Priority: optional
+Maintainer: Nicácio Arruda <nicacionetobsb@gmail.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.6
+Homepage: <https://github.com/fgagamedev/Babel>
+
+
+Package: babel
+Architecture: all
+Depends: ${misc:Depends}
+Description: Singleplayer game like Sci-fi
+The mankind wanders the universe looking for a new habitable planet. They found an unknown planet with a big and strange tower.
+The challenge is explore the tower and the planet and expand your resources, but be careful with the mysteries of this new planet.
