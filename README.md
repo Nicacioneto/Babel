@@ -49,3 +49,10 @@ It's necessary the following packages to compile the game:
 - Mixer library (SDL-mixer) (2.0.0)
     * maintainer: http://www.libsdl.org/projects/SDL_mixer/
     * debian/ubuntu: sudo apt-get install libsdl2-mixer-dev
+
+
+Ou instale o nosso pacote debian, baixando o arquivo babel_1.0_all.deb.
+Após a instalação do pacote sigua os passos para execução:
+
+$ cd /usr/bin/babel
+$ bin/babel
