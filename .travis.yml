@@ -1,0 +1,9 @@
+sudo: required
+
+language: cpp
+
+compiler:
+- g++
+
+script:
+- ./install.sh
