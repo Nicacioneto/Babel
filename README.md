@@ -1,4 +1,7 @@
 # Babel - Tiamat Team
+[![Build Status](https://travis-ci.org/Nicacioneto/Babel.svg?branch=master)](https://travis-ci.org/Nicacioneto/Babel)
+
+
 
 Singleplayer game like Sci-fi. The mankind wanders the universe looking for a new habitable planet. They found an unknown planet with a big and strange tower.
 
